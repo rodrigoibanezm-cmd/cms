@@ -1,0 +1,38 @@
+name: Build template bases
+
+on:
+  workflow_dispatch:
+    inputs:
+      families:
+        description: "Familias separadas por coma. Ej: GIRAMOTOR,MESA_LEVANTE"
+        required: true
+        default: "GIRAMOTOR"
+      candidates_folder:
+        description: "ID o URL carpeta candidatos_plantillas"
+        required: true
+        default: "14Vip4rqGZGRpIfI0zVKiNMiW8V1N_Ob6"
+      bases_folder:
+        description: "ID o URL carpeta Bases"
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install deps
+        run: pip install -r tools/templates/requirements.txt
+      - name: Build and upload bases
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+        run: |
+          python tools/templates/build_missing_bases.py \
+            --families "${{ inputs.families }}" \
+            --candidates-folder "${{ inputs.candidates_folder }}" \
+            --bases-folder "${{ inputs.bases_folder }}"
