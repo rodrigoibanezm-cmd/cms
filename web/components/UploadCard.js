@@ -1,8 +1,15 @@
 // web/components/UploadCard.js
-export default function UploadCard({ title, hint, files, onChange }) {
+export default function UploadCard({ title, hint, files, multiple, onChange }) {
   function handleChange(event) {
-    onChange(Array.from(event.target.files || []));
+    const selected = Array.from(event.target.files || []);
+    onChange(multiple ? [...files, ...selected] : selected.slice(0, 1));
   }
+
+  const countText = files.length === 0
+    ? 'Sin fotos cargadas'
+    : multiple
+      ? `${files.length} foto(s) cargada(s)`
+      : 'Informe cargado';
 
   return (
     <section className="card">
@@ -12,21 +19,17 @@ export default function UploadCard({ title, hint, files, onChange }) {
       </div>
 
       <label className="upload">
-        <span>Agregar foto</span>
+        <span>{files.length ? 'Agregar otra foto' : 'Agregar foto'}</span>
         <input
           type="file"
           accept="image/*"
           capture="environment"
-          multiple
+          multiple={multiple}
           onChange={handleChange}
         />
       </label>
 
-      <p className="count">
-        {files.length === 0
-          ? 'Sin fotos cargadas'
-          : `${files.length} foto(s) cargada(s)`}
-      </p>
+      <p className="count">{countText}</p>
     </section>
   );
 }
