@@ -1,0 +1,116 @@
+{
+  "version": "2026-06-26",
+  "runtime_source": "google_drive",
+  "development_source": "local_xlsx",
+  "fallback_template_key": "INFORMES_VARIOS",
+  "templates": {
+    "TORQUE_MANUAL_TECNICOS": {
+      "familia": "TORQUE_MANUAL",
+      "status": "available",
+      "base_file": "TORQUE MANUAL TÉCNICOS (1).xlsx"
+    },
+    "TETRAGUAGE_TECNICOS": {
+      "familia": "TETRAGUAGE",
+      "status": "available",
+      "base_file": "TETRAGUAGE TÉCNICOS (1).xlsx"
+    },
+    "LLAVE_TORQUE_IMPACTO_TECNICOS": {
+      "familia": "LLAVE_TORQUE_IMPACTO",
+      "status": "available",
+      "base_file": "LLAVE DE TORQUE O IMPACTO TÉCNICOS.xlsx"
+    },
+    "LLAVE_HIDRAULICA_TECNICOS": {
+      "familia": "LLAVE_HIDRAULICA",
+      "status": "available",
+      "base_file": "LLAVE HIDRAULICA TÉCNICOS.xlsx"
+    },
+    "BOMBA_HIDRAULICA_TECNICOS": {
+      "familia": "BOMBA_HIDRAULICA",
+      "status": "available",
+      "base_file": "BOMBA HIDRAULICA TÉCNICOS.xlsx"
+    },
+    "BOMBA_TRASVASIJE_TECNICOS": {
+      "familia": "BOMBA_TRASVASIJE",
+      "status": "available",
+      "base_file": "BOMBA TRASVASIJE TÉCNICOS.xlsx"
+    },
+    "CILINDRO_HIDRAULICO_TECNICOS": {
+      "familia": "CILINDRO_HIDRAULICO",
+      "status": "available",
+      "base_file": "CILINDRO HIDRÁULICO TÉCNICOS.xlsx"
+    },
+    "ESMERIL_TECNICOS": {
+      "familia": "ESMERIL",
+      "status": "available",
+      "base_file": "ESMERIL TÉCNICOS.xlsx"
+    },
+    "GATA_HIDRAULICA_TECNICOS": {
+      "familia": "GATA_HIDRAULICA",
+      "status": "available",
+      "base_file": "GATO HIDRÁULICA TÉCNICOS.xlsx"
+    },
+    "ARRANCADOR_BATERIAS_TECNICOS": {
+      "familia": "ARRANCADOR_BATERIAS",
+      "status": "available",
+      "base_file": "ARRANCADOR DE BATERIAS (1).xlsx"
+    },
+    "TRANSDUCTOR_TORQUE_TECNICOS": {
+      "familia": "TRANSDUCTOR_TORQUE",
+      "status": "available",
+      "base_file": "TRANSDUCTOR DE TORQUE (1).xlsx"
+    },
+    "INFORMES_VARIOS": {
+      "familia": "INFORMES_VARIOS",
+      "status": "available",
+      "base_file": "INFORMES VARIOS.xlsx"
+    },
+    "CARRETE_ELECTRICO_TECNICOS": {
+      "familia": "CARRETE_ELECTRICO",
+      "status": "missing_base",
+      "priority": 1,
+      "observed_items": [
+        "Estructura exterior",
+        "Estructura interior",
+        "Cable de poder",
+        "Interruptor",
+        "Manilla de agarre",
+        "Conectores de energía",
+        "Enchufe"
+      ]
+    },
+    "LUMINARIA_TECNICOS": {
+      "familia": "LUMINARIA",
+      "status": "missing_base",
+      "priority": 2
+    },
+    "TRIPODE_TECNICOS": {
+      "familia": "TRIPODE",
+      "status": "missing_base",
+      "priority": 2
+    },
+    "BATERIA_MILWAUKEE_TECNICOS": {
+      "familia": "BATERIA_MILWAUKEE",
+      "status": "missing_base",
+      "priority": 3
+    },
+    "GIRAMOTOR_TECNICOS": {
+      "familia": "GIRAMOTOR",
+      "status": "missing_base",
+      "priority": 4
+    },
+    "MESA_LEVANTE_TECNICOS": {
+      "familia": "MESA_LEVANTE",
+      "status": "missing_base",
+      "priority": 5
+    },
+    "PISTOLA_CALOR_TECNICOS": {
+      "familia": "PISTOLA_CALOR",
+      "status": "missing_base",
+      "priority": 6
+    },
+    "FOCO_IMANTADO_MORDAZA_TECNICOS": {
+      "familia": "FOCO_IMANTADO_MORDAZA",
+      "status": "missing_base"
+    }
+  }
+}
