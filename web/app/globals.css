@@ -1,0 +1,112 @@
+/* web/app/globals.css */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #eef3f8;
+  color: #132033;
+  font-family: Arial, sans-serif;
+}
+
+.screen {
+  width: 100%;
+  max-width: 430px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 28px 18px;
+}
+
+.header {
+  margin-bottom: 22px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: #1c6dd0;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+h1 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.05;
+}
+
+.subtitle {
+  margin: 12px 0 0;
+  color: #637083;
+  font-size: 15px;
+}
+
+.card,
+.status {
+  background: white;
+  border: 1px solid #dfe7ef;
+  border-radius: 22px;
+  box-shadow: 0 12px 30px rgba(31, 51, 79, 0.08);
+  margin-bottom: 16px;
+  padding: 18px;
+}
+
+.card h2,
+.status h2 {
+  font-size: 18px;
+  margin: 0 0 6px;
+}
+
+.card p,
+.status p {
+  color: #637083;
+  font-size: 14px;
+  margin: 0;
+}
+
+.upload {
+  align-items: center;
+  background: #edf5ff;
+  border: 1px dashed #7cb3f2;
+  border-radius: 16px;
+  color: #1259a8;
+  display: flex;
+  font-weight: 700;
+  justify-content: center;
+  margin-top: 16px;
+  padding: 16px;
+}
+
+.upload input {
+  display: none;
+}
+
+.count {
+  margin-top: 10px !important;
+}
+
+.submit {
+  background: #1769c2;
+  border: 0;
+  border-radius: 18px;
+  color: white;
+  font-size: 17px;
+  font-weight: 800;
+  margin: 4px 0 16px;
+  padding: 17px;
+  width: 100%;
+}
+
+.submit:disabled {
+  opacity: 0.7;
+}
+
+.status {
+  align-items: center;
+  display: flex;
+  gap: 14px;
+}
+
+.statusIcon {
+  font-size: 32px;
+}
