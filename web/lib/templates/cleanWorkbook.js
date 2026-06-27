@@ -32,6 +32,15 @@ function usedRange(sheet) {
   return sheet.usedRange();
 }
 
+function countFilled(range) {
+  let count = 0;
+  if (!range) return count;
+  range.forEach((cell) => {
+    if (cell.value()) count += 1;
+  });
+  return count;
+}
+
 function rowText(sheet, rowNumber, colStart, colEnd) {
   const values = [];
   for (let col = colStart; col <= colEnd; col += 1) {
@@ -43,13 +52,7 @@ function rowText(sheet, rowNumber, colStart, colEnd) {
 function pickSheet(workbook) {
   const sheets = workbook.sheets().filter((sheet) => !shouldDropSheet(sheet));
   if (!sheets.length) return workbook.sheet(0);
-  return sheets.sort((a, b) => {
-    const ar = usedRange(a);
-    const br = usedRange(b);
-    const ac = ar ? ar.cells().filter((c) => c.value()).length : 0;
-    const bc = br ? br.cells().filter((c) => c.value()).length : 0;
-    return bc - ac;
-  })[0];
+  return sheets.sort((a, b) => countFilled(usedRange(b)) - countFilled(usedRange(a)))[0];
 }
 
 function keepOnlySheet(workbook, keep) {
