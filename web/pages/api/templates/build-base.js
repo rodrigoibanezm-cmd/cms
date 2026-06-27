@@ -23,7 +23,7 @@ module.exports = async function handler(req, res) {
     if (!candidatesRoot) return res.status(400).json({ ok: false, error: 'Missing candidates folder' });
     if (!basesFolder) return res.status(400).json({ ok: false, error: 'Missing bases folder' });
 
-    const drive = driveLib.getDrive();
+    const drive = driveLib.getDrive(req);
     const familyFolder = await driveLib.findChildFolder(drive, candidatesRoot, family);
     const files = await driveLib.listChildren(drive, familyFolder.id, driveLib.XLSX_MIME);
     const candidate = pickCandidate(files);
