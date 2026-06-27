@@ -32,8 +32,12 @@ function usedRange(sheet) {
   return sheet.usedRange();
 }
 
-function rowText(row) {
-  return row.cells().map((cell) => norm(cell.value())).filter(Boolean).join(' ');
+function rowText(sheet, rowNumber, colStart, colEnd) {
+  const values = [];
+  for (let col = colStart; col <= colEnd; col += 1) {
+    values.push(norm(sheet.cell(rowNumber, col).value()));
+  }
+  return values.filter(Boolean).join(' ');
 }
 
 function pickSheet(workbook) {
@@ -78,7 +82,7 @@ function clearMarksAndFreeText(sheet) {
   const colStart = range.startCell().columnNumber();
   const colEnd = range.endCell().columnNumber();
   for (let r = rowStart; r <= rowEnd; r += 1) {
-    const text = rowText(sheet.row(r));
+    const text = rowText(sheet, r, colStart, colEnd);
     if (text.includes('registro fotograf')) {
       for (let c = colStart; c <= colEnd; c += 1) sheet.cell(r, c).value(null);
       continue;
