@@ -144,62 +144,108 @@ Se privilegiarán soluciones simples antes que arquitecturas complejas.
 
 ---
 
-# Pipeline IA
+# Pipeline IA final
 
-Todavía no existe una implementación definitiva.
+El flujo definitivo del MVP es:
 
-El pipeline irá evolucionando durante la etapa de calibración.
+```text
+Foto informe + fotos equipo
+↓
+Pasada barata detecta familia
+↓
+Busca template base limpio en Drive
+↓
+Template define campos/checklist a extraer
+↓
+Pasada cara extrae JSON guiado
+↓
+Backend llena XLS final
+↓
+Guarda resultado en Drive/output
+```
 
-Actualmente la idea es la siguiente.
+Documento operativo: `docs/final-flow.md`.
 
-## Primera extracción
+## 1. Entrada
 
-Dos modelos realizan una extracción independiente del formulario.
+El usuario sube:
 
-Si ambos resultados son consistentes, el procesamiento continúa.
-
-El objetivo es minimizar costo utilizando modelos pequeños.
-
----
-
-## Resolución de conflictos
-
-Si existen diferencias relevantes entre ambas extracciones, un modelo de mayor capacidad analiza únicamente los campos conflictivos.
-
-No reprocesa el documento completo.
-
----
-
-## Normalización
-
-Una vez resueltos los conflictos se genera un JSON estructurado.
-
-Este JSON representa la verdad operacional del informe.
+* foto del informe técnico;
+* una o más fotos del equipo.
 
 ---
 
-## Generación del Excel
+## 2. Pasada barata
 
-El sistema toma el JSON y completa automáticamente la plantilla Excel correspondiente.
+Un modelo barato detecta la familia del informe.
 
-Las fotografías también se incorporan automáticamente.
+Salida mínima:
 
-No participa ninguna IA en esta etapa.
+```json
+{
+  "family": "TALADRO",
+  "confidence": 0.92
+}
+```
+
+Si la familia no es confiable, el caso queda pendiente de revisión.
 
 ---
 
-## Auditoría
+## 3. Template base limpio
 
-Una IA compara:
+Con la familia detectada, el backend busca en Drive:
 
-* formulario original
-* fotografías
-* JSON final
-* Excel generado
+```text
+{FAMILIA}_TECNICOS_BASE.xlsx
+```
 
-Si detecta inconsistencias, el documento queda pendiente de revisión.
+Ese template define:
 
-Si no existen observaciones, el archivo se entrega automáticamente.
+* campos esperados;
+* checklist;
+* layout;
+* formato final.
+
+---
+
+## 4. Pasada cara guiada
+
+El modelo caro no extrae libremente.
+
+Extrae solo el JSON requerido por el template.
+
+El template manda la extracción.
+
+---
+
+## 5. Generación del Excel
+
+El backend completa el XLS final con código determinístico.
+
+La IA no escribe celdas directamente.
+
+---
+
+## 6. Salida
+
+El archivo final se guarda en Drive/output.
+
+---
+
+# Templates base
+
+Ya existe soporte para construir templates base limpios en Drive.
+
+Referencia: `docs/template-bases-cloud.md`.
+
+Endpoint actual:
+
+```text
+api/templates/build-base.js
+```
+
+Ese endpoint toma una familia, descarga un candidato XLSX, limpia datos escritos y sube el archivo base a Drive.
 
 ---
 
@@ -260,6 +306,8 @@ Con el tiempo el sistema deja de ser solamente un digitalizador de formularios y
 * Sin instalación.
 * Excel determinístico.
 * Google Drive como destino.
+* Drive/Bases como repositorio de templates limpios.
+* Drive/output como destino del XLS final.
 * Neon como fuente de verdad.
 * Auditoría IA antes de entregar.
 * Calibración utilizando informes reales.
@@ -269,9 +317,7 @@ Con el tiempo el sistema deja de ser solamente un digitalizador de formularios y
 
 # Decisiones pendientes
 
-* Pipeline definitivo.
 * Estrategia de autenticación.
-* Manejo de múltiples tipos de formularios.
 * Integración con ERP.
 * Gestión de usuarios y permisos.
 
@@ -281,7 +327,7 @@ Con el tiempo el sistema deja de ser solamente un digitalizador de formularios y
 
 MVP en diseño.
 
-La prioridad actual es validar el pipeline de extracción utilizando formularios reales antes de desarrollar funcionalidades adicionales.
+La prioridad actual es implementar el procesamiento final usando templates base limpios en Drive.
 
 Cada decisión futura deberá mantener el mismo principio:
 
