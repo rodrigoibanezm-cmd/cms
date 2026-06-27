@@ -3,6 +3,7 @@ const { Readable } = require('stream');
 
 const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 const FOLDER_MIME = 'application/vnd.google-apps.folder';
+const DRIVE_SCOPE = 'https://www.googleapis.com/auth/drive';
 
 function parseFolderId(value) {
   const text = String(value || '').trim();
@@ -10,14 +11,52 @@ function parseFolderId(value) {
   return match ? match[1] : text;
 }
 
-function getDrive() {
+function baseUrl(req) {
+  if (process.env.PUBLIC_BASE_URL) return process.env.PUBLIC_BASE_URL;
+  const proto = req?.headers?.['x-forwarded-proto'] || 'https';
+  const host = req?.headers?.host;
+  return host ? `${proto}://${host}` : 'http://localhost:3000';
+}
+
+function redirectUri(req) {
+  return `${baseUrl(req)}/api/auth/google/callback`;
+}
+
+function oauthClient(req) {
+  const clientId = process.env.GOOGLE_CLIENT_ID;
+  const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+  if (!clientId || !clientSecret) throw new Error('Missing GOOGLE_CLIENT_ID or GOOGLE_CLIENT_SECRET');
+  return new google.auth.OAuth2(clientId, clientSecret, redirectUri(req));
+}
+
+function getDrive(req) {
+  if (process.env.GOOGLE_REFRESH_TOKEN) {
+    const auth = oauthClient(req);
+    auth.setCredentials({ refresh_token: process.env.GOOGLE_REFRESH_TOKEN });
+    return google.drive({ version: 'v3', auth });
+  }
+
   const raw = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
-  if (!raw) throw new Error('Missing GOOGLE_SERVICE_ACCOUNT_JSON');
+  if (!raw) throw new Error('Missing Google credentials');
   const auth = new google.auth.GoogleAuth({
     credentials: JSON.parse(raw),
-    scopes: ['https://www.googleapis.com/auth/drive']
+    scopes: [DRIVE_SCOPE]
   });
   return google.drive({ version: 'v3', auth });
+}
+
+function authUrl(req) {
+  return oauthClient(req).generateAuthUrl({
+    access_type: 'offline',
+    prompt: 'consent',
+    scope: [DRIVE_SCOPE]
+  });
+}
+
+async function exchangeCode(req, code) {
+  const client = oauthClient(req);
+  const { tokens } = await client.getToken(code);
+  return tokens;
 }
 
 async function listChildren(drive, folderId, mimeType) {
@@ -68,8 +107,11 @@ async function uploadXlsxBuffer(drive, folderId, filename, buffer) {
 
 module.exports = {
   XLSX_MIME,
+  DRIVE_SCOPE,
   parseFolderId,
   getDrive,
+  authUrl,
+  exchangeCode,
   listChildren,
   findChildFolder,
   downloadFileBuffer,
