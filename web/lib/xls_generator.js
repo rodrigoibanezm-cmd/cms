@@ -217,12 +217,12 @@ function findHeaderColumns(sheet) {
     const found = {};
     row.eachCell((cell, colNumber) => {
       const value = norm(cellText(cell));
-      if (value.includes('DESCRIP')) found.item = colNumber;
-      if (value === 'CUMPLE') found.cumple = colNumber;
-      if (value.includes('NO CUMPLE')) found.noCumple = colNumber;
-      if (value.includes('NO APLICA')) found.noAplica = colNumber;
-      if (value.includes('OBSERV')) found.obs = colNumber;
-      if (value.includes('REPAR')) found.reparacion = colNumber;
+      if (!found.item && value.includes('DESCRIP')) found.item = colNumber;
+      if (!found.cumple && value === 'CUMPLE') found.cumple = colNumber;
+      if (!found.noCumple && value.includes('NO CUMPLE')) found.noCumple = colNumber;
+      if (!found.noAplica && value.includes('NO APLICA')) found.noAplica = colNumber;
+      if (!found.obs && value.includes('OBSERV')) found.obs = colNumber;
+      if (!found.reparacion && value.includes('REPAR')) found.reparacion = colNumber;
     });
     if (found.item && found.cumple && found.noCumple && found.noAplica) {
       cols = { row: rowNumber, ...found };
