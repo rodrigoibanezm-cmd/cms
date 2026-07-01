@@ -1,5 +1,6 @@
 import ExcelJS from 'exceljs';
 import { google } from 'googleapis';
+import { Readable } from 'stream';
 
 function env(name) {
   return process.env[name] || '';
@@ -29,15 +30,22 @@ function driveClient() {
 }
 
 async function findFileByName(drive, folderId, name) {
-  const safeName = name.replace(/'/g, "\\'");
-  const res = await drive.files.list({
-    q: `'${folderId}' in parents and name='${safeName}' and trashed=false`,
-    fields: 'files(id,name)',
-    pageSize: 1,
-    supportsAllDrives: true,
-    includeItemsFromAllDrives: true,
-  });
-  return res.data.files?.[0] || null;
+  const cleanName = name.replace(' (1).xlsx', '.xlsx');
+  const names = [...new Set([name, cleanName])];
+
+  for (const candidate of names) {
+    const safeName = candidate.replace(/'/g, "\\'");
+    const res = await drive.files.list({
+      q: `'${folderId}' in parents and name='${safeName}' and trashed=false`,
+      fields: 'files(id,name)',
+      pageSize: 1,
+      supportsAllDrives: true,
+      includeItemsFromAllDrives: true,
+    });
+    const file = res.data.files?.[0] || null;
+    if (file) return file;
+  }
+  return null;
 }
 
 async function downloadDriveFile(fileId) {
@@ -55,7 +63,7 @@ async function uploadDriveFile({ buffer, filename, folderId }) {
     requestBody: { name: filename, parents: [folderId] },
     media: {
       mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      body: Buffer.from(buffer),
+      body: Readable.from(Buffer.from(buffer)),
     },
     fields: 'id,webViewLink',
     supportsAllDrives: true,
