@@ -8,7 +8,7 @@ import { parseModelJson } from '../../benchmark/lib/io.js';
 
 function saveJson(targetDir, ot, name, data) {
   fs.mkdirSync(targetDir, { recursive: true });
-  fs.writeFileSync(path.join(targetDir, `${ot}_${name}.json`), JSON.stringify(data, null, 2));
+  fs.writeFileSync(path.join(targetDir, `${ot || 'SIN_OT'}_${name}.json`), JSON.stringify(data, null, 2));
 }
 
 function buildPass2Prompt(template, checklist) {
@@ -25,7 +25,7 @@ function cleanTemplateFilename(name) {
 
 export async function runExtraction({
   image,
-  ot,
+  otHint,
   sourceName,
   targetDir,
   promptPass1,
@@ -34,8 +34,8 @@ export async function runExtraction({
 }) {
   console.log('Pasada 1 (Flash)...');
   const pass1 = parseModelJson(await callGemini({ model: 'gemini-2.5-flash', prompt: promptPass1, image }));
-  pass1.ot = ot;
-  saveJson(targetDir, ot, 'pass1', pass1);
+  if (otHint) pass1.ot = otHint;
+  saveJson(targetDir, pass1.ot, 'pass1', pass1);
 
   const { entry, similitud } = matchTemplate(pass1.checklist_items || [], catalog);
   const decision = decideMatch({ entry, similitud });
@@ -63,8 +63,8 @@ export async function runExtraction({
     mensaje: confidence.mensaje,
     semaforo: scoreToSemaforo(confidence.score),
     inspeccion,
-  }, { ot, sourceName });
+  }, { otHint, sourceName });
 
-  saveJson(targetDir, ot, 'gemini', final);
+  saveJson(targetDir, final.ot, 'gemini', final);
   return final;
 }
