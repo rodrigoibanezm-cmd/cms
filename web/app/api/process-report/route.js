@@ -41,6 +41,11 @@ function requireImage(file) {
   }
 }
 
+function otFromFilename(filename) {
+  const match = String(filename || '').match(/^(\d{4,6})\b/);
+  return match?.[1] || '';
+}
+
 export async function POST(request) {
   try {
     const form = await request.formData();
@@ -58,12 +63,13 @@ export async function POST(request) {
 
     const reportBuffer = await fileToBuffer(report);
     const sourceName = report.name || 'informe';
-    const ot = String(form.get('ot') || path.parse(sourceName).name).split(' ')[0];
-    const targetDir = path.join(os.tmpdir(), 'cms-extractions', ot);
+    const userOt = String(form.get('ot') || '').trim();
+    const otHint = userOt || otFromFilename(sourceName);
+    const targetDir = path.join(os.tmpdir(), 'cms-extractions', otHint || `tmp-${Date.now()}`);
 
     const extraction = await runExtraction({
       image: asImage(reportBuffer, report.type),
-      ot,
+      otHint,
       sourceName,
       targetDir,
       promptPass1: readText('benchmark/prompts/extract_pass1.md'),
