@@ -127,12 +127,22 @@ function setBesideLabel(sheet, labels, value) {
   sheet.getCell(found.row, found.col + 1).value = value;
 }
 
+function setBelowLabel(sheet, labels, value, offset = 1) {
+  if (!text(value)) return;
+  const found = findCellByLabel(sheet, labels);
+  if (!found) return;
+
+  const target = sheet.getCell(found.row + offset, found.col);
+  target.value = value;
+  target.alignment = { wrapText: true, vertical: 'top' };
+}
+
 function fillHeader(sheet, data) {
-  setBesideLabel(sheet, ['OT', 'ORDEN DE TRABAJO'], data.ot);
-  setBesideLabel(sheet, ['TECNICO', 'TÉCNICO'], data.tecnico);
+  setBesideLabel(sheet, ['OT', 'O.T', 'ORDEN DE TRABAJO'], data.ot);
+  setBesideLabel(sheet, ['TECNICO', 'TÉCNICO', 'MECÁNICO ESPECIALISTA'], data.tecnico);
   setBesideLabel(sheet, ['CLIENTE'], data.cliente);
   setBesideLabel(sheet, ['AREA USUARIA', 'ÁREA USUARIA'], data.area_usuaria);
-  setBesideLabel(sheet, ['ROTULO', 'RÓTULO'], data.rotulo);
+  setBesideLabel(sheet, ['ROTULO', 'RÓTULO', 'ROTULO '], data.rotulo);
   setBesideLabel(sheet, ['FECHA', 'FECHA EVALUACION'], data.fecha_evaluacion);
   setBesideLabel(sheet, ['MARCA'], data.marca);
   setBesideLabel(sheet, ['MODELO'], data.modelo);
@@ -152,6 +162,7 @@ function findHeaderColumns(sheet) {
       if (value.includes('NO CUMPLE')) found.noCumple = colNumber;
       if (value.includes('NO APLICA')) found.noAplica = colNumber;
       if (value.includes('OBSERV')) found.obs = colNumber;
+      if (value.includes('REPAR')) found.reparacion = colNumber;
     });
     if (found.item && found.cumple && found.noCumple && found.noAplica) {
       cols = { row: rowNumber, ...found };
@@ -168,7 +179,7 @@ function fillInspection(sheet, inspeccion = []) {
     let targetRow = null;
     sheet.eachRow((row, rowNumber) => {
       if (rowNumber <= cols.row || targetRow) return;
-      const label = norm(row.getCell(cols.item).value);
+      const label = norm(cellText(row.getCell(cols.item)));
       if (label && label === norm(item.item)) targetRow = rowNumber;
     });
     if (!targetRow) continue;
@@ -183,7 +194,38 @@ function fillInspection(sheet, inspeccion = []) {
     if (cols.obs && text(item.observacion)) {
       sheet.getCell(targetRow, cols.obs).value = item.observacion;
     }
+    if (cols.reparacion && text(item.reparacion)) {
+      sheet.getCell(targetRow, cols.reparacion).value = item.reparacion;
+    }
   }
+}
+
+function fillOperativo(sheet, value) {
+  const state = norm(value);
+  if (!state) return;
+
+  let found = null;
+  sheet.eachRow((row, rowNumber) => {
+    if (found) return;
+    row.eachCell((cell, colNumber) => {
+      const cellValue = norm(cellText(cell));
+      if (!found && ['OPERATIVO', 'NO OPERATIVO'].includes(cellValue)) {
+        found = { row: rowNumber, col: colNumber };
+      }
+    });
+  });
+  if (!found) return;
+
+  const col = state.includes('NO OPERATIVO') ? found.col + 1 : found.col;
+  sheet.getCell(found.row + 1, col).value = 'X';
+}
+
+function fillTextSections(sheet, data) {
+  setBelowLabel(sheet, ['INSPECCIÓN VISUAL', 'INSPECCION VISUAL'], data.inspeccion_visual);
+  setBelowLabel(sheet, ['PRUEBA DE FUNCIONAMIENTO'], data.prueba_funcionamiento, 2);
+  setBelowLabel(sheet, ['DESARME'], data.desarme);
+  setBelowLabel(sheet, ['PROCEDIMIENTO'], data.procedimiento);
+  fillOperativo(sheet, data.prueba_funcionamiento);
 }
 
 function addTextBlocks(workbook, data) {
@@ -236,6 +278,7 @@ export async function generateFinalXls({ extraction, photos }) {
   const sheet = workbook.worksheets[0];
   fillHeader(sheet, extraction);
   fillInspection(sheet, extraction.inspeccion || []);
+  fillTextSections(sheet, extraction);
   addTextBlocks(workbook, extraction);
   addPhotos(workbook, photos);
 
