@@ -104,27 +104,41 @@ function cellText(cell) {
   return value;
 }
 
-function findCellByLabel(sheet, labels) {
+function findCellByLabel(sheet, labels, options = {}) {
   const wanted = labels.map(norm);
+  const maxRow = options.maxRow || Number.MAX_SAFE_INTEGER;
   let found = null;
 
-  sheet.eachRow((row, rowNumber) => {
-    row.eachCell((cell, colNumber) => {
-      const value = norm(cellText(cell));
-      if (!found && wanted.some((label) => value === label || value.includes(label))) {
-        found = { row: rowNumber, col: colNumber };
-      }
+  for (const exactOnly of [true, false]) {
+    sheet.eachRow((row, rowNumber) => {
+      if (found || rowNumber > maxRow) return;
+      row.eachCell((cell, colNumber) => {
+        const value = norm(cellText(cell));
+        const match = exactOnly
+          ? wanted.some((label) => value === label)
+          : wanted.some((label) => value.includes(label));
+        if (!found && match) found = { row: rowNumber, col: colNumber };
+      });
     });
-  });
+    if (found || options.exactOnly) break;
+  }
 
   return found;
 }
 
-function setBesideLabel(sheet, labels, value) {
+function writableCellToRight(sheet, row, col) {
+  for (let offset = 1; offset <= 6; offset++) {
+    const cell = sheet.getCell(row, col + offset);
+    if (!cell.isMerged || cell.master?.address === cell.address) return cell;
+  }
+  return sheet.getCell(row, col + 1);
+}
+
+function setBesideLabel(sheet, labels, value, options = {}) {
   if (!text(value)) return;
-  const found = findCellByLabel(sheet, labels);
+  const found = findCellByLabel(sheet, labels, options);
   if (!found) return;
-  sheet.getCell(found.row, found.col + 1).value = value;
+  writableCellToRight(sheet, found.row, found.col).value = value;
 }
 
 function setBelowLabel(sheet, labels, value, offset = 1) {
@@ -138,16 +152,17 @@ function setBelowLabel(sheet, labels, value, offset = 1) {
 }
 
 function fillHeader(sheet, data) {
-  setBesideLabel(sheet, ['OT', 'O.T', 'ORDEN DE TRABAJO'], data.ot);
-  setBesideLabel(sheet, ['TECNICO', 'TÉCNICO', 'MECÁNICO ESPECIALISTA'], data.tecnico);
-  setBesideLabel(sheet, ['CLIENTE'], data.cliente);
-  setBesideLabel(sheet, ['AREA USUARIA', 'ÁREA USUARIA'], data.area_usuaria);
-  setBesideLabel(sheet, ['ROTULO', 'RÓTULO', 'ROTULO '], data.rotulo);
-  setBesideLabel(sheet, ['FECHA', 'FECHA EVALUACION'], data.fecha_evaluacion);
-  setBesideLabel(sheet, ['MARCA'], data.marca);
-  setBesideLabel(sheet, ['MODELO'], data.modelo);
-  setBesideLabel(sheet, ['SERIE'], data.serie);
-  setBesideLabel(sheet, ['CAPACIDAD'], data.capacidad);
+  const top = { maxRow: 14 };
+  setBesideLabel(sheet, ['OT', 'O.T', 'ORDEN DE TRABAJO'], data.ot, top);
+  setBesideLabel(sheet, ['TECNICO', 'TÉCNICO', 'MECÁNICO ESPECIALISTA'], data.tecnico, top);
+  setBesideLabel(sheet, ['CLIENTE'], data.cliente, top);
+  setBesideLabel(sheet, ['AREA USUARIA', 'ÁREA USUARIA'], data.area_usuaria, top);
+  setBesideLabel(sheet, ['ROTULO', 'RÓTULO'], data.rotulo, top);
+  setBesideLabel(sheet, ['FECHA EVALUACION', 'FECHA DE EVALUACION'], data.fecha_evaluacion, top);
+  setBesideLabel(sheet, ['MARCA'], data.marca, top);
+  setBesideLabel(sheet, ['MODELO'], data.modelo, top);
+  setBesideLabel(sheet, ['SERIE'], data.serie, top);
+  setBesideLabel(sheet, ['CAPACIDAD'], data.capacidad, top);
 }
 
 function findHeaderColumns(sheet) {
@@ -220,6 +235,34 @@ function fillOperativo(sheet, value) {
   sheet.getCell(found.row + 1, col).value = 'X';
 }
 
+function dispositionFrom(data) {
+  const value = norm(`${data.procedimiento || ''} ${data.estado_final || ''}`);
+  if (value.includes('BAJA')) return 'DE BAJA';
+  if (value.includes('REPAR')) return 'REPARACION';
+  if (value.includes('MANT') || value.includes('M.P') || value.includes('CALIB')) return 'MANTENCION';
+  return null;
+}
+
+function fillDisposition(sheet, data) {
+  const target = dispositionFrom(data);
+  if (!target) return;
+
+  let found = null;
+  sheet.eachRow((row, rowNumber) => {
+    if (found) return;
+    const cols = {};
+    row.eachCell((cell, colNumber) => {
+      const value = norm(cellText(cell));
+      if (value.includes('REPARACION')) cols.REPARACION = colNumber;
+      if (value.includes('MANTENCION')) cols.MANTENCION = colNumber;
+      if (value.includes('DE BAJA')) cols['DE BAJA'] = colNumber;
+    });
+    if (cols[target]) found = { row: rowNumber, col: cols[target] };
+  });
+
+  if (found) sheet.getCell(found.row + 1, found.col).value = 'X';
+}
+
 function fillTextSections(sheet, data) {
   setBelowLabel(sheet, ['INSPECCIÓN VISUAL', 'INSPECCION VISUAL'], data.inspeccion_visual);
   setBelowLabel(sheet, ['PRUEBA DE FUNCIONAMIENTO'], data.prueba_funcionamiento, 2);
@@ -277,6 +320,7 @@ export async function generateFinalXls({ extraction, photos }) {
 
   const sheet = workbook.worksheets[0];
   fillHeader(sheet, extraction);
+  fillDisposition(sheet, extraction);
   fillInspection(sheet, extraction.inspeccion || []);
   fillTextSections(sheet, extraction);
   addTextBlocks(workbook, extraction);
