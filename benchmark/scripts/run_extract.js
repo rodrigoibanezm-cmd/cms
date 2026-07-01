@@ -16,6 +16,18 @@ if (!imagePath) {
 const promptPass1 = readText("benchmark/prompts/extract_pass1.md");
 const promptPass2Template = readText("benchmark/prompts/extract_pass2.md");
 const catalog = readJson("benchmark/catalog/family_catalog.json");
+
+// El catálogo SIEMPRE debe traer el fallback VARIOS (INFORMES_VARIOS.xlsx).
+// Si falta, fallar ahora, fuerte y claro — no dejar que una OT sin match
+// termine con template_filename=null más adelante en el pipeline.
+if (!catalog.some((entry) => entry.template_key === "INFORMES_VARIOS")) {
+  console.error(
+    "family_catalog.json no tiene la entrada INFORMES_VARIOS (fallback obligatorio). " +
+      "Revisa el catálogo antes de correr extracciones."
+  );
+  process.exit(1);
+}
+
 const image = imageToBase64(imagePath);
 
 runExtraction({
