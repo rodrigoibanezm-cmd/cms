@@ -17,12 +17,27 @@ function parseServiceAccount() {
   }
 }
 
-function getAuth() {
+function oauthAuth() {
+  const clientId = env('GOOGLE_CLIENT_ID');
+  const clientSecret = env('GOOGLE_CLIENT_SECRET');
+  const refreshToken = env('GOOGLE_REFRESH_TOKEN');
+  if (!clientId || !clientSecret || !refreshToken) return null;
+
+  const auth = new google.auth.OAuth2(clientId, clientSecret);
+  auth.setCredentials({ refresh_token: refreshToken });
+  return auth;
+}
+
+function serviceAccountAuth() {
   const credentials = parseServiceAccount();
   return new google.auth.GoogleAuth({
     credentials,
     scopes: ['https://www.googleapis.com/auth/drive'],
   });
+}
+
+function getAuth() {
+  return oauthAuth() || serviceAccountAuth();
 }
 
 function driveClient() {
