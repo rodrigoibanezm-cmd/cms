@@ -1,13 +1,14 @@
 import { callGemini } from "./gemini_client.js";
 import { calcularConfianza, scoreToSemaforo } from "./confidence.js";
-import { decideMatch, matchTemplate } from "./catalog_matcher.js";
+import { decideMatch, matchTemplate, resolveFallbackEntry } from "./catalog_matcher.js";
 import { parseModelJson, saveJson } from "./io.js";
 
-function buildMatchInfo({ entry, similitud, decision, confidence }) {
+function buildMatchInfo({ entry, templateEntry, similitud, decision, confidence }) {
   return {
-    template_key: entry?.template_key || null,
-    template_filename: entry?.template_filename || null,
-    template_status: entry?.template_status || null,
+    template_key: templateEntry?.template_key || null,
+    template_filename: templateEntry?.template_filename || null,
+    template_status: templateEntry?.template_status || null,
+    mejor_intento_familia: entry?.template_key || null,
     similitud_checklist: Math.round(similitud * 100) / 100,
     decision,
     confidence_score: confidence.score,
@@ -58,9 +59,11 @@ export async function runExtraction({
   const checklistItems = pass1.checklist_items || [];
   const { entry, similitud } = matchTemplate(checklistItems, catalog);
   const decision = decideMatch({ entry, similitud });
+  const templateEntry = decision === "varios" ? resolveFallbackEntry(catalog) : entry;
 
   console.log(
-    `Match: ${entry?.template_key || "ninguno"} (similitud=${similitud.toFixed(2)}) -> ${decision}`
+    `Match: ${entry?.template_key || "ninguno"} (similitud=${similitud.toFixed(2)}) -> ${decision}` +
+      (decision === "varios" ? ` (fallback ${templateEntry?.template_filename || "NO_CONFIGURADO"})` : "")
   );
 
   let inspeccion = [];
@@ -75,7 +78,7 @@ export async function runExtraction({
   }
 
   const confidence = calcularConfianza({ pass1, decision, inspeccion });
-  const matchInfo = buildMatchInfo({ entry, similitud, decision, confidence });
+  const matchInfo = buildMatchInfo({ entry, templateEntry, similitud, decision, confidence });
   saveJson(targetDir, ot, "match", matchInfo);
 
   const final = {
