@@ -106,9 +106,30 @@ function writableCell(cell) {
   return cell.isMerged && cell.master ? cell.master : cell;
 }
 
+function makeValueVisible(cell, alignment = {}) {
+  cell.font = {
+    ...(cell.font || {}),
+    bold: false,
+    color: { argb: 'FF000000' },
+  };
+  cell.alignment = {
+    ...(cell.alignment || {}),
+    vertical: 'middle',
+    horizontal: 'center',
+    wrapText: true,
+    ...alignment,
+  };
+}
+
+function setVisibleCell(cell, value, alignment = {}) {
+  const target = writableCell(cell);
+  target.value = value;
+  makeValueVisible(target, alignment);
+}
+
 function setCell(sheet, address, value) {
   if (!address || !text(value)) return;
-  writableCell(sheet.getCell(address)).value = value;
+  setVisibleCell(sheet.getCell(address), value);
 }
 
 function clearCell(sheet, address) {
@@ -155,7 +176,7 @@ function setBesideLabel(sheet, labels, value, options = {}) {
   if (!text(value)) return;
   const found = findCellByLabel(sheet, labels, options);
   if (!found) return;
-  writableCellToRight(sheet, found.row, found.col).value = value;
+  setVisibleCell(writableCellToRight(sheet, found.row, found.col), value);
 }
 
 function setBelowLabel(sheet, labels, value, offset = 1) {
@@ -163,14 +184,10 @@ function setBelowLabel(sheet, labels, value, offset = 1) {
   const found = findCellByLabel(sheet, labels);
   if (!found) return;
 
-  const target = writableCell(sheet.getCell(found.row + offset, found.col));
-  target.value = value;
-  target.font = {
-    ...(target.font || {}),
-    bold: false,
-    color: { argb: 'FF000000' },
-  };
-  target.alignment = { wrapText: true, vertical: 'top', horizontal: 'center' };
+  setVisibleCell(sheet.getCell(found.row + offset, found.col), value, {
+    vertical: 'top',
+    horizontal: 'center',
+  });
 }
 
 function fillHeaderByMap(sheet, data, map) {
@@ -234,8 +251,8 @@ function fillInspection(sheet, inspeccion = []) {
         : cols.noAplica;
 
     sheet.getCell(targetRow, markCol).value = 'X';
-    if (cols.obs && text(item.observacion)) sheet.getCell(targetRow, cols.obs).value = item.observacion;
-    if (cols.reparacion && text(item.reparacion)) sheet.getCell(targetRow, cols.reparacion).value = item.reparacion;
+    if (cols.obs && text(item.observacion)) setVisibleCell(sheet.getCell(targetRow, cols.obs), item.observacion);
+    if (cols.reparacion && text(item.reparacion)) setVisibleCell(sheet.getCell(targetRow, cols.reparacion), item.reparacion);
   }
 }
 
@@ -363,12 +380,12 @@ function fillParts(sheet, repuestos = []) {
 
   parts.forEach((part, index) => {
     const row = table.row + 1 + index;
-    if (table.numeroParte) writableCell(sheet.getCell(row, table.numeroParte)).value = text(part.numero_parte) || null;
-    if (table.cantidad) writableCell(sheet.getCell(row, table.cantidad)).value = text(part.cantidad) || null;
+    if (table.numeroParte) setVisibleCell(sheet.getCell(row, table.numeroParte), text(part.numero_parte) || null);
+    if (table.cantidad) setVisibleCell(sheet.getCell(row, table.cantidad), text(part.cantidad) || null);
     if (table.descripcion) {
-      const cell = writableCell(sheet.getCell(row, table.descripcion));
-      cell.value = text(part.descripcion) || null;
-      cell.alignment = { wrapText: true, vertical: 'top' };
+      setVisibleCell(sheet.getCell(row, table.descripcion), text(part.descripcion) || null, {
+        vertical: 'top',
+      });
     }
   });
 }
