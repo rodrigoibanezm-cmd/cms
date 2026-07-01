@@ -16,6 +16,13 @@ export default function StatusCard({ status }) {
       <div>
         <h2>{title}</h2>
         <p>{status.message}</p>
+        {status.excel_url ? (
+          <p>
+            <a href={status.excel_url} target="_blank" rel="noreferrer">
+              Abrir Excel generado
+            </a>
+          </p>
+        ) : null}
       </div>
     </section>
   );
