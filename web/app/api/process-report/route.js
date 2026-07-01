@@ -57,12 +57,14 @@ export async function POST(request) {
     requireImage(report);
 
     const reportBuffer = await fileToBuffer(report);
-    const ot = String(form.get('ot') || path.parse(report.name || 'informe').name).split(' ')[0];
+    const sourceName = report.name || 'informe';
+    const ot = String(form.get('ot') || path.parse(sourceName).name).split(' ')[0];
     const targetDir = path.join(os.tmpdir(), 'cms-extractions', ot);
 
     const extraction = await runExtraction({
       image: asImage(reportBuffer, report.type),
       ot,
+      sourceName,
       targetDir,
       promptPass1: readText('benchmark/prompts/extract_pass1.md'),
       promptPass2Template: readText('benchmark/prompts/extract_pass2.md'),
