@@ -6,11 +6,20 @@ export default function UploadCard({ title, hint, files, multiple, onChange }) {
     event.target.value = '';
   }
 
+  function removeFile(indexToRemove) {
+    onChange(files.filter((_, index) => index !== indexToRemove));
+  }
+
   const countText = files.length === 0
     ? multiple ? 'Sin fotos cargadas' : 'Sin informe cargado'
     : multiple
       ? `${files.length} ${files.length === 1 ? 'foto' : 'fotos'}`
       : '1 informe seleccionado';
+
+  const showUpload = multiple || files.length === 0;
+  const buttonText = multiple
+    ? files.length ? 'Agregar otra foto' : 'Agregar foto'
+    : 'Agregar informe';
 
   return (
     <section className="card">
@@ -19,16 +28,35 @@ export default function UploadCard({ title, hint, files, multiple, onChange }) {
         <p>{hint}</p>
       </div>
 
-      <label className="upload">
-        <span>{files.length ? 'Agregar otra foto' : 'Agregar foto'}</span>
-        <input
-          type="file"
-          accept="image/*"
-          capture="environment"
-          multiple={multiple}
-          onChange={handleChange}
-        />
-      </label>
+      {showUpload ? (
+        <label className="upload">
+          <span>{buttonText}</span>
+          <input
+            type="file"
+            accept="image/*"
+            capture="environment"
+            multiple={multiple}
+            onChange={handleChange}
+          />
+        </label>
+      ) : null}
+
+      {files.length ? (
+        <div className="previewGrid">
+          {files.map((file, index) => (
+            <div className="previewItem" key={`${file.name}-${file.lastModified}-${index}`}>
+              <span className="previewIcon">📷</span>
+              <button
+                type="button"
+                className="previewRemove"
+                onClick={() => removeFile(index)}
+              >
+                x
+              </button>
+            </div>
+          ))}
+        </div>
+      ) : null}
 
       <p className="count">{countText}</p>
     </section>
