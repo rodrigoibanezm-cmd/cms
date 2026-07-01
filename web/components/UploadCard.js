@@ -3,13 +3,14 @@ export default function UploadCard({ title, hint, files, multiple, onChange }) {
   function handleChange(event) {
     const selected = Array.from(event.target.files || []);
     onChange(multiple ? [...files, ...selected] : selected.slice(0, 1));
+    event.target.value = '';
   }
 
   const countText = files.length === 0
-    ? 'Sin fotos cargadas'
+    ? multiple ? 'Sin fotos cargadas' : 'Sin informe cargado'
     : multiple
-      ? `${files.length} foto(s) cargada(s)`
-      : 'Informe cargado';
+      ? `${files.length} ${files.length === 1 ? 'foto' : 'fotos'}`
+      : '1 informe seleccionado';
 
   return (
     <section className="card">
