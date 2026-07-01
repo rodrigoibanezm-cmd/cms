@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { callGemini } from './benchmark/gemini_client.js';
+import { validateExtraction } from './extraction_validator.js';
 import { calcularConfianza, scoreToSemaforo } from '../../benchmark/lib/confidence.js';
 import { decideMatch, matchTemplate, resolveFallbackEntry } from '../../benchmark/lib/catalog_matcher.js';
 import { parseModelJson } from '../../benchmark/lib/io.js';
@@ -22,7 +23,15 @@ function cleanTemplateFilename(name) {
   return name ? name.replace(' (1).xlsx', '.xlsx') : null;
 }
 
-export async function runExtraction({ image, ot, targetDir, promptPass1, promptPass2Template, catalog }) {
+export async function runExtraction({
+  image,
+  ot,
+  sourceName,
+  targetDir,
+  promptPass1,
+  promptPass2Template,
+  catalog,
+}) {
   console.log('Pasada 1 (Flash)...');
   const pass1 = parseModelJson(await callGemini({ model: 'gemini-2.5-flash', prompt: promptPass1, image }));
   pass1.ot = ot;
@@ -41,7 +50,7 @@ export async function runExtraction({ image, ot, targetDir, promptPass1, promptP
   }
 
   const confidence = calcularConfianza({ pass1, decision, inspeccion });
-  const final = {
+  const final = validateExtraction({
     ...pass1,
     template_key: templateEntry?.template_key || null,
     template_filename: cleanTemplateFilename(templateEntry?.template_filename),
@@ -54,7 +63,7 @@ export async function runExtraction({ image, ot, targetDir, promptPass1, promptP
     mensaje: confidence.mensaje,
     semaforo: scoreToSemaforo(confidence.score),
     inspeccion,
-  };
+  }, { ot, sourceName });
 
   saveJson(targetDir, ot, 'gemini', final);
   return final;
