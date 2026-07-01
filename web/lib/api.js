@@ -1,16 +1,18 @@
-// web/lib/api.js
-export async function mockValidate({ photos, report }) {
-  await new Promise((resolve) => setTimeout(resolve, 700));
+export async function processReport({ photos, report }) {
+  const formData = new FormData();
 
-  if (!photos.length || !report.length) {
-    return {
-      color: 'yellow',
-      message: 'Falta subir fotos del equipo o del informe.',
-    };
+  if (report?.[0]) formData.append('report', report[0]);
+  photos.forEach((photo) => formData.append('photos', photo));
+
+  const response = await fetch('/api/process-report', {
+    method: 'POST',
+    body: formData,
+  });
+
+  const data = await response.json().catch(() => null);
+  if (!response.ok) {
+    return data || { color: 'red', message: 'No se pudo procesar el informe.' };
   }
 
-  return {
-    color: 'green',
-    message: 'Informe recibido correctamente.',
-  };
+  return data;
 }
