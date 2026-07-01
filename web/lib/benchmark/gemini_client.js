@@ -1,5 +1,3 @@
-import { GoogleGenAI } from '@google/genai';
-
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -9,29 +7,68 @@ function isRetryable(err) {
   return status === 429 || status === 500 || status === 503;
 }
 
-export async function callGemini({ model, prompt, image, retries = 4 }) {
-  const client = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+function apiKey() {
+  const key = process.env.GEMINI_API_KEY;
+  if (!key) throw new Error('Falta GEMINI_API_KEY');
+  return key;
+}
 
-  for (let attempt = 1; attempt <= retries; attempt++) {
-    try {
-      const response = await client.models.generateContent({
-        model,
-        contents: [
+function endpoint(model) {
+  const encodedModel = encodeURIComponent(model);
+  return `https://generativelanguage.googleapis.com/v1beta/models/${encodedModel}:generateContent?key=${apiKey()}`;
+}
+
+function buildPayload({ prompt, image }) {
+  if (!image?.base64) throw new Error('Imagen vacía para Gemini');
+
+  return {
+    contents: [
+      {
+        role: 'user',
+        parts: [
+          { text: prompt },
           {
-            parts: [
-              { text: prompt },
-              {
-                inlineData: {
-                  mimeType: image.mediaType,
-                  data: image.base64,
-                },
-              },
-            ],
+            inlineData: {
+              mimeType: image.mediaType || 'image/jpeg',
+              data: image.base64,
+            },
           },
         ],
-      });
+      },
+    ],
+  };
+}
 
-      return response.candidates?.[0]?.content?.parts?.[0]?.text || '';
+function extractText(data) {
+  return data?.candidates?.[0]?.content?.parts
+    ?.map((part) => part.text || '')
+    .join('\n')
+    .trim() || '';
+}
+
+async function requestGemini({ model, prompt, image }) {
+  const res = await fetch(endpoint(model), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(buildPayload({ prompt, image })),
+  });
+
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const err = new Error(data?.error?.message || `Gemini HTTP ${res.status}`);
+    err.status = res.status;
+    throw err;
+  }
+
+  const text = extractText(data);
+  if (!text) throw new Error('Gemini respondió sin texto');
+  return text;
+}
+
+export async function callGemini({ model, prompt, image, retries = 4 }) {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      return await requestGemini({ model, prompt, image });
     } catch (err) {
       if (!isRetryable(err) || attempt === retries) throw err;
 
