@@ -25,7 +25,7 @@ function levenshtein(a, b) {
       dp[i][j] =
         a[i - 1] === b[j - 1]
           ? dp[i - 1][j - 1]
-          : 1 + Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]);
+          : 1 + Math.min(dp[i][j - 1], dp[i - 1][j], dp[i - 1][j - 1]);
     }
   }
 
@@ -93,4 +93,8 @@ export function decideMatch({ entry, similitud }) {
   }
   if (similitud >= MATCH_REVIEW) return "revision_manual";
   return "varios";
+}
+
+export function resolveFallbackEntry(catalog) {
+  return catalog.find((entry) => entry.template_key === "INFORMES_VARIOS") || null;
 }
