@@ -6,7 +6,7 @@ import Header from '../components/Header';
 import UploadCard from '../components/UploadCard';
 import SubmitButton from '../components/SubmitButton';
 import StatusCard from '../components/StatusCard';
-import { mockValidate } from '../lib/api';
+import { processReport } from '../lib/api';
 
 export default function Page() {
   const [photos, setPhotos] = useState([]);
@@ -18,7 +18,7 @@ export default function Page() {
   async function handleSubmit() {
     if (!canSubmit) return;
     setLoading(true);
-    const result = await mockValidate({ photos, report });
+    const result = await processReport({ photos, report });
     setStatus(result);
     setLoading(false);
   }
