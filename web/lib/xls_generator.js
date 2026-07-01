@@ -111,6 +111,11 @@ function setCell(sheet, address, value) {
   writableCell(sheet.getCell(address)).value = value;
 }
 
+function clearCell(sheet, address) {
+  if (!address) return;
+  writableCell(sheet.getCell(address)).value = null;
+}
+
 function markCell(sheet, address) {
   if (!address) return;
   writableCell(sheet.getCell(address)).value = 'X';
@@ -229,22 +234,32 @@ function fillInspection(sheet, inspeccion = []) {
   }
 }
 
-function fillOperativo(sheet, value) {
-  const state = norm(value);
-  if (!state) return;
+function toolStatus(data) {
+  const value = norm(`${data.prueba_funcionamiento || ''} ${data.estado_operativo || ''}`);
+  if (!value) return null;
+  const bad = ['NO OPERATIVO', 'NO CUMPLE', 'FUGA', 'FALLA', 'MALO', 'MALA', 'DAÑO', 'DANO', 'DOBLADO', 'ROTO', 'ROTA', 'NO FUNCIONA'];
+  if (bad.some((word) => value.includes(word))) return 'NO_OPERATIVO';
+  if (value.includes('CUMPLE') || value.includes('OPERATIVO')) return 'OPERATIVO';
+  return null;
+}
+
+function fillOperativo(sheet, data) {
+  const status = toolStatus(data);
+  if (!status) return;
 
   let found = null;
   sheet.eachRow((row, rowNumber) => {
     if (found) return;
     row.eachCell((cell, colNumber) => {
       const cellValue = norm(cellText(cell));
-      if (!found && ['OPERATIVO', 'NO OPERATIVO'].includes(cellValue)) found = { row: rowNumber, col: colNumber };
+      if (!found && cellValue === 'OPERATIVO') found = { row: rowNumber, col: colNumber };
     });
   });
   if (!found) return;
 
-  const col = state.includes('NO OPERATIVO') ? found.col + 1 : found.col;
-  sheet.getCell(found.row + 1, col).value = 'X';
+  sheet.getCell(found.row + 1, found.col).value = null;
+  sheet.getCell(found.row + 1, found.col + 1).value = null;
+  sheet.getCell(found.row + 1, status === 'NO_OPERATIVO' ? found.col + 1 : found.col).value = 'X';
 }
 
 function dispositionFrom(data) {
@@ -258,6 +273,9 @@ function dispositionFrom(data) {
 function fillDispositionByMap(sheet, data, map) {
   const target = dispositionFrom(data);
   if (!target || !map?.status) return false;
+  clearCell(sheet, map.status.reparacion);
+  clearCell(sheet, map.status.mantencion);
+  clearCell(sheet, map.status.de_baja);
   if (target === 'REPARACION') markCell(sheet, map.status.reparacion);
   if (target === 'MANTENCION') markCell(sheet, map.status.mantencion);
   if (target === 'DE BAJA') markCell(sheet, map.status.de_baja);
@@ -281,14 +299,22 @@ function fillDisposition(sheet, data) {
     if (cols[target]) found = { row: rowNumber, col: cols[target] };
   });
 
-  if (found) sheet.getCell(found.row + 1, found.col).value = 'X';
+  if (!found) return;
+  ['REPARACION', 'MANTENCION', 'DE BAJA'].forEach((key) => {
+    const label = key === target ? 'X' : null;
+    const offset = key === 'REPARACION' ? 0 : key === 'MANTENCION' ? 1 : 2;
+    sheet.getCell(found.row + 1, found.col + offset).value = label;
+  });
 }
 
 function fillTextByMap(sheet, data, map) {
   if (!map?.text) return false;
   Object.entries(map.text).forEach(([field, address]) => setCell(sheet, address, data[field]));
-  if (map.status?.operativo && norm(data.prueba_funcionamiento).includes('CUMPLE')) markCell(sheet, map.status.operativo);
-  if (map.status?.no_operativo && norm(data.prueba_funcionamiento).includes('NO CUMPLE')) markCell(sheet, map.status.no_operativo);
+  if (map.status?.operativo) clearCell(sheet, map.status.operativo);
+  if (map.status?.no_operativo) clearCell(sheet, map.status.no_operativo);
+  const status = toolStatus(data);
+  if (status === 'OPERATIVO') markCell(sheet, map.status.operativo);
+  if (status === 'NO_OPERATIVO') markCell(sheet, map.status.no_operativo);
   return true;
 }
 
@@ -297,24 +323,15 @@ function fillTextSections(sheet, data) {
   setBelowLabel(sheet, ['PRUEBA DE FUNCIONAMIENTO'], data.prueba_funcionamiento, 2);
   setBelowLabel(sheet, ['DESARME'], data.desarme);
   setBelowLabel(sheet, ['PROCEDIMIENTO'], data.procedimiento);
-  fillOperativo(sheet, data.prueba_funcionamiento);
+  fillOperativo(sheet, data);
 }
 
 function addTextBlocks(workbook, data) {
   const sheet = workbook.addWorksheet('EXTRACCION_JSON');
-  const rows = [
-    ['Campo', 'Valor'],
-    ['Inspeccion visual', data.inspeccion_visual],
-    ['Prueba funcionamiento', data.prueba_funcionamiento],
-    ['Desarme', data.desarme],
-    ['Procedimiento', data.procedimiento],
-    ['Template', data.template_filename],
-    ['Semaforo', data.semaforo],
-    ['Confidence', data.confidence_score],
-  ];
-  rows.forEach((row) => sheet.addRow(row));
-  sheet.getColumn(1).width = 28;
-  sheet.getColumn(2).width = 90;
+  sheet.getColumn(1).width = 120;
+  sheet.getCell('A1').value = 'JSON_COMPLETO';
+  sheet.getCell('A2').value = JSON.stringify(data, null, 2);
+  sheet.getCell('A2').alignment = { wrapText: true, vertical: 'top' };
 }
 
 function addPhotos(workbook, photos = []) {
