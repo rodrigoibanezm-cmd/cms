@@ -163,9 +163,14 @@ function setBelowLabel(sheet, labels, value, offset = 1) {
   const found = findCellByLabel(sheet, labels);
   if (!found) return;
 
-  const target = sheet.getCell(found.row + offset, found.col);
+  const target = writableCell(sheet.getCell(found.row + offset, found.col));
   target.value = value;
-  target.alignment = { wrapText: true, vertical: 'top' };
+  target.font = {
+    ...(target.font || {}),
+    bold: false,
+    color: { argb: 'FF000000' },
+  };
+  target.alignment = { wrapText: true, vertical: 'top', horizontal: 'center' };
 }
 
 function fillHeaderByMap(sheet, data, map) {
@@ -325,7 +330,9 @@ function fillTextByMap(sheet, data, map) {
 
 function fillTextSections(sheet, data) {
   setBelowLabel(sheet, ['INSPECCIÓN VISUAL', 'INSPECCION VISUAL'], data.inspeccion_visual);
-  setBelowLabel(sheet, ['PRUEBA DE FUNCIONAMIENTO'], data.prueba_funcionamiento, 2);
+  // La prueba tiene dos zonas distintas: check Operativo/No Operativo y texto libre.
+  // El texto debe ir debajo de los checks para que fillOperativo no lo limpie.
+  setBelowLabel(sheet, ['PRUEBA DE FUNCIONAMIENTO'], data.prueba_funcionamiento, 3);
   setBelowLabel(sheet, ['DESARME'], data.desarme);
   setBelowLabel(sheet, ['PROCEDIMIENTO'], data.procedimiento);
   fillOperativo(sheet, data);
