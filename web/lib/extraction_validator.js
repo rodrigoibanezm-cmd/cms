@@ -7,8 +7,12 @@ function upper(value) {
 }
 
 function extractOt(filename) {
-  const match = text(filename).match(/\b(\d{4,6})\b/);
-  return match?.[1] || null;
+  const name = text(filename);
+  const prefixed = name.match(/^(\d{4,6})\b/);
+  if (prefixed) return prefixed[1];
+
+  const labeled = upper(name).match(/\bOT\.?\s*(\d{4,6})\b/);
+  return labeled?.[1] || null;
 }
 
 function extractRotulo(filename) {
@@ -43,13 +47,14 @@ function setIfChanged(data, field, value, fixes) {
   data[field] = value;
 }
 
-export function validateExtraction(data, { ot, sourceName } = {}) {
+export function validateExtraction(data, { otHint, sourceName } = {}) {
   const fixed = { ...data };
   const fixes = [];
-  const fileOt = extractOt(sourceName) || text(ot);
+  const fileOt = extractOt(sourceName);
+  const trustedOt = text(otHint) || fileOt;
   const fileRotulo = extractRotulo(sourceName);
 
-  setIfChanged(fixed, 'ot', fileOt, fixes);
+  setIfChanged(fixed, 'ot', trustedOt, fixes);
   if (fixed.rotulo) fixed.rotulo = normalizeRotulo(fixed.rotulo);
   setIfChanged(fixed, 'rotulo', fileRotulo, fixes);
 
