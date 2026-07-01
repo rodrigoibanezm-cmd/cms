@@ -263,10 +263,15 @@ function fillOperativo(sheet, data) {
 }
 
 function dispositionFrom(data) {
-  const value = norm(`${data.procedimiento || ''} ${data.estado_final || ''}`);
-  if (value.includes('BAJA')) return 'DE BAJA';
-  if (value.includes('REPAR')) return 'REPARACION';
-  if (value.includes('MANT') || value.includes('M.P') || value.includes('CALIB')) return 'MANTENCION';
+  const structured = norm(`${data.estado_herramienta || ''} ${data.estado_final || ''}`);
+  if (structured.includes('BAJA')) return 'DE BAJA';
+  if (structured.includes('REPAR')) return 'REPARACION';
+  if (structured.includes('MANT') || structured.includes('M.P') || structured.includes('CALIB')) return 'MANTENCION';
+
+  const fallback = norm(data.procedimiento || '');
+  if (fallback.includes('BAJA')) return 'DE BAJA';
+  if (fallback.includes('REPAR')) return 'REPARACION';
+  if (fallback.includes('MANT') || fallback.includes('M.P') || fallback.includes('CALIB')) return 'MANTENCION';
   return null;
 }
 
@@ -326,6 +331,41 @@ function fillTextSections(sheet, data) {
   fillOperativo(sheet, data);
 }
 
+function findPartsTable(sheet) {
+  let table = null;
+  sheet.eachRow((row, rowNumber) => {
+    if (table) return;
+    const cols = {};
+    row.eachCell((cell, colNumber) => {
+      const value = norm(cellText(cell));
+      if (value.includes('PARTE')) cols.numeroParte = colNumber;
+      if (value.includes('CANTIDAD')) cols.cantidad = colNumber;
+      if (value.includes('REPUEST') || value.includes('ACCESOR')) cols.descripcion = colNumber;
+    });
+    if (cols.cantidad && cols.descripcion) table = { row: rowNumber, ...cols };
+  });
+  return table;
+}
+
+function fillParts(sheet, repuestos = []) {
+  const parts = repuestos.filter((item) => text(item?.numero_parte) || text(item?.cantidad) || text(item?.descripcion));
+  if (!parts.length) return;
+
+  const table = findPartsTable(sheet);
+  if (!table) return;
+
+  parts.forEach((part, index) => {
+    const row = table.row + 1 + index;
+    if (table.numeroParte) writableCell(sheet.getCell(row, table.numeroParte)).value = text(part.numero_parte) || null;
+    if (table.cantidad) writableCell(sheet.getCell(row, table.cantidad)).value = text(part.cantidad) || null;
+    if (table.descripcion) {
+      const cell = writableCell(sheet.getCell(row, table.descripcion));
+      cell.value = text(part.descripcion) || null;
+      cell.alignment = { wrapText: true, vertical: 'top' };
+    }
+  });
+}
+
 function addTextBlocks(workbook, data) {
   const sheet = workbook.addWorksheet('EXTRACCION_JSON');
   sheet.getColumn(1).width = 120;
@@ -370,6 +410,7 @@ export async function generateFinalXls({ extraction, photos }) {
   if (!fillDispositionByMap(sheet, extraction, cellMap)) fillDisposition(sheet, extraction);
   fillInspection(sheet, extraction.inspeccion || []);
   if (!fillTextByMap(sheet, extraction, cellMap)) fillTextSections(sheet, extraction);
+  fillParts(sheet, extraction.repuestos || []);
   addTextBlocks(workbook, extraction);
   addPhotos(workbook, photos);
 
