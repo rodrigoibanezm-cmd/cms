@@ -5,14 +5,21 @@ function env(name) {
   return process.env[name] || '';
 }
 
-function getAuth() {
-  const email = env('GOOGLE_CLIENT_EMAIL');
-  const key = env('GOOGLE_PRIVATE_KEY').replace(/\\n/g, '\n');
-  if (!email || !key) throw new Error('Faltan credenciales Google Drive');
+function parseServiceAccount() {
+  const raw = env('GOOGLE_SERVICE_ACCOUNT_JSON');
+  if (!raw) throw new Error('Falta GOOGLE_SERVICE_ACCOUNT_JSON');
 
-  return new google.auth.JWT({
-    email,
-    key,
+  try {
+    return JSON.parse(raw);
+  } catch {
+    throw new Error('GOOGLE_SERVICE_ACCOUNT_JSON no es JSON válido');
+  }
+}
+
+function getAuth() {
+  const credentials = parseServiceAccount();
+  return new google.auth.GoogleAuth({
+    credentials,
     scopes: ['https://www.googleapis.com/auth/drive'],
   });
 }
@@ -68,14 +75,20 @@ function norm(v) {
     .replace(/\s+/g, ' ');
 }
 
+function cellText(cell) {
+  const value = cell.value;
+  if (value?.richText) return value.richText.map((r) => r.text).join('');
+  return value;
+}
+
 function findCellByLabel(sheet, labels) {
   const wanted = labels.map(norm);
   let found = null;
 
   sheet.eachRow((row, rowNumber) => {
     row.eachCell((cell, colNumber) => {
-      const value = norm(cell.value?.richText ? cell.value.richText.map(r => r.text).join('') : cell.value);
-      if (!found && wanted.some(label => value === label || value.includes(label))) {
+      const value = norm(cellText(cell));
+      if (!found && wanted.some((label) => value === label || value.includes(label))) {
         found = { row: rowNumber, col: colNumber };
       }
     });
@@ -110,7 +123,7 @@ function findHeaderColumns(sheet) {
     if (cols) return;
     const found = {};
     row.eachCell((cell, colNumber) => {
-      const value = norm(cell.value);
+      const value = norm(cellText(cell));
       if (value.includes('DESCRIP')) found.item = colNumber;
       if (value === 'CUMPLE') found.cumple = colNumber;
       if (value.includes('NO CUMPLE')) found.noCumple = colNumber;
@@ -184,8 +197,8 @@ function addPhotos(workbook, photos = []) {
 }
 
 export async function generateFinalXls({ extraction, photos }) {
-  const templateFolderId = env('GOOGLE_DRIVE_TEMPLATES_FOLDER_ID');
-  const outputFolderId = env('GOOGLE_DRIVE_OUTPUT_FOLDER_ID');
+  const templateFolderId = env('GOOGLE_DRIVE_TEMPLATES_FOLDER_ID') || env('BASES_FOLDER_ID');
+  const outputFolderId = env('GOOGLE_DRIVE_OUTPUT_FOLDER_ID') || env('CANDIDATES_TEMPLATES_FOLDER_ID');
   if (!templateFolderId || !outputFolderId) throw new Error('Faltan IDs de carpetas Drive');
   if (!extraction.template_filename) throw new Error('Extracción sin template_filename');
 
