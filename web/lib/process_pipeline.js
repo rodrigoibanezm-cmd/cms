@@ -18,6 +18,10 @@ function shouldRunPass2(decision) {
   return decision === 'approved_match' || decision === 'pending_match_con_alerta';
 }
 
+function cleanTemplateFilename(name) {
+  return name ? name.replace(' (1).xlsx', '.xlsx') : null;
+}
+
 export async function runExtraction({ image, ot, targetDir, promptPass1, promptPass2Template, catalog }) {
   console.log('Pasada 1 (Flash)...');
   const pass1 = parseModelJson(await callGemini({ model: 'gemini-2.5-flash', prompt: promptPass1, image }));
@@ -40,7 +44,7 @@ export async function runExtraction({ image, ot, targetDir, promptPass1, promptP
   const final = {
     ...pass1,
     template_key: templateEntry?.template_key || null,
-    template_filename: templateEntry?.template_filename || null,
+    template_filename: cleanTemplateFilename(templateEntry?.template_filename),
     template_status: templateEntry?.template_status || null,
     mejor_intento_familia: entry?.template_key || null,
     similitud_checklist: Math.round(similitud * 100) / 100,
