@@ -2,7 +2,7 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 import { NextResponse } from 'next/server';
-import { runExtraction } from '../../../../benchmark/lib/extraction_pipeline.js';
+import { runExtraction } from '../../../lib/process_pipeline.js';
 import { generateFinalXls } from '../../../lib/xls_generator.js';
 
 export const runtime = 'nodejs';
