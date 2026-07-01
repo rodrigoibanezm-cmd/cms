@@ -1,14 +1,16 @@
 // web/components/StatusCard.js
 const styles = {
-  green: ['🟢', 'Aprobado'],
-  yellow: ['🟡', 'Revisar datos'],
-  red: ['🔴', 'Tomar foto nuevamente'],
+  green: ['🟢', 'Procesado'],
+  yellow: ['🟡', 'Procesado con revisión'],
+  red: ['🔴', 'No procesado'],
 };
 
 export default function StatusCard({ status }) {
   if (!status) return null;
 
-  const [icon, title] = styles[status.color] || styles.yellow;
+  const successTitle = status.excel_url ? 'Excel generado' : null;
+  const [icon, fallbackTitle] = styles[status.color] || styles.yellow;
+  const title = successTitle || fallbackTitle;
 
   return (
     <section className={`status ${status.color}`}>
