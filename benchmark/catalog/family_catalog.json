@@ -1,0 +1,1773 @@
+[
+  {
+    "template_key": "LLAVE_DE_TORQUE_O_IMPACTO_TECNICOS",
+    "display_name": "Informe Tecnico Llave De Impacto",
+    "aliases": [
+      "INFORME LLAVE DE TORQUE",
+      "INFORME TECNICO LLAVE DE IMPACTO",
+      "INFORME TECNICO LLAVE DE TORQUE",
+      "INFORME TECNICO LLAVE TORQUE"
+    ],
+    "checklist": [
+      "ESTRUCTURA PRINCIPAL",
+      "CUADRANTE",
+      "ANILLO RETENEDOR",
+      "BRAZO DE REACCIÓN",
+      "CORONA",
+      "GATILLO",
+      "PALANCA DIRECCIONAL",
+      "NIPLE O ACOPLE",
+      "SILENCIADOR",
+      "MANIJA DE AGARRE",
+      "DOBLE GATILLO",
+      "PERNOS",
+      "DISPLAY",
+      "BOTONERA O SELECTOR",
+      "CABLE PODER",
+      "ENCHUFE",
+      "CARGADOR",
+      "BATERIA",
+      "COMPONENTES INTERNOS",
+      "MOTOR NEUMÁTICO",
+      "MOTOR ELÉCTRICO",
+      "PATO LUBRICADOR",
+      "FRL",
+      "EMBALAJE O CAJA",
+      "FLEXIBLE"
+    ],
+    "n_ots_total_grupo": 176,
+    "n_ots_evidencia": 176,
+    "cohesion": 1.0,
+    "template_status": "approved",
+    "reason": null,
+    "template_filename": "LLAVE DE TORQUE O IMPACTO TÉCNICOS.xlsx",
+    "similitud_template": 0.86,
+    "candidate_ot": "16843",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": null
+  },
+  {
+    "template_key": "TORQUE_MANUAL_TECNICOS_1",
+    "display_name": "Informe Tecnico Torque Manual",
+    "aliases": [
+      "INFORME TECNICO TORQUE CLICK",
+      "INFORME TECNICO TORQUE MANUAL",
+      "INFORME TECNICO TORQUE MANUAL DIGITAL"
+    ],
+    "checklist": [
+      "CUADRANTE",
+      "DISPLAY",
+      "BOTONERA",
+      "REGULADOR",
+      "EMBALAJE",
+      "ESTRUCTURA  PRICIPAL",
+      "SISTEMADE  TRINQUETE"
+    ],
+    "n_ots_total_grupo": 90,
+    "n_ots_evidencia": 90,
+    "cohesion": 1.0,
+    "template_status": "approved",
+    "reason": null,
+    "template_filename": "TORQUE MANUAL TÉCNICOS (1).xlsx",
+    "similitud_template": 0.88,
+    "candidate_ot": "17411",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": null
+  },
+  {
+    "template_key": "LUMINARIA_TECNICOS_BASE",
+    "display_name": "Luminaria Torre/Pedestal",
+    "aliases": [
+      "LUMINARIA",
+      "LUMINARIA DE PEDESTAL",
+      "LUMINARIA INALAMBRICA",
+      "LUMINARIA PEDESTAL",
+      "LIMINARIA DE PEDESTAL",
+      "LUMINARIA DEE PEDESTAL",
+      "LUMINARIA PORTATIL",
+      "LIMINARIA",
+      "FOCO PORTATIL"
+    ],
+    "checklist": [
+      "ESTRUCTURA PRINCIPAL",
+      "PEDESTAL",
+      "BRAZO DE APOYO",
+      "MANIJA DE TRASLADO",
+      "SEGURO DE PEDESTAL",
+      "SWITCH ENCENDIDO",
+      "MANILLAS DE AGARRE",
+      "FOCO LED",
+      "PUERTO DE CONEXIÓN",
+      "PERNOS Y TUERCAS",
+      "PASADORE"
+    ],
+    "n_ots_total_grupo": 69,
+    "n_ots_evidencia": 50,
+    "cohesion": 0.72,
+    "template_status": "approved",
+    "reason": null,
+    "template_filename": "LUMINARIA_TECNICOS_BASE.xlsx",
+    "similitud_template": 0.7,
+    "candidate_ot": "22782",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": null
+  },
+  {
+    "template_key": "TALADRO_TECNICOS_BASE",
+    "display_name": "Informe Tecnico Esmeril Electrico",
+    "aliases": [
+      "INFORME TECNICO",
+      "INFORME TECNICO AMOLADORA ELECTRICO",
+      "INFORME TECNICO ESMERIL",
+      "INFORME TECNICO ESMERIL ELECTRICO",
+      "INFORME TECNICO ESMERIL ELECTRICO 7\"",
+      "INFORME TECNICO PULIDOR ELECTRICO",
+      "INFORME TECNICO PULIDOR INALAMBRICO",
+      "INFORME TECNICO TALADRO",
+      "INFORME TECNICO TALADRO ELECTRICO"
+    ],
+    "checklist": [
+      "ESTRUCTURA PRINCIPAL",
+      "ESTRUCTURAS MOVILES",
+      "PROTECCIÓN O GUARDA",
+      "CARBONES",
+      "CABLE DE ALIMENTACIÓN",
+      "ENCHUFE O CONECTOR",
+      "INTERRUPTOR",
+      "TUERCA DE BLOQUEO",
+      "BOTÓN DE BLOQUEO",
+      "MOTOR ELÉCTRICO",
+      "MOTOR NEUMÁTICO",
+      "NIPLE",
+      "MANDRIL",
+      "RODAMIENTOS",
+      "COMPONENTES INTERNOS",
+      "EMBALAJE O CAJA"
+    ],
+    "n_ots_total_grupo": 63,
+    "n_ots_evidencia": 61,
+    "cohesion": 0.96,
+    "template_status": "approved",
+    "reason": null,
+    "template_filename": "TALADRO_TECNICOS_BASE.xlsx",
+    "similitud_template": 1.0,
+    "candidate_ot": "16848",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": null
+  },
+  {
+    "template_key": "TETRAGUAGE_TECNICOS_1",
+    "display_name": "Informe Tecnico Tetraguage",
+    "aliases": [
+      "INFORME TECNICO TETRAGUAGE"
+    ],
+    "checklist": [
+      "MANÓMETRO 0 - 70",
+      "ESTRUCTURA PRINCIPAL",
+      "FLEXIBLE",
+      "ACOPLE",
+      "BLOQUE HIDRÁULICO",
+      "TAPÓN",
+      "PERNO DE TAPÓN",
+      "VÁLVULA",
+      "EMBALAJE O CAJA"
+    ],
+    "n_ots_total_grupo": 47,
+    "n_ots_evidencia": 47,
+    "cohesion": 1.0,
+    "template_status": "approved",
+    "reason": null,
+    "template_filename": "TETRAGUAGE TÉCNICOS (1).xlsx",
+    "similitud_template": 0.75,
+    "candidate_ot": "17432",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": null
+  },
+  {
+    "template_key": "TECLE_TECNICOS_BASE",
+    "display_name": "Informe Tecnico Tecle",
+    "aliases": [
+      "INFORME TECNICO TECLE"
+    ],
+    "checklist": [
+      "SEGUROS DE GANCHOS",
+      "GANCHO SUPERIOR",
+      "GANCHO INFERIOR",
+      "CADENA DE IZAJE",
+      "PIÑONES",
+      "JUEGO DE SISTEMA DE FRENO",
+      "CARCAZA",
+      "POLEA DE CARGA",
+      "PALANCA DE LEVANTE",
+      "MANGO DE GOMA",
+      "GUIA DE LA CADENA",
+      "PERNOS",
+      "TUERCAS",
+      "ENGRANAJES",
+      "DISCO DEL TAMBOR DENTADO",
+      "ROSCA HEMBRA",
+      "PLACA DE IDENTIFICACION",
+      "PERILLA DE LA CADENA LIBRE",
+      "SELECTOR DE CAMBIO"
+    ],
+    "n_ots_total_grupo": 38,
+    "n_ots_evidencia": 38,
+    "cohesion": 1.0,
+    "template_status": "approved",
+    "reason": null,
+    "template_filename": "TECLE_TECNICOS_BASE.xlsx",
+    "similitud_template": 1.0,
+    "candidate_ot": "18329",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": null
+  },
+  {
+    "template_key": "LLAVE_HIDRAULICA_TECNICOS",
+    "display_name": "Informe Tecnico Llave Hidraulica",
+    "aliases": [
+      "INFORME TECNICO LLAVE HIDRAULICA",
+      "INFORME TECNICO LLAVE HIDRAULICA 1\"",
+      "INFORME TECNICO LLAVE HIDRAULICA 3/4\""
+    ],
+    "checklist": [
+      "PERNOS DEL SWIVEL",
+      "ESTRUCTURA PRINCIPAL",
+      "SEGURO DEL CUADRANTE",
+      "BRAZO DE REACCIÓN",
+      "SHROUD",
+      "PERNOS DEL SHROUD",
+      "SWIVEL",
+      "LEVAS DE DESBLOQUEO",
+      "PERNOS DE LEVA",
+      "PASADORES Y SEGUROS SEGER",
+      "COMPONENTES INTYERNOS",
+      "EMBALAJE",
+      "ACOPLES Y TAPAS",
+      "MANILLA DE AGARRE",
+      "ZAPATA DEL BRAZO DE REACCION",
+      "CUADRANTE",
+      "CUADRANTE O HEXAGONO"
+    ],
+    "n_ots_total_grupo": 26,
+    "n_ots_evidencia": 26,
+    "cohesion": 1.0,
+    "template_status": "approved",
+    "reason": null,
+    "template_filename": "LLAVE HIDRAULICA TÉCNICOS.xlsx",
+    "similitud_template": 0.84,
+    "candidate_ot": "20074",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": null
+  },
+  {
+    "template_key": "BOMBA_HIDRAULICA_TECNICOS",
+    "display_name": "Informe Tecnico Bomba Hidraulica",
+    "aliases": [
+      "INFORME TECNICO BOMBA ELECTROHIDRAULICA",
+      "INFORME TECNICO BOMBA HIDRAULICA"
+    ],
+    "checklist": [
+      "COMPONENTES HIDRÁULICOS INTERNOS",
+      "ESTRUCTURA PRINCIPAL",
+      "CABLE DE PODER",
+      "INTERRUPTOR",
+      "ENCHUFE",
+      "MEDIDOR DE ACEITE",
+      "ELEMENTO DE CONTROL",
+      "MANÓMETRO",
+      "ACOPLE, CONEXIONES Y TAPA",
+      "SELENOIDE",
+      "REGULADOR DE PRESIÓN",
+      "FLEXIBLE",
+      "PALANCA DIRECCIONAL",
+      "PASADORES Y SEGUROS SEGER",
+      "PALANCA DE ACCIONAMIENTO",
+      "DISPLAY",
+      "FRL"
+    ],
+    "n_ots_total_grupo": 26,
+    "n_ots_evidencia": 25,
+    "cohesion": 0.96,
+    "template_status": "approved",
+    "reason": null,
+    "template_filename": "BOMBA HIDRAULICA TÉCNICOS.xlsx",
+    "similitud_template": 0.85,
+    "candidate_ot": "17422",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": null
+  },
+  {
+    "template_key": "CILINDRO_HIDRAULICO_TECNICOS",
+    "display_name": "Informe Tecnico Cilindro Hidraulico",
+    "aliases": [
+      "INFORME TECNICO CILINDRO HIDRAULICO"
+    ],
+    "checklist": [
+      "ESTRUCTURA PRINCIPAL",
+      "PROTECTOR DE HILO",
+      "ACOPLES Y TAPA",
+      "MANILLA  DE AGARRE",
+      "SILLETA",
+      "SELLO BARREDOR",
+      "PERNO",
+      "VÁSTAGO",
+      "VÁLVULA DE ALIVIO",
+      "RESPIRADERO DEL CILINDRO",
+      "COMPONENTES INTERNOS"
+    ],
+    "n_ots_total_grupo": 24,
+    "n_ots_evidencia": 24,
+    "cohesion": 1.0,
+    "template_status": "approved",
+    "reason": null,
+    "template_filename": "CILINDRO HIDRÁULICO TÉCNICOS.xlsx",
+    "similitud_template": 0.92,
+    "candidate_ot": "18281",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": null
+  },
+  {
+    "template_key": "GATO_HIDRAULICA_TECNICOS",
+    "display_name": "Informe Tecnico Gata Neumohidraulica",
+    "aliases": [
+      "INFORME TECNICO GATA CILINDRO",
+      "INFORME TECNICO GATA HIDRAULICA",
+      "INFORME TECNICO GATA NEUMOHIDRAULICA"
+    ],
+    "checklist": [
+      "ESTRUCTURA PRINCIPAL",
+      "ESTRUCTURA MÓVIL",
+      "COMPONENTES INTERNOS",
+      "MOTOR ELÉCTRICO",
+      "MOTOR NEUMÁTICO",
+      "FLEXIBLE DE ALTA PRESIÓN",
+      "REGULADOR DE PRESIÓN",
+      "ELEMENTOS DE CONTROL",
+      "RODAMIENTOS",
+      "NEUMÁTICOS",
+      "VÁSTAGO",
+      "MANÓMETRO",
+      "ACOPLES Y CONEXIONES",
+      "VÁLVULA DIRECCIONAL"
+    ],
+    "n_ots_total_grupo": 23,
+    "n_ots_evidencia": 22,
+    "cohesion": 0.96,
+    "template_status": "approved",
+    "reason": null,
+    "template_filename": "GATO HIDRÁULICA TÉCNICOS.xlsx",
+    "similitud_template": 0.93,
+    "candidate_ot": "18327",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": null
+  },
+  {
+    "template_key": "LUMINARIA_UNKNOWN",
+    "display_name": "Luminaria Portatil/Magnetica (sin confirmar)",
+    "aliases": [
+      "LUMINARIA PORTATIL",
+      "LUMINARIA INALAMBRICA",
+      "FOCO PORTATIL",
+      "LUMINARIA",
+      "LUMINARIA DE PEDESTAL"
+    ],
+    "checklist": [
+      "ESTRUCTURA",
+      "IMAN",
+      "BATERÍA",
+      "PANEL LED",
+      "ROTOR",
+      "CONECTOR",
+      "BOTONERA"
+    ],
+    "n_ots_total_grupo": 19,
+    "n_ots_evidencia": 0,
+    "cohesion": 0.0,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "20063",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 41
+  },
+  {
+    "template_key": "GIRAMOTOR",
+    "display_name": "Informe Tecnico Giramotor Neumatico",
+    "aliases": [
+      "INFORME TECNICO GIRAMOTOR NEUMATICO"
+    ],
+    "checklist": [
+      "PIÑON",
+      "PLUNGER",
+      "PERNOS",
+      "ACOPLES",
+      "FLEXIBLES",
+      "SEGURO DE PASO DE AIRE",
+      "ESTRUCTURA",
+      "MOTOR NEUMÁTICO"
+    ],
+    "n_ots_total_grupo": 9,
+    "n_ots_evidencia": 1,
+    "cohesion": 0.11,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "16857",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 8
+  },
+  {
+    "template_key": "BATERIA_INCOMPLETA",
+    "display_name": "Bateria Milwaukee (registros incompletos / equipos de baja)",
+    "aliases": [
+      "INFORME TECNICO BATERIA"
+    ],
+    "checklist": [
+      "ESTRUCTURA PRINCIPAL",
+      "SEGUROS",
+      "ENTRADA DE BATERIA",
+      "CARGA",
+      "SELECTOR",
+      "PERNOS",
+      "CONECTORES"
+    ],
+    "n_ots_total_grupo": 9,
+    "n_ots_evidencia": 0,
+    "cohesion": 0.0,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "17414",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 43
+  },
+  {
+    "template_key": "TORQUE_VALVULA_TECNICOS_BASE",
+    "display_name": "Informe Tecnico Torque Valvula",
+    "aliases": [
+      "INFORME TECNICO TORQUE VALVULA"
+    ],
+    "checklist": [
+      "ESTRUCTURA  PRICIPAL",
+      "SISTEMA DE TRINQUETE",
+      "CORONA",
+      "DISPLAY",
+      "BOTONERA",
+      "REGULADOR",
+      "EMBALAJE"
+    ],
+    "n_ots_total_grupo": 8,
+    "n_ots_evidencia": 8,
+    "cohesion": 1.0,
+    "template_status": "approved",
+    "reason": null,
+    "template_filename": "TORQUE_VALVULA_TECNICOS_BASE.xlsx",
+    "similitud_template": 1.0,
+    "candidate_ot": "24499",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": null
+  },
+  {
+    "template_key": "CARRETE_ELECTRICO_BASICO",
+    "display_name": "Carrete Electrico Basico (sin interruptor)",
+    "aliases": [
+      "INFORME TECNICO CARRETE ELECTRICO"
+    ],
+    "checklist": [
+      "ESTRUCTURA PRINCIPAL",
+      "MANILLA DE AGARRE",
+      "ENCHUFE",
+      "CABLE DE ALIMENTACIÓN",
+      "PUERTO CONECTOR"
+    ],
+    "n_ots_total_grupo": 8,
+    "n_ots_evidencia": 8,
+    "cohesion": 0.85,
+    "template_status": "pending",
+    "reason": "no_template_yet",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "20093",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 1
+  },
+  {
+    "template_key": "BOMBA_TRASVASIJE_TECNICOS",
+    "display_name": "Informe Tecnico Bomba Trasvasije",
+    "aliases": [
+      "INFORME TECNICO BOMBA DE TRASVASIJE",
+      "INFORME TECNICO BOMBA TRASVASIJE"
+    ],
+    "checklist": [
+      "ESTRUCTURA PRINCIPAL",
+      "MEDIDOR DE ACEITE",
+      "VALVULA DE CONTROL DE AIRE",
+      "SILENCIADOR",
+      "MANOMETRO",
+      "ACOPLE, CONEXIONES Y TAPA",
+      "REGULADOR DE PRESION FRL",
+      "FLEXIBLE",
+      "PASADORES Y SEGUROS SEGER",
+      "DEPOSITO",
+      "COMPONENTES HIDRAULICOS INTERNOS",
+      "COMPONENTES NEUMATICOS INTERNOS"
+    ],
+    "n_ots_total_grupo": 7,
+    "n_ots_evidencia": 7,
+    "cohesion": 1.0,
+    "template_status": "approved",
+    "reason": null,
+    "template_filename": "BOMBA TRASVASIJE TÉCNICOS.xlsx",
+    "similitud_template": 0.85,
+    "candidate_ot": "17956",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": null
+  },
+  {
+    "template_key": "MESA_LEVANTE_TECNICOS_BASE",
+    "display_name": "Informe Tecnico Mesa De Levante",
+    "aliases": [
+      "INFORME TECNICO MESA DE LEVANTE"
+    ],
+    "checklist": [
+      "ESTRUCTURA PRINCIPAL",
+      "GOMA PROTECTORA",
+      "ESTRUCTURA MOVIL",
+      "RUEDAS",
+      "MANILLA DE TRASLADO",
+      "PALANCA DE ACCIONAMIENTO",
+      "RESORTE DE PALANCA DE DESCARGA",
+      "CUERDA METALICA",
+      "VASTAGO",
+      "CILINDRO",
+      "SELLOS"
+    ],
+    "n_ots_total_grupo": 6,
+    "n_ots_evidencia": 2,
+    "cohesion": 0.33,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": "MESA_LEVANTE_TECNICOS_BASE.xlsx",
+    "similitud_template": 0.85,
+    "candidate_ot": "24485",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 3
+  },
+  {
+    "template_key": "ARRANCADOR_DE_BATERIAS_1",
+    "display_name": "Informe Tecnico Partidor De Baterias",
+    "aliases": [
+      "INFORME TECNICO ARRANCADOR DE BATERIAS",
+      "INFORME TECNICO PARTIDOR DE BATERIAS"
+    ],
+    "checklist": [
+      "CABLE SELECCTOR DE VOLTAJE",
+      "VOLTIMETRO",
+      "AMPERIMETRO",
+      "INDICADOR LED",
+      "PULSADOR PARA VOLTIMETRO",
+      "ALARMA SONORA",
+      "FUSIBLE",
+      "CABLE DE PODER",
+      "ENCHUFE",
+      "PINZA POSITIVA",
+      "PINZA NEGATIVA",
+      "CABLE POSITIVO",
+      "CABLE NEGATIVIO",
+      "BORNES 12 -24 VOLTIOS",
+      "RUEDAS",
+      "CONECTOR 12 VOLTIOS",
+      "MANILLA DE AGARRE",
+      "PERNOS",
+      "CARGADOR DE BATERIA",
+      "CONECTOR DE CARGA",
+      "SISTEMA ELECTRICO",
+      "BATERIAS",
+      "ESTRCTURA"
+    ],
+    "n_ots_total_grupo": 6,
+    "n_ots_evidencia": 6,
+    "cohesion": 1.0,
+    "template_status": "approved",
+    "reason": null,
+    "template_filename": "ARRANCADOR DE BATERIAS (1).xlsx",
+    "similitud_template": 0.96,
+    "candidate_ot": "20190",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": null
+  },
+  {
+    "template_key": "BATERIA_CELDAS",
+    "display_name": "Bateria Milwaukee (con indicador de celdas)",
+    "aliases": [
+      "INFORME TECNICO BATERIA"
+    ],
+    "checklist": [
+      "ESTRUCTURA",
+      "PERNOS",
+      "PUERTOS",
+      "INDICADOR",
+      "SEGUROS",
+      "CELDAS"
+    ],
+    "n_ots_total_grupo": 6,
+    "n_ots_evidencia": 6,
+    "cohesion": 0.95,
+    "template_status": "pending",
+    "reason": "no_template_yet",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "23526",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 2
+  },
+  {
+    "template_key": "MALETA_TESTEO",
+    "display_name": "Informe Tecnico Maleta De Testeo",
+    "aliases": [
+      "INFORME TECNICO MALETA DE TESTEO"
+    ],
+    "checklist": [
+      "ACOPLES",
+      "PERNOS",
+      "MANOMETROS 6 /8",
+      "MANOMETROS 0 - 500"
+    ],
+    "n_ots_total_grupo": 5,
+    "n_ots_evidencia": 1,
+    "cohesion": 0.2,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "17448",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 9
+  },
+  {
+    "template_key": "MALETA_TESTEO_HIDRAULICA",
+    "display_name": "Informe Tecnico Maleta De Testeo Hidraulica",
+    "aliases": [
+      "INFORME TECNICO MALETA DE TESTEO HIDRAULICA"
+    ],
+    "checklist": [
+      "ESTRUCTURA",
+      "ACOPLES",
+      "PERNOS",
+      "MANÓMETRO 0-500 PSI (8 unidades)"
+    ],
+    "n_ots_total_grupo": 5,
+    "n_ots_evidencia": 1,
+    "cohesion": 0.2,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "20219",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 10
+  },
+  {
+    "template_key": "CARRETE_ELECTRICO_TECNICOS_BASE",
+    "display_name": "Carrete Electrico (con interruptor/botonera)",
+    "aliases": [
+      "INFORME TECNICO CARRETE ELECTRICO",
+      "29"
+    ],
+    "checklist": [
+      "ESTRUCTURA",
+      "INTERRUPTOR",
+      "CABLE DE PODER",
+      "CONECTORES DE ENERGIA",
+      "MANILLA",
+      "BOTONERA"
+    ],
+    "n_ots_total_grupo": 5,
+    "n_ots_evidencia": 5,
+    "cohesion": 0.9,
+    "template_status": "approved",
+    "reason": null,
+    "template_filename": "CARRETE_ELECTRICO_TECNICOS_BASE.xlsx",
+    "similitud_template": 0.95,
+    "candidate_ot": "24059",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": null
+  },
+  {
+    "template_key": "PISTOLA_DE_CALOR",
+    "display_name": "Informe Tecnico Pistola De Calor",
+    "aliases": [
+      "INFORME TECNICO PISTOLA DE CALOR"
+    ],
+    "checklist": [
+      "ESTRUCTURA",
+      "PERNOS",
+      "CABLE DE PODER",
+      "ENCHUFE",
+      "MOTOR ELECTRICO",
+      "SELECTOR DE POTENCIA"
+    ],
+    "n_ots_total_grupo": 4,
+    "n_ots_evidencia": 1,
+    "cohesion": 0.25,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "17431",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 11
+  },
+  {
+    "template_key": "CARRETE_ELECTRICO_SUELTOS",
+    "display_name": "Carrete Electrico (OTs sueltas sin patron claro)",
+    "aliases": [
+      "INFORME TECNICO CARRETE ELECTRICO"
+    ],
+    "checklist": [
+      "ESTRUCTURA PRINCIPAL",
+      "CABLE",
+      "ENCHUFE",
+      "PERNOS",
+      "PUERTO CONECTOR",
+      "CARCASA",
+      "ENTRADA DE CONEXIÓN",
+      "ESTRUCTURA INTERIOR",
+      "INTERRUPTOR",
+      "MANILLA DE AGARRE",
+      "CONECTORES DE ENERGIA"
+    ],
+    "n_ots_total_grupo": 4,
+    "n_ots_evidencia": 0,
+    "cohesion": 0.0,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "23551",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 42
+  },
+  {
+    "template_key": "BATERIA_TECNICOS_BASE",
+    "display_name": "Bateria Milwaukee (con pulsador/luz led)",
+    "aliases": [
+      "INFORME TECNICO BATERIA"
+    ],
+    "checklist": [
+      "ESTRUCTURA",
+      "PULSADOR",
+      "PERNOS",
+      "LUZ LED",
+      "SEGUROS",
+      "CONECTORES",
+      "COMPONENTES INTERNOS"
+    ],
+    "n_ots_total_grupo": 4,
+    "n_ots_evidencia": 4,
+    "cohesion": 1.0,
+    "template_status": "approved",
+    "reason": null,
+    "template_filename": "BATERIA_TECNICOS_BASE.xlsx",
+    "similitud_template": 1.0,
+    "candidate_ot": "24237",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": null
+  },
+  {
+    "template_key": "GRASERA_INALAMBRICA",
+    "display_name": "Informe Tecnico Grasera Inalambrica",
+    "aliases": [
+      "INFORME TECNICO GRASERA INALAMBRICA"
+    ],
+    "checklist": [
+      "ESTRUCTURA  PRINCIPAL",
+      "DEPOSITO DE GRASA",
+      "RESORTE",
+      "MOTOR"
+    ],
+    "n_ots_total_grupo": 3,
+    "n_ots_evidencia": 1,
+    "cohesion": 0.33,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "16854",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 12
+  },
+  {
+    "template_key": "ALARGADOR_CARRETE",
+    "display_name": "Informe Tecnico Alargador De Carrete",
+    "aliases": [
+      "INFORME TECNICO ALARGADOR DE CARRETE"
+    ],
+    "checklist": [
+      "MALL DE AGARRRE",
+      "CONECTORES",
+      "CABLE DE PODER",
+      "ENCHUFE",
+      "MANILLA RECTRATIL"
+    ],
+    "n_ots_total_grupo": 3,
+    "n_ots_evidencia": 1,
+    "cohesion": 0.33,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "16870",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 13
+  },
+  {
+    "template_key": "MESA_ELECTROHIDRAULICA",
+    "display_name": "Informe Tecnico Mesa Electrohidraulica",
+    "aliases": [
+      "INFORME TECNICO MESA ELECTROHIDRAULICA"
+    ],
+    "checklist": [
+      "ESTRUCTIRA PRINCIPAL",
+      "ESTRCTURA MOVIL",
+      "MOTOR",
+      "FLEXIBLE",
+      "CILINDRO",
+      "VASTAGO",
+      "ESTANQUE",
+      "CONEXIÓN ELECTRICA",
+      "CABLE ALIMENTADOR",
+      "ENCHUFE",
+      "MANDO DISTANCIA",
+      "INTE-ENCENDIDO",
+      "PARA DE EMERGENCIA",
+      "LIMITE DE CARRERA",
+      "RUEDAS"
+    ],
+    "n_ots_total_grupo": 3,
+    "n_ots_evidencia": 1,
+    "cohesion": 0.33,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "17451",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 14
+  },
+  {
+    "template_key": "MESA_LEVANTE_ELECTROHIDRAULICA",
+    "display_name": "Informe Tecnico Mesa De Levante Electrohidraulica",
+    "aliases": [
+      "INFORME TECNICO MESA DE LEVANTE ELECTROHIDRAULICA"
+    ],
+    "checklist": [
+      "ESTRUCTURA PRINCIPAL",
+      "MOTOR ELÉCTRICO",
+      "CAJA ELÉCTRICA",
+      "PARADA DE EMERGENCIA",
+      "CONTROL",
+      "BASTAGO",
+      "CILINDRO",
+      "SELLO",
+      "FLEXIBLE",
+      "SISTEMA HIDRÁULICO",
+      "RUEDAS",
+      "FRENO DE RUEDAS"
+    ],
+    "n_ots_total_grupo": 3,
+    "n_ots_evidencia": 1,
+    "cohesion": 0.33,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "21504",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 15
+  },
+  {
+    "template_key": "RECTIFICADOR",
+    "display_name": "Informe Tecnico Rectificador",
+    "aliases": [
+      "INFORME TECNICO RECTIFICADOR"
+    ],
+    "checklist": [
+      "ESTRUCTURA",
+      "CABLE DE PODER",
+      "ENCHUFE",
+      "PERNOS",
+      "ACCIONADOR",
+      "MOTOR ELÉCTRICO"
+    ],
+    "n_ots_total_grupo": 2,
+    "n_ots_evidencia": 1,
+    "cohesion": 0.5,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "16851",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 16
+  },
+  {
+    "template_key": "ACUMULADOR_ELECTROHIDRAULICO",
+    "display_name": "Informe Tecnico Acumulador Electrohidraulico",
+    "aliases": [
+      "INFORME TECNICO ACUMULADOR ELECTROHIDRAULICO"
+    ],
+    "checklist": [
+      "ESTRUCTURA PRINCIPAL",
+      "ESTRUCTURA MOVIL",
+      "PARADA DE EMERGENCIA",
+      "SWITCH ENCENDIDO",
+      "INDICADOR DE CARGA DE BATERÍA",
+      "BRAZO DE TRASLADO",
+      "RUEDAS",
+      "MOTOR DE TRACCIÓN",
+      "MOTOR DE BOMBA",
+      "MORDAZA",
+      "BATERÍAS"
+    ],
+    "n_ots_total_grupo": 2,
+    "n_ots_evidencia": 2,
+    "cohesion": 1.0,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "19321",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 4
+  },
+  {
+    "template_key": "ASPIRADORA",
+    "display_name": "Informe Tecnico Aspiradora",
+    "aliases": [
+      "INFORME TECNICO ASPIRADORA"
+    ],
+    "checklist": [
+      "ESTRUCTURA PRINCIPAL",
+      "PERNOS",
+      "ESPALDAR",
+      "SWITCH ENCENDIDO",
+      "PUERTO DE BATERÍA",
+      "MOTOR ELÉCTRICO",
+      "RECIPIENTE",
+      "FILTRO",
+      "MANGUERA"
+    ],
+    "n_ots_total_grupo": 2,
+    "n_ots_evidencia": 1,
+    "cohesion": 0.5,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "19687",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 17
+  },
+  {
+    "template_key": "DIALIZADORA",
+    "display_name": "Informe Tecnico Dializadora",
+    "aliases": [
+      "INFORME TECNICO DIALIZADORA"
+    ],
+    "checklist": [
+      "ESTRUCTURA PRINCIPAL",
+      "ESTRUCTURA MOVIL",
+      "MOTOR ELÉCTRICO",
+      "MANÓMETRO",
+      "SISTEMA DE CALENTAMIENTO",
+      "SISTEMA ELÉCTRICO",
+      "DEPÓSITO",
+      "ENCHUFE",
+      "CABLE DE PODER"
+    ],
+    "n_ots_total_grupo": 2,
+    "n_ots_evidencia": 1,
+    "cohesion": 0.5,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "20019",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 18
+  },
+  {
+    "template_key": "BANDEJA_DRENADO",
+    "display_name": "Informe Tecnico Bandeja De Drenado",
+    "aliases": [
+      "INFORME TECNICO BANDEJA DE DRENADO"
+    ],
+    "checklist": [
+      "ESTRUCTURA PRINCIPAL",
+      "RUEDAS",
+      "ESTANQUE",
+      "LLAVE DE PASO"
+    ],
+    "n_ots_total_grupo": 2,
+    "n_ots_evidencia": 2,
+    "cohesion": 1.0,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "20020",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 5
+  },
+  {
+    "template_key": "BOMBA_VACIO",
+    "display_name": "Informe Tecnico Bomba De Vacio",
+    "aliases": [
+      "INFORME TECNICO BOMBA DE VACIO"
+    ],
+    "checklist": [
+      "ESTRUCTURA PRINCIPAL",
+      "MANILLA DE AGARRE",
+      "PERNOS",
+      "SWITCH",
+      "VISON ACEITE",
+      "MOTOR",
+      "ACOPLES",
+      "MANOMETRO SATURACIÓN",
+      "CABLE DE ALIMENTACIÓN"
+    ],
+    "n_ots_total_grupo": 2,
+    "n_ots_evidencia": 1,
+    "cohesion": 0.5,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "21234",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 19
+  },
+  {
+    "template_key": "BOMBA_TRASVASIJE_MOVIL",
+    "display_name": "Bomba Trasvasije Móvil (con ruedas)",
+    "aliases": [
+      "INFORME TECNICO BOMBA TRASVASIJE"
+    ],
+    "checklist": [
+      "ESTRUCTURA PRINCIPAL",
+      "ESTRUCTURA MOVIL",
+      "COMPONENTES INTERNOS",
+      "MOTOR NEUMÁTICO",
+      "FLEXIBLE",
+      "REGULADOR DE PRESIÓN",
+      "MANÓMETRO",
+      "ACOPLES",
+      "ACOPLE DICSÓN",
+      "MANIJA DE TRASLADO",
+      "RODAMIENTOS",
+      "PERNOS",
+      "RUEDAS",
+      "TAPA DE TANQUE",
+      "SEGURO DE TANQUE",
+      "ELEMENTO DE CONTROL"
+    ],
+    "n_ots_total_grupo": 2,
+    "n_ots_evidencia": 2,
+    "cohesion": 0.87,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "21441",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 6
+  },
+  {
+    "template_key": "CARRETE_ELECTRICO_MINI",
+    "display_name": "Carrete Electrico (variante minimalista, sin confirmar)",
+    "aliases": [
+      "INFORME TECNICO CARRETE ELECTRICO"
+    ],
+    "checklist": [
+      "CARRETE",
+      "ENCHUFE",
+      "CABLE",
+      "PUERTO CONECTOR"
+    ],
+    "n_ots_total_grupo": 2,
+    "n_ots_evidencia": 2,
+    "cohesion": 1.0,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "20094",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 7
+  },
+  {
+    "template_key": "ALARGADOR_ELECTRICO",
+    "display_name": "Informe Tecnico Alargador Electrico",
+    "aliases": [
+      "INFORME TECNICO ALARGADOR ELECTRICO"
+    ],
+    "checklist": [
+      "ESTRUCTURA",
+      "CABLE DE PODER",
+      "CANECTORES",
+      "MANILLA RECTRACTIL",
+      "ENCHUFE"
+    ],
+    "n_ots_total_grupo": 1,
+    "n_ots_evidencia": 1,
+    "cohesion": 1.0,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "16869",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 20
+  },
+  {
+    "template_key": "MESA_LEVANTE_800KG",
+    "display_name": "Informe Tecnico Mesa Hidraukica 800 Kg",
+    "aliases": [
+      "INFORME TECNICO MESA HIDRAUKICA 800 KG"
+    ],
+    "checklist": [
+      "ESTRUCTURA PEINCIPAL",
+      "ESTRUCTURA MOVIL",
+      "RUEDAS",
+      "MANILLA DE TRASLADO",
+      "CUERDA METALICA",
+      "PALANCA DE ACCIONAMIENTO",
+      "CILINDRO",
+      "BATAGO"
+    ],
+    "n_ots_total_grupo": 1,
+    "n_ots_evidencia": 1,
+    "cohesion": 1.0,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "17449",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 21
+  },
+  {
+    "template_key": "MESA_LEVANTE_500KG",
+    "display_name": "Informe Tecnico Mesa De Laevante 500",
+    "aliases": [
+      "INFORME TECNICO MESA DE LAEVANTE 500"
+    ],
+    "checklist": [
+      "ESTRUCTURA PRINCIPAL",
+      "RUEDAS",
+      "BASTAGO",
+      "CILINDRO",
+      "SELLOS",
+      "PALANCA DE ACCIONAMMIENTO",
+      "MANILLA PARA EL DESENSO MANUAL",
+      "MANILLA DE TRASLADO",
+      "GUAYA"
+    ],
+    "n_ots_total_grupo": 1,
+    "n_ots_evidencia": 1,
+    "cohesion": 1.0,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "17450",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 22
+  },
+  {
+    "template_key": "CAMILLA_ELECTROHIDRAULICA",
+    "display_name": "Informe Tecnico Camilla Electro Hidraulica",
+    "aliases": [
+      "INFORME TECNICO CAMILLA ELECTRO HIDRAULICA"
+    ],
+    "checklist": [
+      "BOTOTN DE ENCENDIDO",
+      "ESTRUCTURA PRINCIPAL",
+      "GOMA PROTECTORA",
+      "PARADA DE EMERGENCIA",
+      "INDICADOR DE CARGA",
+      "LUZ ENCENDIDO",
+      "MANDO DISTANCIA",
+      "CABLES",
+      "CILINDRO",
+      "VASTAGO",
+      "BATERIAS",
+      "ESTRUCTURA MOVIL",
+      "RUEDAS",
+      "CARGADOR BATERIAS"
+    ],
+    "n_ots_total_grupo": 1,
+    "n_ots_evidencia": 1,
+    "cohesion": 1.0,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "17453",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 23
+  },
+  {
+    "template_key": "GATA_PLUMA",
+    "display_name": "Informe Tecnico Gata Pluma",
+    "aliases": [
+      "INFORME TECNICO GATA PLUMA"
+    ],
+    "checklist": [
+      "ESTRUCTURA PRINCIPAL",
+      "SISTEMA HIDRAULICO",
+      "VASTAGO",
+      "CILINDRO",
+      "SELLOS",
+      "PALANCA DE ACIONAMIENTO",
+      "EXTENCION DE BRAZO",
+      "GANCHO METALICO",
+      "PASADORES",
+      "SEGURO SEGER",
+      "RUEDAS"
+    ],
+    "n_ots_total_grupo": 1,
+    "n_ots_evidencia": 1,
+    "cohesion": 1.0,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "17957",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 24
+  },
+  {
+    "template_key": "ESCAREADOR_NEUMATICO",
+    "display_name": "Informe Tecnico Escareador Neumatico",
+    "aliases": [
+      "INFORME TECNICO ESCAREADOR NEUMATICO"
+    ],
+    "checklist": [
+      "ESTRUCTURA",
+      "PERNOS",
+      "GATILLO",
+      "ACOPLE",
+      "PASADOR DE GATILLO",
+      "MOTOR NEUMATICO"
+    ],
+    "n_ots_total_grupo": 1,
+    "n_ots_evidencia": 1,
+    "cohesion": 1.0,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "18276",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 25
+  },
+  {
+    "template_key": "APRIETA_TERMINALES",
+    "display_name": "Informe Tecnico Aprieta Terminales",
+    "aliases": [
+      "INFORME TECNICO APRIETA TERMINALES"
+    ],
+    "checklist": [
+      "ESTRUCTURA PRINCIPAL",
+      "MANCOS",
+      "PERNOS",
+      "MALETA",
+      "MUELA DE COMPRESION",
+      "SEGUROS"
+    ],
+    "n_ots_total_grupo": 1,
+    "n_ots_evidencia": 1,
+    "cohesion": 1.0,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "18296",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 26
+  },
+  {
+    "template_key": "VACUOLAVADORA",
+    "display_name": "Informe Tecnico Vacuolavadora",
+    "aliases": [
+      "INFORME TECNICO VACUOLAVADORA"
+    ],
+    "checklist": [
+      "ESTRUCTURA PRINCIPAL",
+      "LABIOS DE ASPIRACIÓN",
+      "CHAPA DE ARRANQUE + LLAVE",
+      "CEPILLO ROJO",
+      "SISTEMA ELECTRICO",
+      "BATERÍAS",
+      "INSPECCION VISUAL: Estructura principal en buen estado"
+    ],
+    "n_ots_total_grupo": 1,
+    "n_ots_evidencia": 1,
+    "cohesion": 1.0,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "19319",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 27
+  },
+  {
+    "template_key": "BARREDORA",
+    "display_name": "Informe Tecnico Barredora",
+    "aliases": [
+      "INFORME TECNICO BARREDORA"
+    ],
+    "checklist": [
+      "ESTRUCTURA PRINCIPAL",
+      "GOMAS LATERALES",
+      "CEPILLOS DE LAVADO",
+      "KIT DRIVE MOTOR CONTROL",
+      "KIT CONTROL PANEL CON CHAPA",
+      "LLAVES",
+      "LABIOS DE ASPIRACIÓN",
+      "INSPECCION VISUAL: Estructura principal en buen estado"
+    ],
+    "n_ots_total_grupo": 1,
+    "n_ots_evidencia": 1,
+    "cohesion": 1.0,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "19322",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 28
+  },
+  {
+    "template_key": "CARRO_DRENAJE",
+    "display_name": "Informe Tecnico Carro De Drenaje",
+    "aliases": [
+      "INFORME TECNICO CARRO DE DRENAJE"
+    ],
+    "checklist": [
+      "ESTRUCTURA PRINCIPAL",
+      "BOMBA",
+      "FLEXIBLES",
+      "RUEDAS",
+      "ACOPLES"
+    ],
+    "n_ots_total_grupo": 1,
+    "n_ots_evidencia": 1,
+    "cohesion": 1.0,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "19636",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 29
+  },
+  {
+    "template_key": "AMOLADORA_MATRIZ",
+    "display_name": "Informe Tecnico Amoladora De Matriz",
+    "aliases": [
+      "INFORME TECNICO AMOLADORA DE MATRIZ"
+    ],
+    "checklist": [
+      "CARCAZA",
+      "MOTOR ELÉCTRICO",
+      "RODAMIENTOS",
+      "INTERRUPTOR",
+      "CONECTROR",
+      "EJE",
+      "TUERCA COLLAR",
+      "CONJUNTO HUSILLO"
+    ],
+    "n_ots_total_grupo": 1,
+    "n_ots_evidencia": 1,
+    "cohesion": 1.0,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "20058",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 30
+  },
+  {
+    "template_key": "AMOLADORA_INALAMBRICA",
+    "display_name": "Informe Tecnico Amoladora Inalambrica",
+    "aliases": [
+      "INFORME TECNICO AMOLADORA INALAMBRICA"
+    ],
+    "checklist": [
+      "CARCAZA",
+      "INTERRUPTOR",
+      "CONECTOR",
+      "EJE",
+      "TUERCA",
+      "MOTOR ELÉCTRICO",
+      "RODAMIENTO",
+      "COMPONENTES ELÉCTRICO",
+      "HUSILLO"
+    ],
+    "n_ots_total_grupo": 1,
+    "n_ots_evidencia": 1,
+    "cohesion": 1.0,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "20060",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 31
+  },
+  {
+    "template_key": "BOMBA_PEDAL",
+    "display_name": "Informe Tecnico Bomba Pedal",
+    "aliases": [
+      "INFORME TECNICO BOMBA PEDAL"
+    ],
+    "checklist": [
+      "ESTRUCTURA PRINCIPAL",
+      "FLEXIBLES",
+      "CALENTADOR",
+      "CABLE DE PODER",
+      "ENCHUFE",
+      "SWITCH ENCENDIDO",
+      "SWITCH CALENTADOR",
+      "MOTOR",
+      "ACOPLES",
+      "RUEDAS",
+      "MANÓMETRO DE TEMPERATURA"
+    ],
+    "n_ots_total_grupo": 1,
+    "n_ots_evidencia": 1,
+    "cohesion": 1.0,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "20228",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 32
+  },
+  {
+    "template_key": "TRANSDUCTOR_DE_TORQUE_1",
+    "display_name": "Informe Tecnico Trasductor De Torque",
+    "aliases": [
+      "INFORME TECNICO TRASDUCTOR DE TORQUE"
+    ],
+    "checklist": [
+      "ESTRUCTURA PRINCIPAL",
+      "TORQUE DISPALY",
+      "CABLE CONECTOR",
+      "CABLE DE PODER",
+      "TORNILLO SIMULADOR"
+    ],
+    "n_ots_total_grupo": 1,
+    "n_ots_evidencia": 1,
+    "cohesion": 1.0,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": "TRANSDUCTOR DE TORQUE (1).xlsx",
+    "similitud_template": 0.83,
+    "candidate_ot": "20512",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 33
+  },
+  {
+    "template_key": "SUNCHADORA",
+    "display_name": "Informe Tecnico Sunchadora",
+    "aliases": [
+      "INFORME TECNICO SUNCHADORA"
+    ],
+    "checklist": [
+      "ESTRUCTURA PRINCIPAL",
+      "MANILLA DE AGARRE",
+      "COMPONENTES INTERNOS"
+    ],
+    "n_ots_total_grupo": 1,
+    "n_ots_evidencia": 1,
+    "cohesion": 1.0,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "20755",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 34
+  },
+  {
+    "template_key": "SOPLADOR_INALAMBRICO",
+    "display_name": "Informe Tecnico Soplador Inalambrico",
+    "aliases": [
+      "INFORME TECNICO SOPLADOR INALAMBRICO"
+    ],
+    "checklist": [
+      "ESTRUCTURA PRINCIPAL",
+      "PERNOS",
+      "GATILLO",
+      "BOQUILLA",
+      "MOTOR ELÉCTRICO",
+      "REJILLA",
+      "COMPONENTES INERNOS"
+    ],
+    "n_ots_total_grupo": 1,
+    "n_ots_evidencia": 1,
+    "cohesion": 1.0,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "20758",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 35
+  },
+  {
+    "template_key": "ASPIRADORA_INALAMBRICA",
+    "display_name": "Informe Tecnico Aspiradora Inalambrica",
+    "aliases": [
+      "INFORME TECNICO ASPIRADORA INALAMBRICA"
+    ],
+    "checklist": [
+      "ESTRUCTURA PRINCIPAL",
+      "MANGUERA",
+      "TAPA DE RECIPIENTE",
+      "FILTRO",
+      "SELLO",
+      "COMPONENTE INTERNO",
+      "MOTOR ELÉCTRICO"
+    ],
+    "n_ots_total_grupo": 1,
+    "n_ots_evidencia": 1,
+    "cohesion": 1.0,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "21228",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 36
+  },
+  {
+    "template_key": "MALETA_TESTEO_V2",
+    "display_name": "Informe Tecnico Maletga De Testeo",
+    "aliases": [
+      "INFORME TECNICO MALETGA DE TESTEO"
+    ],
+    "checklist": [
+      "MANÓMETRO 0-5000 PSI 2 UNIDAD",
+      "MANÓMETRO 0-500 PSI",
+      "ESTRUCTURA PRINCIPAL",
+      "ACOPLES",
+      "PERNOS"
+    ],
+    "n_ots_total_grupo": 1,
+    "n_ots_evidencia": 1,
+    "cohesion": 1.0,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "21236",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 37
+  },
+  {
+    "template_key": "MESA_LEVANTE_MANUAL",
+    "display_name": "Informe Tecnico Mesa De Levante Manual",
+    "aliases": [
+      "INFORME TECNICO MESA DE LEVANTE MANUAL"
+    ],
+    "checklist": [
+      "ESTRUCTURA PRINCIPAL",
+      "ESTRUCTURA MOVIL",
+      "RUEDAS",
+      "FRENOS DE RUEDAS",
+      "VÁSTAGO",
+      "CILINDRO",
+      "SELLOS",
+      "VÁLVULAS HIDRAULICAS",
+      "PALANCA DE ACCIONAMIENTO",
+      "MANILLA DE TRASLADO",
+      "RESORTE",
+      "VÁLVULA DE DESCARGA"
+    ],
+    "n_ots_total_grupo": 1,
+    "n_ots_evidencia": 1,
+    "cohesion": 1.0,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "23563",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 38
+  },
+  {
+    "template_key": "BURIL_RECTIFICADOR",
+    "display_name": "Informe Tecnico Buril Rectificador",
+    "aliases": [
+      "INFORME TECNICO BURIL RECTIFICADOR"
+    ],
+    "checklist": [
+      "ESTRUCTURA",
+      "ACCIONADOR",
+      "PERNOS",
+      "MOTOR ELECTRICO",
+      "CARBONES",
+      "CABLE DE PODER",
+      "ENCHUFE",
+      "TUERCA SUPERIOR"
+    ],
+    "n_ots_total_grupo": 1,
+    "n_ots_evidencia": 1,
+    "cohesion": 1.0,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": null,
+    "similitud_template": null,
+    "candidate_ot": "23904",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 39
+  },
+  {
+    "template_key": "BURIL_TECNICOS_BASE",
+    "display_name": "Informe Tecnico Buril",
+    "aliases": [
+      "INFORME TECNICO BURIL"
+    ],
+    "checklist": [
+      "ESTRUCTURA",
+      "HILO DE TUERCA SUPERIOR",
+      "ACCIONADOR",
+      "PUERTO DE CONEXIÓN",
+      "PERNOS",
+      "MOTOR ELECTRICO"
+    ],
+    "n_ots_total_grupo": 1,
+    "n_ots_evidencia": 1,
+    "cohesion": 1.0,
+    "template_status": "pending",
+    "reason": "insufficient_evidence",
+    "template_filename": "BURIL_TECNICOS_BASE.xlsx",
+    "similitud_template": 1.0,
+    "candidate_ot": "24075",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": 40
+  },
+  {
+    "template_key": "FOCO_IMANTADO_TECNICOS_BASE",
+    "display_name": "Foco Imantado / Mordaza",
+    "aliases": [
+      "LUMINARIA (foco imantado)"
+    ],
+    "checklist": [
+      "ESTRUCTURA PRINCIPAL",
+      "PERNOS",
+      "PUERTO DE CONEXIÓN",
+      "BOTONERA",
+      "FOCO LED",
+      "IMANES",
+      "BASE MOVIL"
+    ],
+    "n_ots_total_grupo": 1,
+    "n_ots_evidencia": 1,
+    "cohesion": 1.0,
+    "template_status": "approved",
+    "reason": null,
+    "template_filename": "FOCO_IMANTADO_TECNICOS_BASE.xlsx",
+    "similitud_template": 1.0,
+    "candidate_ot": "24243",
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": null
+  },
+  {
+    "template_key": "INFORMES_VARIOS",
+    "display_name": "Informe Vario (sin familia reconocida)",
+    "aliases": [],
+    "checklist": [],
+    "n_ots_total_grupo": null,
+    "n_ots_evidencia": null,
+    "cohesion": null,
+    "template_status": "approved",
+    "reason": "fallback_permanente_sin_checklist_fijo",
+    "template_filename": "INFORMES_VARIOS.xlsx",
+    "similitud_template": null,
+    "candidate_ot": null,
+    "template_drive_id": null,
+    "template_version": 1,
+    "priority": null
+  }
+]
