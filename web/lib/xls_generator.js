@@ -347,9 +347,6 @@ function fillTextByMap(sheet, data, map) {
 
 function fillTextSections(sheet, data) {
   setBelowLabel(sheet, ['INSPECCIÓN VISUAL', 'INSPECCION VISUAL'], data.inspeccion_visual);
-  // La prueba tiene dos zonas distintas: check Operativo/No Operativo y texto libre.
-  // El texto debe ir debajo de los checks para que fillOperativo no lo limpie.
-  setBelowLabel(sheet, ['PRUEBA DE FUNCIONAMIENTO'], data.prueba_funcionamiento, 3);
   setBelowLabel(sheet, ['DESARME'], data.desarme);
   setBelowLabel(sheet, ['PROCEDIMIENTO'], data.procedimiento);
   fillOperativo(sheet, data);
