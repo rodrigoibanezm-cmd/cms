@@ -1,6 +1,7 @@
 import ExcelJS from 'exceljs';
 import { google } from 'googleapis';
 import { Readable } from 'stream';
+import { getCellMap } from './xls_cell_maps.js';
 
 function env(name) {
   return process.env[name] || '';
@@ -30,10 +31,7 @@ function oauthAuth() {
 
 function serviceAccountAuth() {
   const credentials = parseServiceAccount();
-  return new google.auth.GoogleAuth({
-    credentials,
-    scopes: ['https://www.googleapis.com/auth/drive'],
-  });
+  return new google.auth.GoogleAuth({ credentials, scopes: ['https://www.googleapis.com/auth/drive'] });
 }
 
 function getAuth() {
@@ -104,6 +102,20 @@ function cellText(cell) {
   return value;
 }
 
+function writableCell(cell) {
+  return cell.isMerged && cell.master ? cell.master : cell;
+}
+
+function setCell(sheet, address, value) {
+  if (!address || !text(value)) return;
+  writableCell(sheet.getCell(address)).value = value;
+}
+
+function markCell(sheet, address) {
+  if (!address) return;
+  writableCell(sheet.getCell(address)).value = 'X';
+}
+
 function findCellByLabel(sheet, labels, options = {}) {
   const wanted = labels.map(norm);
   const maxRow = options.maxRow || Number.MAX_SAFE_INTEGER;
@@ -149,6 +161,12 @@ function setBelowLabel(sheet, labels, value, offset = 1) {
   const target = sheet.getCell(found.row + offset, found.col);
   target.value = value;
   target.alignment = { wrapText: true, vertical: 'top' };
+}
+
+function fillHeaderByMap(sheet, data, map) {
+  if (!map?.header) return false;
+  Object.entries(map.header).forEach(([field, address]) => setCell(sheet, address, data[field]));
+  return true;
 }
 
 function fillHeader(sheet, data) {
@@ -206,12 +224,8 @@ function fillInspection(sheet, inspeccion = []) {
         : cols.noAplica;
 
     sheet.getCell(targetRow, markCol).value = 'X';
-    if (cols.obs && text(item.observacion)) {
-      sheet.getCell(targetRow, cols.obs).value = item.observacion;
-    }
-    if (cols.reparacion && text(item.reparacion)) {
-      sheet.getCell(targetRow, cols.reparacion).value = item.reparacion;
-    }
+    if (cols.obs && text(item.observacion)) sheet.getCell(targetRow, cols.obs).value = item.observacion;
+    if (cols.reparacion && text(item.reparacion)) sheet.getCell(targetRow, cols.reparacion).value = item.reparacion;
   }
 }
 
@@ -224,9 +238,7 @@ function fillOperativo(sheet, value) {
     if (found) return;
     row.eachCell((cell, colNumber) => {
       const cellValue = norm(cellText(cell));
-      if (!found && ['OPERATIVO', 'NO OPERATIVO'].includes(cellValue)) {
-        found = { row: rowNumber, col: colNumber };
-      }
+      if (!found && ['OPERATIVO', 'NO OPERATIVO'].includes(cellValue)) found = { row: rowNumber, col: colNumber };
     });
   });
   if (!found) return;
@@ -241,6 +253,15 @@ function dispositionFrom(data) {
   if (value.includes('REPAR')) return 'REPARACION';
   if (value.includes('MANT') || value.includes('M.P') || value.includes('CALIB')) return 'MANTENCION';
   return null;
+}
+
+function fillDispositionByMap(sheet, data, map) {
+  const target = dispositionFrom(data);
+  if (!target || !map?.status) return false;
+  if (target === 'REPARACION') markCell(sheet, map.status.reparacion);
+  if (target === 'MANTENCION') markCell(sheet, map.status.mantencion);
+  if (target === 'DE BAJA') markCell(sheet, map.status.de_baja);
+  return true;
 }
 
 function fillDisposition(sheet, data) {
@@ -261,6 +282,14 @@ function fillDisposition(sheet, data) {
   });
 
   if (found) sheet.getCell(found.row + 1, found.col).value = 'X';
+}
+
+function fillTextByMap(sheet, data, map) {
+  if (!map?.text) return false;
+  Object.entries(map.text).forEach(([field, address]) => setCell(sheet, address, data[field]));
+  if (map.status?.operativo && norm(data.prueba_funcionamiento).includes('CUMPLE')) markCell(sheet, map.status.operativo);
+  if (map.status?.no_operativo && norm(data.prueba_funcionamiento).includes('NO CUMPLE')) markCell(sheet, map.status.no_operativo);
+  return true;
 }
 
 function fillTextSections(sheet, data) {
@@ -319,10 +348,11 @@ export async function generateFinalXls({ extraction, photos }) {
   await workbook.xlsx.load(templateBuffer);
 
   const sheet = workbook.worksheets[0];
-  fillHeader(sheet, extraction);
-  fillDisposition(sheet, extraction);
+  const cellMap = getCellMap(extraction.template_key);
+  if (!fillHeaderByMap(sheet, extraction, cellMap)) fillHeader(sheet, extraction);
+  if (!fillDispositionByMap(sheet, extraction, cellMap)) fillDisposition(sheet, extraction);
   fillInspection(sheet, extraction.inspeccion || []);
-  fillTextSections(sheet, extraction);
+  if (!fillTextByMap(sheet, extraction, cellMap)) fillTextSections(sheet, extraction);
   addTextBlocks(workbook, extraction);
   addPhotos(workbook, photos);
 
