@@ -1,5 +1,5 @@
 import OpenAI from 'openai';
-import { AUDIT_PATCH_FIELD_SET } from './audit_fields.js';
+import { AUTO_RECOVERY_FIELD_SET } from './audit_fields.js';
 import { buildAuditPrompt } from './audit_prompt.js';
 import { excelToAuditView } from './excel_audit_view.js';
 
@@ -22,11 +22,11 @@ function criticalIssues(issues) {
   return (issues || []).filter((issue) => issue?.severity === 'critical');
 }
 
-function criticalFieldSet(issues) {
+function criticalAutoFieldSet(issues) {
   return new Set(
     criticalIssues(issues)
       .map((issue) => String(issue?.field || '').trim())
-      .filter((field) => AUDIT_PATCH_FIELD_SET.has(field))
+      .filter((field) => AUTO_RECOVERY_FIELD_SET.has(field))
   );
 }
 
@@ -37,7 +37,7 @@ function isLayoutPatch(patch) {
 }
 
 function hasCriticalIssueForPatch(field, issues) {
-  const fields = criticalFieldSet(issues);
+  const fields = criticalAutoFieldSet(issues);
   if (fields.size > 0) return fields.has(field);
   return criticalIssues(issues).length > 0;
 }
@@ -47,7 +47,7 @@ function normalizePatches(audit, decision, issues) {
   return Array.isArray(audit?.patches)
     ? audit.patches.filter((patch) => {
       const field = String(patch?.field || '').trim();
-      return AUDIT_PATCH_FIELD_SET.has(field)
+      return AUTO_RECOVERY_FIELD_SET.has(field)
         && hasCriticalIssueForPatch(field, issues)
         && patch?.instruction
         && !isLayoutPatch(patch);
