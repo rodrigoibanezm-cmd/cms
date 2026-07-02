@@ -4,8 +4,10 @@ import path from 'path';
 import { NextResponse } from 'next/server';
 import { runExtraction } from '../../../lib/process_pipeline.js';
 import { generateFinalXls } from '../../../lib/xls_generator.js';
+import { auditReport } from '../../../lib/audit/openai_auditor.js';
+import { readDriveXls } from '../../../lib/audit/xls_drive.js';
 import { addReportFile, createReport } from '../../../lib/report_store.js';
-import { markExtracted, markReportError, markXlsGenerated } from '../../../lib/report_updates.js';
+import { markAudited, markExtracted, markReportError, markXlsGenerated } from '../../../lib/report_updates.js';
 
 export const runtime = 'nodejs';
 
@@ -60,6 +62,11 @@ async function registerInputFiles(reportId, report, photos) {
   })));
 }
 
+async function runAuditor({ reportImage, xls, extraction }) {
+  const xlsBuffer = await readDriveXls(xls.drive_file_id);
+  return auditReport({ reportImage, xlsBuffer, extraction });
+}
+
 export async function POST(request) {
   let reportRow = null;
   try {
@@ -82,9 +89,10 @@ export async function POST(request) {
     await registerInputFiles(reportRow.id, report, photos);
 
     const reportBuffer = await fileToBuffer(report);
+    const reportImage = asImage(reportBuffer, report.type);
     const targetDir = path.join(os.tmpdir(), 'cms-extractions', otHint || reportRow.id);
     const extraction = await runExtraction({
-      image: asImage(reportBuffer, report.type),
+      image: reportImage,
       otHint,
       sourceName,
       targetDir,
@@ -112,6 +120,9 @@ export async function POST(request) {
       url: xls.excel_url,
     });
 
+    const audit = await runAuditor({ reportImage, xls, extraction });
+    await markAudited(reportRow.id, audit);
+
     return NextResponse.json({
       ok: true,
       report_id: reportRow.id,
@@ -123,6 +134,7 @@ export async function POST(request) {
       template_filename: extraction.template_filename,
       excel_url: xls.excel_url,
       drive_file_id: xls.drive_file_id,
+      audit,
     });
   } catch (err) {
     console.error(err);
