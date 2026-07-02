@@ -1,3 +1,5 @@
+import styles from '../../app/admin/report/reviewVisual.module.css';
+
 function filesOf(files, kind) {
   return files.filter((file) => file.kind === kind);
 }
@@ -10,7 +12,7 @@ export function getReviewFiles(files) {
   };
 }
 
-export function VisualFile({ title, files, styles }) {
+export function VisualFile({ title, files }) {
   const file = files[files.length - 1];
   return (
     <section className={`${styles.reviewBox} ${styles.visualBox}`}>
@@ -31,7 +33,7 @@ export function VisualFile({ title, files, styles }) {
   );
 }
 
-export function XlsPanel({ report, files, styles }) {
+export function XlsPanel({ report, files }) {
   const xls = files[files.length - 1];
   return (
     <section className={`${styles.reviewBox} ${styles.visualBox}`}>
