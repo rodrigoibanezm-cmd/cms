@@ -65,5 +65,12 @@ export async function auditReport({ reportImage, xlsBuffer, extraction }) {
   const raw = response.choices?.[0]?.message?.content || '';
   const audit = normalizeAudit(parseJson(raw));
   audit.model = model;
+  console.log('[audit] done', {
+    ot: extraction?.ot,
+    recovered: Boolean(extraction?.recovery?.applied),
+    decision: audit.decision,
+    issues: audit.issues.length,
+    patches: audit.patches.map((patch) => patch.field),
+  });
   return audit;
 }
