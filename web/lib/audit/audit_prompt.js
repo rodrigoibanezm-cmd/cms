@@ -1,4 +1,5 @@
 import { auditContextText } from './audit_context.js';
+import { auditGuardrailsText } from './audit_guardrails.js';
 import { auditJsonSchemaText } from './audit_schema.js';
 
 const BASE_RULES = `Eres auditor final de informes técnicos industriales.
@@ -35,6 +36,7 @@ Si decision=review, repair_prompt debe ser null.`;
 export function buildAuditPrompt({ extraction, excelView }) {
   return [
     BASE_RULES,
+    auditGuardrailsText(),
     OUTPUT_RULES.replace('SCHEMA_JSON', auditJsonSchemaText()),
     auditContextText({ extraction, excelView }),
   ].join('\n\n');
