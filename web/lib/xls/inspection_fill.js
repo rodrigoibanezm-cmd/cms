@@ -21,18 +21,39 @@ function findHeaderColumns(sheet) {
   return cols;
 }
 
+function findInspectionRow(sheet, cols, item) {
+  let targetRow = null;
+  sheet.eachRow((row, rowNumber) => {
+    if (rowNumber <= cols.row || targetRow) return;
+    const label = norm(cellText(row.getCell(cols.item)));
+    if (label && label === norm(item.item)) targetRow = rowNumber;
+  });
+  return targetRow;
+}
+
+function findNextEmptyInspectionRow(sheet, cols, startRow) {
+  for (let row = startRow; row <= sheet.rowCount + 20; row++) {
+    if (!text(cellText(sheet.getCell(row, cols.item)))) return row;
+  }
+  return null;
+}
+
 export function fillInspection(sheet, inspeccion = []) {
   const cols = findHeaderColumns(sheet);
   if (!cols) return;
 
+  let fallbackRow = cols.row + 1;
+
   for (const item of inspeccion) {
-    let targetRow = null;
-    sheet.eachRow((row, rowNumber) => {
-      if (rowNumber <= cols.row || targetRow) return;
-      const label = norm(cellText(row.getCell(cols.item)));
-      if (label && label === norm(item.item)) targetRow = rowNumber;
-    });
-    if (!targetRow) continue;
+    let targetRow = findInspectionRow(sheet, cols, item);
+
+    if (!targetRow) {
+      targetRow = findNextEmptyInspectionRow(sheet, cols, fallbackRow);
+      if (!targetRow) continue;
+      setVisibleCell(sheet.getCell(targetRow, cols.item), item.item);
+    }
+
+    fallbackRow = Math.max(fallbackRow, targetRow + 1);
 
     const markCol = item.resultado === 'CUMPLE'
       ? cols.cumple
