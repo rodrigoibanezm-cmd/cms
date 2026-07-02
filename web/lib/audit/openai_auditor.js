@@ -28,7 +28,9 @@ function normalizeAudit(audit) {
 }
 
 export async function auditReport({ reportImage, xlsBuffer, extraction }) {
-  const model = process.env.OPENAI_AUDIT_MODEL || 'gpt-5.5';
+  const model = process.env.OPENAI_AUDIT_MODEL;
+  if (!model) throw new Error('Falta modelo de auditoría');
+
   const client = new OpenAI();
   const excelView = await excelToAuditView(xlsBuffer);
   const prompt = buildAuditPrompt({ extraction, excelView });
