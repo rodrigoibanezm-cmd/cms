@@ -1,10 +1,10 @@
 import { parseModelJson } from '../../../benchmark/lib/io.js';
-import { AUDIT_PATCH_FIELD_SET } from '../audit/audit_fields.js';
+import { AUTO_RECOVERY_FIELD_SET } from '../audit/audit_fields.js';
 import { callGemini } from '../benchmark/gemini_client.js';
 import { buildRecoveryPrompt } from './recovery_prompt.js';
 
-function filterAllowed(patches) {
-  return (patches || []).filter((item) => AUDIT_PATCH_FIELD_SET.has(String(item?.field || '')));
+function filterAllowed(items) {
+  return (items || []).filter((item) => AUTO_RECOVERY_FIELD_SET.has(String(item?.field || '')));
 }
 
 export async function runRecovery({ image, extraction, audit }) {
@@ -14,12 +14,12 @@ export async function runRecovery({ image, extraction, audit }) {
       ot: extraction?.ot,
       decision: audit?.decision,
       internal_recovery: audit?.internal_recovery,
-      requested: audit?.patches?.map((patch) => patch.field) || [],
+      requested: audit?.patches?.map((item) => item.field) || [],
     });
     return null;
   }
 
-  console.log('[recovery] start', { ot: extraction?.ot, fields: patches.map((patch) => patch.field) });
+  console.log('[recovery] start', { ot: extraction?.ot, fields: patches.map((item) => item.field) });
   const prompt = buildRecoveryPrompt({ extraction, patches });
   const raw = await callGemini({ model: 'gemini-2.5-pro', prompt, image });
   const parsed = parseModelJson(raw);
