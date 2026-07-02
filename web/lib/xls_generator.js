@@ -15,10 +15,26 @@ import { fillParts } from './xls/parts_fill.js';
 import { fillSpecificFields } from './xls/specific_fields_fill.js';
 import { addPhotos, addTextBlocks } from './xls/workbook_extras.js';
 
-export async function generateFinalXls({ extraction, photos }) {
+function outputFolderId() {
+  return env('GOOGLE_DRIVE_OUTPUT_FOLDER_ID') || env('CANDIDATES_TEMPLATES_FOLDER_ID');
+}
+
+export async function publishGeneratedXls({ xls, extraction }) {
+  const folderId = outputFolderId();
+  if (!folderId) throw new Error('Falta carpeta Drive de salida');
+  if (xls.excel_url) return xls;
+  const uploaded = await uploadDriveFile({ buffer: xls.buffer, filename: xls.filename, folderId });
+  console.log('[xls] uploaded', { ot: extraction?.ot, filename: xls.filename, driveFileId: uploaded.id, recovered: Boolean(extraction?.recovery?.applied) });
+  return {
+    ...xls,
+    drive_file_id: uploaded.id,
+    excel_url: uploaded.webViewLink,
+  };
+}
+
+export async function generateFinalXls({ extraction, photos, publish = true }) {
   const templateFolderId = env('GOOGLE_DRIVE_TEMPLATES_FOLDER_ID') || env('BASES_FOLDER_ID');
-  const outputFolderId = env('GOOGLE_DRIVE_OUTPUT_FOLDER_ID') || env('CANDIDATES_TEMPLATES_FOLDER_ID');
-  if (!templateFolderId || !outputFolderId) throw new Error('Faltan IDs de carpetas Drive');
+  if (!templateFolderId) throw new Error('Falta carpeta Drive de plantillas');
   if (!extraction.template_filename) throw new Error('Extracción sin template_filename');
 
   console.log('[xls] start', { ot: extraction.ot, template: extraction.template_filename, recovered: Boolean(extraction.recovery?.applied) });
@@ -43,14 +59,11 @@ export async function generateFinalXls({ extraction, photos }) {
   addPhotos(workbook, photos);
 
   const outBuffer = await workbook.xlsx.writeBuffer();
-  const filename = `${extraction.ot || 'SIN_OT'}_${Date.now()}_GENERADO.xlsx`;
-  const uploaded = await uploadDriveFile({ buffer: outBuffer, filename, folderId: outputFolderId });
-  console.log('[xls] uploaded', { ot: extraction.ot, filename, driveFileId: uploaded.id, recovered: Boolean(extraction.recovery?.applied) });
-
-  return {
-    filename,
-    drive_file_id: uploaded.id,
-    excel_url: uploaded.webViewLink,
+  const xls = {
+    filename: `${extraction.ot || 'SIN_OT'}_${Date.now()}_GENERADO.xlsx`,
     buffer: Buffer.from(outBuffer),
   };
+
+  if (!publish) return xls;
+  return publishGeneratedXls({ xls, extraction });
 }
