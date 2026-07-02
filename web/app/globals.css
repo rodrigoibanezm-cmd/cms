@@ -143,6 +143,32 @@ h1 {
   font-size: 14px;
 }
 
+.viewSwitch {
+  background: white;
+  border: 1px solid #dfe7ef;
+  border-radius: 16px;
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+  padding: 6px;
+}
+
+.viewSwitch a {
+  border-radius: 12px;
+  color: #1769c2;
+  flex: 1;
+  font-size: 14px;
+  font-weight: 800;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.viewSwitch a.active {
+  background: #1769c2;
+  color: white;
+}
+
 .adminList {
   display: flex;
   flex-direction: column;
@@ -251,5 +277,50 @@ h1 {
   color: #1769c2;
   font-size: 14px;
   font-weight: 700;
+  text-decoration: none;
+}
+
+.adminTableWrap {
+  background: white;
+  border: 1px solid #dfe7ef;
+  border-radius: 18px;
+  overflow-x: auto;
+}
+
+.adminTable {
+  border-collapse: collapse;
+  min-width: 820px;
+  width: 100%;
+}
+
+.adminTable th,
+.adminTable td {
+  border-bottom: 1px solid #edf1f5;
+  font-size: 13px;
+  padding: 10px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.adminTable th {
+  color: #637083;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.templateCell {
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tableActions {
+  display: flex;
+  gap: 10px;
+}
+
+.tableActions a {
+  color: #1769c2;
+  font-weight: 800;
   text-decoration: none;
 }
