@@ -1,5 +1,5 @@
 # Flujo final
-
+res
 Este es el flujo operativo definitivo del MVP.
 
 ```text
