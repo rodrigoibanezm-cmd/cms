@@ -6,9 +6,16 @@ import { calcularConfianza, scoreToSemaforo } from '../../benchmark/lib/confiden
 import { decideMatch, matchTemplate, resolveFallbackEntry } from '../../benchmark/lib/catalog_matcher.js';
 import { parseModelJson } from '../../benchmark/lib/io.js';
 
+function safeFilePart(value) {
+  return String(value || 'SIN_OT')
+    .replace(/[^a-zA-Z0-9_-]/g, '_')
+    .replace(/^_+|_+$/g, '') || 'SIN_OT';
+}
+
 function saveJson(targetDir, ot, name, data) {
   fs.mkdirSync(targetDir, { recursive: true });
-  fs.writeFileSync(path.join(targetDir, `${ot || 'SIN_OT'}_${name}.json`), JSON.stringify(data, null, 2));
+  const filename = `${safeFilePart(ot)}_${safeFilePart(name)}.json`;
+  fs.writeFileSync(path.join(targetDir, filename), JSON.stringify(data, null, 2));
 }
 
 function buildPass2Prompt(template, checklist) {
