@@ -199,7 +199,7 @@ function fillHeaderByMap(sheet, data, map) {
 function fillHeader(sheet, data) {
   const top = { maxRow: 14 };
   setBesideLabel(sheet, ['OT', 'O.T', 'ORDEN DE TRABAJO'], data.ot, top);
-  setBesideLabel(sheet, ['TECNICO', 'TÉCNICO', 'MECÁNICO ESPECIALISTA'], data.tecnico, top);
+  setBesideLabel(sheet, ['MECÁNICO ESPECIALISTA', 'MECANICO ESPECIALISTA'], data.tecnico, top);
   setBesideLabel(sheet, ['CLIENTE'], data.cliente, top);
   setBesideLabel(sheet, ['AREA USUARIA', 'ÁREA USUARIA'], data.area_usuaria, top);
   setBesideLabel(sheet, ['ROTULO', 'RÓTULO'], data.rotulo, top);
@@ -265,23 +265,36 @@ function toolStatus(data) {
   return null;
 }
 
-function fillOperativo(sheet, data) {
-  const status = toolStatus(data);
-  if (!status) return;
-
+function findOperativoLabel(sheet) {
   let found = null;
   sheet.eachRow((row, rowNumber) => {
     if (found) return;
     row.eachCell((cell, colNumber) => {
-      const cellValue = norm(cellText(cell));
-      if (!found && cellValue === 'OPERATIVO') found = { row: rowNumber, col: colNumber };
+      if (!found && norm(cellText(cell)) === 'OPERATIVO') found = { row: rowNumber, col: colNumber };
     });
   });
+  return found;
+}
+
+function fillOperativo(sheet, data) {
+  const found = findOperativoLabel(sheet);
   if (!found) return;
 
-  sheet.getCell(found.row + 1, found.col).value = null;
-  sheet.getCell(found.row + 1, found.col + 1).value = null;
-  sheet.getCell(found.row + 1, status === 'NO_OPERATIVO' ? found.col + 1 : found.col).value = 'X';
+  const status = toolStatus(data);
+  const markRow = found.row + 1;
+  clearCell(sheet, sheet.getCell(markRow, found.col).address);
+  clearCell(sheet, sheet.getCell(markRow, found.col + 1).address);
+  if (status) {
+    const col = status === 'NO_OPERATIVO' ? found.col + 1 : found.col;
+    markCell(sheet, sheet.getCell(markRow, col).address);
+  }
+
+  if (text(data.prueba_funcionamiento)) {
+    setVisibleCell(sheet.getCell(markRow, found.col + 2), data.prueba_funcionamiento, {
+      vertical: 'top',
+      horizontal: 'left',
+    });
+  }
 }
 
 function dispositionFrom(data) {
@@ -323,15 +336,16 @@ function fillDisposition(sheet, data) {
       if (value.includes('MANTENCION')) cols.MANTENCION = colNumber;
       if (value.includes('DE BAJA')) cols['DE BAJA'] = colNumber;
     });
-    if (cols[target]) found = { row: rowNumber, col: cols[target] };
+    if (cols.REPARACION || cols.MANTENCION || cols['DE BAJA']) {
+      found = { row: rowNumber, cols };
+    }
   });
 
-  if (!found) return;
+  if (!found || !found.cols[target]) return;
   ['REPARACION', 'MANTENCION', 'DE BAJA'].forEach((key) => {
-    const label = key === target ? 'X' : null;
-    const offset = key === 'REPARACION' ? 0 : key === 'MANTENCION' ? 1 : 2;
-    sheet.getCell(found.row + 1, found.col + offset).value = label;
+    if (found.cols[key]) sheet.getCell(found.row + 1, found.cols[key]).value = null;
   });
+  sheet.getCell(found.row + 1, found.cols[target]).value = 'X';
 }
 
 function fillTextByMap(sheet, data, map) {
@@ -347,9 +361,9 @@ function fillTextByMap(sheet, data, map) {
 
 function fillTextSections(sheet, data) {
   setBelowLabel(sheet, ['INSPECCIÓN VISUAL', 'INSPECCION VISUAL'], data.inspeccion_visual);
+  fillOperativo(sheet, data);
   setBelowLabel(sheet, ['DESARME'], data.desarme);
   setBelowLabel(sheet, ['PROCEDIMIENTO'], data.procedimiento);
-  fillOperativo(sheet, data);
 }
 
 function findPartsTable(sheet) {
