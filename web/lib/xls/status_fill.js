@@ -5,7 +5,18 @@ export function toolStatus(data) {
   if (!value) return null;
   const bad = ['NO OPERATIVO', 'NO CUMPLE', 'FUGA', 'FALLA', 'MALO', 'MALA', 'DAÑO', 'DANO', 'DOBLADO', 'ROTO', 'ROTA', 'NO FUNCIONA'];
   if (bad.some((word) => value.includes(word))) return 'NO_OPERATIVO';
-  if (value.includes('CUMPLE') || value.includes('OPERATIVO')) return 'OPERATIVO';
+
+  const good = [
+    'CUMPLE',
+    'OPERATIVO',
+    'OPERA',
+    'FUNCIONA',
+    'FUNCIONAMIENTO CORRECTO',
+    'FORMA CORRECTA',
+    'CORRECTAMENTE',
+    'BUEN FUNCIONAMIENTO',
+  ];
+  if (good.some((word) => value.includes(word))) return 'OPERATIVO';
   return null;
 }
 
