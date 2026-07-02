@@ -14,16 +14,27 @@
   min-height: 760px;
 }
 
-.driveFrame,
-.xlsFrame {
+.driveFrame {
   border: 1px solid #dfe7ef;
   border-radius: 14px;
   height: 600px;
   width: 100%;
 }
 
-.xlsFrame {
+.xlsViewport {
+  border: 1px solid #dfe7ef;
+  border-radius: 14px;
   height: 690px;
+  overflow: auto;
+  width: 100%;
+}
+
+.xlsFrame {
+  border: 0;
+  height: 920px;
+  transform: scale(0.75);
+  transform-origin: top left;
+  width: 133%;
 }
 
 .imageStage {
@@ -106,9 +117,13 @@
   }
 
   .driveFrame,
-  .xlsFrame,
-  .imageStage {
+  .imageStage,
+  .xlsViewport {
     height: 440px;
+  }
+
+  .xlsFrame {
+    height: 590px;
   }
 
   .imageLens {
