@@ -175,7 +175,8 @@ h1 {
   gap: 14px;
 }
 
-.adminCard {
+.adminCard,
+.reviewBox {
   background: white;
   border: 1px solid #dfe7ef;
   border-radius: 22px;
@@ -250,12 +251,6 @@ h1 {
   font-size: 14px;
 }
 
-.adminTemplate {
-  color: #637083;
-  font-size: 13px;
-  margin: 14px 0 0;
-}
-
 .adminActions {
   align-items: center;
   display: flex;
@@ -267,6 +262,7 @@ h1 {
   background: #1769c2;
   border-radius: 14px;
   color: white;
+  display: inline-block;
   font-size: 14px;
   font-weight: 800;
   padding: 12px 14px;
@@ -289,7 +285,7 @@ h1 {
 
 .adminTable {
   border-collapse: collapse;
-  min-width: 820px;
+  min-width: 680px;
   width: 100%;
 }
 
@@ -308,12 +304,6 @@ h1 {
   font-weight: 800;
 }
 
-.templateCell {
-  max-width: 220px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .tableActions {
   display: flex;
   gap: 10px;
@@ -323,4 +313,118 @@ h1 {
   color: #1769c2;
   font-weight: 800;
   text-decoration: none;
+}
+
+.reviewScreen {
+  width: 100%;
+  max-width: 1280px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 24px 18px;
+}
+
+.reviewHeader {
+  margin-bottom: 16px;
+}
+
+.reviewHeader h1 {
+  margin-top: 10px;
+}
+
+.reviewMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.reviewMeta span {
+  background: white;
+  border: 1px solid #dfe7ef;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 8px 10px;
+}
+
+.reviewLayout {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.reviewColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.reviewBox h2 {
+  margin: 0 0 12px;
+}
+
+.reviewBox h3 {
+  font-size: 15px;
+  margin: 18px 0 8px;
+}
+
+.muted {
+  color: #637083;
+  font-size: 14px;
+}
+
+.fileRow {
+  align-items: center;
+  background: #f6f9fc;
+  border-radius: 12px;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  margin-top: 8px;
+  padding: 10px;
+}
+
+.fileRow span,
+.fileListSmall p {
+  color: #132033;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.fileRow a {
+  color: #1769c2;
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.xlsBox {
+  min-height: 180px;
+}
+
+.issueBox {
+  background: #f6f9fc;
+  border-radius: 12px;
+  margin-top: 8px;
+  padding: 10px;
+}
+
+.issueBox strong,
+.issueBox span {
+  display: block;
+  font-size: 13px;
+}
+
+.issueBox p,
+.eventList p {
+  color: #637083;
+  font-size: 13px;
+  margin: 6px 0 0;
+}
+
+@media (max-width: 900px) {
+  .reviewLayout {
+    grid-template-columns: 1fr;
+  }
 }
