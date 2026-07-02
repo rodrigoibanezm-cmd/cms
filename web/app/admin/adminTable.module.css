@@ -1,0 +1,50 @@
+.adminTableWrap {
+  background: white;
+  border: 1px solid #dfe7ef;
+  border-radius: 18px;
+  overflow-x: auto;
+}
+
+.adminTable {
+  border-collapse: collapse;
+  min-width: 680px;
+  width: 100%;
+}
+
+.adminTable th,
+.adminTable td {
+  border-bottom: 1px solid #edf1f5;
+  font-size: 13px;
+  padding: 10px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.adminTable th {
+  color: #637083;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.tableActions {
+  display: flex;
+  gap: 10px;
+}
+
+.tableActions a {
+  color: #1769c2;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.pill {
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 7px 10px;
+  white-space: nowrap;
+}
+
+.green { background: #e7f7ed; color: #176b36; }
+.yellow { background: #fff6db; color: #7a5800; }
+.red { background: #ffe7e7; color: #9c1f1f; }
