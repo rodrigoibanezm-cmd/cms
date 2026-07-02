@@ -2,13 +2,13 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 import { NextResponse } from 'next/server';
-import { runExtraction } from '../../../lib/process_pipeline.js';
-import { generateFinalXls } from '../../../lib/xls_generator.js';
 import { auditReport } from '../../../lib/audit/openai_auditor.js';
-import { mergeRecoveryPatch } from '../../../lib/recovery/merge_patch.js';
-import { runRecovery } from '../../../lib/recovery/recovery_runner.js';
+import { runExtraction } from '../../../lib/process_pipeline.js';
 import { addReportFile, createReport } from '../../../lib/report_store.js';
 import { markAudited, markExtracted, markReportError, markXlsGenerated } from '../../../lib/report_updates.js';
+import { mergeRecoveryPatch } from '../../../lib/recovery/merge_patch.js';
+import { runRecovery } from '../../../lib/recovery/recovery_runner.js';
+import { generateFinalXls, publishGeneratedXls } from '../../../lib/xls_generator.js';
 
 export const runtime = 'nodejs';
 
@@ -83,15 +83,19 @@ async function registerXls(reportId, xls) {
   });
 }
 
+async function publishFinalXls({ reportId, extraction, xls }) {
+  const published = await publishGeneratedXls({ xls, extraction });
+  await registerXls(reportId, published);
+  return published;
+}
+
 async function runAuditor({ reportImage, xls, extraction }) {
   return auditReport({ reportImage, xlsBuffer: xls.buffer, extraction });
 }
 
-async function generateAndAudit({ reportId, reportImage, extraction, photoPayload }) {
-  const xls = await generateFinalXls({ extraction, photos: photoPayload });
-  await registerXls(reportId, xls);
+async function generateAndAudit({ reportImage, extraction, photoPayload }) {
+  const xls = await generateFinalXls({ extraction, photos: photoPayload, publish: false });
   const audit = await runAuditor({ reportImage, xls, extraction });
-  await markAudited(reportId, audit);
   return { xls, audit };
 }
 
@@ -104,7 +108,6 @@ async function maybeRecover({ reportId, reportImage, extraction, photoPayload, a
   const recoveredExtraction = mergeRecoveryPatch(extraction, recovery.patch);
   await markExtracted(reportId, recoveredExtraction);
   const result = await generateAndAudit({
-    reportId,
     reportImage,
     extraction: recoveredExtraction,
     photoPayload,
@@ -157,7 +160,6 @@ export async function POST(request) {
     );
 
     let { xls, audit } = await generateAndAudit({
-      reportId: reportRow.id,
       reportImage,
       extraction,
       photoPayload,
@@ -174,6 +176,9 @@ export async function POST(request) {
     if (recovered) {
       ({ xls, audit, extraction, recovery } = recovered);
     }
+
+    await markAudited(reportRow.id, audit);
+    xls = await publishFinalXls({ reportId: reportRow.id, extraction, xls });
 
     return NextResponse.json({
       ok: true,
