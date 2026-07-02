@@ -9,6 +9,7 @@ export function parseAuditJson(raw) {
       internal_recovery: 'none',
       confidence: 0,
       issues: [{ field: 'auditor', severity: 'critical', reason: 'Respuesta no JSON.' }],
+      recovery_targets: [],
       patches: [],
       repair_prompt: null,
     };
@@ -28,9 +29,9 @@ function criticalAutoFieldSet(issues) {
 }
 
 function isLayoutPatch(patch) {
-  const text = `${patch?.field || ''} ${patch?.instruction || ''}`.toLowerCase();
+  const value = `${patch?.field || ''} ${patch?.instruction || ''}`.toLowerCase();
   return ['layout', 'celda', 'formato', 'posición', 'posicion', 'estética', 'estetica']
-    .some((word) => text.includes(word));
+    .some((word) => value.includes(word));
 }
 
 function hasCriticalIssueForPatch(field, issues) {
@@ -52,9 +53,18 @@ function normalizePatches(audit, decision, issues) {
     : [];
 }
 
-function normalizeInternalRecovery(decision, patches) {
+function normalizeRecoveryTargets(audit, decision, patches) {
+  if (decision !== 'recover') return [];
+  const direct = Array.isArray(audit?.recovery_targets) ? audit.recovery_targets : [];
+  const fromPatches = patches.map((patch) => patch.field);
+  return [...new Set([...direct, ...fromPatches]
+    .map((field) => String(field || '').trim())
+    .filter((field) => AUTO_RECOVERY_FIELD_SET.has(field)))];
+}
+
+function normalizeInternalRecovery(decision, recoveryTargets) {
   if (decision !== 'recover') return 'none';
-  return patches.length ? 'recover_auto' : 'recover_manual';
+  return recoveryTargets.length ? 'recover_auto' : 'recover_manual';
 }
 
 export function normalizeAudit(audit) {
@@ -63,12 +73,14 @@ export function normalizeAudit(audit) {
     : 'review';
   const issues = Array.isArray(audit?.issues) ? audit.issues : [];
   const patches = normalizePatches(audit, decision, issues);
-  const internal_recovery = normalizeInternalRecovery(decision, patches);
+  const recovery_targets = normalizeRecoveryTargets(audit, decision, patches);
+  const internal_recovery = normalizeInternalRecovery(decision, recovery_targets);
   return {
     decision,
     internal_recovery,
     confidence: Number(audit?.confidence || 0),
     issues,
+    recovery_targets,
     patches,
     repair_prompt: internal_recovery === 'recover_auto' ? audit?.repair_prompt || null : null,
   };
@@ -81,6 +93,7 @@ export function logAuditDone({ audit, extraction }) {
     decision: audit.decision,
     internal_recovery: audit.internal_recovery,
     issues: audit.issues.length,
+    recovery_targets: audit.recovery_targets || [],
     patches: audit.patches.map((patch) => patch.field),
     model: audit.model,
   });
