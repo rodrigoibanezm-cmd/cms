@@ -32,14 +32,26 @@ function filterAllowed(patches) {
 
 export async function runRecovery({ image, extraction, audit }) {
   const patches = filterAllowed(audit?.patches);
-  if (audit?.decision !== 'recover' || !patches.length) return null;
+  if (audit?.decision !== 'recover' || !patches.length) {
+    console.log('[recovery] skipped', {
+      ot: extraction?.ot,
+      decision: audit?.decision,
+      requested: audit?.patches?.map((patch) => patch.field) || [],
+    });
+    return null;
+  }
 
+  console.log('[recovery] start', { ot: extraction?.ot, fields: patches.map((patch) => patch.field) });
   const prompt = buildRecoveryPrompt({ extraction, patches });
   const raw = await callGemini({ model: 'gemini-2.5-pro', prompt, image });
   const parsed = parseModelJson(raw);
   const patch = parsed?.patch && typeof parsed.patch === 'object' ? parsed.patch : null;
-  if (!patch || Array.isArray(patch)) return null;
+  if (!patch || Array.isArray(patch)) {
+    console.log('[recovery] no_patch', { ot: extraction?.ot });
+    return null;
+  }
 
+  console.log('[recovery] patch', { ot: extraction?.ot, fields: Object.keys(patch) });
   return {
     patch,
     source_audit: audit,
