@@ -62,8 +62,10 @@ function isJsonPatchField(field) {
   return Boolean(value) && !value.includes(' ') && !value.includes('-');
 }
 
-function hasRecoveryPatch(audit) {
-  return (audit?.patches || []).some((patch) => isJsonPatchField(patch?.field));
+function hasRecoveryTarget(audit) {
+  const targets = audit?.recovery_targets || [];
+  const patches = audit?.patches || [];
+  return targets.some(isJsonPatchField) || patches.some((patch) => isJsonPatchField(patch?.field));
 }
 
 async function registerXls(reportId, xls) {
@@ -106,7 +108,7 @@ async function generateAndAudit({ reportImage, extraction, photoPayload }) {
 }
 
 async function maybeRecover({ reportId, reportImage, extraction, photoPayload, audit }) {
-  if (!hasRecoveryPatch(audit)) return null;
+  if (!hasRecoveryTarget(audit)) return null;
 
   const recovery = await runRecovery({ image: reportImage, extraction, audit });
   if (!recovery?.patch) return null;
