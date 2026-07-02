@@ -3,24 +3,26 @@ import { AUTO_RECOVERY_FIELD_SET } from '../audit/audit_fields.js';
 import { callGemini } from '../benchmark/gemini_client.js';
 import { buildRecoveryPrompt } from './recovery_prompt.js';
 
-function filterAllowed(items) {
-  return (items || []).filter((item) => AUTO_RECOVERY_FIELD_SET.has(String(item?.field || '')));
+function filterTargets(items) {
+  return [...new Set((items || [])
+    .map((item) => String(item?.field || item || '').trim())
+    .filter((field) => AUTO_RECOVERY_FIELD_SET.has(field)))];
 }
 
 export async function runRecovery({ image, extraction, audit }) {
-  const patches = filterAllowed(audit?.patches);
-  if (audit?.decision !== 'recover' || audit?.internal_recovery !== 'recover_auto' || !patches.length) {
+  const targets = filterTargets(audit?.recovery_targets?.length ? audit.recovery_targets : audit?.patches);
+  if (audit?.decision !== 'recover' || audit?.internal_recovery !== 'recover_auto' || !targets.length) {
     console.log('[recovery] skipped', {
       ot: extraction?.ot,
       decision: audit?.decision,
       internal_recovery: audit?.internal_recovery,
-      requested: audit?.patches?.map((item) => item.field) || [],
+      requested: targets,
     });
     return null;
   }
 
-  console.log('[recovery] start', { ot: extraction?.ot, fields: patches.map((item) => item.field) });
-  const prompt = buildRecoveryPrompt({ extraction, patches });
+  console.log('[recovery] start', { ot: extraction?.ot, fields: targets });
+  const prompt = buildRecoveryPrompt({ extraction, targets, audit });
   const raw = await callGemini({ model: 'gemini-2.5-pro', prompt, image });
   const parsed = parseModelJson(raw);
   const patch = parsed?.patch && typeof parsed.patch === 'object' ? parsed.patch : null;
@@ -29,9 +31,13 @@ export async function runRecovery({ image, extraction, audit }) {
     return null;
   }
 
-  console.log('[recovery] patch', { ot: extraction?.ot, fields: Object.keys(patch) });
+  const safePatch = Object.fromEntries(Object.entries(patch).filter(([field]) => targets.includes(field)));
+  if (!Object.keys(safePatch).length) return null;
+
+  console.log('[recovery] patch', { ot: extraction?.ot, fields: Object.keys(safePatch) });
   return {
-    patch,
+    patch: safePatch,
+    targets,
     source_audit: audit,
   };
 }
