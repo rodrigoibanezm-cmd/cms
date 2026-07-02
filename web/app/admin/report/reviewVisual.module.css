@@ -40,15 +40,14 @@
 
 .imageLens {
   background-repeat: no-repeat;
-  background-size: 260%;
   border: 3px solid white;
   border-radius: 999px;
   box-shadow: 0 10px 28px rgba(20, 35, 55, 0.32);
-  height: 170px;
+  height: 190px;
   pointer-events: none;
   position: absolute;
   transform: translate(-50%, -50%);
-  width: 170px;
+  width: 190px;
   z-index: 2;
 }
 
