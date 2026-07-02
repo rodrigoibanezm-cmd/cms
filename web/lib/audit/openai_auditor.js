@@ -10,9 +10,17 @@ function parseJson(raw) {
       decision: 'review',
       confidence: 0,
       issues: [{ field: 'auditor', severity: 'critical', reason: 'Respuesta no JSON.' }],
+      patches: [],
       repair_prompt: null,
     };
   }
+}
+
+function normalizePatches(audit, decision) {
+  if (decision !== 'recover') return [];
+  return Array.isArray(audit?.patches)
+    ? audit.patches.filter((p) => p?.field && p?.instruction)
+    : [];
 }
 
 function normalizeAudit(audit) {
@@ -23,6 +31,7 @@ function normalizeAudit(audit) {
     decision,
     confidence: Number(audit?.confidence || 0),
     issues: Array.isArray(audit?.issues) ? audit.issues : [],
+    patches: normalizePatches(audit, decision),
     repair_prompt: decision === 'recover' ? audit?.repair_prompt || null : null,
   };
 }
