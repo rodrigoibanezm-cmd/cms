@@ -1,41 +1,19 @@
-import { callGemini } from '../benchmark/gemini_client.js';
 import { parseModelJson } from '../../../benchmark/lib/io.js';
+import { AUDIT_PATCH_FIELD_SET } from '../audit/audit_fields.js';
+import { callGemini } from '../benchmark/gemini_client.js';
 import { buildRecoveryPrompt } from './recovery_prompt.js';
 
-const ALLOWED_FIELDS = new Set([
-  'ot',
-  'cliente',
-  'area_usuaria',
-  'rotulo',
-  'fecha_evaluacion',
-  'tecnico',
-  'marca',
-  'modelo',
-  'serie',
-  'capacidad',
-  'cuadrante',
-  'tipo',
-  'tipo_torque',
-  'accionamiento',
-  'estado_herramienta',
-  'estado_final',
-  'estado_operativo',
-  'inspeccion_visual',
-  'prueba_funcionamiento',
-  'desarme',
-  'procedimiento',
-]);
-
 function filterAllowed(patches) {
-  return (patches || []).filter((item) => ALLOWED_FIELDS.has(String(item?.field || '')));
+  return (patches || []).filter((item) => AUDIT_PATCH_FIELD_SET.has(String(item?.field || '')));
 }
 
 export async function runRecovery({ image, extraction, audit }) {
   const patches = filterAllowed(audit?.patches);
-  if (audit?.decision !== 'recover' || !patches.length) {
+  if (audit?.decision !== 'recover' || audit?.internal_recovery !== 'recover_auto' || !patches.length) {
     console.log('[recovery] skipped', {
       ot: extraction?.ot,
       decision: audit?.decision,
+      internal_recovery: audit?.internal_recovery,
       requested: audit?.patches?.map((patch) => patch.field) || [],
     });
     return null;
