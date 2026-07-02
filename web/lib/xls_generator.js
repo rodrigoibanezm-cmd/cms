@@ -457,5 +457,6 @@ export async function generateFinalXls({ extraction, photos }) {
     filename,
     drive_file_id: uploaded.id,
     excel_url: uploaded.webViewLink,
+    buffer: Buffer.from(outBuffer),
   };
 }
