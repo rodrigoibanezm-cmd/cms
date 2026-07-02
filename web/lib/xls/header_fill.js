@@ -10,7 +10,7 @@ function fillTechnician(sheet, value) {
 
     row.eachCell((cell, colNumber) => {
       const label = norm(cellText(cell));
-      if (label.includes('MECANICO')) nameLabelCol = colNumber;
+      if (label.includes('MECANICO') || label === 'TECNICO') nameLabelCol = colNumber;
       if (label.includes('ESPECIALISTA')) roleLabelCol = colNumber;
     });
 
@@ -26,7 +26,7 @@ function fillTechnician(sheet, value) {
     }
   }
 
-  setBesideLabel(sheet, ['MECÁNICO ESPECIALISTA', 'MECANICO ESPECIALISTA'], value, { maxRow: 14 });
+  setBesideLabel(sheet, ['MECÁNICO ESPECIALISTA', 'MECANICO ESPECIALISTA', 'TÉCNICO', 'TECNICO'], value, { maxRow: 14 });
 }
 
 export function fillHeaderByMap(sheet, data, map) {
@@ -42,7 +42,7 @@ export function fillHeader(sheet, data) {
   setBesideLabel(sheet, ['CLIENTE'], data.cliente, top);
   setBesideLabel(sheet, ['AREA USUARIA', 'ÁREA USUARIA'], data.area_usuaria, top);
   setBesideLabel(sheet, ['ROTULO', 'RÓTULO'], data.rotulo, top);
-  setBesideLabel(sheet, ['FECHA EVALUACION', 'FECHA DE EVALUACION'], data.fecha_evaluacion, top);
+  setBesideLabel(sheet, ['FECHA', 'FECHA EVALUACION', 'FECHA DE EVALUACION'], data.fecha_evaluacion, top);
   setBesideLabel(sheet, ['MARCA'], data.marca, top);
   setBesideLabel(sheet, ['MODELO'], data.modelo, top);
   setBesideLabel(sheet, ['SERIE'], data.serie, top);
