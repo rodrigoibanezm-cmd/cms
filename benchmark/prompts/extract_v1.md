@@ -30,6 +30,7 @@ Extrae exactamente esta estructura:
 
   "inspeccion_visual": null,
   "prueba_funcionamiento": null,
+  "estado_operativo": null,
   "desarme": null,
   "procedimiento": null,
 
@@ -60,8 +61,10 @@ INSTRUCCIONES POR CAMPO:
 "inspeccion": array de objetos con todos los ítems de la tabla de inspección del formulario:
   [{ "item": "NOMBRE DEL ITEM", "resultado": "CUMPLE|NO CUMPLE|NO APLICA", "observacion": null }]
 
-"prueba_funcionamiento": si hay checkbox Operativo/No Operativo, indica "OPERATIVO" o "NO OPERATIVO".
-  Si hay texto adicional, agrégalo después separado por " - ".
+"estado_operativo": campo CRÍTICO. Lee solo la marca de las casillas Operativo / No Operativo.
+  Devuelve exactamente "OPERATIVO" o "NO_OPERATIVO". Si ambas o ninguna están marcadas, devuelve null.
+
+"prueba_funcionamiento": transcribe solo el texto manuscrito de la sección PRUEBA DE FUNCIONAMIENTO.
 
 "repuestos": array de objetos:
   [{ "numero_parte": null, "cantidad": null, "descripcion": null }]
