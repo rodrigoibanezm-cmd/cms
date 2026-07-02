@@ -43,7 +43,9 @@ function fillTipoLlave(sheet, data) {
 }
 
 function fillAccionamiento(sheet, data) {
-  const value = data.especificos?.accionamiento || data.accionamiento;
+  const value = data.especificos?.accionamiento
+    || data.especificos?.tipo_accionamiento
+    || data.accionamiento;
   markOptionNearLabel(sheet, value);
 }
 
