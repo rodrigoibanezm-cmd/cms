@@ -68,12 +68,12 @@ export async function downloadDriveFile(fileId) {
   return Buffer.from(res.data);
 }
 
-export async function uploadDriveFile({ buffer, filename, folderId }) {
+export async function uploadDriveFile({ buffer, filename, folderId, mimeType }) {
   const drive = driveClient();
   const res = await drive.files.create({
     requestBody: { name: filename, parents: [folderId] },
     media: {
-      mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      mimeType: mimeType || 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       body: Readable.from(Buffer.from(buffer)),
     },
     fields: 'id,webViewLink',
