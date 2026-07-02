@@ -1,9 +1,21 @@
 import { cellText, clearCell, markCell, norm, setVisibleCell, text } from './cell_utils.js';
 
+function normalizedExplicitStatus(data) {
+  const raw = norm(data.estado_operativo || '');
+  if (raw === 'NO OPERATIVO' || raw === 'NO_OPERATIVO') return 'NO_OPERATIVO';
+  if (raw === 'OPERATIVO') return 'OPERATIVO';
+  return null;
+}
+
 export function toolStatus(data) {
-  const value = norm(`${data.prueba_funcionamiento || ''} ${data.estado_operativo || ''}`);
+  const explicit = normalizedExplicitStatus(data);
+  if (explicit) return explicit;
+
+  const value = norm(data.prueba_funcionamiento || '');
   if (!value) return null;
-  const bad = ['NO OPERATIVO', 'NO CUMPLE', 'FUGA', 'FALLA', 'MALO', 'MALA', 'DAÑO', 'DANO', 'DOBLADO', 'ROTO', 'ROTA', 'NO FUNCIONA'];
+
+  if (value.includes('NO OPERATIVO')) return 'NO_OPERATIVO';
+  const bad = ['NO CUMPLE', 'FUGA', 'FALLA', 'MALO', 'MALA', 'DAÑO', 'DANO', 'DOBLADO', 'ROTO', 'ROTA', 'NO FUNCIONA'];
   if (bad.some((word) => value.includes(word))) return 'NO_OPERATIVO';
 
   const good = [
