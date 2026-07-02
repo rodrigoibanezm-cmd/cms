@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { query } from '../../../../lib/db.js';
-import { ensureReportSchema } from '../../../../lib/report_store.js';
+import { query } from '../../../../../lib/db.js';
+import { ensureReportSchema } from '../../../../../lib/report_store.js';
 
 export const runtime = 'nodejs';
 
