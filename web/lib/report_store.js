@@ -3,7 +3,7 @@ import { query } from './db.js';
 
 let ready;
 
-async function ensureSchema() {
+export async function ensureReportSchema() {
   if (ready) return ready;
   ready = query(`
     CREATE TABLE IF NOT EXISTS reports (
@@ -63,7 +63,7 @@ async function ensureSchema() {
 }
 
 export async function addReportEvent(reportId, event, payload = {}) {
-  await ensureSchema();
+  await ensureReportSchema();
   await query(
     `INSERT INTO report_events (id, report_id, event, payload_json)
      VALUES ($1, $2, $3, $4)`,
@@ -72,7 +72,7 @@ export async function addReportEvent(reportId, event, payload = {}) {
 }
 
 export async function createReport({ ot, sourceName }) {
-  await ensureSchema();
+  await ensureReportSchema();
   const id = randomUUID();
   const res = await query(
     `INSERT INTO reports (id, ot, source_name)
@@ -84,7 +84,7 @@ export async function createReport({ ot, sourceName }) {
 }
 
 export async function addReportFile(reportId, file) {
-  await ensureSchema();
+  await ensureReportSchema();
   await query(
     `INSERT INTO report_files
      (id, report_id, kind, filename, mime_type, drive_file_id, url)
