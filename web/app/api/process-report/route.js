@@ -5,7 +5,6 @@ import { NextResponse } from 'next/server';
 import { runExtraction } from '../../../lib/process_pipeline.js';
 import { generateFinalXls } from '../../../lib/xls_generator.js';
 import { auditReport } from '../../../lib/audit/openai_auditor.js';
-import { readDriveXls } from '../../../lib/audit/xls_drive.js';
 import { addReportFile, createReport } from '../../../lib/report_store.js';
 import { markAudited, markExtracted, markReportError, markXlsGenerated } from '../../../lib/report_updates.js';
 
@@ -63,8 +62,7 @@ async function registerInputFiles(reportId, report, photos) {
 }
 
 async function runAuditor({ reportImage, xls, extraction }) {
-  const xlsBuffer = await readDriveXls(xls.drive_file_id);
-  return auditReport({ reportImage, xlsBuffer, extraction });
+  return auditReport({ reportImage, xlsBuffer: xls.buffer, extraction });
 }
 
 export async function POST(request) {
