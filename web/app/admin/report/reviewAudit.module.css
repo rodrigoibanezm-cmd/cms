@@ -1,0 +1,48 @@
+.reviewBox {
+  background: white;
+  border: 1px solid #dfe7ef;
+  border-radius: 22px;
+  box-shadow: 0 12px 30px rgba(31, 51, 79, 0.08);
+  padding: 16px;
+}
+
+.reviewBox h2 {
+  margin: 0 0 12px;
+}
+
+.muted {
+  color: #637083;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.collapseBox {
+  border-top: 1px solid #edf1f5;
+  margin-top: 14px;
+  padding-top: 12px;
+}
+
+.collapseBox summary {
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.issueBox {
+  background: #f6f9fc;
+  border-radius: 12px;
+  margin-top: 8px;
+  padding: 10px;
+}
+
+.issueBox strong,
+.issueBox span {
+  display: block;
+  font-size: 13px;
+}
+
+.issueBox p,
+.eventList p {
+  color: #637083;
+  font-size: 13px;
+  margin: 6px 0 0;
+}
