@@ -317,7 +317,7 @@ h1 {
 
 .reviewScreen {
   width: 100%;
-  max-width: 1280px;
+  max-width: 1500px;
   min-height: 100vh;
   margin: 0 auto;
   padding: 24px 18px;
@@ -347,17 +347,28 @@ h1 {
   padding: 8px 10px;
 }
 
-.reviewLayout {
+.reviewMainGrid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 14px;
+}
+
+.reviewSecondaryGrid {
   display: grid;
   gap: 14px;
   grid-template-columns: 1fr 1fr 1fr;
 }
 
-.reviewColumn {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  min-width: 0;
+.visualBox {
+  min-height: 680px;
+}
+
+.driveFrame {
+  border: 1px solid #dfe7ef;
+  border-radius: 14px;
+  height: 600px;
+  width: 100%;
 }
 
 .reviewBox h2 {
@@ -372,6 +383,7 @@ h1 {
 .muted {
   color: #637083;
   font-size: 14px;
+  overflow-wrap: anywhere;
 }
 
 .fileRow {
@@ -399,36 +411,6 @@ h1 {
   text-decoration: none;
 }
 
-.previewBox {
-  min-height: 180px;
-}
-
-.previewLink {
-  align-items: center;
-  background: #f6f9fc;
-  border: 1px dashed #b8c8dc;
-  border-radius: 16px;
-  color: #1769c2;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  min-height: 130px;
-  justify-content: center;
-  padding: 18px;
-  text-align: center;
-  text-decoration: none;
-}
-
-.previewLink span {
-  font-size: 17px;
-  font-weight: 800;
-}
-
-.previewLink small {
-  color: #637083;
-  overflow-wrap: anywhere;
-}
-
 .collapseBox {
   border-top: 1px solid #edf1f5;
   margin-top: 14px;
@@ -438,10 +420,6 @@ h1 {
 .collapseBox summary {
   cursor: pointer;
   font-weight: 800;
-}
-
-.xlsBox {
-  min-height: 180px;
 }
 
 .issueBox {
@@ -465,7 +443,16 @@ h1 {
 }
 
 @media (max-width: 900px) {
-  .reviewLayout {
+  .reviewMainGrid,
+  .reviewSecondaryGrid {
     grid-template-columns: 1fr;
+  }
+
+  .visualBox {
+    min-height: 520px;
+  }
+
+  .driveFrame {
+    height: 440px;
   }
 }
