@@ -18,11 +18,15 @@ function parseJson(raw) {
   }
 }
 
+function criticalIssues(issues) {
+  return (issues || []).filter((issue) => issue?.severity === 'critical');
+}
+
 function criticalFieldSet(issues) {
   return new Set(
-    (issues || [])
-      .filter((issue) => issue?.severity === 'critical')
+    criticalIssues(issues)
       .map((issue) => String(issue?.field || '').trim())
+      .filter((field) => AUDIT_PATCH_FIELD_SET.has(field))
   );
 }
 
@@ -32,24 +36,28 @@ function isLayoutPatch(patch) {
     .some((word) => text.includes(word));
 }
 
+function hasCriticalIssueForPatch(field, issues) {
+  const fields = criticalFieldSet(issues);
+  if (fields.size > 0) return fields.has(field);
+  return criticalIssues(issues).length > 0;
+}
+
 function normalizePatches(audit, decision, issues) {
   if (decision !== 'recover') return [];
-  const critical = criticalFieldSet(issues);
   return Array.isArray(audit?.patches)
     ? audit.patches.filter((patch) => {
       const field = String(patch?.field || '').trim();
       return AUDIT_PATCH_FIELD_SET.has(field)
-        && critical.has(field)
+        && hasCriticalIssueForPatch(field, issues)
         && patch?.instruction
         && !isLayoutPatch(patch);
     })
     : [];
 }
 
-function normalizeInternalRecovery(audit, decision, patches) {
+function normalizeInternalRecovery(decision, patches) {
   if (decision !== 'recover') return 'none';
-  if (patches.length) return 'recover_auto';
-  return audit?.internal_recovery === 'recover_manual' ? 'recover_manual' : 'recover_manual';
+  return patches.length ? 'recover_auto' : 'recover_manual';
 }
 
 function normalizeAudit(audit) {
@@ -58,7 +66,7 @@ function normalizeAudit(audit) {
     : 'review';
   const issues = Array.isArray(audit?.issues) ? audit.issues : [];
   const patches = normalizePatches(audit, decision, issues);
-  const internal_recovery = normalizeInternalRecovery(audit, decision, patches);
+  const internal_recovery = normalizeInternalRecovery(decision, patches);
   return {
     decision,
     internal_recovery,
