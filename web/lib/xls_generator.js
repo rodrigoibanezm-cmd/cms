@@ -21,6 +21,8 @@ export async function generateFinalXls({ extraction, photos }) {
   if (!templateFolderId || !outputFolderId) throw new Error('Faltan IDs de carpetas Drive');
   if (!extraction.template_filename) throw new Error('Extracción sin template_filename');
 
+  console.log('[xls] start', { ot: extraction.ot, template: extraction.template_filename, recovered: Boolean(extraction.recovery?.applied) });
+
   const drive = driveClient();
   const template = await findFileByName(drive, templateFolderId, extraction.template_filename);
   if (!template) throw new Error(`Plantilla no encontrada: ${extraction.template_filename}`);
@@ -43,6 +45,7 @@ export async function generateFinalXls({ extraction, photos }) {
   const outBuffer = await workbook.xlsx.writeBuffer();
   const filename = `${extraction.ot || 'SIN_OT'}_${Date.now()}_GENERADO.xlsx`;
   const uploaded = await uploadDriveFile({ buffer: outBuffer, filename, folderId: outputFolderId });
+  console.log('[xls] uploaded', { ot: extraction.ot, filename, driveFileId: uploaded.id, recovered: Boolean(extraction.recovery?.applied) });
 
   return {
     filename,
