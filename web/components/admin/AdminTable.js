@@ -1,6 +1,7 @@
+import styles from '../../app/admin/adminTable.module.css';
 import { reviewLabel, semaforoClass } from './admin_helpers.js';
 
-export default function AdminTable({ reports, styles }) {
+export default function AdminTable({ reports }) {
   return (
     <div className={styles.adminTableWrap}>
       <table className={styles.adminTable}>
