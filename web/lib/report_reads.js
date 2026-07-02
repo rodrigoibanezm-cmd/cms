@@ -1,0 +1,20 @@
+import { query } from './db.js';
+
+const reportsTable = 'reports';
+const filesTable = 'report_files';
+const eventsTable = 'report_events';
+
+export async function listReports() {
+  const sql = `SELECT * FROM ${reportsTable} ORDER BY created_at DESC LIMIT 200`;
+  return (await query(sql)).rows;
+}
+
+export async function getReport(id) {
+  const reportSql = `SELECT * FROM ${reportsTable} WHERE id=$1`;
+  const filesSql = `SELECT * FROM ${filesTable} WHERE report_id=$1 ORDER BY created_at`;
+  const eventsSql = `SELECT * FROM ${eventsTable} WHERE report_id=$1 ORDER BY created_at`;
+  const report = await query(reportSql, [id]);
+  const files = await query(filesSql, [id]);
+  const events = await query(eventsSql, [id]);
+  return { report: report.rows[0] || null, files: files.rows, events: events.rows };
+}
