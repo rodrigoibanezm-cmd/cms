@@ -9,6 +9,7 @@ import { markAudited, markExtracted, markReportError, markXlsGenerated } from '.
 import { mergeRecoveryPatch } from '../../../lib/recovery/merge_patch.js';
 import { runRecovery } from '../../../lib/recovery/recovery_runner.js';
 import { generateFinalXls, publishGeneratedXls } from '../../../lib/xls_generator.js';
+import { publishXlsPreview } from '../../../lib/xls_preview.js';
 
 export const runtime = 'nodejs';
 
@@ -83,10 +84,22 @@ async function registerXls(reportId, xls) {
   });
 }
 
+async function registerXlsPreview(reportId, preview) {
+  await addReportFile(reportId, {
+    kind: 'generated_xls_preview',
+    filename: preview.filename,
+    mimeType: preview.mime_type,
+    driveFileId: preview.drive_file_id,
+    url: preview.url,
+  });
+}
+
 async function publishFinalXls({ reportId, extraction, xls }) {
   const published = await publishGeneratedXls({ xls, extraction });
   await registerXls(reportId, published);
-  return published;
+  const preview = await publishXlsPreview({ xls, extraction });
+  await registerXlsPreview(reportId, preview);
+  return { ...published, preview_url: preview.url };
 }
 
 async function runAuditor({ reportImage, xls, extraction }) {
@@ -190,6 +203,7 @@ export async function POST(request) {
       confidence_score: extraction.confidence_score,
       template_filename: extraction.template_filename,
       excel_url: xls.excel_url,
+      xls_preview_url: xls.preview_url,
       drive_file_id: xls.drive_file_id,
       audit,
       recovery,
