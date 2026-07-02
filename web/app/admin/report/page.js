@@ -29,6 +29,22 @@ function FileList({ title, files }) {
   );
 }
 
+function PreviewBox({ title, files }) {
+  const file = files[files.length - 1];
+  return (
+    <section className="reviewBox previewBox">
+      <h2>{title}</h2>
+      {!file ? <p className="muted">Sin preview generado.</p> : null}
+      {file?.url ? (
+        <a className="previewLink" href={file.url} target="_blank">
+          <span>Ver imagen del XLS</span>
+          <small>{file.filename}</small>
+        </a>
+      ) : null}
+    </section>
+  );
+}
+
 function AuditPanel({ audit, events }) {
   const issues = auditIssues(audit);
   const patches = auditPatches(audit);
@@ -37,33 +53,37 @@ function AuditPanel({ audit, events }) {
     <section className="reviewBox">
       <h2>Auditor</h2>
       <p><strong>Decisión:</strong> {audit?.decision || 'Sin auditoría'}</p>
-      <p><strong>Modelo:</strong> {audit?.model || '-'}</p>
 
-      <h3>Issues</h3>
-      {!issues.length ? <p className="muted">Sin issues registrados.</p> : null}
-      {issues.map((issue, index) => (
-        <div className="issueBox" key={`${issue.field}-${index}`}>
-          <strong>{issue.field || 'Campo'}</strong>
-          <p>{issue.reason || '-'}</p>
-          <span>{issue.severity || '-'}</span>
-        </div>
-      ))}
-
-      <h3>Correcciones sugeridas</h3>
-      {!patches.length ? <p className="muted">Sin parches sugeridos.</p> : null}
-      {patches.map((patch, index) => (
-        <div className="issueBox" key={`${patch.field}-${index}`}>
-          <strong>{patch.field || 'Campo'}</strong>
-          <p>{patch.instruction || patch.value || '-'}</p>
-        </div>
-      ))}
-
-      <h3>Historial</h3>
-      <div className="eventList">
-        {events.slice().reverse().map((event, index) => (
-          <p key={`${event.event}-${index}`}>{event.event}</p>
+      <details className="collapseBox">
+        <summary>Issues y sugerencias</summary>
+        <h3>Issues</h3>
+        {!issues.length ? <p className="muted">Sin issues registrados.</p> : null}
+        {issues.map((issue, index) => (
+          <div className="issueBox" key={`${issue.field}-${index}`}>
+            <strong>{issue.field || 'Campo'}</strong>
+            <p>{issue.reason || '-'}</p>
+            <span>{issue.severity || '-'}</span>
+          </div>
         ))}
-      </div>
+
+        <h3>Correcciones sugeridas</h3>
+        {!patches.length ? <p className="muted">Sin parches sugeridos.</p> : null}
+        {patches.map((patch, index) => (
+          <div className="issueBox" key={`${patch.field}-${index}`}>
+            <strong>{patch.field || 'Campo'}</strong>
+            <p>{patch.instruction || patch.value || '-'}</p>
+          </div>
+        ))}
+      </details>
+
+      <details className="collapseBox">
+        <summary>Historial técnico</summary>
+        <div className="eventList">
+          {events.slice().reverse().map((event, index) => (
+            <p key={`${event.event}-${index}`}>{event.event}</p>
+          ))}
+        </div>
+      </details>
     </section>
   );
 }
@@ -86,6 +106,7 @@ export default async function AdminReportPage({ searchParams }) {
   const originals = filesOf(data.files, 'original_report');
   const photos = filesOf(data.files, 'detail_photo');
   const xlsFiles = filesOf(data.files, 'generated_xls');
+  const previews = filesOf(data.files, 'generated_xls_preview');
 
   return (
     <main className="reviewScreen">
@@ -106,10 +127,11 @@ export default async function AdminReportPage({ searchParams }) {
         </div>
 
         <div className="reviewColumn">
+          <PreviewBox title="Imagen del XLS" files={previews} />
           <section className="reviewBox xlsBox">
             <h2>XLS generado</h2>
             {report.excel_url ? (
-              <a className="adminButton" href={report.excel_url} target="_blank">Abrir XLS generado</a>
+              <a className="adminButton" href={report.excel_url} target="_blank">Abrir XLS</a>
             ) : <p className="muted">XLS pendiente.</p>}
             <div className="fileListSmall">
               {xlsFiles.map((file) => <p key={file.id}>{file.filename}</p>)}
