@@ -1,9 +1,13 @@
 import { AuditPanel, CriticalBox } from '../../../components/admin/ReviewAuditPanel.js';
-import { getReviewFiles, VisualFile, XlsPanel } from '../../../components/admin/ReviewVisualPanel.js';
+import { VisualFile, XlsPanel } from '../../../components/admin/ReviewVisualPanel.js';
 import { getReport } from '../../../lib/report_reads.js';
 import styles from './review.module.css';
 
 export const dynamic = 'force-dynamic';
+
+function filesOf(files, kind) {
+  return files.filter((file) => file.kind === kind);
+}
 
 export default async function AdminReportPage({ searchParams }) {
   const params = await searchParams;
@@ -20,7 +24,9 @@ export default async function AdminReportPage({ searchParams }) {
     );
   }
 
-  const { originals, photos, xlsFiles } = getReviewFiles(data.files);
+  const originals = filesOf(data.files, 'original_report');
+  const photos = filesOf(data.files, 'detail_photo');
+  const xlsFiles = filesOf(data.files, 'generated_xls');
 
   return (
     <main className={styles.reviewScreen}>
