@@ -1,5 +1,20 @@
 import { cellText, norm, setVisibleCell, text } from './cell_utils.js';
 
+function looseKey(value) {
+  return norm(value)
+    .replace(/PRICIPAL/g, 'PRINCIPAL')
+    .replace(/SISTEMADE/g, 'SISTEMA DE')
+    .replace(/SISTEMAS/g, 'SISTEMA')
+    .replace(/[^A-Z0-9]/g, '');
+}
+
+function sameInspectionItem(a, b) {
+  const left = looseKey(a);
+  const right = looseKey(b);
+  if (!left || !right) return false;
+  return left === right || left.includes(right) || right.includes(left);
+}
+
 function findHeaderColumns(sheet) {
   let cols = null;
   sheet.eachRow((row, rowNumber) => {
@@ -25,8 +40,8 @@ function findInspectionRow(sheet, cols, item) {
   let targetRow = null;
   sheet.eachRow((row, rowNumber) => {
     if (rowNumber <= cols.row || targetRow) return;
-    const label = norm(cellText(row.getCell(cols.item)));
-    if (label && label === norm(item.item)) targetRow = rowNumber;
+    const label = cellText(row.getCell(cols.item));
+    if (sameInspectionItem(label, item.item)) targetRow = rowNumber;
   });
   return targetRow;
 }
