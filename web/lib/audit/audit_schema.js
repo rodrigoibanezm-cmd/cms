@@ -9,6 +9,12 @@ export function auditJsonSchemaText() {
         reason: 'string',
       },
     ],
+    patches: [
+      {
+        field: 'string',
+        instruction: 'string',
+      },
+    ],
     repair_prompt: 'string|null',
   }, null, 2);
 }
