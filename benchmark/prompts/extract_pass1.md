@@ -39,6 +39,7 @@ Devuelve exactamente esta estructura:
 
   "inspeccion_visual": null,
   "prueba_funcionamiento": null,
+  "estado_operativo": null,
   "desarme": null,
   "procedimiento": null,
 
@@ -61,6 +62,16 @@ CERTIFICACION
 Lee cuidadosamente cuál casilla tiene la X. La marca puede estar impresa en una fila distinta a la fila con las etiquetas de encabezado — identifica la columna correcta por su posición horizontal (misma columna que la etiqueta), no por cercanía vertical al texto.
 
 Si la casilla marcada no corresponde exactamente a ninguna de estas cuatro palabras, transcribe literalmente el texto de la casilla marcada en vez de dejar el campo en null.
+
+"estado_operativo"
+Este campo es CRÍTICO. Debe leerse desde las casillas Operativo / No Operativo de PRUEBA DE FUNCIONAMIENTO.
+Devuelve exactamente "OPERATIVO" o "NO_OPERATIVO" según la casilla marcada.
+No uses el texto manuscrito para decidir este campo: solo la marca de la casilla.
+Si ambas casillas están marcadas o ninguna está marcada, devuelve null.
+
+"prueba_funcionamiento"
+Transcribe solo el texto manuscrito de la sección PRUEBA DE FUNCIONAMIENTO.
+No metas aquí el valor OPERATIVO/NO_OPERATIVO; eso va separado en "estado_operativo".
 
 "cliente"
 El valor más frecuente en estos formularios es "FINNING ESCONDIDA". Si la escritura es ambigua pero se asemeja a este valor, úsalo. No inventes ni aproximes a nombres de cliente distintos salvo que estén escritos con total claridad y sean inequívocamente diferentes.
