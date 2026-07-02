@@ -36,8 +36,6 @@ function AdminCards({ reports }) {
             <div><span>XLS</span><strong>{report.excel_url ? 'Listo' : 'Pendiente'}</strong></div>
           </div>
 
-          <p className="adminTemplate">{report.template_filename || 'Sin template'}</p>
-
           <div className="adminActions">
             <a className="adminButton" href={`/admin/report?id=${report.id}`}>Ver revisión</a>
             {report.excel_url ? (
@@ -62,7 +60,6 @@ function AdminTable({ reports }) {
             <th>Revisión</th>
             <th>Conf.</th>
             <th>XLS</th>
-            <th>Template</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -75,7 +72,6 @@ function AdminTable({ reports }) {
               <td>{reviewLabel(report.review_status)}</td>
               <td>{report.confidence_score ?? '-'}</td>
               <td>{report.excel_url ? 'Listo' : 'Pendiente'}</td>
-              <td className="templateCell">{report.template_filename || '-'}</td>
               <td className="tableActions">
                 <a href={`/admin/report?id=${report.id}`}>Revisar</a>
                 {report.excel_url ? <a href={report.excel_url} target="_blank">XLS</a> : null}
