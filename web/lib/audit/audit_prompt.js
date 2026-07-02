@@ -1,5 +1,5 @@
 import { auditContextText } from './audit_context.js';
-import { auditPatchFieldsText } from './audit_fields.js';
+import { auditPatchFieldsText, autoRecoveryFieldsText } from './audit_fields.js';
 import { auditGuardrailsText } from './audit_guardrails.js';
 import { auditJsonSchemaText } from './audit_schema.js';
 
@@ -33,6 +33,10 @@ Diferencias menores que NO deben bloquear:
 
 const PATCH_RULES = `Reglas estrictas para audit.patches:
 - field debe ser uno de: ${auditPatchFieldsText()}.
+- Solo recovery_auto puede traer patches.
+- recovery_auto solo está permitido para estos fields cortos: ${autoRecoveryFieldsText()}.
+- Nunca auto-parches textos largos: inspeccion_visual, prueba_funcionamiento, desarme, procedimiento, repuestos.
+- Para textos largos críticos, usa decision=recover, internal_recovery=recover_manual, patches=[].
 - Solo incluye patches con issue critical asociado al mismo field.
 - Solo incluye patches cuando la instrucción contiene el valor correcto explícito y visible.
 - No incluyas patches de layout, celda, formato o estética Excel.
