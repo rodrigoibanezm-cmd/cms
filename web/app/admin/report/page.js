@@ -10,74 +10,76 @@ function auditIssues(audit) {
   return audit?.issues || [];
 }
 
-function auditPatches(audit) {
-  return audit?.patches || [];
+function VisualFile({ title, files }) {
+  const file = files[files.length - 1];
+  return (
+    <section className="reviewBox visualBox">
+      <h2>{title}</h2>
+      {!file ? <p className="muted">Sin archivo visible.</p> : null}
+      {file?.url ? (
+        <iframe className="driveFrame" src={file.url} title={title} />
+      ) : (
+        file ? <p className="muted">{file.filename}</p> : null
+      )}
+      {files.length > 1 ? (
+        <details className="collapseBox">
+          <summary>Ver otros archivos</summary>
+          {files.map((item) => <p className="muted" key={item.id}>{item.filename}</p>)}
+        </details>
+      ) : null}
+    </section>
+  );
 }
 
-function FileList({ title, files }) {
+function XlsPanel({ report, files }) {
+  const xls = files[files.length - 1];
+  return (
+    <section className="reviewBox visualBox">
+      <h2>XLS generado</h2>
+      {report.excel_url ? (
+        <iframe className="driveFrame" src={report.excel_url} title="XLS generado" />
+      ) : <p className="muted">XLS pendiente.</p>}
+      <div className="adminActions">
+        {report.excel_url ? <a className="adminButton" href={report.excel_url} target="_blank">Abrir XLS</a> : null}
+      </div>
+      {xls ? <p className="muted">{xls.filename}</p> : null}
+    </section>
+  );
+}
+
+function CriticalBox({ audit }) {
+  const issues = auditIssues(audit);
   return (
     <section className="reviewBox">
-      <h2>{title}</h2>
-      {!files.length ? <p className="muted">Sin archivos registrados.</p> : null}
-      {files.map((file) => (
-        <div className="fileRow" key={file.id}>
-          <span>{file.filename || file.kind}</span>
-          {file.url ? <a href={file.url} target="_blank">Abrir</a> : null}
+      <h2>Revisar especialmente</h2>
+      {!issues.length ? <p className="muted">Sin alertas del auditor.</p> : null}
+      {issues.slice(0, 5).map((issue, index) => (
+        <div className="issueBox" key={`${issue.field}-${index}`}>
+          <strong>{issue.field || 'Campo'}</strong>
+          <p>{issue.reason || '-'}</p>
         </div>
       ))}
     </section>
   );
 }
 
-function PreviewBox({ title, files }) {
-  const file = files[files.length - 1];
-  return (
-    <section className="reviewBox previewBox">
-      <h2>{title}</h2>
-      {!file ? <p className="muted">Sin preview generado.</p> : null}
-      {file?.url ? (
-        <a className="previewLink" href={file.url} target="_blank">
-          <span>Ver imagen del XLS</span>
-          <small>{file.filename}</small>
-        </a>
-      ) : null}
-    </section>
-  );
-}
-
 function AuditPanel({ audit, events }) {
-  const issues = auditIssues(audit);
-  const patches = auditPatches(audit);
-
   return (
     <section className="reviewBox">
-      <h2>Auditor</h2>
-      <p><strong>Decisión:</strong> {audit?.decision || 'Sin auditoría'}</p>
-
+      <h2>Información técnica</h2>
       <details className="collapseBox">
-        <summary>Issues y sugerencias</summary>
-        <h3>Issues</h3>
-        {!issues.length ? <p className="muted">Sin issues registrados.</p> : null}
-        {issues.map((issue, index) => (
+        <summary>Auditor IA</summary>
+        <p><strong>Decisión:</strong> {audit?.decision || 'Sin auditoría'}</p>
+        {(audit?.issues || []).map((issue, index) => (
           <div className="issueBox" key={`${issue.field}-${index}`}>
             <strong>{issue.field || 'Campo'}</strong>
             <p>{issue.reason || '-'}</p>
             <span>{issue.severity || '-'}</span>
           </div>
         ))}
-
-        <h3>Correcciones sugeridas</h3>
-        {!patches.length ? <p className="muted">Sin parches sugeridos.</p> : null}
-        {patches.map((patch, index) => (
-          <div className="issueBox" key={`${patch.field}-${index}`}>
-            <strong>{patch.field || 'Campo'}</strong>
-            <p>{patch.instruction || patch.value || '-'}</p>
-          </div>
-        ))}
       </details>
-
       <details className="collapseBox">
-        <summary>Historial técnico</summary>
+        <summary>Historial</summary>
         <div className="eventList">
           {events.slice().reverse().map((event, index) => (
             <p key={`${event.event}-${index}`}>{event.event}</p>
@@ -106,7 +108,6 @@ export default async function AdminReportPage({ searchParams }) {
   const originals = filesOf(data.files, 'original_report');
   const photos = filesOf(data.files, 'detail_photo');
   const xlsFiles = filesOf(data.files, 'generated_xls');
-  const previews = filesOf(data.files, 'generated_xls_preview');
 
   return (
     <main className="reviewScreen">
@@ -120,28 +121,15 @@ export default async function AdminReportPage({ searchParams }) {
         </div>
       </header>
 
-      <div className="reviewLayout">
-        <div className="reviewColumn">
-          <FileList title="Original" files={originals} />
-          <FileList title="Fotos detalle" files={photos} />
-        </div>
+      <div className="reviewMainGrid">
+        <VisualFile title="Informe original" files={originals} />
+        <XlsPanel report={report} files={xlsFiles} />
+      </div>
 
-        <div className="reviewColumn">
-          <PreviewBox title="Imagen del XLS" files={previews} />
-          <section className="reviewBox xlsBox">
-            <h2>XLS generado</h2>
-            {report.excel_url ? (
-              <a className="adminButton" href={report.excel_url} target="_blank">Abrir XLS</a>
-            ) : <p className="muted">XLS pendiente.</p>}
-            <div className="fileListSmall">
-              {xlsFiles.map((file) => <p key={file.id}>{file.filename}</p>)}
-            </div>
-          </section>
-        </div>
-
-        <div className="reviewColumn">
-          <AuditPanel audit={data.audit} events={data.events || []} />
-        </div>
+      <div className="reviewSecondaryGrid">
+        <VisualFile title="Fotos detalle" files={photos} />
+        <CriticalBox audit={data.audit} />
+        <AuditPanel audit={data.audit} events={data.events || []} />
       </div>
     </main>
   );
