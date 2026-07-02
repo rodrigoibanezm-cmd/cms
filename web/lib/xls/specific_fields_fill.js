@@ -11,20 +11,39 @@ const OPTION_LABELS = {
   INALAMBRICA: ['INALÁMBRICA', 'INALAMBRICA'],
 };
 
+const OPTION_GROUPS = [
+  ['CLICK', 'RELOJ', 'DIGITAL'],
+  ['TORQUE', 'IMPACTO'],
+  ['NEUMATICA', 'ELECTRICA', 'INALAMBRICA'],
+];
+
 function optionLabels(value) {
   return OPTION_LABELS[norm(value)] || [value];
 }
 
-function markOptionNearLabel(sheet, value) {
-  if (!text(value)) return;
-  const found = findCellByLabel(sheet, optionLabels(value), { exactOnly: true });
-  if (!found) return;
-
+function markTargetForLabel(sheet, found) {
   const sameCell = sheet.getCell(found.row, found.col);
   const below = sheet.getCell(found.row + 1, found.col);
-  const target = text(cellText(below)) ? sameCell : below;
+  return text(cellText(below)) ? sameCell : below;
+}
 
-  writableCell(target).value = 'X';
+function clearOptionGroup(sheet, value) {
+  const key = norm(value);
+  const group = OPTION_GROUPS.find((items) => items.includes(key));
+  if (!group) return;
+
+  group.forEach((option) => {
+    const found = findCellByLabel(sheet, optionLabels(option), { exactOnly: true });
+    if (found) writableCell(markTargetForLabel(sheet, found)).value = null;
+  });
+}
+
+function markOptionNearLabel(sheet, value) {
+  if (!text(value)) return;
+  clearOptionGroup(sheet, value);
+  const found = findCellByLabel(sheet, optionLabels(value), { exactOnly: true });
+  if (!found) return;
+  writableCell(markTargetForLabel(sheet, found)).value = 'X';
 }
 
 function fillQuadrante(sheet, data) {
@@ -38,7 +57,10 @@ function fillTipoTorque(sheet, data) {
 }
 
 function fillTipoLlave(sheet, data) {
-  const value = data.especificos?.tipo || data.tipo;
+  const value = data.especificos?.tipo_llave
+    || data.especificos?.tipo
+    || data.tipo_llave
+    || data.tipo;
   markOptionNearLabel(sheet, value);
 }
 
