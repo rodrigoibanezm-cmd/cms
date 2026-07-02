@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { auditReport } from '../../../lib/audit/openai_auditor.js';
+import { auditWithGemini } from '../../../lib/audit/gemini_auditor.js';
 
 export const runtime = 'nodejs';
 
@@ -25,7 +25,7 @@ export async function POST(request) {
     const reportBuffer = await fileToBuffer(report);
     const xlsBuffer = await fileToBuffer(xls);
     const extraction = JSON.parse(extractionRaw);
-    const audit = await auditReport({
+    const audit = await auditWithGemini({
       reportImage: asImage(reportBuffer, report.type),
       xlsBuffer,
       extraction,
