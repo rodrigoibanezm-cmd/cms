@@ -20,6 +20,15 @@ export async function markXlsGenerated(id, xls) {
   await addReportEvent(id, 'xls_generated', { filename: xls.filename });
 }
 
+export async function markAudited(id, audit) {
+  const status = audit?.decision === 'approve' ? 'approved'
+    : audit?.decision === 'recover' ? 'recover'
+      : 'review';
+  const sql = `UPDATE ${table} SET review_status=$2, updated_at=now() WHERE id=$1`;
+  await query(sql, [id, status]);
+  await addReportEvent(id, 'audit_completed', audit || {});
+}
+
 export async function markReportError(id, err) {
   const message = err?.message || String(err);
   const sql = `UPDATE ${table} SET status='error', error_message=$2,
