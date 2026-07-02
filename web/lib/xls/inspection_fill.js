@@ -8,6 +8,15 @@ function looseKey(value) {
     .replace(/[^A-Z0-9]/g, '');
 }
 
+function normalizeItem(item) {
+  return {
+    item: item?.item || item?.descripcion || item?.description || '',
+    resultado: norm(item?.resultado || item?.estado || item?.result || ''),
+    observacion: item?.observacion || item?.observación || item?.observation || null,
+    reparacion: item?.reparacion || item?.reparación || null,
+  };
+}
+
 function sameInspectionItem(a, b) {
   const left = looseKey(a);
   const right = looseKey(b);
@@ -63,6 +72,7 @@ function resultColumn(cols, resultado) {
 }
 
 function fillRow(sheet, row, cols, item) {
+  if (!item.item || !item.resultado) return;
   clearResultCells(sheet, row, cols);
   writableCell(sheet.getCell(row, resultColumn(cols, item.resultado))).value = 'X';
   if (cols.obs && text(item.observacion)) setVisibleCell(sheet.getCell(row, cols.obs), item.observacion);
@@ -75,7 +85,8 @@ export function fillInspection(sheet, inspeccion = []) {
 
   let fallbackRow = cols.row + 1;
 
-  for (const item of inspeccion) {
+  for (const rawItem of inspeccion) {
+    const item = normalizeItem(rawItem);
     let targetRow = findInspectionRow(sheet, cols, item);
 
     if (!targetRow) {
