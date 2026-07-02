@@ -2,7 +2,7 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 import { NextResponse } from 'next/server';
-import { auditReport } from '../../../lib/audit/openai_auditor.js';
+import { auditWithGemini } from '../../../lib/audit/gemini_auditor.js';
 import { runExtraction } from '../../../lib/process_pipeline.js';
 import { addReportFile, createReport } from '../../../lib/report_store.js';
 import { markAudited, markExtracted, markReportError, markXlsGenerated } from '../../../lib/report_updates.js';
@@ -90,7 +90,7 @@ async function publishFinalXls({ reportId, extraction, xls }) {
 }
 
 async function runAuditor({ reportImage, xls, extraction }) {
-  return auditReport({ reportImage, xlsBuffer: xls.buffer, extraction });
+  return auditWithGemini({ reportImage, xlsBuffer: xls.buffer, extraction });
 }
 
 async function generateAndAudit({ reportImage, extraction, photoPayload }) {
