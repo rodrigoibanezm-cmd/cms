@@ -1,4 +1,4 @@
-import { cellText, norm, setVisibleCell, text } from './cell_utils.js';
+import { cellText, norm, setVisibleCell, text, writableCell } from './cell_utils.js';
 
 function looseKey(value) {
   return norm(value)
@@ -29,9 +29,7 @@ function findHeaderColumns(sheet) {
       if (!found.obs && value.includes('OBSERV')) found.obs = colNumber;
       if (!found.reparacion && value.includes('REPAR')) found.reparacion = colNumber;
     });
-    if (found.item && found.cumple && found.noCumple && found.noAplica) {
-      cols = { row: rowNumber, ...found };
-    }
+    if (found.item && found.cumple && found.noCumple && found.noAplica) cols = { row: rowNumber, ...found };
   });
   return cols;
 }
@@ -40,8 +38,7 @@ function findInspectionRow(sheet, cols, item) {
   let targetRow = null;
   sheet.eachRow((row, rowNumber) => {
     if (rowNumber <= cols.row || targetRow) return;
-    const label = cellText(row.getCell(cols.item));
-    if (sameInspectionItem(label, item.item)) targetRow = rowNumber;
+    if (sameInspectionItem(cellText(row.getCell(cols.item)), item.item)) targetRow = rowNumber;
   });
   return targetRow;
 }
@@ -51,6 +48,25 @@ function findNextEmptyInspectionRow(sheet, cols, startRow) {
     if (!text(cellText(sheet.getCell(row, cols.item)))) return row;
   }
   return null;
+}
+
+function clearResultCells(sheet, row, cols) {
+  [cols.cumple, cols.noCumple, cols.noAplica].forEach((col) => {
+    writableCell(sheet.getCell(row, col)).value = null;
+  });
+}
+
+function resultColumn(cols, resultado) {
+  if (resultado === 'CUMPLE') return cols.cumple;
+  if (resultado === 'NO CUMPLE') return cols.noCumple;
+  return cols.noAplica;
+}
+
+function fillRow(sheet, row, cols, item) {
+  clearResultCells(sheet, row, cols);
+  writableCell(sheet.getCell(row, resultColumn(cols, item.resultado))).value = 'X';
+  if (cols.obs && text(item.observacion)) setVisibleCell(sheet.getCell(row, cols.obs), item.observacion);
+  if (cols.reparacion && text(item.reparacion)) setVisibleCell(sheet.getCell(row, cols.reparacion), item.reparacion);
 }
 
 export function fillInspection(sheet, inspeccion = []) {
@@ -69,15 +85,6 @@ export function fillInspection(sheet, inspeccion = []) {
     }
 
     fallbackRow = Math.max(fallbackRow, targetRow + 1);
-
-    const markCol = item.resultado === 'CUMPLE'
-      ? cols.cumple
-      : item.resultado === 'NO CUMPLE'
-        ? cols.noCumple
-        : cols.noAplica;
-
-    sheet.getCell(targetRow, markCol).value = 'X';
-    if (cols.obs && text(item.observacion)) setVisibleCell(sheet.getCell(targetRow, cols.obs), item.observacion);
-    if (cols.reparacion && text(item.reparacion)) setVisibleCell(sheet.getCell(targetRow, cols.reparacion), item.reparacion);
+    fillRow(sheet, targetRow, cols, item);
   }
 }
