@@ -4,6 +4,8 @@ import path from 'path';
 import { NextResponse } from 'next/server';
 import { runExtraction } from '../../../lib/process_pipeline.js';
 import { generateFinalXls } from '../../../lib/xls_generator.js';
+import { addReportFile, createReport } from '../../../lib/report_store.js';
+import { markExtracted, markReportError, markXlsGenerated } from '../../../lib/report_updates.js';
 
 export const runtime = 'nodejs';
 
@@ -36,9 +38,7 @@ function colorFrom(semaforo) {
 }
 
 function requireImage(file) {
-  if (!file?.type?.startsWith('image/')) {
-    throw new Error('El informe debe subirse como imagen.');
-  }
+  if (!file?.type?.startsWith('image/')) throw new Error('El informe debe subirse como imagen.');
 }
 
 function otFromFilename(filename) {
@@ -46,7 +46,22 @@ function otFromFilename(filename) {
   return match?.[1] || '';
 }
 
+async function registerInputFiles(reportId, report, photos) {
+  await addReportFile(reportId, {
+    kind: 'original_report',
+    filename: report.name || 'informe',
+    mimeType: report.type || 'image/jpeg',
+  });
+
+  await Promise.all(photos.map((file) => addReportFile(reportId, {
+    kind: 'detail_photo',
+    filename: file.name || 'foto.jpg',
+    mimeType: file.type || 'image/jpeg',
+  })));
+}
+
 export async function POST(request) {
+  let reportRow = null;
   try {
     const form = await request.formData();
     const report = form.get('report');
@@ -60,13 +75,14 @@ export async function POST(request) {
     }
 
     requireImage(report);
-
-    const reportBuffer = await fileToBuffer(report);
     const sourceName = report.name || 'informe';
     const userOt = String(form.get('ot') || '').trim();
     const otHint = userOt || otFromFilename(sourceName);
-    const targetDir = path.join(os.tmpdir(), 'cms-extractions', otHint || `tmp-${Date.now()}`);
+    reportRow = await createReport({ ot: otHint, sourceName });
+    await registerInputFiles(reportRow.id, report, photos);
 
+    const reportBuffer = await fileToBuffer(report);
+    const targetDir = path.join(os.tmpdir(), 'cms-extractions', otHint || reportRow.id);
     const extraction = await runExtraction({
       image: asImage(reportBuffer, report.type),
       otHint,
@@ -76,6 +92,7 @@ export async function POST(request) {
       promptPass2Template: readText('benchmark/prompts/extract_pass2.md'),
       catalog: readJson('benchmark/catalog/family_catalog.json'),
     });
+    await markExtracted(reportRow.id, extraction);
 
     const photoPayload = await Promise.all(
       photos.map(async (file, index) => ({
@@ -86,9 +103,18 @@ export async function POST(request) {
     );
 
     const xls = await generateFinalXls({ extraction, photos: photoPayload });
+    await markXlsGenerated(reportRow.id, xls);
+    await addReportFile(reportRow.id, {
+      kind: 'generated_xls',
+      filename: xls.filename,
+      mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      driveFileId: xls.drive_file_id,
+      url: xls.excel_url,
+    });
 
     return NextResponse.json({
       ok: true,
+      report_id: reportRow.id,
       color: colorFrom(extraction.semaforo),
       message: `Informe procesado. Excel generado: ${xls.filename}`,
       ot: extraction.ot,
@@ -100,6 +126,7 @@ export async function POST(request) {
     });
   } catch (err) {
     console.error(err);
+    if (reportRow?.id) await markReportError(reportRow.id, err).catch(console.error);
     return NextResponse.json(
       { ok: false, color: 'red', message: err.message || 'Error procesando informe.' },
       { status: 500 }
