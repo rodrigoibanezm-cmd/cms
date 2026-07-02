@@ -2,12 +2,12 @@
 const styles = {
   green: ['🟢', 'Informe recibido'],
   yellow: ['🟡', 'Informe recibido'],
-  red: ['🔴', 'Tomar otra foto'],
+  red: ['🔴', 'Informe enviado a revisión'],
 };
 
 function messageFor(status) {
   if (status.color === 'red') {
-    return status.message || 'No se pudo validar el informe. Toma otra foto completa y legible.';
+    return 'El informe fue procesado y quedó para revisión de administración.';
   }
   return 'Informe enviado correctamente. Será revisado por administración.';
 }
