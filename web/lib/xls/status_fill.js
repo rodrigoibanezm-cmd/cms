@@ -70,34 +70,40 @@ export function fillOperativo(sheet, data) {
   }
 }
 
-export function dispositionFrom(data) {
+export function dispositionTargets(data) {
   const structured = norm(`${data.estado_herramienta || ''} ${data.estado_final || ''}`);
-  if (structured.includes('BAJA')) return 'DE BAJA';
-  if (structured.includes('REPAR')) return 'REPARACION';
-  if (structured.includes('MANT') || structured.includes('M.P') || structured.includes('CALIB')) return 'MANTENCION';
+  const targets = [];
+  if (structured.includes('REPAR')) targets.push('REPARACION');
+  if (structured.includes('MANT') || structured.includes('M.P') || structured.includes('CALIB')) targets.push('MANTENCION');
+  if (structured.includes('BAJA')) targets.push('DE BAJA');
+  if (targets.length) return targets;
 
   const fallback = norm(data.procedimiento || '');
-  if (fallback.includes('BAJA')) return 'DE BAJA';
-  if (fallback.includes('REPAR')) return 'REPARACION';
-  if (fallback.includes('MANT') || fallback.includes('M.P') || fallback.includes('CALIB')) return 'MANTENCION';
-  return null;
+  if (fallback.includes('REPAR')) targets.push('REPARACION');
+  if (fallback.includes('MANT') || fallback.includes('M.P') || fallback.includes('CALIB')) targets.push('MANTENCION');
+  if (fallback.includes('BAJA')) targets.push('DE BAJA');
+  return targets;
+}
+
+export function dispositionFrom(data) {
+  return dispositionTargets(data)[0] || null;
 }
 
 export function fillDispositionByMap(sheet, data, map) {
-  const target = dispositionFrom(data);
-  if (!target || !map?.status) return false;
+  const targets = dispositionTargets(data);
+  if (!targets.length || !map?.status) return false;
   clearCell(sheet, map.status.reparacion);
   clearCell(sheet, map.status.mantencion);
   clearCell(sheet, map.status.de_baja);
-  if (target === 'REPARACION') markCell(sheet, map.status.reparacion);
-  if (target === 'MANTENCION') markCell(sheet, map.status.mantencion);
-  if (target === 'DE BAJA') markCell(sheet, map.status.de_baja);
+  if (targets.includes('REPARACION')) markCell(sheet, map.status.reparacion);
+  if (targets.includes('MANTENCION')) markCell(sheet, map.status.mantencion);
+  if (targets.includes('DE BAJA')) markCell(sheet, map.status.de_baja);
   return true;
 }
 
 export function fillDisposition(sheet, data) {
-  const target = dispositionFrom(data);
-  if (!target) return;
+  const targets = dispositionTargets(data);
+  if (!targets.length) return;
 
   let found = null;
   sheet.eachRow((row, rowNumber) => {
@@ -114,9 +120,11 @@ export function fillDisposition(sheet, data) {
     }
   });
 
-  if (!found || !found.cols[target]) return;
+  if (!found) return;
   ['REPARACION', 'MANTENCION', 'DE BAJA'].forEach((key) => {
     if (found.cols[key]) sheet.getCell(found.row + 1, found.cols[key]).value = null;
   });
-  sheet.getCell(found.row + 1, found.cols[target]).value = 'X';
+  targets.forEach((target) => {
+    if (found.cols[target]) sheet.getCell(found.row + 1, found.cols[target]).value = 'X';
+  });
 }
