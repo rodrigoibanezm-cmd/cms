@@ -1,9 +1,23 @@
 import { cellText, findCellByLabel, norm, setBesideLabel, text, writableCell } from './cell_utils.js';
 
-function markOptionNearLabel(sheet, labels, value) {
+const OPTION_LABELS = {
+  CLICK: ['CLICK'],
+  RELOJ: ['RELOJ'],
+  DIGITAL: ['DIGITAL'],
+  TORQUE: ['TORQUE'],
+  IMPACTO: ['IMPACTO'],
+  NEUMATICA: ['NEUMÁTICA', 'NEUMATICA'],
+  ELECTRICA: ['ELÉCTRICA', 'ELECTRICA'],
+  INALAMBRICA: ['INALÁMBRICA', 'INALAMBRICA'],
+};
+
+function optionLabels(value) {
+  return OPTION_LABELS[norm(value)] || [value];
+}
+
+function markOptionNearLabel(sheet, value) {
   if (!text(value)) return;
-  const wanted = norm(value);
-  const found = findCellByLabel(sheet, labels, { exactOnly: true });
+  const found = findCellByLabel(sheet, optionLabels(value), { exactOnly: true });
   if (!found) return;
 
   const sameCell = sheet.getCell(found.row, found.col);
@@ -20,17 +34,17 @@ function fillQuadrante(sheet, data) {
 
 function fillTipoTorque(sheet, data) {
   const value = data.especificos?.tipo_torque || data.tipo_torque;
-  markOptionNearLabel(sheet, ['CLICK', 'RELOJ', 'DIGITAL'], value);
+  markOptionNearLabel(sheet, value);
 }
 
 function fillTipoLlave(sheet, data) {
   const value = data.especificos?.tipo || data.tipo;
-  markOptionNearLabel(sheet, ['TORQUE', 'IMPACTO'], value);
+  markOptionNearLabel(sheet, value);
 }
 
 function fillAccionamiento(sheet, data) {
   const value = data.especificos?.accionamiento || data.accionamiento;
-  markOptionNearLabel(sheet, ['NEUMÁTICA', 'NEUMATICA', 'ELÉCTRICA', 'ELECTRICA', 'INALÁMBRICA', 'INALAMBRICA'], value);
+  markOptionNearLabel(sheet, value);
 }
 
 export function fillSpecificFields(sheet, data) {
