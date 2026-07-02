@@ -1,5 +1,5 @@
 # Flujo final
-resto, como
+resto, como deplot!!
 Este es el flujo operativo definitivo del MVP.
 
 ```text
