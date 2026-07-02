@@ -98,7 +98,9 @@ export function XlsPanel({ report, files }) {
     <section className={`${styles.reviewBox} ${styles.visualBox} ${styles.xlsBox}`}>
       <h2>XLS generado</h2>
       {frameUrl ? (
-        <iframe className={styles.xlsFrame} src={frameUrl} title="XLS generado" />
+        <div className={styles.xlsViewport}>
+          <iframe className={styles.xlsFrame} src={frameUrl} title="XLS generado" />
+        </div>
       ) : <p className={styles.muted}>XLS pendiente.</p>}
       <div className={styles.adminActions}>
         {report.excel_url ? <a className={styles.adminButton} href={report.excel_url} target="_blank">Abrir XLS</a> : null}
