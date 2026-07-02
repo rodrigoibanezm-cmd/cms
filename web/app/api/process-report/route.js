@@ -5,6 +5,8 @@ import { NextResponse } from 'next/server';
 import { runExtraction } from '../../../lib/process_pipeline.js';
 import { generateFinalXls } from '../../../lib/xls_generator.js';
 import { auditReport } from '../../../lib/audit/openai_auditor.js';
+import { mergeRecoveryPatch } from '../../../lib/recovery/merge_patch.js';
+import { runRecovery } from '../../../lib/recovery/recovery_runner.js';
 import { addReportFile, createReport } from '../../../lib/report_store.js';
 import { markAudited, markExtracted, markReportError, markXlsGenerated } from '../../../lib/report_updates.js';
 
@@ -61,8 +63,43 @@ async function registerInputFiles(reportId, report, photos) {
   })));
 }
 
+async function registerXls(reportId, xls) {
+  await markXlsGenerated(reportId, xls);
+  await addReportFile(reportId, {
+    kind: 'generated_xls',
+    filename: xls.filename,
+    mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    driveFileId: xls.drive_file_id,
+    url: xls.excel_url,
+  });
+}
+
 async function runAuditor({ reportImage, xls, extraction }) {
   return auditReport({ reportImage, xlsBuffer: xls.buffer, extraction });
+}
+
+async function generateAndAudit({ reportId, reportImage, extraction, photoPayload }) {
+  const xls = await generateFinalXls({ extraction, photos: photoPayload });
+  await registerXls(reportId, xls);
+  const audit = await runAuditor({ reportImage, xls, extraction });
+  await markAudited(reportId, audit);
+  return { xls, audit };
+}
+
+async function maybeRecover({ reportId, reportImage, extraction, photoPayload, audit }) {
+  const recovery = await runRecovery({ image: reportImage, extraction, audit });
+  if (!recovery?.patch) return null;
+
+  const recoveredExtraction = mergeRecoveryPatch(extraction, recovery.patch);
+  await markExtracted(reportId, recoveredExtraction);
+  const result = await generateAndAudit({
+    reportId,
+    reportImage,
+    extraction: recoveredExtraction,
+    photoPayload,
+  });
+
+  return { ...result, extraction: recoveredExtraction, recovery };
 }
 
 export async function POST(request) {
@@ -89,7 +126,7 @@ export async function POST(request) {
     const reportBuffer = await fileToBuffer(report);
     const reportImage = asImage(reportBuffer, report.type);
     const targetDir = path.join(os.tmpdir(), 'cms-extractions', otHint || reportRow.id);
-    const extraction = await runExtraction({
+    let extraction = await runExtraction({
       image: reportImage,
       otHint,
       sourceName,
@@ -108,18 +145,24 @@ export async function POST(request) {
       }))
     );
 
-    const xls = await generateFinalXls({ extraction, photos: photoPayload });
-    await markXlsGenerated(reportRow.id, xls);
-    await addReportFile(reportRow.id, {
-      kind: 'generated_xls',
-      filename: xls.filename,
-      mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      driveFileId: xls.drive_file_id,
-      url: xls.excel_url,
+    let { xls, audit } = await generateAndAudit({
+      reportId: reportRow.id,
+      reportImage,
+      extraction,
+      photoPayload,
     });
+    let recovery = null;
 
-    const audit = await runAuditor({ reportImage, xls, extraction });
-    await markAudited(reportRow.id, audit);
+    const recovered = await maybeRecover({
+      reportId: reportRow.id,
+      reportImage,
+      extraction,
+      photoPayload,
+      audit,
+    });
+    if (recovered) {
+      ({ xls, audit, extraction, recovery } = recovered);
+    }
 
     return NextResponse.json({
       ok: true,
@@ -133,6 +176,7 @@ export async function POST(request) {
       excel_url: xls.excel_url,
       drive_file_id: xls.drive_file_id,
       audit,
+      recovery,
     });
   } catch (err) {
     console.error(err);
