@@ -10,11 +10,20 @@
   min-height: 680px;
 }
 
-.driveFrame {
+.xlsBox {
+  min-height: 760px;
+}
+
+.driveFrame,
+.xlsFrame {
   border: 1px solid #dfe7ef;
   border-radius: 14px;
   height: 600px;
   width: 100%;
+}
+
+.xlsFrame {
+  height: 690px;
 }
 
 .imageStage {
@@ -91,11 +100,13 @@
 }
 
 @media (max-width: 900px) {
-  .visualBox {
+  .visualBox,
+  .xlsBox {
     min-height: 520px;
   }
 
   .driveFrame,
+  .xlsFrame,
   .imageStage {
     height: 440px;
   }
