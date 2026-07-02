@@ -1,8 +1,10 @@
+import styles from '../../app/admin/report/reviewAudit.module.css';
+
 function auditIssues(audit) {
   return audit?.issues || [];
 }
 
-export function CriticalBox({ audit, styles }) {
+export function CriticalBox({ audit }) {
   const issues = auditIssues(audit);
   return (
     <section className={styles.reviewBox}>
@@ -18,7 +20,7 @@ export function CriticalBox({ audit, styles }) {
   );
 }
 
-export function AuditPanel({ audit, events, styles }) {
+export function AuditPanel({ audit, events }) {
   return (
     <section className={styles.reviewBox}>
       <h2>Información técnica</h2>
