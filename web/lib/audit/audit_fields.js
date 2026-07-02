@@ -16,6 +16,7 @@ export const AUDIT_PATCH_FIELDS = [
   'estado_herramienta',
   'estado_final',
   'estado_operativo',
+  'inspeccion',
   'inspeccion_visual',
   'prueba_funcionamiento',
   'desarme',
@@ -39,6 +40,7 @@ export const AUTO_RECOVERY_FIELDS = [
   'estado_herramienta',
   'estado_operativo',
   'estado_final',
+  'inspeccion',
 ];
 
 export const AUDIT_PATCH_FIELD_SET = new Set(AUDIT_PATCH_FIELDS);
