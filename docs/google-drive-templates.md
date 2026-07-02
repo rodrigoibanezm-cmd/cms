@@ -1,5 +1,5 @@
 # Google Drive para plantillas CMS
-pasos
+pasos, revisar
 ## Estructura Drive
 
 Carpeta raíz: `CMS`
