@@ -3,6 +3,9 @@
 import { useState } from 'react';
 import styles from '../../app/admin/report/reviewVisual.module.css';
 
+const ZOOM = 3;
+const LENS_SIZE = 190;
+
 function filePreviewUrl(file) {
   return file?.drive_file_id ? `/api/report-file?id=${file.id}` : '';
 }
@@ -15,10 +18,23 @@ function MagnifiedImage({ src, alt }) {
   const [lens, setLens] = useState(null);
 
   function moveLens(event) {
-    const rect = event.currentTarget.getBoundingClientRect();
-    const x = ((event.clientX - rect.left) / rect.width) * 100;
-    const y = ((event.clientY - rect.top) / rect.height) * 100;
-    setLens({ x, y });
+    const stageRect = event.currentTarget.getBoundingClientRect();
+    const img = event.currentTarget.querySelector('img');
+    const imgRect = img.getBoundingClientRect();
+    const imgX = event.clientX - imgRect.left;
+    const imgY = event.clientY - imgRect.top;
+
+    if (imgX < 0 || imgY < 0 || imgX > imgRect.width || imgY > imgRect.height) {
+      setLens(null);
+      return;
+    }
+
+    setLens({
+      left: event.clientX - stageRect.left,
+      top: event.clientY - stageRect.top,
+      bgSize: `${imgRect.width * ZOOM}px ${imgRect.height * ZOOM}px`,
+      bgPosition: `${-(imgX * ZOOM - LENS_SIZE / 2)}px ${-(imgY * ZOOM - LENS_SIZE / 2)}px`,
+    });
   }
 
   return (
@@ -32,10 +48,11 @@ function MagnifiedImage({ src, alt }) {
         <div
           className={styles.imageLens}
           style={{
-            left: `${lens.x}%`,
-            top: `${lens.y}%`,
+            left: `${lens.left}px`,
+            top: `${lens.top}px`,
             backgroundImage: `url(${src})`,
-            backgroundPosition: `${lens.x}% ${lens.y}%`,
+            backgroundSize: lens.bgSize,
+            backgroundPosition: lens.bgPosition,
           }}
         />
       ) : null}
