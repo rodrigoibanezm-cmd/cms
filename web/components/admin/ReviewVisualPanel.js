@@ -14,6 +14,12 @@ function isImage(file) {
   return String(file?.mime_type || '').startsWith('image/');
 }
 
+function compactSheetsUrl(url) {
+  if (!url) return '';
+  const sep = url.includes('?') ? '&' : '?';
+  return `${url}${sep}rm=minimal&single=true&widget=false&chrome=false`;
+}
+
 function MagnifiedImage({ src, alt }) {
   const [lens, setLens] = useState(null);
 
@@ -38,11 +44,7 @@ function MagnifiedImage({ src, alt }) {
   }
 
   return (
-    <div
-      className={styles.imageStage}
-      onMouseMove={moveLens}
-      onMouseLeave={() => setLens(null)}
-    >
+    <div className={styles.imageStage} onMouseMove={moveLens} onMouseLeave={() => setLens(null)}>
       <img className={styles.reviewImage} src={src} alt={alt} />
       {lens ? (
         <div
@@ -91,11 +93,12 @@ export function VisualFile({ title, files }) {
 
 export function XlsPanel({ report, files }) {
   const xls = files[files.length - 1];
+  const frameUrl = compactSheetsUrl(report.excel_url);
   return (
-    <section className={`${styles.reviewBox} ${styles.visualBox}`}>
+    <section className={`${styles.reviewBox} ${styles.visualBox} ${styles.xlsBox}`}>
       <h2>XLS generado</h2>
-      {report.excel_url ? (
-        <iframe className={styles.driveFrame} src={report.excel_url} title="XLS generado" />
+      {frameUrl ? (
+        <iframe className={styles.xlsFrame} src={frameUrl} title="XLS generado" />
       ) : <p className={styles.muted}>XLS pendiente.</p>}
       <div className={styles.adminActions}>
         {report.excel_url ? <a className={styles.adminButton} href={report.excel_url} target="_blank">Abrir XLS</a> : null}
