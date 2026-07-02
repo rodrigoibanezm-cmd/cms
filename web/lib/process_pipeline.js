@@ -70,7 +70,11 @@ export async function runExtraction({
     mensaje: confidence.mensaje,
     semaforo: scoreToSemaforo(confidence.score),
     inspeccion,
-  }, { otHint, sourceName });
+  }, {
+    otHint,
+    sourceName,
+    expectedChecklistLength: templateEntry?.checklist?.length || 0,
+  });
 
   saveJson(targetDir, final.ot, 'gemini', final);
   return final;
