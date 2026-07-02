@@ -1,8 +1,7 @@
-import styles from '../../app/admin/report/reviewVisual.module.css';
+'use client';
 
-function filesOf(files, kind) {
-  return files.filter((file) => file.kind === kind);
-}
+import { useState } from 'react';
+import styles from '../../app/admin/report/reviewVisual.module.css';
 
 function filePreviewUrl(file) {
   return file?.drive_file_id ? `/api/report-file?id=${file.id}` : '';
@@ -12,12 +11,36 @@ function isImage(file) {
   return String(file?.mime_type || '').startsWith('image/');
 }
 
-export function getReviewFiles(files) {
-  return {
-    originals: filesOf(files, 'original_report'),
-    photos: filesOf(files, 'detail_photo'),
-    xlsFiles: filesOf(files, 'generated_xls'),
-  };
+function MagnifiedImage({ src, alt }) {
+  const [lens, setLens] = useState(null);
+
+  function moveLens(event) {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = ((event.clientX - rect.left) / rect.width) * 100;
+    const y = ((event.clientY - rect.top) / rect.height) * 100;
+    setLens({ x, y });
+  }
+
+  return (
+    <div
+      className={styles.imageStage}
+      onMouseMove={moveLens}
+      onMouseLeave={() => setLens(null)}
+    >
+      <img className={styles.reviewImage} src={src} alt={alt} />
+      {lens ? (
+        <div
+          className={styles.imageLens}
+          style={{
+            left: `${lens.x}%`,
+            top: `${lens.y}%`,
+            backgroundImage: `url(${src})`,
+            backgroundPosition: `${lens.x}% ${lens.y}%`,
+          }}
+        />
+      ) : null}
+    </div>
+  );
 }
 
 export function VisualFile({ title, files }) {
@@ -28,7 +51,7 @@ export function VisualFile({ title, files }) {
       <h2>{title}</h2>
       {!file ? <p className={styles.muted}>Sin archivo visible.</p> : null}
       {previewUrl && isImage(file) ? (
-        <img className={styles.driveFrame} src={previewUrl} alt={title} />
+        <MagnifiedImage src={previewUrl} alt={title} />
       ) : file?.url ? (
         <iframe className={styles.driveFrame} src={file.url} title={title} />
       ) : (
