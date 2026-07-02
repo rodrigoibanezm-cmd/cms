@@ -36,6 +36,12 @@ function asImage(buffer, mimeType) {
   return { base64: buffer.toString('base64'), mediaType: mimeType || 'image/jpeg' };
 }
 
+function safePathPart(value) {
+  return String(value || 'SIN_OT')
+    .replace(/[^a-zA-Z0-9_-]/g, '_')
+    .replace(/^_+|_+$/g, '') || 'SIN_OT';
+}
+
 function colorFrom(semaforo) {
   if (semaforo === 'VERDE') return 'green';
   if (semaforo === 'ROJO') return 'red';
@@ -147,7 +153,7 @@ export async function POST(request) {
     );
     await uploadInputFiles({ reportId: reportRow.id, reportFile: report, reportBuffer, photoPayload });
 
-    const targetDir = path.join(os.tmpdir(), 'cms-extractions', otHint || reportRow.id);
+    const targetDir = path.join(os.tmpdir(), 'cms-extractions', safePathPart(otHint || reportRow.id));
     let extraction = await runExtraction({
       image: reportImage,
       otHint,
