@@ -1,14 +1,13 @@
 export const AUDIT_PRINCIPLES = [
   'Protege al cliente de errores materiales, no busques perfección.',
+  'El auditor diagnostica dónde releer, no reextrae todo el informe.',
+  'Cada issue debe indicar qué debe mirar el admin o la relectura quirúrgica.',
   'Si una lectura es dudosa, no inventes el valor correcto.',
-  'issues explica el problema para una persona.',
-  'patches corrige solo campos cortos, claros y seguros para máquina.',
-  'Los textos largos se auditan, pero normalmente no se reescriben automáticamente.',
+  'Los textos largos se auditan, pero normalmente quedan para admin.',
   'Un Excel visualmente imperfecto puede ser entregable si conserva el contenido técnico.',
-  'El estado Operativo o No Operativo debe ser revisado contra la imagen original.',
-  'Los checks Cumple, No cumple y No aplica deben ser revisados contra la imagen original.',
-  'Si un check crítico claro falta o cambia en el Excel, el issue debe ser critical.',
-  'Si no puedes confirmar estado o checks críticos, la decisión debe ser review.',
+  'Operativo/No Operativo y la matriz Cumple/No cumple/No aplica son zonas críticas.',
+  'Si un check crítico claro falta, cambia o queda vacío, el issue debe ser critical.',
+  'Si no puedes aislar pocos campos seguros para recovery, la decisión debe ser review.',
 ];
 
 export function auditPrinciplesText() {
