@@ -20,12 +20,18 @@ function findOperativoLabel(sheet) {
   return found;
 }
 
+function writableMarkRow(sheet, found) {
+  const sameRowNext = norm(cellText(sheet.getCell(found.row, found.col + 1)));
+  if (sameRowNext === 'NO OPERATIVO') return found.row + 1;
+  return found.row;
+}
+
 export function fillOperativo(sheet, data) {
   const found = findOperativoLabel(sheet);
   if (!found) return;
 
   const status = toolStatus(data);
-  const markRow = found.row + 1;
+  const markRow = writableMarkRow(sheet, found);
   clearCell(sheet, sheet.getCell(markRow, found.col).address);
   clearCell(sheet, sheet.getCell(markRow, found.col + 1).address);
   if (status) {
@@ -34,7 +40,7 @@ export function fillOperativo(sheet, data) {
   }
 
   if (text(data.prueba_funcionamiento)) {
-    setVisibleCell(sheet.getCell(markRow, found.col + 2), data.prueba_funcionamiento, {
+    setVisibleCell(sheet.getCell(found.row, found.col + 2), data.prueba_funcionamiento, {
       vertical: 'top',
       horizontal: 'left',
     });
