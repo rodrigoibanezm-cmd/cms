@@ -45,13 +45,29 @@ function appendSection(sheet, cursor, label, value) {
   return cursor + 4;
 }
 
+function appendPrueba(sheet, cursor, data) {
+  if (!text(data.prueba_funcionamiento) && !toolStatus(data)) return cursor;
+  appendHeader(sheet, cursor, 'PRUEBA DE FUNCIONAMIENTO');
+  sheet.getCell(cursor + 1, 1).value = 'Operativo';
+  sheet.getCell(cursor + 1, 2).value = 'No Operativo';
+  const status = toolStatus(data);
+  if (status === 'OPERATIVO') sheet.getCell(cursor + 2, 1).value = 'X';
+  if (status === 'NO_OPERATIVO') sheet.getCell(cursor + 2, 2).value = 'X';
+  setVisibleCell(sheet.getCell(cursor + 2, 3), data.prueba_funcionamiento, {
+    vertical: 'top',
+    horizontal: 'left',
+  });
+  sheet.mergeCells(cursor + 2, 3, cursor + 3, 10);
+  return cursor + 5;
+}
+
 function ensureTextSections(sheet, data) {
   let row = sheet.rowCount + 2;
   if (!findCellByLabel(sheet, VISUAL_LABELS, { exactOnly: true })) {
     row = appendSection(sheet, row, 'INSPECCIÓN VISUAL', data.inspeccion_visual);
   }
   if (!findCellByLabel(sheet, ['PRUEBA DE FUNCIONAMIENTO'], { exactOnly: true })) {
-    row = appendSection(sheet, row, 'PRUEBA DE FUNCIONAMIENTO', data.prueba_funcionamiento);
+    row = appendPrueba(sheet, row, data);
   }
   if (!findCellByLabel(sheet, ['DESARME'], { exactOnly: true })) {
     row = appendSection(sheet, row, 'DESARME', data.desarme);
