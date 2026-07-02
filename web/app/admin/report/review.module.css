@@ -1,0 +1,150 @@
+.reviewScreen {
+  width: 100%;
+  max-width: 1500px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 24px 18px;
+}
+
+.reviewHeader {
+  margin-bottom: 16px;
+}
+
+.reviewHeader h1 {
+  margin-top: 10px;
+}
+
+.backLink,
+.adminLink {
+  color: #1769c2;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.reviewMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.reviewMeta span {
+  background: white;
+  border: 1px solid #dfe7ef;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 8px 10px;
+}
+
+.reviewMainGrid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 14px;
+}
+
+.reviewSecondaryGrid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.reviewBox {
+  background: white;
+  border: 1px solid #dfe7ef;
+  border-radius: 22px;
+  box-shadow: 0 12px 30px rgba(31, 51, 79, 0.08);
+  padding: 16px;
+}
+
+.visualBox {
+  min-height: 680px;
+}
+
+.driveFrame {
+  border: 1px solid #dfe7ef;
+  border-radius: 14px;
+  height: 600px;
+  width: 100%;
+}
+
+.reviewBox h2 {
+  margin: 0 0 12px;
+}
+
+.reviewBox h3 {
+  font-size: 15px;
+  margin: 18px 0 8px;
+}
+
+.muted {
+  color: #637083;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.collapseBox {
+  border-top: 1px solid #edf1f5;
+  margin-top: 14px;
+  padding-top: 12px;
+}
+
+.collapseBox summary {
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.issueBox {
+  background: #f6f9fc;
+  border-radius: 12px;
+  margin-top: 8px;
+  padding: 10px;
+}
+
+.issueBox strong,
+.issueBox span {
+  display: block;
+  font-size: 13px;
+}
+
+.issueBox p,
+.eventList p {
+  color: #637083;
+  font-size: 13px;
+  margin: 6px 0 0;
+}
+
+.adminActions {
+  align-items: center;
+  display: flex;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.adminButton {
+  background: #1769c2;
+  border-radius: 14px;
+  color: white;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 800;
+  padding: 12px 14px;
+  text-decoration: none;
+}
+
+@media (max-width: 900px) {
+  .reviewMainGrid,
+  .reviewSecondaryGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .visualBox {
+    min-height: 520px;
+  }
+
+  .driveFrame {
+    height: 440px;
+  }
+}
