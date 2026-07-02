@@ -4,6 +4,7 @@ import path from 'path';
 import { NextResponse } from 'next/server';
 import { auditWithGemini } from '../../../lib/audit/gemini_auditor.js';
 import { runExtraction } from '../../../lib/process_pipeline.js';
+import { uploadInputFiles } from '../../../lib/report_file_uploads.js';
 import { addReportFile, createReport } from '../../../lib/report_store.js';
 import { markAudited, markExtracted, markReportError, markXlsGenerated } from '../../../lib/report_updates.js';
 import { mergeRecoveryPatch } from '../../../lib/recovery/merge_patch.js';
@@ -57,20 +58,6 @@ function isJsonPatchField(field) {
 
 function hasRecoveryPatch(audit) {
   return (audit?.patches || []).some((patch) => isJsonPatchField(patch?.field));
-}
-
-async function registerInputFiles(reportId, report, photos) {
-  await addReportFile(reportId, {
-    kind: 'original_report',
-    filename: report.name || 'informe',
-    mimeType: report.type || 'image/jpeg',
-  });
-
-  await Promise.all(photos.map((file) => addReportFile(reportId, {
-    kind: 'detail_photo',
-    filename: file.name || 'foto.jpg',
-    mimeType: file.type || 'image/jpeg',
-  })));
 }
 
 async function registerXls(reportId, xls) {
@@ -148,10 +135,18 @@ export async function POST(request) {
     const userOt = String(form.get('ot') || '').trim();
     const otHint = userOt || otFromFilename(sourceName);
     reportRow = await createReport({ ot: otHint, sourceName });
-    await registerInputFiles(reportRow.id, report, photos);
 
     const reportBuffer = await fileToBuffer(report);
     const reportImage = asImage(reportBuffer, report.type);
+    const photoPayload = await Promise.all(
+      photos.map(async (file, index) => ({
+        filename: file.name || `foto_${index + 1}.jpg`,
+        mimeType: file.type || 'image/jpeg',
+        buffer: await fileToBuffer(file),
+      }))
+    );
+    await uploadInputFiles({ reportId: reportRow.id, reportFile: report, reportBuffer, photoPayload });
+
     const targetDir = path.join(os.tmpdir(), 'cms-extractions', otHint || reportRow.id);
     let extraction = await runExtraction({
       image: reportImage,
@@ -163,14 +158,6 @@ export async function POST(request) {
       catalog: readJson('benchmark/catalog/family_catalog.json'),
     });
     await markExtracted(reportRow.id, extraction);
-
-    const photoPayload = await Promise.all(
-      photos.map(async (file, index) => ({
-        filename: file.name || `foto_${index + 1}.jpg`,
-        mimeType: file.type || 'image/jpeg',
-        buffer: await fileToBuffer(file),
-      }))
-    );
 
     let { xls, audit } = await generateAndAudit({
       reportImage,
