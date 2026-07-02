@@ -17,15 +17,18 @@ const RECOVERY = `Relectura quirúrgica:
 Si el problema está en campos cortos y visibles, devuelve recovery_targets usando solo:
 ${autoRecoveryFieldsText()}
 
-No intentes reparar textos largos ni rehacer todo el informe.
-No propongas patches salvo que la corrección sea obvia, corta y segura.
-Si el problema es de layout, tabla incompleta, template raro o muchas marcas dudosas, manda review.`;
+Si el checklist está vacío o faltan marcas claras, usa recovery_targets ["inspeccion"].
+Si el problema es amplio o dudoso, manda review.
+No reescribas textos largos ni rehagas todo el informe.`;
 
 const EXAMPLE = `Ejemplo:
 Imagen: Operativo marcado. Excel: Operativo vacío.
 Respuesta: decision recover, issue critical, recovery_targets ["estado_operativo"].
 
-Imagen: varias filas del checklist no coinciden y no puedes aislar el error.
+Imagen: checklist visible en la imagen, pero vacío en Excel.
+Respuesta: decision recover, issue critical, recovery_targets ["inspeccion"].
+
+Imagen: muchas marcas dudosas y no puedes aislar el error.
 Respuesta: decision review, issue critical, recovery_targets [].`;
 
 const OUTPUT = `Devuelve SOLO JSON válido.
