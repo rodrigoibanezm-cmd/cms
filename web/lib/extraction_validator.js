@@ -6,6 +6,14 @@ function upper(value) {
   return text(value).toUpperCase();
 }
 
+function normalizeOt(value) {
+  return text(value).replace(/\D/g, '');
+}
+
+function validOt(value) {
+  return /^\d{4,6}$/.test(text(value));
+}
+
 function extractOt(filename) {
   const name = text(filename);
   const prefixed = name.match(/^(\d{4,6})\b/);
@@ -34,11 +42,7 @@ function normalizeRotulo(value) {
 }
 
 function normalizeModel(value) {
-  return text(value)
-    .replace(/\bPRATA\b/gi, 'PRASA')
-    .replace(/\bPR4SA\b/gi, 'PRASA')
-    .replace(/\s+/g, ' ')
-    .trim();
+  return text(value).replace(/\bPRATA\b/gi, 'PRASA').replace(/\bPR4SA\b/gi, 'PRASA').replace(/\s+/g, ' ');
 }
 
 function normalizeOperativo(value) {
@@ -55,10 +59,26 @@ function setIfChanged(data, field, value, fixes) {
   data[field] = value;
 }
 
+function addReason(fixed, reason) {
+  fixed.razones = [...(Array.isArray(fixed.razones) ? fixed.razones : []), reason];
+}
+
+function capConfidence(fixed, score) {
+  fixed.semaforo = 'ROJO';
+  fixed.confidence_score = Math.min(Number(fixed.confidence_score) || 0, score);
+}
+
+function fixOt(fixed, trustedOt, fixes) {
+  const normalized = normalizeOt(trustedOt || fixed.ot);
+  setIfChanged(fixed, 'ot', normalized, fixes);
+  if (validOt(fixed.ot)) return;
+  fixes.push({ field: 'ot', from: fixed.ot ?? null, to: null, severity: 'critical' });
+  capConfidence(fixed, 0);
+  addReason(fixed, 'CRÍTICO: OT inválida; debe contener solo 4 a 6 números.');
+}
+
 function fixOperativo(fixed, fixes) {
-  const explicit = normalizeOperativo(fixed.estado_operativo);
-  const fallback = normalizeOperativo(fixed.prueba_funcionamiento);
-  const status = explicit || fallback;
+  const status = normalizeOperativo(fixed.estado_operativo) || normalizeOperativo(fixed.prueba_funcionamiento);
   if (status) setIfChanged(fixed, 'estado_operativo', status, fixes);
   return status;
 }
@@ -71,36 +91,39 @@ function forceCriticalReview(fixed, fixes) {
     severity: 'critical',
     reason: 'No se pudo leer la marca Operativo/No Operativo.',
   });
-  fixed.semaforo = 'ROJO';
-  fixed.confidence_score = Math.min(Number(fixed.confidence_score) || 0, 40);
-  fixed.razones = [
-    ...(Array.isArray(fixed.razones) ? fixed.razones : []),
-    'CRÍTICO: falta estado_operativo; no generar aprobación automática.',
-  ];
+  capConfidence(fixed, 40);
+  addReason(fixed, 'CRÍTICO: falta estado_operativo; no generar aprobación automática.');
 }
 
-export function validateExtraction(data, { otHint, sourceName } = {}) {
+function hasReadableResult(row) {
+  return ['CUMPLE', 'NO CUMPLE', 'NO APLICA'].includes(upper(row?.resultado));
+}
+
+function enforceChecklistQuality(fixed, expectedChecklistLength, fixes) {
+  if (!expectedChecklistLength) return;
+  const rows = Array.isArray(fixed.inspeccion) ? fixed.inspeccion : [];
+  const ratio = rows.filter(hasReadableResult).length / expectedChecklistLength;
+  if (rows.length === expectedChecklistLength && ratio >= 0.8) return;
+  fixes.push({ field: 'inspeccion', severity: 'critical', reason: 'Checklist incompleto o sin marcas suficientes.' });
+  capConfidence(fixed, 60);
+  addReason(fixed, 'CRÍTICO: checklist de inspección incompleto; requiere revisión administrativa.');
+}
+
+export function validateExtraction(data, { otHint, sourceName, expectedChecklistLength } = {}) {
   const fixed = { ...data };
   const fixes = [];
-  const fileOt = extractOt(sourceName);
-  const trustedOt = text(otHint) || fileOt;
+  const trustedOt = normalizeOt(otHint) || extractOt(sourceName);
   const fileRotulo = extractRotulo(sourceName);
 
-  setIfChanged(fixed, 'ot', trustedOt, fixes);
+  fixOt(fixed, trustedOt, fixes);
   if (fixed.rotulo) fixed.rotulo = normalizeRotulo(fixed.rotulo);
   setIfChanged(fixed, 'rotulo', fileRotulo, fixes);
-
-  const model = normalizeModel(fixed.modelo);
-  setIfChanged(fixed, 'modelo', model, fixes);
+  setIfChanged(fixed, 'modelo', normalizeModel(fixed.modelo), fixes);
 
   const status = fixOperativo(fixed, fixes);
   if (!status) forceCriticalReview(fixed, fixes);
+  enforceChecklistQuality(fixed, expectedChecklistLength, fixes);
 
-  fixed.validacion = {
-    ok: true,
-    source_name: sourceName || null,
-    fixes,
-  };
-
+  fixed.validacion = { ok: true, source_name: sourceName || null, fixes };
   return fixed;
 }
