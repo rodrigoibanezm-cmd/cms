@@ -4,6 +4,14 @@ function filesOf(files, kind) {
   return files.filter((file) => file.kind === kind);
 }
 
+function filePreviewUrl(file) {
+  return file?.drive_file_id ? `/api/report-file?id=${file.id}` : '';
+}
+
+function isImage(file) {
+  return String(file?.mime_type || '').startsWith('image/');
+}
+
 export function getReviewFiles(files) {
   return {
     originals: filesOf(files, 'original_report'),
@@ -14,15 +22,23 @@ export function getReviewFiles(files) {
 
 export function VisualFile({ title, files }) {
   const file = files[files.length - 1];
+  const previewUrl = filePreviewUrl(file);
   return (
     <section className={`${styles.reviewBox} ${styles.visualBox}`}>
       <h2>{title}</h2>
       {!file ? <p className={styles.muted}>Sin archivo visible.</p> : null}
-      {file?.url ? (
+      {previewUrl && isImage(file) ? (
+        <img className={styles.driveFrame} src={previewUrl} alt={title} />
+      ) : file?.url ? (
         <iframe className={styles.driveFrame} src={file.url} title={title} />
       ) : (
         file ? <p className={styles.muted}>{file.filename}</p> : null
       )}
+      {file?.url ? (
+        <div className={styles.adminActions}>
+          <a className={styles.adminButton} href={file.url} target="_blank">Abrir original</a>
+        </div>
+      ) : null}
       {files.length > 1 ? (
         <details className={styles.collapseBox}>
           <summary>Ver otros archivos</summary>
