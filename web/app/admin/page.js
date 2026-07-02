@@ -18,7 +18,7 @@ export default async function AdminPage() {
             <p>Semaforo: {report.semaforo || '-'}</p>
             <p>Confidence: {report.confidence_score ?? '-'}</p>
             <p>Template: {report.template_filename || '-'}</p>
-            <a href={`/admin/${report.id}`}>Ver detalle</a>
+            <a href={`/admin/report?id=${report.id}`}>Ver detalle</a>
           </article>
         ))}
       </div>
