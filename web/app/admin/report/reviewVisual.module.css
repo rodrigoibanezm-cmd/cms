@@ -1,0 +1,67 @@
+.reviewBox {
+  background: white;
+  border: 1px solid #dfe7ef;
+  border-radius: 22px;
+  box-shadow: 0 12px 30px rgba(31, 51, 79, 0.08);
+  padding: 16px;
+}
+
+.visualBox {
+  min-height: 680px;
+}
+
+.driveFrame {
+  border: 1px solid #dfe7ef;
+  border-radius: 14px;
+  height: 600px;
+  width: 100%;
+}
+
+.reviewBox h2 {
+  margin: 0 0 12px;
+}
+
+.muted {
+  color: #637083;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.collapseBox {
+  border-top: 1px solid #edf1f5;
+  margin-top: 14px;
+  padding-top: 12px;
+}
+
+.collapseBox summary {
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.adminActions {
+  align-items: center;
+  display: flex;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.adminButton {
+  background: #1769c2;
+  border-radius: 14px;
+  color: white;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 800;
+  padding: 12px 14px;
+  text-decoration: none;
+}
+
+@media (max-width: 900px) {
+  .visualBox {
+    min-height: 520px;
+  }
+
+  .driveFrame {
+    height: 440px;
+  }
+}
