@@ -19,11 +19,27 @@ async function ensureSchema() {
       excel_url text,
       drive_file_id text,
       extraction_json jsonb,
+      admin_corrections jsonb NOT NULL DEFAULT '{}'::jsonb,
+      critical_checks jsonb NOT NULL DEFAULT '{}'::jsonb,
+      admin_notes text,
+      approved_at timestamptz,
+      approved_by text,
+      rejected_at timestamptz,
+      rejected_reason text,
       error_message text,
       created_at timestamptz NOT NULL DEFAULT now(),
       updated_at timestamptz NOT NULL DEFAULT now()
     )
   `).then(() => query(`
+    ALTER TABLE reports
+      ADD COLUMN IF NOT EXISTS admin_corrections jsonb NOT NULL DEFAULT '{}'::jsonb,
+      ADD COLUMN IF NOT EXISTS critical_checks jsonb NOT NULL DEFAULT '{}'::jsonb,
+      ADD COLUMN IF NOT EXISTS admin_notes text,
+      ADD COLUMN IF NOT EXISTS approved_at timestamptz,
+      ADD COLUMN IF NOT EXISTS approved_by text,
+      ADD COLUMN IF NOT EXISTS rejected_at timestamptz,
+      ADD COLUMN IF NOT EXISTS rejected_reason text
+  `)).then(() => query(`
     CREATE TABLE IF NOT EXISTS report_files (
       id uuid PRIMARY KEY,
       report_id uuid NOT NULL REFERENCES reports(id),
