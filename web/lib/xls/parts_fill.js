@@ -16,26 +16,12 @@ function findPartsTable(sheet) {
   return table;
 }
 
-function createPartsTable(sheet) {
-  const row = sheet.rowCount + 2;
-  const header = sheet.getCell(row, 1);
-  header.value = 'REPUESTOS O ACCESORIOS REQUERIDOS';
-  header.font = { bold: true, color: { argb: 'FFFFFFFF' } };
-  header.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF222222' } };
-  header.alignment = { horizontal: 'center' };
-  sheet.mergeCells(row, 1, row, 10);
-
-  sheet.getCell(row + 1, 1).value = 'Nº DE PARTE';
-  sheet.getCell(row + 1, 3).value = 'CANTIDAD';
-  sheet.getCell(row + 1, 5).value = 'REPUESTOS O ACCESORIOS REQUERIDOS';
-  return { row: row + 1, numeroParte: 1, cantidad: 3, descripcion: 5 };
-}
-
 export function fillParts(sheet, repuestos = []) {
   const parts = repuestos.filter((item) => text(item?.numero_parte) || text(item?.cantidad) || text(item?.descripcion));
   if (!parts.length) return;
 
-  const table = findPartsTable(sheet) || createPartsTable(sheet);
+  const table = findPartsTable(sheet);
+  if (!table) return;
 
   parts.forEach((part, index) => {
     const row = table.row + 1 + index;
