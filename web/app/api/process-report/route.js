@@ -49,6 +49,15 @@ function otFromFilename(filename) {
   return match?.[1] || '';
 }
 
+function isJsonPatchField(field) {
+  const value = String(field || '');
+  return Boolean(value) && !value.includes(' ') && !value.includes('-');
+}
+
+function hasRecoveryPatch(audit) {
+  return (audit?.patches || []).some((patch) => isJsonPatchField(patch?.field));
+}
+
 async function registerInputFiles(reportId, report, photos) {
   await addReportFile(reportId, {
     kind: 'original_report',
@@ -87,6 +96,8 @@ async function generateAndAudit({ reportId, reportImage, extraction, photoPayloa
 }
 
 async function maybeRecover({ reportId, reportImage, extraction, photoPayload, audit }) {
+  if (!hasRecoveryPatch(audit)) return null;
+
   const recovery = await runRecovery({ image: reportImage, extraction, audit });
   if (!recovery?.patch) return null;
 
