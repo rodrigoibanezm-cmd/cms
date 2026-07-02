@@ -1,5 +1,7 @@
-export function buildAuditPrompt({ extraction, excelView }) {
-  return `Eres auditor final de informes técnicos industriales.
+import { auditContextText } from './audit_context.js';
+import { auditJsonSchemaText } from './audit_schema.js';
+
+const BASE_RULES = `Eres auditor final de informes técnicos industriales.
 
 Objetivo: decidir si el Excel generado es ENTREGABLE al cliente comparándolo contra la foto original del informe.
 
@@ -20,30 +22,20 @@ Errores críticos típicos:
 Diferencias menores que NO deben bloquear:
 - tildes, mayúsculas, espacios, abreviaciones razonables.
 - formato visual imperfecto.
-- pequeñas diferencias de redacción que conservan el sentido.
+- pequeñas diferencias de redacción que conservan el sentido.`;
 
-Devuelve SOLO JSON válido con este schema:
-{
-  "decision": "approve|recover|review",
-  "confidence": 0,
-  "issues": [
-    {
-      "field": "string",
-      "severity": "critical|minor",
-      "reason": "string"
-    }
-  ],
-  "repair_prompt": "string|null"
-}
+const OUTPUT_RULES = `Devuelve SOLO JSON válido con este schema:
+
+SCHEMA_JSON
 
 Si decision=approve, issues debe estar vacío o contener solo minor.
 Si decision=recover, repair_prompt debe pedir corregir SOLO los campos críticos detectados. Prohibido pedir reextraer todo el informe.
-Si decision=review, repair_prompt debe ser null.
+Si decision=review, repair_prompt debe ser null.`;
 
-Contexto de extracción usado para generar el Excel:
-${JSON.stringify(extraction || {}, null, 2)}
-
-Contenido leído desde el Excel generado:
-${JSON.stringify(excelView || {}, null, 2)}
-`;
+export function buildAuditPrompt({ extraction, excelView }) {
+  return [
+    BASE_RULES,
+    OUTPUT_RULES.replace('SCHEMA_JSON', auditJsonSchemaText()),
+    auditContextText({ extraction, excelView }),
+  ].join('\n\n');
 }
