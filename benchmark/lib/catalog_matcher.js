@@ -3,13 +3,34 @@ const ITEM_MATCH_THRESHOLD = 0.75;
 export const MATCH_STRONG = 0.85;
 export const MATCH_REVIEW = 0.75;
 
+function removeAccents(value) {
+  return value
+    .replaceAll("Á", "A")
+    .replaceAll("É", "E")
+    .replaceAll("Í", "I")
+    .replaceAll("Ó", "O")
+    .replaceAll("Ú", "U")
+    .replaceAll("Ü", "U")
+    .replaceAll("Ñ", "N");
+}
+
 function normItem(value) {
-  return String(value || "")
-    .trim()
-    .toUpperCase()
-    .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/\s+/g, " ");
+  let normalized = removeAccents(String(value || "").trim().toUpperCase())
+    .replaceAll(".", " ")
+    .replaceAll(",", " ")
+    .replaceAll(";", " ")
+    .replaceAll(":", " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (normalized === "COMPONENTE INT" || normalized === "COMPONENTES INT") {
+    normalized = "COMPONENTES INTERNOS";
+  }
+  if (normalized === "COMPONENTE INTERNO" || normalized === "COMPONENTES INTERNO") {
+    normalized = "COMPONENTES INTERNOS";
+  }
+
+  return normalized;
 }
 
 function levenshtein(a, b) {
