@@ -89,8 +89,9 @@ function AdminTable({ reports }) {
 }
 
 export default async function AdminPage({ searchParams }) {
+  const params = await searchParams;
   const reports = await listReports();
-  const view = searchParams?.view === 'table' ? 'table' : 'cards';
+  const view = params?.view === 'table' ? 'table' : 'cards';
 
   return (
     <main className="adminScreen">
