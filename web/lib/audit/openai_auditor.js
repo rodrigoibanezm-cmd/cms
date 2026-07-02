@@ -37,7 +37,6 @@ export async function auditReport({ reportImage, xlsBuffer, extraction }) {
 
   const response = await client.chat.completions.create({
     model,
-    temperature: 0,
     messages: [
       {
         role: 'user',
