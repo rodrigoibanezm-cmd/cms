@@ -52,16 +52,11 @@ INSTRUCCIONES
 Transcribe exactamente el título impreso del formulario.
 
 "estado_herramienta"
-Debe ser uno de:
-
-REPARACION
-MANTENCION
-DE BAJA
-CERTIFICACION
-
-Lee cuidadosamente cuál casilla tiene la X. La marca puede estar impresa en una fila distinta a la fila con las etiquetas de encabezado — identifica la columna correcta por su posición horizontal (misma columna que la etiqueta), no por cercanía vertical al texto.
-
-Si la casilla marcada no corresponde exactamente a ninguna de estas cuatro palabras, transcribe literalmente el texto de la casilla marcada en vez de dejar el campo en null.
+Lee cuidadosamente las casillas REPARACION / MANTENCION / DE BAJA / CERTIFICACION.
+La marca puede estar en una fila distinta a la fila con las etiquetas — identifica la columna correcta por posición horizontal.
+Si hay una sola casilla marcada, devuelve exactamente ese valor.
+Si hay más de una casilla marcada, devuelve los valores separados por " + ", por ejemplo "REPARACION + MANTENCION".
+Si no puedes leer ninguna marca con confianza, devuelve null.
 
 "estado_operativo"
 Este campo es CRÍTICO. Debe leerse desde las casillas Operativo / No Operativo de PRUEBA DE FUNCIONAMIENTO.
