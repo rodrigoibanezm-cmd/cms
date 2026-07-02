@@ -1,6 +1,7 @@
+import styles from '../../app/admin/adminCards.module.css';
 import { reviewLabel, semaforoClass } from './admin_helpers.js';
 
-export default function AdminCards({ reports, styles }) {
+export default function AdminCards({ reports }) {
   return (
     <div className={styles.adminList}>
       {reports.map((report) => (
