@@ -12,6 +12,7 @@ import { fillInspection } from './xls/inspection_fill.js';
 import { fillDisposition, fillDispositionByMap } from './xls/status_fill.js';
 import { fillTextByMap, fillTextSections } from './xls/text_fill.js';
 import { fillParts } from './xls/parts_fill.js';
+import { fillSpecificFields } from './xls/specific_fields_fill.js';
 import { addPhotos, addTextBlocks } from './xls/workbook_extras.js';
 
 export async function generateFinalXls({ extraction, photos }) {
@@ -31,6 +32,7 @@ export async function generateFinalXls({ extraction, photos }) {
   const sheet = workbook.worksheets[0];
   const cellMap = getCellMap(extraction.template_key);
   if (!fillHeaderByMap(sheet, extraction, cellMap)) fillHeader(sheet, extraction);
+  fillSpecificFields(sheet, extraction);
   if (!fillDispositionByMap(sheet, extraction, cellMap)) fillDisposition(sheet, extraction);
   fillInspection(sheet, extraction.inspeccion || []);
   if (!fillTextByMap(sheet, extraction, cellMap)) fillTextSections(sheet, extraction);
