@@ -41,10 +41,42 @@ function normalizeModel(value) {
     .trim();
 }
 
+function normalizeOperativo(value) {
+  const raw = upper(value).replace(/_/g, ' ');
+  if (!raw) return null;
+  if (raw.includes('NO OPERATIVO')) return 'NO_OPERATIVO';
+  if (raw.includes('OPERATIVO')) return 'OPERATIVO';
+  return null;
+}
+
 function setIfChanged(data, field, value, fixes) {
   if (!value || text(data[field]) === value) return;
   fixes.push({ field, from: data[field] ?? null, to: value });
   data[field] = value;
+}
+
+function fixOperativo(fixed, fixes) {
+  const explicit = normalizeOperativo(fixed.estado_operativo);
+  const fallback = normalizeOperativo(fixed.prueba_funcionamiento);
+  const status = explicit || fallback;
+  if (status) setIfChanged(fixed, 'estado_operativo', status, fixes);
+  return status;
+}
+
+function forceCriticalReview(fixed, fixes) {
+  fixes.push({
+    field: 'estado_operativo',
+    from: fixed.estado_operativo ?? null,
+    to: null,
+    severity: 'critical',
+    reason: 'No se pudo leer la marca Operativo/No Operativo.',
+  });
+  fixed.semaforo = 'ROJO';
+  fixed.confidence_score = Math.min(Number(fixed.confidence_score) || 0, 40);
+  fixed.razones = [
+    ...(Array.isArray(fixed.razones) ? fixed.razones : []),
+    'CRÍTICO: falta estado_operativo; no generar aprobación automática.',
+  ];
 }
 
 export function validateExtraction(data, { otHint, sourceName } = {}) {
@@ -60,6 +92,9 @@ export function validateExtraction(data, { otHint, sourceName } = {}) {
 
   const model = normalizeModel(fixed.modelo);
   setIfChanged(fixed, 'modelo', model, fixes);
+
+  const status = fixOperativo(fixed, fixes);
+  if (!status) forceCriticalReview(fixed, fixes);
 
   fixed.validacion = {
     ok: true,
