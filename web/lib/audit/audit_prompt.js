@@ -1,62 +1,62 @@
 import { auditContextText } from './audit_context.js';
-import { auditPatchFieldsText, autoRecoveryFieldsText } from './audit_fields.js';
-import { auditGuardrailsText } from './audit_guardrails.js';
+import { autoRecoveryFieldsText } from './audit_fields.js';
+import { auditPrinciplesText } from './audit_guardrails.js';
 import { auditJsonSchemaText } from './audit_schema.js';
 
-const BASE_RULES = `Eres auditor final de informes técnicos industriales.
+const ROLE = `Eres el último auditor antes de entregar un informe técnico industrial a un cliente.
 
-Objetivo: decidir si el Excel generado es ENTREGABLE al cliente comparándolo contra la foto original del informe.
+Tu misión es decidir si el Excel generado es entregable.`;
 
-No busques perfección visual ni diferencias menores. Solo bloquea errores materiales que cambien el contenido o puedan inducir a una decisión incorrecta.
+const DECISIONS = `Decisiones:
+- approve: entregable sin edición humana.
+- recover: hay un error material, pero el caso todavía es recuperable.
+- review: no se puede confiar en el resultado o falta información crítica.
 
-Reglas de decisión pública:
-- approve: el Excel es entregable sin edición humana.
-- recover: hay 1 a 3 errores críticos reparables o revisables con una pasada quirúrgica.
-- review: hay demasiados errores, campos críticos ilegibles, o no se puede confiar en el resultado.
+internal_recovery:
+- none: no hay nada que corregir.
+- recover_auto: el error es corto, claro y corregible por máquina.
+- recover_manual: el error requiere revisión humana.`;
 
-Decisión interna de recovery:
-- none: no hay recovery.
-- recover_auto: todos los patches son seguros para máquina.
-- recover_manual: hay error crítico, pero no es seguro auto-parchar.
+const PATCH_POLICY = `Política de patches:
+- Solo propone patches para campos cortos y seguros: ${autoRecoveryFieldsText()}.
+- Los textos largos se auditan, pero no se reescriben automáticamente.
+- Si el valor correcto no es totalmente visible, no propongas patch.
+- Si un checkbox claramente marcado en la imagen falta en Excel, corresponde recover_auto.
+- El código validará whitelist y descartará correcciones no permitidas.`;
 
-Errores críticos típicos:
-- OT, cliente, marca, modelo, serie, capacidad o rótulo incorrectos.
-- Estado final incorrecto: reparación, mantención, de baja.
-- Checklist con marcas relevantes omitidas o invertidas.
-- Texto completo faltante en inspección visual, prueba funcionamiento, desarme o procedimiento.
-- Repuestos faltantes o inventados.
+const EXAMPLES = `Ejemplos:
 
-Diferencias menores que NO deben bloquear:
-- tildes, mayúsculas, espacios, abreviaciones razonables.
-- formato visual imperfecto.
-- pequeñas diferencias de redacción que conservan el sentido.`;
+1) Checkbox claro faltante
+Imagen: Operativo está marcado. Excel: Operativo no está marcado.
+Respuesta esperada: recover + recover_auto + issue critical en estado_operativo + patch para marcar Operativo.
 
-const PATCH_RULES = `Reglas estrictas para audit.patches:
-- field debe ser uno de: ${auditPatchFieldsText()}.
-- Solo recovery_auto puede traer patches.
-- recovery_auto solo está permitido para estos fields cortos: ${autoRecoveryFieldsText()}.
-- Nunca auto-parches textos largos: inspeccion_visual, prueba_funcionamiento, desarme, procedimiento, repuestos.
-- Para textos largos críticos, usa decision=recover, internal_recovery=recover_manual, patches=[].
-- Solo incluye patches con issue critical asociado al mismo field.
-- Solo incluye patches cuando la instrucción contiene el valor correcto explícito y visible.
-- No incluyas patches de layout, celda, formato o estética Excel.
-- Si hay duda, deja patches vacío y usa internal_recovery=recover_manual.`;
+2) Texto largo con diferencia menor
+Imagen: texto manuscrito difícil, pero el sentido técnico se conserva.
+Respuesta esperada: approve o issue minor, sin patch.
 
-const OUTPUT_RULES = `Devuelve SOLO JSON válido con este schema:
+3) Cliente dudoso
+Imagen: cliente parcialmente ilegible. Excel: cliente probable pero no confirmable.
+Respuesta esperada: no inventar cliente. Si bloquea la entrega usa review; si no bloquea usa minor. Sin recover_auto.
+
+4) Rótulo claramente distinto
+Imagen: PF-15075. Excel: PF-75075.
+Respuesta esperada: recover + recover_auto + issue critical en rotulo + patch para cambiar a PF-15075.`;
+
+const OUTPUT = `Devuelve SOLO JSON válido con este schema:
 
 SCHEMA_JSON
 
-Si decision=approve, issues debe estar vacío o contener solo minor.
-Si decision=recover e internal_recovery=recover_auto, repair_prompt debe pedir corregir SOLO los patches críticos detectados.
-Si decision=recover e internal_recovery=recover_manual, patches debe ser [] y repair_prompt debe ser null.
-Si decision=review, patches debe ser [] y repair_prompt debe ser null.`;
+Si internal_recovery=recover_manual, patches debe ser [].
+Si decision=approve, patches debe ser [].`;
 
 export function buildAuditPrompt({ extraction, excelView }) {
   return [
-    BASE_RULES,
-    auditGuardrailsText(),
-    PATCH_RULES,
-    OUTPUT_RULES.replace('SCHEMA_JSON', auditJsonSchemaText()),
+    ROLE,
+    auditPrinciplesText(),
+    DECISIONS,
+    PATCH_POLICY,
+    EXAMPLES,
+    OUTPUT.replace('SCHEMA_JSON', auditJsonSchemaText()),
     auditContextText({ extraction, excelView }),
   ].join('\n\n');
 }
