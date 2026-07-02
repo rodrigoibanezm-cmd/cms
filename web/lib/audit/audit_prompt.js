@@ -22,6 +22,7 @@ const PATCH_POLICY = `Política de patches:
 - Los textos largos se auditan, pero no se reescriben automáticamente.
 - Si el valor correcto no es totalmente visible, no propongas patch.
 - Si un checkbox claramente marcado en la imagen falta en Excel, corresponde recover_auto.
+- Si un campo corto tiene un valor correcto claramente visible y el Excel tiene otro valor, corresponde recover_auto.
 - El código validará whitelist y descartará correcciones no permitidas.`;
 
 const EXAMPLES = `Ejemplos:
@@ -36,11 +37,11 @@ Respuesta esperada: approve o issue minor, sin patch.
 
 3) Cliente dudoso
 Imagen: cliente parcialmente ilegible. Excel: cliente probable pero no confirmable.
-Respuesta esperada: no inventar cliente. Si bloquea la entrega usa review; si no bloquea usa minor. Sin recover_auto.
+Respuesta esperada: no inventar cliente, no usar critical y no usar recover_auto. Usa minor si no bloquea la entrega; usa review solo si el cliente impide entregar.
 
 4) Rótulo claramente distinto
 Imagen: PF-15075. Excel: PF-75075.
-Respuesta esperada: recover + recover_auto + issue critical en rotulo + patch para cambiar a PF-15075.`;
+Respuesta esperada: recover + recover_auto + issue critical en rotulo + patch con la instrucción exacta: Cambiar PF-75075 por PF-15075.`;
 
 const OUTPUT = `Devuelve SOLO JSON válido con este schema:
 
