@@ -34,13 +34,13 @@ export default async function AdminReportPage({ searchParams }) {
         </div>
       </header>
       <div className={styles.reviewMainGrid}>
-        <VisualFile title="Informe original" files={originals} styles={styles} />
-        <XlsPanel report={report} files={xlsFiles} styles={styles} />
+        <VisualFile title="Informe original" files={originals} />
+        <XlsPanel report={report} files={xlsFiles} />
       </div>
       <div className={styles.reviewSecondaryGrid}>
-        <VisualFile title="Fotos detalle" files={photos} styles={styles} />
-        <CriticalBox audit={data.audit} styles={styles} />
-        <AuditPanel audit={data.audit} events={data.events || []} styles={styles} />
+        <VisualFile title="Fotos detalle" files={photos} />
+        <CriticalBox audit={data.audit} />
+        <AuditPanel audit={data.audit} events={data.events || []} />
       </div>
     </main>
   );
