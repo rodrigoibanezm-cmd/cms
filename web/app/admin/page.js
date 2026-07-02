@@ -28,9 +28,7 @@ export default async function AdminPage({ searchParams }) {
         <a className={view === 'table' ? styles.active : ''} href="/admin?view=table">Planilla</a>
       </nav>
 
-      {view === 'table'
-        ? <AdminTable reports={reports} styles={styles} />
-        : <AdminCards reports={reports} styles={styles} />}
+      {view === 'table' ? <AdminTable reports={reports} /> : <AdminCards reports={reports} />}
     </main>
   );
 }
