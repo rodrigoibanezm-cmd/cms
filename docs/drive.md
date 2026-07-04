@@ -55,7 +55,14 @@ detail_photo = fotos del equipo
 
 ```txt
 generated_xls = Excel final
-generated_xls_preview = preview SVG
+```
+
+## Legacy
+
+```txt
+generated_xls_preview ya no se produce.
+Puede existir en OTs antiguas.
+No usarlo para nuevas revisiones.
 ```
 
 ## Registro
@@ -81,4 +88,5 @@ url
 ```txt
 Si un archivo se usa para revisión, debe existir en report_files.
 No depender de nombres sueltos en Drive.
+No subir preview XLS para nuevas OTs.
 ```
