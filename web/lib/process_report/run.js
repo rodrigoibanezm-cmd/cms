@@ -4,6 +4,7 @@ import { runReportExtraction } from './run_extraction.js';
 import { uploadInputFiles } from '../report_file_uploads.js';
 import { createReport } from '../report_store.js';
 import { markAudited, markExtracted, markReportError } from '../report_updates.js';
+import { transitionReportWorkflow, WORKFLOW } from '../report_workflow.js';
 
 function colorFrom(semaforo) {
   if (semaforo === 'VERDE') return 'green';
@@ -62,6 +63,9 @@ async function processAfterCreate(input, reportRow) {
 
   await markAudited(reportRow.id, audit);
   xls = await publishFinalXls({ reportId: reportRow.id, extraction, xls });
+  await transitionReportWorkflow(reportRow.id, WORKFLOW.PROCESSING_COMPLETED, {
+    semaforo: extraction.semaforo,
+  });
   return responseBody({ reportId: reportRow.id, extraction, xls, audit, recovery });
 }
 
