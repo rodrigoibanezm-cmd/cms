@@ -84,7 +84,6 @@ export async function ensureReportSchema() {
   `));
   return ready;
 }
-
 export async function addReportEvent(reportId, event, payload = {}) {
   await ensureReportSchema();
   await query(
@@ -93,7 +92,6 @@ export async function addReportEvent(reportId, event, payload = {}) {
     [randomUUID(), reportId, event, JSON.stringify(payload)]
   );
 }
-
 export async function createReport({ ot, sourceName }) {
   await ensureReportSchema();
   const id = randomUUID();
@@ -108,7 +106,6 @@ export async function createReport({ ot, sourceName }) {
   await addReportEvent(id, 'uploaded', { sourceName });
   return res.rows[0];
 }
-
 export async function addReportFile(reportId, file) {
   await ensureReportSchema();
   await query(
