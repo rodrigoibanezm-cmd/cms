@@ -15,6 +15,7 @@ docs/next-step.md
 ```txt
 documentation-standard.md estándar para crear/auditar docs
 current-state.md           estado real del sistema
+target-flow.md             flujo objetivo futuro
 principles.md              reglas rectoras
 pipeline.md                flujo process-report
 data-model.md              Neon y eventos
@@ -40,6 +41,7 @@ no crear documentos enciclopédicos
 
 ```txt
 Estado actual = lo que el código hace hoy.
+Target flow = flujo objetivo todavía no implementado.
 Pendiente = decisión o feature no cerrada.
 Deuda técnica = problema real que ya duele o puede romper.
 ```
