@@ -21,20 +21,11 @@ Existen campos approved/rejected en Neon.
 Pero no existe flujo UI/API completo para cerrar aprobación o rechazo.
 ```
 
-Impacto:
+Nota:
 
 ```txt
-La revisión queda visual.
-La OT no queda formalmente cerrada.
-```
-
-Acción sugerida:
-
-```txt
-crear endpoints approve/reject
-registrar evento
-actualizar review_status
-mostrar estado final en admin
+No corregir ahora.
+Se revisará dentro del nuevo target flow.
 ```
 
 ## 2. Confidence no calibrado
@@ -66,28 +57,7 @@ comparar extracción vs resultado esperado
 recalibrar pesos
 ```
 
-## 3. Preview XLS limitado
-
-Estado:
-
-```txt
-DEUDA DE REVIEW
-```
-
-Problema:
-
-```txt
-preview SVG es liviano pero no reemplaza revisión fina del XLS.
-```
-
-Acción sugerida:
-
-```txt
-mantener link a XLS real
-mejorar vista admin sin cambiar pipeline
-```
-
-## 4. Edición admin pendiente
+## 3. Edición admin pendiente
 
 Estado:
 
@@ -106,4 +76,11 @@ No hacer todavía:
 ```txt
 editor complejo de Excel
 workflow de usuarios avanzado
+```
+
+## Resuelto
+
+```txt
+preview XLS dejó de producirse
+process-report fue modularizado bajo 120 líneas
 ```
