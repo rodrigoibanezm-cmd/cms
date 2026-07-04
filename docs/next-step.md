@@ -4,69 +4,67 @@
 
 La repo ya tiene corpus documental base.
 
-El README opera como router.
-Los docs están separados por responsabilidad.
-Se fijó la regla de 120 líneas por archivo.
+También existe un flujo objetivo nuevo:
+
+```txt
+docs/target-flow.md
+```
 
 ## Estado validado documental
 
 ```txt
-README actualizado
-docs/README.md creado
-current-state documentado
-principios documentados
-pipeline documentado
-Neon documentado
-Drive documentado
-XLS documentado
-auditoría/recovery documentado
-admin review documentado
-template bases documentado
-operations documentado
-deuda técnica documentada
+README opera como router
+docs/README.md opera como router documental
+documentation-standard.md fija estándar
+target-flow.md describe flujo futuro
+current-state.md describe estado real
 ```
 
 ## Problema actual
 
-```txt
-El admin revisa pero no cierra formalmente la OT.
-```
+Antes de implementar el target flow hay que afirmar cimientos.
 
-Hoy existen campos para aprobación/rechazo en Neon, pero falta flujo operativo completo.
+Cimientos débiles actuales:
+
+```txt
+process-report supera 120 líneas
+review_status mezcla auditoría IA con aprobación admin
+preview XLS se genera pero no define bien su rol en admin
+```
 
 ## Objetivo del próximo chat
 
 ```txt
-Implementar cierre admin mínimo.
+Fix de cimientos antes del nuevo flujo.
 ```
 
-Debe permitir:
+Debe hacer:
 
 ```txt
-aprobar OT
-rechazar OT
-registrar evento
-actualizar review_status
-mostrar estado final en admin
+separar process-report en archivos menores
+corregir semántica de review_status
+mantener auditoría IA como recomendación, no cierre admin
+definir si preview XLS se usa o queda fuera del flujo admin
+actualizar docs afectados
 ```
 
 ## No hacer
 
 ```txt
-no editor complejo de XLS
-no gestión de usuarios avanzada
-no BI
-no rediseño grande del admin
-no cambiar pipeline de extracción
+no implementar secretarias todavía
+no implementar dashboard admin todavía
+no generar PDF todavía
+no rediseñar vistas todavía
+no cambiar extractor ni XLS fill
 ```
 
 ## Pitch para nuevo chat
 
 ```txt
-@GitHub lee README.md y docs/README.md.
-Luego lee docs/current-state.md, docs/admin-review.md y docs/next-step.md.
-Objetivo: implementar cierre admin mínimo para aprobar/rechazar una OT.
-No tocar pipeline de extracción ni generación XLS.
-No crear archivos sobre 120 líneas.
-1 responsabilidad por archivo.
+@GitHub lee README.md, docs/README.md y docs/documentation-standard.md.
+Luego lee docs/current-state.md, docs/target-flow.md y docs/next-step.md.
+Objetivo: fix de cimientos antes de implementar el target flow.
+No implementar secretarias, dashboard ni PDF todavía.
+Primero separar process-report bajo 120 líneas y corregir review_status.
+No tocar extractor, prompts ni generación XLS salvo que sea necesario para el refactor.
 ```
