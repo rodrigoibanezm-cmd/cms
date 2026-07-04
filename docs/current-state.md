@@ -22,7 +22,7 @@ técnico sube informe + fotos
 → generación XLS determinística
 → auditoría Gemini
 → recovery quirúrgico si aplica
-→ publicación XLS + preview
+→ publicación XLS
 → admin revisa
 ```
 
@@ -30,7 +30,7 @@ técnico sube informe + fotos
 
 ```txt
 front técnico de carga
-endpoint process-report
+endpoint process-report modularizado
 persistencia reports/files/events
 upload de original y fotos
 extracción pass1/pass2
@@ -50,7 +50,6 @@ rechazo formal desde admin
 edición controlada de campos desde admin
 flujo de cierre de OT
 calibración real del confidence_score
-preview XLS visualmente suficiente para revisión fina
 ```
 
 ## Fuente de verdad
@@ -76,4 +75,5 @@ El sistema conserva trazabilidad.
 No mover complejidad al front técnico.
 No usar IA para escribir celdas del Excel.
 No asumir aprobación automática por semáforo.
+No producir preview XLS.
 ```
