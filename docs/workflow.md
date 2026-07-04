@@ -40,9 +40,54 @@ Secretaria
 10. Desde la aprobación siempre sale un documento final al flujo operativo.
 ```
 
+## Ubicación de la OT
+
+```txt
+Cada OT debe tener un estado actual y un dueño actual.
+
+current_state indica dónde está la OT.
+
+current_owner_type indica qué tipo de actor la tiene.
+
+current_owner_id identifica al actor específico.
+```
+
+## Modelo mínimo
+
+```txt
+reports.current_state
+reports.current_owner_type
+reports.current_owner_id
+```
+
+Ejemplo:
+
+```txt
+current_state = assigned_to_secretary
+current_owner_type = secretary
+current_owner_id = secretaria_1
+```
+
+## Eventos de trazabilidad
+
+```txt
+report_events registra cada movimiento relevante.
+
+Ejemplos:
+
+assigned_to_secretary
+secretary_fix_saved
+secretary_approved
+final_document_generated
+```
+
 ## Invariantes
 
 ```txt
+Siempre debe poder saberse dónde está la OT.
+
+Siempre debe poder saberse quién tiene la OT.
+
 El técnico no corrige información.
 
 La secretaria hace los fixes.
@@ -59,6 +104,7 @@ El documento final es el único que sale al proceso operativo.
 ```txt
 No documentar este flujo como implementado completo.
 No duplicar este flujo en otros documentos.
+No crear un workflow engine genérico todavía.
 No mover corrección de datos al técnico.
 No saltarse la revisión/fix de secretaria.
 ```
