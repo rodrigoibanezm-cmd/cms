@@ -1,5 +1,6 @@
 import { randomUUID } from 'crypto';
 import { query } from './db.js';
+import { initialWorkflowValues } from './report_workflow.js';
 
 let ready;
 
@@ -27,6 +28,17 @@ export async function ensureReportSchema() {
       rejected_at timestamptz,
       rejected_reason text,
       error_message text,
+      current_state text NOT NULL DEFAULT 'processing',
+      current_owner_type text NOT NULL DEFAULT 'system',
+      current_owner_id text,
+      assigned_at timestamptz,
+      opened_by_secretary_at timestamptz,
+      secretary_approved_at timestamptz,
+      closed_at timestamptz,
+      priority text,
+      sla_due_at timestamptz,
+      last_workflow_event_at timestamptz,
+      approved_by_secretary_id text,
       created_at timestamptz NOT NULL DEFAULT now(),
       updated_at timestamptz NOT NULL DEFAULT now()
     )
@@ -38,7 +50,18 @@ export async function ensureReportSchema() {
       ADD COLUMN IF NOT EXISTS approved_at timestamptz,
       ADD COLUMN IF NOT EXISTS approved_by text,
       ADD COLUMN IF NOT EXISTS rejected_at timestamptz,
-      ADD COLUMN IF NOT EXISTS rejected_reason text
+      ADD COLUMN IF NOT EXISTS rejected_reason text,
+      ADD COLUMN IF NOT EXISTS current_state text NOT NULL DEFAULT 'processing',
+      ADD COLUMN IF NOT EXISTS current_owner_type text NOT NULL DEFAULT 'system',
+      ADD COLUMN IF NOT EXISTS current_owner_id text,
+      ADD COLUMN IF NOT EXISTS assigned_at timestamptz,
+      ADD COLUMN IF NOT EXISTS opened_by_secretary_at timestamptz,
+      ADD COLUMN IF NOT EXISTS secretary_approved_at timestamptz,
+      ADD COLUMN IF NOT EXISTS closed_at timestamptz,
+      ADD COLUMN IF NOT EXISTS priority text,
+      ADD COLUMN IF NOT EXISTS sla_due_at timestamptz,
+      ADD COLUMN IF NOT EXISTS last_workflow_event_at timestamptz,
+      ADD COLUMN IF NOT EXISTS approved_by_secretary_id text
   `)).then(() => query(`
     CREATE TABLE IF NOT EXISTS report_files (
       id uuid PRIMARY KEY,
@@ -74,10 +97,13 @@ export async function addReportEvent(reportId, event, payload = {}) {
 export async function createReport({ ot, sourceName }) {
   await ensureReportSchema();
   const id = randomUUID();
+  const workflow = initialWorkflowValues();
   const res = await query(
-    `INSERT INTO reports (id, ot, source_name)
-     VALUES ($1, $2, $3) RETURNING *`,
-    [id, ot || null, sourceName || null]
+    `INSERT INTO reports (id, ot, source_name, current_state,
+      current_owner_type, current_owner_id, last_workflow_event_at)
+     VALUES ($1, $2, $3, $4, $5, $6, now()) RETURNING *`,
+    [id, ot || null, sourceName || null, workflow.current_state,
+      workflow.current_owner_type, workflow.current_owner_id]
   );
   await addReportEvent(id, 'uploaded', { sourceName });
   return res.rows[0];
