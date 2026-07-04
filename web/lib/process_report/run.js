@@ -3,7 +3,7 @@ import { publishFinalXls } from './publish.js';
 import { runReportExtraction } from './run_extraction.js';
 import { uploadInputFiles } from '../report_file_uploads.js';
 import { createReport } from '../report_store.js';
-import { markAudited, markExtracted } from '../report_updates.js';
+import { markAudited, markExtracted, markReportError } from '../report_updates.js';
 
 function colorFrom(semaforo) {
   if (semaforo === 'VERDE') return 'green';
@@ -28,8 +28,7 @@ function responseBody({ reportId, extraction, xls, audit, recovery }) {
   };
 }
 
-export async function runProcessReport(input) {
-  const reportRow = await createReport({ ot: input.otHint, sourceName: input.sourceName });
+async function processAfterCreate(input, reportRow) {
   await uploadInputFiles({
     reportId: reportRow.id,
     reportFile: input.reportFile,
@@ -63,9 +62,15 @@ export async function runProcessReport(input) {
 
   await markAudited(reportRow.id, audit);
   xls = await publishFinalXls({ reportId: reportRow.id, extraction, xls });
+  return responseBody({ reportId: reportRow.id, extraction, xls, audit, recovery });
+}
 
-  return {
-    reportRow,
-    body: responseBody({ reportId: reportRow.id, extraction, xls, audit, recovery }),
-  };
+export async function runProcessReport(input) {
+  const reportRow = await createReport({ ot: input.otHint, sourceName: input.sourceName });
+  try {
+    return { reportRow, body: await processAfterCreate(input, reportRow) };
+  } catch (err) {
+    await markReportError(reportRow.id, err).catch(console.error);
+    throw err;
+  }
 }
