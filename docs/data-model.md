@@ -12,6 +12,7 @@ Neon/Postgres
 reports
 report_files
 report_events
+report_secretaries
 ```
 
 ## reports
@@ -35,10 +36,6 @@ extraction_json
 admin_corrections
 critical_checks
 admin_notes
-approved_at
-approved_by
-rejected_at
-rejected_reason
 error_message
 created_at
 updated_at
@@ -58,6 +55,19 @@ priority
 sla_due_at
 last_workflow_event_at
 approved_by_secretary_id
+```
+
+## report_secretaries
+
+Catálogo operativo de secretarias.
+
+```txt
+id
+name
+email
+active
+created_at
+updated_at
 ```
 
 ## report_files
@@ -95,6 +105,7 @@ error
 workflow_processing_started
 workflow_admin_queue
 workflow_error
+assigned_to_secretary
 ```
 
 ## Estado operacional
