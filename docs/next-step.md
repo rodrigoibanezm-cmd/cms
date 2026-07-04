@@ -10,7 +10,7 @@ También existe un flujo objetivo nuevo:
 docs/target-flow.md
 ```
 
-## Estado validado documental
+## Estado validado
 
 ```txt
 README opera como router
@@ -18,44 +18,48 @@ docs/README.md opera como router documental
 documentation-standard.md fija estándar
 target-flow.md describe flujo futuro
 current-state.md describe estado real
+process-report fue modularizado
+preview XLS dejó de producirse
+```
+
+## Decisión tomada
+
+```txt
+No tocar review_status todavía.
+Eso se revisará dentro del nuevo flujo operativo.
 ```
 
 ## Problema actual
 
-Antes de implementar el target flow hay que afirmar cimientos.
-
-Cimientos débiles actuales:
-
 ```txt
-process-report supera 120 líneas
-review_status mezcla auditoría IA con aprobación admin
-preview XLS se genera pero no define bien su rol en admin
+El target flow requiere modelo mínimo antes de codear.
 ```
 
 ## Objetivo del próximo chat
 
 ```txt
-Fix de cimientos antes del nuevo flujo.
+Diseñar modelo mínimo del target flow.
 ```
 
-Debe hacer:
+Debe definir:
 
 ```txt
-separar process-report en archivos menores
-corregir semántica de review_status
-mantener auditoría IA como recomendación, no cierre admin
-definir si preview XLS se usa o queda fuera del flujo admin
-actualizar docs afectados
+estados de OT
+roles operativos
+asignaciones
+colas de trabajo
+momento de generación PDF
+rutas mínimas necesarias
 ```
 
 ## No hacer
 
 ```txt
-no implementar secretarias todavía
-no implementar dashboard admin todavía
+no implementar todavía
 no generar PDF todavía
-no rediseñar vistas todavía
+no rediseñar dashboard todavía
 no cambiar extractor ni XLS fill
+no tocar review_status sin modelo aprobado
 ```
 
 ## Pitch para nuevo chat
@@ -63,8 +67,8 @@ no cambiar extractor ni XLS fill
 ```txt
 @GitHub lee README.md, docs/README.md y docs/documentation-standard.md.
 Luego lee docs/current-state.md, docs/target-flow.md y docs/next-step.md.
-Objetivo: fix de cimientos antes de implementar el target flow.
-No implementar secretarias, dashboard ni PDF todavía.
-Primero separar process-report bajo 120 líneas y corregir review_status.
-No tocar extractor, prompts ni generación XLS salvo que sea necesario para el refactor.
+Objetivo: diseñar modelo mínimo del target flow antes de codear.
+No implementar todavía.
+No tocar extractor, prompts ni generación XLS.
+Mantener archivos bajo 120 líneas y 1 responsabilidad por archivo.
 ```
