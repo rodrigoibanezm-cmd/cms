@@ -13,18 +13,19 @@ docs/next-step.md
 ## Mapa documental
 
 ```txt
-current-state.md    estado real del sistema
-principles.md       reglas rectoras
-pipeline.md         flujo process-report
-data-model.md       Neon y eventos
-drive.md            archivos en Google Drive
-xls-generation.md   generación Excel
-audit-recovery.md   auditoría IA y recovery
-admin-review.md     front/admin de revisión
-template-bases.md   workflow de bases XLS
-operations.md       operación y env vars
-deuda-tecnica.md    deuda real
-next-step.md        pitch para siguiente chat
+documentation-standard.md estándar para crear/auditar docs
+current-state.md           estado real del sistema
+principles.md              reglas rectoras
+pipeline.md                flujo process-report
+data-model.md              Neon y eventos
+drive.md                   archivos en Google Drive
+xls-generation.md          generación Excel
+audit-recovery.md          auditoría IA y recovery
+admin-review.md            front/admin de revisión
+template-bases.md          workflow de bases XLS
+operations.md              operación y env vars
+deuda-tecnica.md           deuda real
+next-step.md               pitch para siguiente chat
 ```
 
 ## Regla de tamaño
@@ -51,6 +52,13 @@ Deuda técnica = problema real que ya duele o puede romper.
 3. documentar lo que quedó real
 4. actualizar next-step.md
 5. abrir siguiente chat con README + next-step
+```
+
+## Auditoría documental
+
+```txt
+Auditar contra docs/documentation-standard.md.
+No auditar contra gusto personal.
 ```
 
 ## No usar docs para
