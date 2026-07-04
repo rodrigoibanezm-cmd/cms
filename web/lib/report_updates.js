@@ -1,5 +1,6 @@
 import { query } from './db.js';
 import { addReportEvent } from './report_store.js';
+import { transitionReportWorkflow, WORKFLOW } from './report_workflow.js';
 
 const table = 'reports';
 
@@ -34,6 +35,7 @@ export async function markReportError(id, err) {
   const sql = `UPDATE ${table} SET status='error', error_message=$2,
     updated_at=now() WHERE id=$1`;
   await query(sql, [id, message]);
+  await transitionReportWorkflow(id, WORKFLOW.PROCESSING_FAILED, { message });
   await addReportEvent(id, 'error', { message });
 }
 
