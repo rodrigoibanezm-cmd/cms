@@ -2,73 +2,58 @@
 
 ## Contexto
 
-La repo ya tiene corpus documental base.
-
-También existe un flujo objetivo nuevo:
-
-```txt
-docs/target-flow.md
-```
+El proyecto ya cuenta con documentación base y con la infraestructura mínima de workflow implementada.
 
 ## Estado validado
 
 ```txt
 README opera como router
-docs/README.md opera como router documental
-documentation-standard.md fija estándar
-target-flow.md describe flujo futuro
-current-state.md describe estado real
-process-report fue modularizado
-preview XLS dejó de producirse
+current-state refleja el estado real
+workflow mínimo persistido en reports
+cada OT conoce su estado y dueño actual
+process-report mueve la OT a admin_queue
+preview XLS eliminado
 ```
 
-## Decisión tomada
+## Decisiones tomadas
 
 ```txt
 No tocar review_status todavía.
-Eso se revisará dentro del nuevo flujo operativo.
+El workflow operativo usa current_state.
 ```
 
-## Problema actual
+## Próxima tarea
 
 ```txt
-El target flow requiere modelo mínimo antes de codear.
+Implementar asignación de secretaria.
 ```
 
-## Objetivo del próximo chat
+Debe incluir:
 
 ```txt
-Diseñar modelo mínimo del target flow.
-```
-
-Debe definir:
-
-```txt
-estados de OT
-roles operativos
-asignaciones
-colas de trabajo
-momento de generación PDF
-rutas mínimas necesarias
+catálogo de secretarias
+assigned_to_secretary
+cola por secretaria
+reasignación
 ```
 
 ## No hacer
 
 ```txt
-no implementar todavía
 no generar PDF todavía
 no rediseñar dashboard todavía
-no cambiar extractor ni XLS fill
-no tocar review_status sin modelo aprobado
+no tocar extractor
+no tocar prompts
+no cambiar XLS fill
+no reemplazar current_state por review_status
 ```
 
 ## Pitch para nuevo chat
 
 ```txt
-@GitHub lee README.md, docs/README.md y docs/documentation-standard.md.
-Luego lee docs/current-state.md, docs/target-flow.md y docs/next-step.md.
-Objetivo: diseñar modelo mínimo del target flow antes de codear.
-No implementar todavía.
-No tocar extractor, prompts ni generación XLS.
-Mantener archivos bajo 120 líneas y 1 responsabilidad por archivo.
-```
+@GitHub lee README.md, docs/current-state.md, docs/principles.md y docs/next-step.md.
+Implementa únicamente la asignación de secretaria usando current_state.
+No crear PDF.
+No modificar extractor.
+Mantener archivos bajo 120 líneas.
+```}
