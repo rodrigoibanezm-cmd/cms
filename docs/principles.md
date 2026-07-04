@@ -6,6 +6,29 @@
 La mejor solución es la más simple que deje trazabilidad.
 ```
 
+## Reglas de implementación
+
+```txt
+No inventar.
+No suponer.
+Si falta información relevante, preguntar.
+No cambiar comportamiento funcional sin autorización.
+Preferir solución simple, modular y explícita.
+No agregar dependencias si el problema se resuelve con las actuales.
+Centralizar reglas de negocio; no duplicarlas.
+Una fuente de verdad por dato.
+Mantener trazabilidad de estados y eventos.
+```
+
+## Tamaño y estructura
+
+```txt
+Ningún archivo debe superar 120 líneas.
+Si un archivo crece, se refactoriza antes de seguir agregando lógica.
+1 archivo = 1 responsabilidad principal.
+1 función = 1 intención clara.
+```
+
 ## IA
 
 ```txt
@@ -68,4 +91,5 @@ La regla general es búsqueda dinámica por etiquetas.
 Máximo 120 líneas.
 No documentar planes como estado real.
 Actualizar docs al cerrar una tarea.
+Antes de implementar, leer solo los docs indicados para esa tarea.
 ```
