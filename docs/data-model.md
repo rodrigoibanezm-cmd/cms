@@ -45,6 +45,22 @@ created_at
 updated_at
 ```
 
+Campos workflow:
+
+```txt
+current_state
+current_owner_type
+current_owner_id
+assigned_at
+opened_by_secretary_at
+secretary_approved_at
+closed_at
+priority
+sla_due_at
+last_workflow_event_at
+approved_by_secretary_id
+```
+
 ## report_files
 
 Representa archivos asociados a una OT.
@@ -77,6 +93,9 @@ extracted
 xls_generated
 audit_completed
 error
+workflow_processing_started
+workflow_admin_queue
+workflow_error
 ```
 
 ## Estado operacional
@@ -84,6 +103,9 @@ error
 ```txt
 status = procesamiento técnico
 review_status = revisión admin/auditor
+current_state = ubicación operacional de la OT
+current_owner_type = tipo de actor que tiene la OT
+current_owner_id = actor específico, cuando existe
 ```
 
 ## Invariante
@@ -93,4 +115,5 @@ Neon guarda estado y JSON.
 Drive guarda bytes de archivos.
 El admin debe leer desde Neon, no reconstruir desde Drive.
 No crear generated_xls_preview para nuevas OTs.
+Cada OT debe saber dónde está y quién la tiene.
 ```
