@@ -15,7 +15,6 @@ report_events
 ```
 
 ## reports
-
 Representa una OT procesada.
 
 Campos principales:
