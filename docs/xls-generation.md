@@ -83,8 +83,6 @@ FOTOS
 
 ## Publicación
 
-Si `publish=true`:
-
 ```txt
 sube XLS a Drive
 registra generated_xls
@@ -93,10 +91,10 @@ actualiza reports.excel_url
 
 ## Preview
 
-Se genera un SVG liviano:
-
 ```txt
-generated_xls_preview
+No se genera preview XLS.
+El preview anterior era de mala calidad.
+El admin usa el XLS real.
 ```
 
 ## Invariante
@@ -105,4 +103,5 @@ generated_xls_preview
 La IA nunca escribe celdas.
 No agregar casuística por plantilla si una regla dinámica sirve.
 No romper formato de la plantilla oficial.
+No producir generated_xls_preview para nuevas OTs.
 ```
