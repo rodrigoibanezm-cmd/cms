@@ -1,6 +1,6 @@
 import { randomUUID } from 'crypto';
 import { query } from './db.js';
-import { initialWorkflowValues } from './report_workflow.js';
+import { initialWorkflowValues, transitionReportWorkflow, WORKFLOW } from './report_workflow.js';
 
 let ready;
 
@@ -104,6 +104,7 @@ export async function createReport({ ot, sourceName }) {
       workflow.current_owner_type, workflow.current_owner_id]
   );
   await addReportEvent(id, 'uploaded', { sourceName });
+  await transitionReportWorkflow(id, WORKFLOW.PROCESSING_STARTED, { sourceName });
   return res.rows[0];
 }
 export async function addReportFile(reportId, file) {
