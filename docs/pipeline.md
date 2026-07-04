@@ -34,8 +34,15 @@ ot = opcional
 9. intenta recovery si aplica
 10. guarda auditoría
 11. publica XLS final
-12. publica preview SVG
-13. responde report_id + links
+12. responde report_id + link XLS
+```
+
+## Orquestación
+
+```txt
+route.js solo maneja HTTP
+web/lib/process_report/* contiene pasos del flujo
+ningún archivo debe superar 120 líneas
 ```
 
 ## Extracción
@@ -75,10 +82,17 @@ semaforo
 confidence_score
 template_filename
 excel_url
-xls_preview_url
 drive_file_id
 audit
 recovery
+```
+
+## Preview XLS
+
+```txt
+No se produce preview XLS.
+El preview anterior era malo para revisión fina.
+El admin debe usar el XLS real.
 ```
 
 ## Invariante
