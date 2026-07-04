@@ -7,6 +7,7 @@ Router documental de la repo.
 ```txt
 README.md
 docs/current-state.md
+docs/principles.md
 docs/next-step.md
 ```
 
@@ -25,7 +26,7 @@ No describe estado actual implementado.
 documentation-standard.md estándar para crear/auditar docs
 current-state.md           estado real del sistema
 workflow.md                flujo operacional y ownership de OT
-principles.md              reglas rectoras
+principles.md              reglas rectoras y manual de trabajo
 pipeline.md                flujo process-report
 data-model.md              Neon y eventos
 drive.md                   archivos en Google Drive
