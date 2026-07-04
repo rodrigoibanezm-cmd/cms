@@ -55,21 +55,15 @@ Kinds actuales:
 original_report
 detail_photo
 generated_xls
+```
+
+Kind legacy:
+
+```txt
 generated_xls_preview
 ```
 
-Campos:
-
-```txt
-id
-report_id
-kind
-filename
-mime_type
-drive_file_id
-url
-created_at
-```
+No se debe crear para nuevas OTs.
 
 ## report_events
 
@@ -98,4 +92,5 @@ review_status = revisión admin/auditor
 Neon guarda estado y JSON.
 Drive guarda bytes de archivos.
 El admin debe leer desde Neon, no reconstruir desde Drive.
+No crear generated_xls_preview para nuevas OTs.
 ```
