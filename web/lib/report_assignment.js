@@ -3,8 +3,6 @@ import { ensureReportSchema } from './report_schema.js';
 import { ensureTenantSchema, getActiveTenant } from './tenant_store.js';
 import { transitionReportWorkflow, WORKFLOW } from './report_workflow.js';
 
-const ASSIGNABLE_STATES = [null, 'admin_queue', 'assigned_to_secretary'];
-
 async function ensureAssignmentSchema() {
   await ensureReportSchema();
   await ensureTenantSchema();
@@ -13,10 +11,16 @@ async function ensureAssignmentSchema() {
 async function findReport(reportId) {
   await ensureAssignmentSchema();
   const res = await query(
-    `SELECT id, current_state FROM reports WHERE id=$1`,
+    `SELECT id, status, current_state, excel_url FROM reports WHERE id=$1`,
     [reportId]
   );
   return res.rows[0] || null;
+}
+
+function canAssign(report) {
+  if (!report.current_state) return true;
+  if (['admin_queue', 'assigned_to_secretary'].includes(report.current_state)) return true;
+  return report.current_state === 'processing' && Boolean(report.excel_url || report.status === 'processed');
 }
 
 async function setReportTenant(reportId, tenant) {
@@ -32,9 +36,7 @@ export async function assignReportToSecretary({ reportId, secretaryId }) {
 
   const report = await findReport(reportId);
   if (!report) throw new Error('OT no encontrada');
-  if (!ASSIGNABLE_STATES.includes(report.current_state)) {
-    throw new Error('OT no asignable en su estado actual');
-  }
+  if (!canAssign(report)) throw new Error('OT no asignable en su estado actual');
 
   const tenant = await getActiveTenant(secretaryId, 'secretary');
   if (!tenant) throw new Error('Tenant secretaria activo no encontrado');
