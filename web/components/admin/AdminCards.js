@@ -1,7 +1,8 @@
 import styles from '../../app/admin/adminCards.module.css';
-import { reviewLabel, semaforoClass } from './admin_helpers.js';
+import AssignSecretaryForm from './AssignSecretaryForm.js';
+import { reviewLabel, semaforoClass, workflowLabel } from './admin_helpers.js';
 
-export default function AdminCards({ reports }) {
+export default function AdminCards({ reports, secretaries }) {
   return (
     <div className={styles.adminList}>
       {reports.map((report) => (
@@ -17,9 +18,9 @@ export default function AdminCards({ reports }) {
           </div>
 
           <div className={styles.adminGrid}>
-            <div><span>Estado</span><strong>{report.status}</strong></div>
+            <div><span>Workflow</span><strong>{workflowLabel(report.current_state)}</strong></div>
+            <div><span>Dueño</span><strong>{report.current_owner_name || report.current_owner_type}</strong></div>
             <div><span>Revisión</span><strong>{reviewLabel(report.review_status)}</strong></div>
-            <div><span>Confianza</span><strong>{report.confidence_score ?? '-'}</strong></div>
             <div><span>XLS</span><strong>{report.excel_url ? 'Listo' : 'Pendiente'}</strong></div>
           </div>
 
@@ -27,6 +28,7 @@ export default function AdminCards({ reports }) {
             <a className={styles.adminButton} href={`/admin/report?id=${report.id}`}>
               Ver revisión
             </a>
+            <AssignSecretaryForm report={report} secretaries={secretaries} returnTo="/admin" />
             {report.excel_url ? (
               <a className={styles.adminLink} href={report.excel_url} target="_blank">
                 Abrir XLS
