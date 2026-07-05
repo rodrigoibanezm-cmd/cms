@@ -11,7 +11,7 @@ export default function AdminTable({ reports, secretaries }) {
             <th>OT</th>
             <th>Semáforo</th>
             <th>Workflow</th>
-            <th>Dueño</th>
+            <th>Tenant</th>
             <th>Revisión</th>
             <th>XLS</th>
             <th>Asignar</th>
@@ -28,7 +28,7 @@ export default function AdminTable({ reports, secretaries }) {
                 </span>
               </td>
               <td>{workflowLabel(report.current_state)}</td>
-              <td>{report.current_owner_name || report.current_owner_type}</td>
+              <td>{report.tenant_name || '-'}</td>
               <td>{reviewLabel(report.review_status)}</td>
               <td>{report.excel_url ? 'Listo' : 'Pendiente'}</td>
               <td>
