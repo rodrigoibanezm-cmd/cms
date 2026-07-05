@@ -2,7 +2,7 @@ import { query } from './db.js';
 import { getActiveTenant } from './tenant_store.js';
 import { transitionReportWorkflow, WORKFLOW } from './report_workflow.js';
 
-const ASSIGNABLE_STATES = ['admin_queue', 'assigned_to_secretary'];
+const ASSIGNABLE_STATES = [null, 'admin_queue', 'assigned_to_secretary'];
 
 async function findReport(reportId) {
   const res = await query(
