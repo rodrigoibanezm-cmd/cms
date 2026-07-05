@@ -11,3 +11,11 @@ export function reviewLabel(value) {
   if (value === 'rejected') return 'Rechazado';
   return value || 'Pendiente';
 }
+
+export function workflowLabel(value) {
+  if (value === 'processing') return 'Procesando';
+  if (value === 'admin_queue') return 'Cola admin';
+  if (value === 'assigned_to_secretary') return 'Asignada';
+  if (value === 'error') return 'Error';
+  return value || '-';
+}
