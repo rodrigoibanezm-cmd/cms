@@ -1,11 +1,16 @@
 import { query } from './db.js';
+import { ensureSecretarySchema } from './secretary_store.js';
 
 const reportsTable = 'reports';
 const filesTable = 'report_files';
 const eventsTable = 'report_events';
 
 export async function listReports() {
-  const sql = `SELECT * FROM ${reportsTable} ORDER BY created_at DESC LIMIT 200`;
+  await ensureSecretarySchema();
+  const sql = `SELECT r.*, s.name AS current_owner_name
+    FROM ${reportsTable} r
+    LEFT JOIN report_secretaries s ON s.id::text = r.current_owner_id
+    ORDER BY r.created_at DESC LIMIT 200`;
   return (await query(sql)).rows;
 }
 
