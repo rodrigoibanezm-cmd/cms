@@ -1,6 +1,8 @@
 import AdminCards from '../../components/admin/AdminCards.js';
 import AdminTable from '../../components/admin/AdminTable.js';
+import SecretaryAdmin from '../../components/admin/SecretaryAdmin.js';
 import { listReports } from '../../lib/report_reads.js';
+import { listSecretaries } from '../../lib/secretary_store.js';
 import styles from './admin.module.css';
 
 export const dynamic = 'force-dynamic';
@@ -8,6 +10,7 @@ export const dynamic = 'force-dynamic';
 export default async function AdminPage({ searchParams }) {
   const params = await searchParams;
   const reports = await listReports();
+  const secretaries = await listSecretaries({ activeOnly: true });
   const view = params?.view === 'table' ? 'table' : 'cards';
 
   return (
@@ -23,12 +26,16 @@ export default async function AdminPage({ searchParams }) {
         <span>OTs cargadas</span>
       </section>
 
+      <SecretaryAdmin secretaries={secretaries} />
+
       <nav className={styles.viewSwitch}>
         <a className={view === 'cards' ? styles.active : ''} href="/admin">Tarjetas</a>
         <a className={view === 'table' ? styles.active : ''} href="/admin?view=table">Planilla</a>
       </nav>
 
-      {view === 'table' ? <AdminTable reports={reports} /> : <AdminCards reports={reports} />}
+      {view === 'table'
+        ? <AdminTable reports={reports} secretaries={secretaries} />
+        : <AdminCards reports={reports} secretaries={secretaries} />}
     </main>
   );
 }
