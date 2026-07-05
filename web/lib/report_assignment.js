@@ -36,8 +36,10 @@ export async function assignReportToSecretary({ reportId, secretaryId }) {
 
 export async function listSecretaryQueue(secretaryId) {
   if (!secretaryId) throw new Error('secretaryId requerido');
-  const sql = `SELECT * FROM reports
-    WHERE current_owner_type='secretary' AND current_owner_id=$1
-    ORDER BY assigned_at DESC NULLS LAST, created_at DESC`;
+  const sql = `SELECT r.*, s.name AS current_owner_name
+    FROM reports r
+    LEFT JOIN report_secretaries s ON s.id::text = r.current_owner_id
+    WHERE r.current_owner_type='secretary' AND r.current_owner_id=$1
+    ORDER BY r.assigned_at DESC NULLS LAST, r.created_at DESC`;
   return (await query(sql, [secretaryId])).rows;
 }
