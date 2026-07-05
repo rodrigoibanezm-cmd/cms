@@ -13,13 +13,13 @@ export default function AdminCards({ reports, secretaries }) {
               <h2>{report.ot || '-'}</h2>
             </div>
             <span className={semaforoClass(styles, report.semaforo)}>
-              {report.semaforo || 'SIN DATO'}
+              {report.semaforo || '-'}
             </span>
           </div>
 
           <div className={styles.adminGrid}>
             <div><span>Workflow</span><strong>{workflowLabel(report.current_state)}</strong></div>
-            <div><span>Dueño</span><strong>{report.current_owner_name || report.current_owner_type}</strong></div>
+            <div><span>Tenant</span><strong>{report.tenant_name || '-'}</strong></div>
             <div><span>Revisión</span><strong>{reviewLabel(report.review_status)}</strong></div>
             <div><span>XLS</span><strong>{report.excel_url ? 'Listo' : 'Pendiente'}</strong></div>
           </div>
