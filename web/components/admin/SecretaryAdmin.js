@@ -13,7 +13,7 @@ export default function SecretaryAdmin({ secretaries }) {
       <div className={styles.list}>
         {secretaries.map((secretary) => (
           <div className={styles.row} key={secretary.id}>
-            <span>{secretary.name}</span>
+            <a href={`/admin/secretary?id=${secretary.id}`}>{secretary.name}</a>
             <form action="/api/admin/secretaries" method="post">
               <input type="hidden" name="return_to" value="/admin" />
               <input type="hidden" name="action" value="deactivate" />
