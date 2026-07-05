@@ -10,7 +10,7 @@ export default function SecretaryAdmin({ secretaries }) {
   return (
     <section className={styles.panel}>
       <h2>Tenants</h2>
-      <form className={styles.form} action="/api/admin/secretaries" method="post">
+      <form className={styles.form} action="/api/admin/tenants" method="post">
         <input type="hidden" name="return_to" value="/admin" />
         <input name="name" placeholder="Nombre" required />
         <select name="mode" defaultValue="secretary">
@@ -24,7 +24,7 @@ export default function SecretaryAdmin({ secretaries }) {
         {secretaries.map((tenant) => (
           <div className={styles.row} key={tenant.id}>
             <a href={tenantHref(tenant)}>{tenant.name} · {tenant.mode}</a>
-            <form action="/api/admin/secretaries" method="post">
+            <form action="/api/admin/tenants" method="post">
               <input type="hidden" name="return_to" value="/admin" />
               <input type="hidden" name="action" value="deactivate" />
               <input type="hidden" name="id" value={tenant.id} />
