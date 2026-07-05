@@ -5,27 +5,37 @@ import styles from '../admin.module.css';
 
 export const dynamic = 'force-dynamic';
 
-export default async function SecretaryQueuePage({ searchParams }) {
-  const params = await searchParams;
+async function loadSecretaryPage(params) {
   const fallback = await listTenants({ activeOnly: true, mode: 'secretary' });
   const secretaryId = params?.id || fallback[0]?.id || null;
   const tenant = secretaryId ? await getActiveTenant(secretaryId, 'secretary') : null;
   const reports = tenant ? await listSecretaryQueue(tenant.id) : [];
+  return { tenant, reports, error: null };
+}
+
+export default async function SecretaryQueuePage({ searchParams }) {
+  const params = await searchParams;
+  let data;
+  try {
+    data = await loadSecretaryPage(params);
+  } catch (err) {
+    data = { tenant: null, reports: [], error: err.message };
+  }
 
   return (
     <main className={styles.adminScreen}>
       <header className={styles.adminHeader}>
         <p className="eyebrow">CM Services</p>
         <h1>Cola secretaria</h1>
-        <p className="subtitle">{tenant?.name || 'Tenant secretaria requerido'}</p>
+        <p className="subtitle">{data.tenant?.name || 'Tenant secretaria requerido'}</p>
       </header>
 
       <section className={styles.adminSummary}>
-        <strong>{reports.length}</strong>
-        <span>OTs asignadas</span>
+        <strong>{data.reports.length}</strong>
+        <span>{data.error || 'OTs asignadas'}</span>
       </section>
 
-      <AdminTable reports={reports} secretaries={[]} editableSecretary={false} />
+      <AdminTable reports={data.reports} secretaries={[]} editableSecretary={false} />
     </main>
   );
 }
