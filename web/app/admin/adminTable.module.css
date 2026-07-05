@@ -37,6 +37,11 @@
   text-decoration: none;
 }
 
+.disabled {
+  color: #9aa6b2;
+  font-weight: 800;
+}
+
 .pill {
   border-radius: 999px;
   font-size: 12px;
