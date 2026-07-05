@@ -5,10 +5,6 @@ export function env(name) {
   return process.env[name] || '';
 }
 
-function hasServiceAccount() {
-  return Boolean(env('GOOGLE_SERVICE_ACCOUNT_JSON'));
-}
-
 function parseServiceAccount() {
   const raw = env('GOOGLE_SERVICE_ACCOUNT_JSON');
   if (!raw) throw new Error('Falta GOOGLE_SERVICE_ACCOUNT_JSON');
@@ -37,9 +33,10 @@ function serviceAccountAuth() {
 }
 
 function getAuth() {
-  if (hasServiceAccount()) return serviceAccountAuth();
+  if (env('GOOGLE_DRIVE_AUTH_MODE') === 'service_account') return serviceAccountAuth();
   const oauth = oauthAuth();
   if (oauth) return oauth;
+  if (env('GOOGLE_SERVICE_ACCOUNT_JSON')) return serviceAccountAuth();
   throw new Error('Falta autenticación Google Drive');
 }
 
