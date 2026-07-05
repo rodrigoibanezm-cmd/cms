@@ -3,9 +3,8 @@ import { query } from './db.js';
 
 let ready;
 
-export async function ensureSecretarySchema() {
-  if (ready) return ready;
-  ready = query(`
+async function createSecretaryCatalog() {
+  await query(`
     CREATE TABLE IF NOT EXISTS report_secretaries (
       id uuid PRIMARY KEY,
       name text NOT NULL,
@@ -15,6 +14,15 @@ export async function ensureSecretarySchema() {
       updated_at timestamptz NOT NULL DEFAULT now()
     )
   `);
+}
+
+async function addTenantToReports() {
+  await query(`ALTER TABLE reports ADD COLUMN IF NOT EXISTS tenant_id text`);
+}
+
+export async function ensureSecretarySchema() {
+  if (ready) return ready;
+  ready = Promise.all([createSecretaryCatalog(), addTenantToReports()]);
   return ready;
 }
 
