@@ -1,6 +1,6 @@
 # Documentación CMS
 
-Router documental de la repo.
+Router documental de la repo...
 
 ## Lectura mínima para un chat nuevo
 
