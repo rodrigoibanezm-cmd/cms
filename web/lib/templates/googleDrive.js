@@ -22,6 +22,23 @@ function redirectUri(req) {
   return `${baseUrl(req)}/api/auth/google/callback`;
 }
 
+function shortClientId() {
+  const value = process.env.GOOGLE_CLIENT_ID || '';
+  if (!value) return '';
+  return `${value.slice(0, 14)}...${value.slice(-18)}`;
+}
+
+function authDebug(req) {
+  return {
+    ok: true,
+    base_url: baseUrl(req),
+    redirect_uri: redirectUri(req),
+    client_id_hint: shortClientId(),
+    has_client_secret: Boolean(process.env.GOOGLE_CLIENT_SECRET),
+    has_refresh_token: Boolean(process.env.GOOGLE_REFRESH_TOKEN),
+  };
+}
+
 function oauthClient(req) {
   const clientId = process.env.GOOGLE_CLIENT_ID;
   const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
@@ -111,6 +128,7 @@ module.exports = {
   parseFolderId,
   getDrive,
   authUrl,
+  authDebug,
   exchangeCode,
   listChildren,
   findChildFolder,
