@@ -1,15 +1,15 @@
 import { query } from './db.js';
-import { ensureSecretarySchema } from './secretary_store.js';
+import { ensureTenantSchema } from './tenant_store.js';
 
 const reportsTable = 'reports';
 const filesTable = 'report_files';
 const eventsTable = 'report_events';
 
 export async function listReports() {
-  await ensureSecretarySchema();
-  const sql = `SELECT r.*, s.name AS tenant_name
+  await ensureTenantSchema();
+  const sql = `SELECT r.*, t.name AS tenant_name, t.mode AS tenant_mode
     FROM ${reportsTable} r
-    LEFT JOIN report_secretaries s ON s.id::text = r.tenant_id
+    LEFT JOIN report_tenants t ON t.id::text = r.tenant_id
     ORDER BY r.created_at DESC LIMIT 200`;
   return (await query(sql)).rows;
 }
