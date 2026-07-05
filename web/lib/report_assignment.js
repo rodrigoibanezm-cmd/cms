@@ -1,10 +1,12 @@
 import { query } from './db.js';
+import { ensureReportSchema } from './report_schema.js';
 import { getActiveTenant } from './tenant_store.js';
 import { transitionReportWorkflow, WORKFLOW } from './report_workflow.js';
 
 const ASSIGNABLE_STATES = [null, 'admin_queue', 'assigned_to_secretary'];
 
 async function findReport(reportId) {
+  await ensureReportSchema();
   const res = await query(
     `SELECT id, current_state FROM reports WHERE id=$1`,
     [reportId]
@@ -45,6 +47,7 @@ export async function assignReportToSecretary({ reportId, secretaryId }) {
 
 export async function listSecretaryQueue(secretaryId) {
   if (!secretaryId) throw new Error('secretaryId requerido');
+  await ensureReportSchema();
   const sql = `SELECT r.*, t.name AS tenant_name
     FROM reports r
     LEFT JOIN report_tenants t ON t.id::text = r.tenant_id
