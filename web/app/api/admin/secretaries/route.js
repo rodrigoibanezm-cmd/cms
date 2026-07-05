@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import {
-  createSecretary,
-  listSecretaries,
-  setSecretaryActive,
-} from '../../../../lib/secretary_store.js';
+  createTenant,
+  listTenants,
+  setTenantActive,
+} from '../../../../lib/tenant_store.js';
 
 export const runtime = 'nodejs';
 
@@ -17,6 +17,7 @@ async function readPayload(request) {
     id: form.get('id'),
     name: form.get('name'),
     email: form.get('email'),
+    mode: form.get('mode'),
     return_to: form.get('return_to'),
   };
 }
@@ -28,8 +29,8 @@ function maybeRedirect(request, payload) {
 
 export async function GET() {
   try {
-    const secretaries = await listSecretaries({ activeOnly: false });
-    return NextResponse.json({ ok: true, secretaries });
+    const tenants = await listTenants({ activeOnly: false });
+    return NextResponse.json({ ok: true, tenants, secretaries: tenants });
   } catch (err) {
     return NextResponse.json({ ok: false, error: err.message }, { status: 500 });
   }
@@ -39,9 +40,9 @@ export async function POST(request) {
   try {
     const payload = await readPayload(request);
     const result = payload.action === 'deactivate'
-      ? await setSecretaryActive(payload.id, false)
-      : await createSecretary(payload || {});
-    return maybeRedirect(request, payload) || NextResponse.json({ ok: true, secretary: result });
+      ? await setTenantActive(payload.id, false)
+      : await createTenant(payload || {});
+    return maybeRedirect(request, payload) || NextResponse.json({ ok: true, tenant: result });
   } catch (err) {
     return NextResponse.json({ ok: false, error: err.message }, { status: 400 });
   }
