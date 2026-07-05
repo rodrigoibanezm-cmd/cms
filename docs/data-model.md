@@ -12,7 +12,6 @@ Neon/Postgres
 reports
 report_files
 report_events
-report_secretaries
 ```
 
 ## reports
@@ -55,19 +54,6 @@ priority
 sla_due_at
 last_workflow_event_at
 approved_by_secretary_id
-```
-
-## report_secretaries
-
-Catálogo operativo de secretarias.
-
-```txt
-id
-name
-email
-active
-created_at
-updated_at
 ```
 
 ## report_files
