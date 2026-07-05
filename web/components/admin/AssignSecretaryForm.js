@@ -1,7 +1,9 @@
 import styles from '../../app/admin/assignSecretary.module.css';
 
 function canAssign(report) {
-  return !report.current_state || ['admin_queue', 'assigned_to_secretary'].includes(report.current_state);
+  if (!report.current_state) return true;
+  if (['admin_queue', 'assigned_to_secretary'].includes(report.current_state)) return true;
+  return report.current_state === 'processing' && Boolean(report.excel_url || report.status === 'processed');
 }
 
 export default function AssignSecretaryForm({ report, secretaries, returnTo }) {
