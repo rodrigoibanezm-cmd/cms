@@ -7,9 +7,9 @@ const eventsTable = 'report_events';
 
 export async function listReports() {
   await ensureSecretarySchema();
-  const sql = `SELECT r.*, s.name AS current_owner_name
+  const sql = `SELECT r.*, s.name AS tenant_name
     FROM ${reportsTable} r
-    LEFT JOIN report_secretaries s ON s.id::text = r.current_owner_id
+    LEFT JOIN report_secretaries s ON s.id::text = r.tenant_id
     ORDER BY r.created_at DESC LIMIT 200`;
   return (await query(sql)).rows;
 }
