@@ -1,13 +1,13 @@
 import AdminTable from '../../../components/admin/AdminTable.js';
 import { listSecretaryQueue } from '../../../lib/report_assignment.js';
-import { listSecretaries } from '../../../lib/secretary_store.js';
+import { listTenants } from '../../../lib/tenant_store.js';
 import styles from '../admin.module.css';
 
 export const dynamic = 'force-dynamic';
 
 export default async function SecretaryQueuePage({ searchParams }) {
   const params = await searchParams;
-  const secretaries = await listSecretaries({ activeOnly: true });
+  const secretaries = await listTenants({ activeOnly: true, mode: 'secretary' });
   const secretaryId = params?.id || secretaries[0]?.id || null;
   const reports = secretaryId ? await listSecretaryQueue(secretaryId) : [];
   const current = secretaries.find((secretary) => secretary.id === secretaryId);
