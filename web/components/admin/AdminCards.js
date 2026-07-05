@@ -1,6 +1,11 @@
 import styles from '../../app/admin/adminCards.module.css';
 import AssignSecretaryForm from './AssignSecretaryForm.js';
-import { reviewLabel, semaforoClass, workflowLabel } from './admin_helpers.js';
+import {
+  dateLabel,
+  priorityLabel,
+  semaforoClass,
+  workflowLabel,
+} from './admin_helpers.js';
 
 export default function AdminCards({ reports, secretaries }) {
   return (
@@ -12,28 +17,19 @@ export default function AdminCards({ reports, secretaries }) {
               <p className={styles.adminKicker}>OT</p>
               <h2>{report.ot || '-'}</h2>
             </div>
-            <span className={semaforoClass(styles, report.semaforo)}>
-              {report.semaforo || '-'}
-            </span>
+            <span className={semaforoClass(styles, report.semaforo)}>{report.semaforo || '-'}</span>
           </div>
 
           <div className={styles.adminGrid}>
-            <div><span>Workflow</span><strong>{workflowLabel(report.current_state)}</strong></div>
-            <div><span>Tenant</span><strong>{report.tenant_name || '-'}</strong></div>
-            <div><span>Revisión</span><strong>{reviewLabel(report.review_status)}</strong></div>
-            <div><span>XLS</span><strong>{report.excel_url ? 'Listo' : 'Pendiente'}</strong></div>
+            <div><span>Estado</span><strong>{workflowLabel(report.current_state)}</strong></div>
+            <div><span>Fecha</span><strong>{dateLabel(report.updated_at || report.created_at)}</strong></div>
+            <div><span>Prioridad</span><strong>{priorityLabel(report.priority)}</strong></div>
+            <div><span>Secretaria</span><strong>{report.tenant_name || '-'}</strong></div>
           </div>
 
           <div className={styles.adminActions}>
-            <a className={styles.adminButton} href={`/admin/report?id=${report.id}`}>
-              Ver revisión
-            </a>
+            <a className={styles.adminButton} href={`/admin/report?id=${report.id}`}>Revisar</a>
             <AssignSecretaryForm report={report} secretaries={secretaries} returnTo="/admin" />
-            {report.excel_url ? (
-              <a className={styles.adminLink} href={report.excel_url} target="_blank">
-                Abrir XLS
-              </a>
-            ) : null}
           </div>
         </article>
       ))}
