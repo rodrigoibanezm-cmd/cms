@@ -1,20 +1,35 @@
 import styles from '../../app/admin/adminTable.module.css';
 import AssignSecretaryForm from './AssignSecretaryForm.js';
-import { reviewLabel, semaforoClass, workflowLabel } from './admin_helpers.js';
+import {
+  dateLabel,
+  pdfReady,
+  priorityLabel,
+  semaforoClass,
+  workflowLabel,
+} from './admin_helpers.js';
 
-export default function AdminTable({ reports, secretaries }) {
+function SecretaryCell({ report, secretaries, editable }) {
+  if (!editable) return report.tenant_name || '-';
+  return <AssignSecretaryForm report={report} secretaries={secretaries} returnTo="/admin?view=table" />;
+}
+
+function PdfAction({ report }) {
+  if (pdfReady(report)) return <a href={`/api/admin/reports/${report.id}/pdf`}>PDF</a>;
+  return <span className={styles.disabled}>PDF</span>;
+}
+
+export default function AdminTable({ reports, secretaries, editableSecretary = true }) {
   return (
     <div className={styles.adminTableWrap}>
       <table className={styles.adminTable}>
         <thead>
           <tr>
             <th>OT</th>
+            <th>Estado</th>
             <th>Semáforo</th>
-            <th>Workflow</th>
-            <th>Tenant</th>
-            <th>Revisión</th>
-            <th>XLS</th>
-            <th>Asignar</th>
+            <th>Fecha</th>
+            <th>Prioridad</th>
+            <th>Secretaria</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -22,21 +37,14 @@ export default function AdminTable({ reports, secretaries }) {
           {reports.map((report) => (
             <tr key={report.id}>
               <td><strong>{report.ot || '-'}</strong></td>
-              <td>
-                <span className={semaforoClass(styles, report.semaforo)}>
-                  {report.semaforo || '-'}
-                </span>
-              </td>
               <td>{workflowLabel(report.current_state)}</td>
-              <td>{report.tenant_name || '-'}</td>
-              <td>{reviewLabel(report.review_status)}</td>
-              <td>{report.excel_url ? 'Listo' : 'Pendiente'}</td>
-              <td>
-                <AssignSecretaryForm report={report} secretaries={secretaries} returnTo="/admin?view=table" />
-              </td>
+              <td><span className={semaforoClass(styles, report.semaforo)}>{report.semaforo || '-'}</span></td>
+              <td>{dateLabel(report.updated_at || report.created_at)}</td>
+              <td>{priorityLabel(report.priority)}</td>
+              <td><SecretaryCell report={report} secretaries={secretaries} editable={editableSecretary} /></td>
               <td className={styles.tableActions}>
                 <a href={`/admin/report?id=${report.id}`}>Revisar</a>
-                {report.excel_url ? <a href={report.excel_url} target="_blank">XLS</a> : null}
+                <PdfAction report={report} />
               </td>
             </tr>
           ))}
