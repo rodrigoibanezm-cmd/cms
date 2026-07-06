@@ -1,8 +1,8 @@
 // web/components/StatusCard.js
 const styles = {
-  green: ['OK', 'Informe recibido'],
-  yellow: ['OK', 'Informe recibido'],
-  red: ['ALERTA', 'Foto no legible'],
+  green: ['\uD83D\uDFE2', 'Informe recibido'],
+  yellow: ['\uD83D\uDFE1', 'Informe recibido'],
+  red: ['\uD83D\uDD34', 'Foto no legible'],
 };
 
 function messageFor(status) {
