@@ -89,20 +89,14 @@ secretary_approved
 final_document_generated
 ```
 
+`final_document_generated` guarda `pdf_version` para saber si el PDF vigente se puede reutilizar.
+
 ## report_tenants
 
 Catálogo simple de actores visibles por UI.
 
-Campos:
-
 ```txt
-id
-name
-email
-mode
-active
-created_at
-updated_at
+id, name, email, mode, active, created_at, updated_at
 ```
 
 Modos:
@@ -126,24 +120,12 @@ current_owner_id = actor específico, cuando existe
 tenant_id = secretaria asignada para filtrado de cola
 ```
 
-## Estados workflow usados
-
-```txt
-processing
-admin_queue
-assigned_to_secretary
-secretary_approved
-error
-```
-
 ## Invariante
 
 ```txt
 Neon guarda estado y JSON.
 Drive guarda bytes de archivos.
-El admin debe leer desde Neon, no reconstruir desde Drive.
 No crear generated_xls_preview para nuevas OTs.
 Cada OT debe saber dónde está y quién la tiene.
-La aprobación no borra la secretaria asignada.
-El PDF final se registra una sola vez como generated_pdf.
+El PDF final se registra como generated_pdf.
 ```
