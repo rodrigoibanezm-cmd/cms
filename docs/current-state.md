@@ -22,7 +22,7 @@ técnico sube informe + fotos
 → admin asigna secretaria
 → secretaria revisa su cola
 → secretaria aprueba desde el detalle
-→ admin ve PDF habilitado
+→ admin abre PDF final
 ```
 
 ## Qué funciona
@@ -43,6 +43,7 @@ asignación de secretaria
 cola por secretaria con total/pendientes
 cola secretaria incluye pendientes y aprobadas
 aprobación de secretaria
+PDF final idempotente desde XLS generado
 ```
 
 ## Qué está incompleto
@@ -50,7 +51,6 @@ aprobación de secretaria
 ```txt
 rechazo formal desde admin/secretaria
 edición controlada de campos desde admin/secretaria
-generación PDF final real
 flujo de cierre de OT
 calibración real del confidence_score
 ```
@@ -60,7 +60,7 @@ calibración real del confidence_score
 ```txt
 Neon = estado del proceso y JSON
 Drive = archivos originales y generados
-XLS = entregable, no fuente de verdad
+XLS/PDF = entregables, no fuente de verdad
 ```
 
 ## Modelo operativo actual
@@ -71,6 +71,7 @@ El técnico solo sube evidencia.
 El admin asigna.
 La secretaria revisa y aprueba.
 La aprobación no borra la secretaria asignada.
+El PDF final se crea una vez y luego se reutiliza.
 El sistema conserva trazabilidad.
 ```
 
