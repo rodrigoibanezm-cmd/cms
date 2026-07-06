@@ -7,7 +7,6 @@
 
 .adminTable {
   border-collapse: collapse;
-  min-width: 680px;
   width: 100%;
 }
 
@@ -17,7 +16,7 @@
   font-size: 13px;
   padding: 10px;
   text-align: left;
-  white-space: nowrap;
+  vertical-align: middle;
 }
 
 .adminTable th {
@@ -30,6 +29,7 @@
   align-items: center;
   display: flex;
   gap: 10px;
+  white-space: nowrap;
 }
 
 .tableActions a,
@@ -63,3 +63,7 @@
 .green { background: #e7f7ed; color: #176b36; }
 .yellow { background: #fff6db; color: #7a5800; }
 .red { background: #ffe7e7; color: #9c1f1f; }
+
+@media (max-width: 760px) {
+  .adminTable { min-width: 720px; }
+}
