@@ -21,7 +21,7 @@ function sameInspectionItem(a, b) {
   const left = looseKey(a);
   const right = looseKey(b);
   if (!left || !right) return false;
-  return left === right || left.includes(right) || right.includes(left);
+  return left === right;
 }
 
 function findHeaderColumns(sheet) {
@@ -67,7 +67,8 @@ function clearResultCells(sheet, row, cols) {
 
 function resultColumn(cols, resultado) {
   if (resultado === 'CUMPLE') return cols.cumple;
-  if (resultado === 'NO CUMPLE') return cols.noCumple;
+  if (resultado === 'NO CUMPLE' || resultado === 'NO_CUMPLE') return cols.noCumple;
+  if (resultado === 'NO APLICA' || resultado === 'NO_APLICA') return cols.noAplica;
   return cols.noAplica;
 }
 
