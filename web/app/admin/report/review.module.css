@@ -73,9 +73,7 @@
 }
 
 @media (max-width: 900px) {
-  .reviewTopBar,
+  .reviewTopBar { flex-direction: column; }
   .reviewMainGrid,
-  .reviewSecondaryGrid {
-    grid-template-columns: 1fr;
-  }
+  .reviewSecondaryGrid { grid-template-columns: 1fr; }
 }
