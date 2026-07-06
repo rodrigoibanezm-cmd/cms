@@ -6,18 +6,30 @@ import { createReport } from '../report_store.js';
 import { markAudited, markExtracted, markReportError } from '../report_updates.js';
 import { transitionReportWorkflow, WORKFLOW } from '../report_workflow.js';
 
-function colorFrom(semaforo) {
-  if (semaforo === 'VERDE') return 'green';
-  if (semaforo === 'ROJO') return 'red';
-  return 'yellow';
+function needsRetake(extraction) {
+  const score = Number(extraction.confidence_score) || 0;
+  const text = [extraction.mensaje, ...(extraction.razones || [])]
+    .join(' ')
+    .toLowerCase();
+
+  return score === 0 || text.includes('toma nuevamente') || text.includes('no se pudo leer el checklist');
+}
+
+function technicianColor(extraction) {
+  return needsRetake(extraction) ? 'red' : 'green';
 }
 
 function responseBody({ reportId, extraction, xls, audit, recovery }) {
+  const retake = needsRetake(extraction);
+
   return {
     ok: true,
     report_id: reportId,
-    color: colorFrom(extraction.semaforo),
-    message: `Informe procesado. Excel generado: ${xls.filename}`,
+    color: technicianColor(extraction),
+    needs_retake: retake,
+    message: retake
+      ? 'La foto no se pudo leer bien. Toma nuevamente la imagen.'
+      : `Informe procesado. Excel generado: ${xls.filename}`,
     ot: extraction.ot,
     semaforo: extraction.semaforo,
     confidence_score: extraction.confidence_score,
