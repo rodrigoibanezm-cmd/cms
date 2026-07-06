@@ -2,8 +2,6 @@
 
 Digitalización auditada de informes técnicos Covaclean.
 
-Esta repo contiene la app móvil, el pipeline IA, la generación XLS determinística, la persistencia Neon, la integración Drive y el admin de revisión.
-
 ## Responsabilidad de esta repo
 
 ```txt
@@ -16,8 +14,8 @@ persistencia Neon
 admin de revisión
 auditoría IA
 recovery quirúrgico
-workflow de templates base
 workflow admin/secretaria
+PDF final desde XLS aprobado
 ```
 
 ## Fuera de esta repo
@@ -26,7 +24,7 @@ workflow admin/secretaria
 ERP
 BI histórico avanzado
 gestión completa de usuarios
-firma documental final
+firma documental final externa
 workflow operativo externo a la revisión admin
 ```
 
@@ -35,7 +33,7 @@ workflow operativo externo a la revisión admin
 ```txt
 El técnico carga evidencia.
 La IA extrae y audita.
-El backend decide forma, persistencia y XLS.
+El backend decide forma, persistencia y entregables.
 Neon es fuente de verdad.
 Drive guarda archivos.
 El admin asigna.
@@ -53,10 +51,9 @@ inputs y outputs guardados en Drive
 reports/files/events guardados en Neon
 admin visual operativo
 vista admin por defecto en planilla
-asignación de secretaria operativa
-cola secretaria con pendientes y aprobadas
+asignación y cola de secretaria operativas
 aprobación secretaria operativa
-PDF final pendiente
+PDF final idempotente operativo
 ```
 
 ## Regla de trabajo
@@ -71,7 +68,7 @@ El siguiente chat parte leyendo este README y docs/next-step.md.
 ## Regla de tamaño
 
 ```txt
-Ningún archivo debe superar 120 líneas.
+Ningún archivo debe superar 100 líneas.
 Si un archivo crece, se refactoriza.
 La misma regla aplica para docs.
 1 doc = 1 responsabilidad.
@@ -99,15 +96,8 @@ docs/current-state.md
 docs/principles.md
 docs/workflow.md
 docs/secretary-flow.md
-docs/pipeline.md
 docs/data-model.md
-docs/drive.md
-docs/xls-generation.md
-docs/audit-recovery.md
 docs/admin-review.md
-docs/template-bases.md
-docs/operations.md
-docs/deuda-tecnica.md
 docs/next-step.md
 ```
 
