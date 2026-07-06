@@ -12,15 +12,18 @@ Ver alertas del auditor y trazabilidad.
 
 ```txt
 /admin
-/admin/report?id={report_id}
+/admin/report?id=report_id
+/admin/secretary?id=secretary_id
 ```
 
 ## API admin
 
 ```txt
 GET /api/admin/reports
-GET /api/admin/reports/{id}
-GET /api/report-file?id={file_id}
+GET /api/admin/reports/id
+GET /api/report-file?id=file_id
+POST /api/admin/reports/assign
+POST /api/secretary/reports/id/approve
 ```
 
 ## Pantalla listado
@@ -36,11 +39,12 @@ Muestra:
 ```txt
 OT
 semaforo
-status
-review_status
-confidence_score
+current_state
+fecha
+prioridad
+secretaria asignada
 link a revisión
-link a XLS
+botón PDF cuando secretaria aprueba
 ```
 
 ## Pantalla revisión
@@ -61,6 +65,30 @@ issues del auditor
 historial de eventos
 ```
 
+## Cola secretaria
+
+Archivo:
+
+```txt
+web/app/admin/secretary/page.js
+```
+
+Muestra:
+
+```txt
+solo OTs asignadas a esa secretaria
+botón Aprobar OT
+```
+
+Al aprobar:
+
+```txt
+current_state = secretary_approved
+secretary_approved_at = now()
+approved_by_secretary_id = secretaria
+report_events.event = secretary_approved
+```
+
 ## Visualización de imágenes
 
 ```txt
@@ -71,9 +99,9 @@ El front usa lupa sobre la imagen original.
 ## Estado incompleto
 
 ```txt
-No existe cierre formal desde UI.
-No existe approve/reject operativo desde admin.
-No existe edición controlada de campos desde admin.
+No existe rechazo formal desde UI.
+No existe edición controlada de campos desde admin/secretaria.
+No existe generación PDF final.
 ```
 
 ## Invariante
