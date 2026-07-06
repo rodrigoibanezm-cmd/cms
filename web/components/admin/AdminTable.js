@@ -18,7 +18,24 @@ function PdfAction({ report }) {
   return <span className={styles.disabled}>PDF</span>;
 }
 
-export default function AdminTable({ reports, secretaries, editableSecretary = true }) {
+function ApproveAction({ report, enabled, returnTo }) {
+  if (!enabled || report.current_state !== 'assigned_to_secretary') return null;
+  return (
+    <form action={`/api/secretary/reports/${report.id}/approve`} method="post">
+      <input type="hidden" name="secretary_id" value={report.tenant_id || report.current_owner_id || ''} />
+      <input type="hidden" name="return_to" value={returnTo} />
+      <button type="submit">Aprobar OT</button>
+    </form>
+  );
+}
+
+export default function AdminTable({
+  reports,
+  secretaries,
+  editableSecretary = true,
+  approveEnabled = false,
+  returnTo = '/admin?view=table',
+}) {
   return (
     <div className={styles.adminTableWrap}>
       <table className={styles.adminTable}>
@@ -45,6 +62,7 @@ export default function AdminTable({ reports, secretaries, editableSecretary = t
               <td className={styles.tableActions}>
                 <a href={`/admin/report?id=${report.id}`}>Revisar</a>
                 <PdfAction report={report} />
+                <ApproveAction report={report} enabled={approveEnabled} returnTo={returnTo} />
               </td>
             </tr>
           ))}
