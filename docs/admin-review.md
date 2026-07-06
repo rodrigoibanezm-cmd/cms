@@ -65,9 +65,10 @@ ruta: GET /api/admin/reports/id/pdf
 requiere secretary_approved_at
 responde como descarga, no como vista Drive
 si generated_pdf vigente existe, descarga ese archivo
-si no existe, convierte generated_xls a PDF
-exporta solo la primera hoja y FOTOS
-no exporta EXTRACCION_JSON ni hojas intermedias
+si no existe, crea copia XLS imprimible con ExcelJS
+la copia imprimible conserva primera hoja y FOTOS
+no usa Google Sheets API
+convierte esa copia vía Drive export
 sube el PDF a Drive
 registra report_files.kind = generated_pdf
 registra report_events.event = final_document_generated
@@ -95,4 +96,5 @@ El admin no debe depender de archivos sueltos.
 Debe leer report, files y events desde Neon.
 La revisión debe mostrar evidencia antes que confianza.
 El PDF final se crea una sola vez por versión vigente y luego se reutiliza.
+No depender de Google Sheets API para el PDF.
 ```
