@@ -6,6 +6,13 @@ function tenantHref(tenant) {
   return '/admin';
 }
 
+function modeLabel(mode) {
+  if (mode === 'secretary') return 'administrativa';
+  if (mode === 'admin') return 'admin';
+  if (mode === 'dashboard') return 'dashboard';
+  return mode;
+}
+
 export default function SecretaryAdmin({ secretaries }) {
   return (
     <section className={styles.panel}>
@@ -15,7 +22,7 @@ export default function SecretaryAdmin({ secretaries }) {
         <input name="name" placeholder="Nombre" required />
         <select name="mode" defaultValue="secretary">
           <option value="admin">Admin</option>
-          <option value="secretary">Secretaria</option>
+          <option value="secretary">Administrativa</option>
           <option value="dashboard">Dashboard</option>
         </select>
         <button type="submit">Agregar</button>
@@ -23,7 +30,7 @@ export default function SecretaryAdmin({ secretaries }) {
       <div className={styles.list}>
         {secretaries.map((tenant) => (
           <div className={styles.row} key={tenant.id}>
-            <a href={tenantHref(tenant)}>{tenant.name} · {tenant.mode}</a>
+            <a href={tenantHref(tenant)}>{tenant.name} · {modeLabel(tenant.mode)}</a>
             <form action="/api/admin/tenants" method="post">
               <input type="hidden" name="return_to" value="/admin" />
               <input type="hidden" name="action" value="deactivate" />
