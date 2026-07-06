@@ -1,4 +1,10 @@
 // web/components/UploadCard.js
+'use client';
+
+function previewUrl(file) {
+  return URL.createObjectURL(file);
+}
+
 export default function UploadCard({ title, hint, files, multiple, onChange }) {
   function handleChange(event) {
     const selected = Array.from(event.target.files || []);
@@ -45,7 +51,7 @@ export default function UploadCard({ title, hint, files, multiple, onChange }) {
         <div className="previewGrid">
           {files.map((file, index) => (
             <div className="previewItem" key={`${file.name}-${file.lastModified}-${index}`}>
-              <span className="previewIcon">📷</span>
+              <img src={previewUrl(file)} alt={file.name || 'preview'} />
               <button
                 type="button"
                 className="previewRemove"
