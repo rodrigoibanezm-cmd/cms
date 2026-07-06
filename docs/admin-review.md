@@ -22,6 +22,7 @@ Mostrar alertas, archivos y trazabilidad.
 ```txt
 GET /api/admin/reports
 GET /api/admin/reports/id
+GET /api/admin/reports/id/pdf
 GET /api/report-file?id=file_id
 POST /api/admin/reports/assign
 POST /api/secretary/reports/id/approve
@@ -44,7 +45,7 @@ muestra OT, estado, técnico, fecha, prioridad, administrativa y acciones
 no muestra semáforo en planilla
 permite asignar secretaria si la OT está en cola admin
 mantiene visible la OT aprobada
-habilita PDF si existe secretary_approved_at
+PDF se habilita si existe secretary_approved_at
 ```
 
 ## Detalle revisión
@@ -76,19 +77,24 @@ confidence_score
 
 ## Cola secretaria
 
-Archivo:
-
 ```txt
-web/app/admin/secretary/page.js
+ruta: /admin/secretary?id=secretary_id
+archivo: web/app/admin/secretary/page.js
+muestra solo OTs de esa secretaria
+incluye pendientes y aprobadas
+muestra total y pendientes
 ```
 
-Muestra:
+## PDF final
 
 ```txt
-solo OTs de esa secretaria
-pendientes y aprobadas
-total y pendientes
-OT, estado, técnico, fecha, prioridad, administrativa y acciones
+ruta: GET /api/admin/reports/id/pdf
+requiere secretary_approved_at
+si generated_pdf existe, redirige a ese archivo
+si no existe, convierte generated_xls a PDF
+sube el PDF a Drive
+registra report_files.kind = generated_pdf
+registra report_events.event = final_document_generated
 ```
 
 ## Visualización de imágenes
@@ -103,7 +109,7 @@ El front usa lupa sobre la imagen original.
 ```txt
 No existe rechazo formal desde UI.
 No existe edición controlada de campos desde admin/secretaria.
-No existe generación PDF final real.
+No existe cierre operativo final.
 ```
 
 ## Invariante
@@ -112,4 +118,5 @@ No existe generación PDF final real.
 El admin no debe depender de archivos sueltos.
 Debe leer report, files y events desde Neon.
 La revisión debe mostrar evidencia antes que confianza.
+El PDF final se crea una sola vez y luego se reutiliza.
 ```
