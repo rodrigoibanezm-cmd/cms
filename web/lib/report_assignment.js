@@ -58,7 +58,9 @@ export async function listSecretaryQueue(secretaryId) {
   const sql = `SELECT r.*, t.name AS tenant_name
     FROM reports r
     LEFT JOIN report_tenants t ON t.id::text = r.tenant_id
-    WHERE r.tenant_id=$1 AND r.current_state='assigned_to_secretary'
-    ORDER BY r.assigned_at DESC NULLS LAST, r.created_at DESC`;
+    WHERE r.tenant_id=$1
+      AND r.current_state IN ('assigned_to_secretary', 'secretary_approved')
+    ORDER BY r.secretary_approved_at NULLS FIRST,
+      r.assigned_at DESC NULLS LAST, r.created_at DESC`;
   return (await query(sql, [secretaryId])).rows;
 }
