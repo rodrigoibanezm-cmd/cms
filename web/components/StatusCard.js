@@ -1,21 +1,21 @@
 // web/components/StatusCard.js
 const styles = {
-  green: ['🟢', 'Informe recibido'],
-  yellow: ['🟡', 'Informe recibido'],
-  red: ['🔴', 'Informe enviado a revisión'],
+  green: ['OK', 'Informe recibido'],
+  yellow: ['OK', 'Informe recibido'],
+  red: ['ALERTA', 'Foto no legible'],
 };
 
 function messageFor(status) {
-  if (status.color === 'red') {
-    return 'El informe fue procesado y quedó para revisión de administración.';
+  if (status.needs_retake) {
+    return status.message || 'La foto no se pudo leer bien. Sube una imagen mas legible.';
   }
-  return 'Informe enviado correctamente. Será revisado por administración.';
+  return 'Informe enviado correctamente. Sera revisado por administracion.';
 }
 
 export default function StatusCard({ status }) {
   if (!status) return null;
 
-  const [icon, title] = styles[status.color] || styles.yellow;
+  const [icon, title] = styles[status.color] || styles.green;
 
   return (
     <section className={`status ${status.color}`}>
