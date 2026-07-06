@@ -17,6 +17,7 @@ admin de revisión
 auditoría IA
 recovery quirúrgico
 workflow de templates base
+workflow admin/secretaria
 ```
 
 ## Fuera de esta repo
@@ -37,7 +38,8 @@ La IA extrae y audita.
 El backend decide forma, persistencia y XLS.
 Neon es fuente de verdad.
 Drive guarda archivos.
-El admin revisa antes de cerrar.
+El admin asigna.
+La secretaria revisa y aprueba.
 ```
 
 ## Estado actual
@@ -50,7 +52,11 @@ XLS generado desde templates Drive
 inputs y outputs guardados en Drive
 reports/files/events guardados en Neon
 admin visual operativo
-aprobación/rechazo formal todavía incompleta
+vista admin por defecto en planilla
+asignación de secretaria operativa
+cola secretaria con pendientes y aprobadas
+aprobación secretaria operativa
+PDF final pendiente
 ```
 
 ## Regla de trabajo
@@ -91,6 +97,8 @@ Ruta recomendada:
 ```txt
 docs/current-state.md
 docs/principles.md
+docs/workflow.md
+docs/secretary-flow.md
 docs/pipeline.md
 docs/data-model.md
 docs/drive.md
