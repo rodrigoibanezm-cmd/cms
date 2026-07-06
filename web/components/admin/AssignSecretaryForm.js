@@ -7,7 +7,7 @@ function canAssign(report) {
 }
 
 export default function AssignSecretaryForm({ report, secretaries, returnTo }) {
-  if (!canAssign(report)) return <span className={styles.muted}>No editable</span>;
+  if (!canAssign(report)) return <span className={styles.muted}>{report.tenant_name || 'No editable'}</span>;
   if (!secretaries.length) return <span className={styles.muted}>Sin administrativas</span>;
 
   return (
