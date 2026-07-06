@@ -1,36 +1,9 @@
-import {
-  getDashboardMetrics,
-  getDashboardTenant,
-  listDashboardReports,
-} from '../../../lib/tenant_dashboard.js';
-import styles from '../admin.module.css';
+import { redirect } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
 
-export default async function DashboardPage({ searchParams }) {
+export default async function AdminDashboardPage({ searchParams }) {
   const params = await searchParams;
-  const tenant = params?.id ? await getDashboardTenant(params.id) : null;
-  const metrics = tenant ? await getDashboardMetrics() : [];
-  const reports = tenant ? await listDashboardReports() : [];
-
-  return (
-    <main className={styles.adminScreen}>
-      <header className={styles.adminHeader}>
-        <p className="eyebrow">CM Services</p>
-        <h1>Dashboard</h1>
-        <p className="subtitle">{tenant?.name || 'Tenant dashboard requerido'}</p>
-      </header>
-
-      <section className={styles.adminSummary}>
-        <strong>{reports.length}</strong>
-        <span>OTs visibles</span>
-      </section>
-
-      <section className={styles.viewSwitch}>
-        {metrics.map((item) => (
-          <span key={item.current_state}>{item.current_state}: {item.count}</span>
-        ))}
-      </section>
-    </main>
-  );
+  const suffix = params?.id ? `?id=${params.id}` : '';
+  redirect(`/dashboard${suffix}`);
 }
