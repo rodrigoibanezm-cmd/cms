@@ -1,5 +1,7 @@
 import { AuditPanel, CriticalBox } from '../../../components/admin/ReviewAuditPanel.js';
 import { VisualFile, XlsPanel } from '../../../components/admin/ReviewVisualPanel.js';
+import SecretaryApproveForm from '../../../components/admin/SecretaryApproveForm.js';
+import { workflowLabel } from '../../../components/admin/admin_helpers.js';
 import { getReport } from '../../../lib/report_reads.js';
 import styles from './review.module.css';
 
@@ -32,11 +34,15 @@ export default async function AdminReportPage({ searchParams }) {
     <main className={styles.reviewScreen}>
       <header className={styles.reviewHeader}>
         <a className={styles.backLink} href="/admin">Volver</a>
-        <h1>Revisión OT {report.ot || '-'}</h1>
-        <div className={styles.reviewMeta}>
-          <span>{report.semaforo || 'SIN SEMÁFORO'}</span>
-          <span>{report.review_status}</span>
-          <span>{report.confidence_score ?? '-'}%</span>
+        <div className={styles.reviewTopBar}>
+          <div>
+            <h1>Revision OT {report.ot || '-'}</h1>
+            <div className={styles.reviewMeta}>
+              <span>{workflowLabel(report.current_state)}</span>
+              <span>{report.confidence_score ?? '-'}%</span>
+            </div>
+          </div>
+          <SecretaryApproveForm report={report} />
         </div>
       </header>
       <CriticalBox audit={data.audit} />
