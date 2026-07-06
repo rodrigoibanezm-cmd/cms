@@ -2,11 +2,12 @@ import styles from '../../app/admin/secretaryAdmin.module.css';
 
 function tenantHref(tenant) {
   if (tenant.mode === 'secretary') return `/admin/secretary?id=${tenant.id}`;
-  if (tenant.mode === 'dashboard') return `/admin/dashboard?id=${tenant.id}`;
+  if (tenant.mode === 'dashboard') return `/dashboard?id=${tenant.id}`;
   return '/admin';
 }
 
 function modeLabel(mode) {
+  if (mode === 'super_admin') return 'super admin';
   if (mode === 'secretary') return 'administrativa';
   if (mode === 'admin') return 'admin';
   if (mode === 'dashboard') return 'dashboard';
@@ -21,6 +22,7 @@ export default function SecretaryAdmin({ secretaries }) {
         <input type="hidden" name="return_to" value="/admin" />
         <input name="name" placeholder="Nombre" required />
         <select name="mode" defaultValue="secretary">
+          <option value="super_admin">Super admin</option>
           <option value="admin">Admin</option>
           <option value="secretary">Administrativa</option>
           <option value="dashboard">Dashboard</option>
