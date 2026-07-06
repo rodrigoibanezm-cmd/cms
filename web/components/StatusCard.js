@@ -7,9 +7,9 @@ const styles = {
 
 function messageFor(status) {
   if (status.needs_retake) {
-    return status.message || 'La foto no se pudo leer bien. Sube una imagen mas legible.';
+    return status.message || 'La foto no se pudo leer bien. Sube una imagen m\u00e1s legible.';
   }
-  return 'Informe enviado correctamente. Sera revisado por administracion.';
+  return 'Informe enviado correctamente. Ser\u00e1 revisado por administraci\u00f3n.';
 }
 
 export default function StatusCard({ status }) {
