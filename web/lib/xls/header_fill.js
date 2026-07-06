@@ -1,18 +1,11 @@
 import { cellText, norm, setBesideLabel, setCell, setVisibleCell, text } from './cell_utils.js';
 
-function mergeWidth(sheet, cell) {
-  const range = [...sheet.mergedCells || []].find((item) => item?.model);
-  if (!range) return 1;
-  return 1;
-}
-
 function isMergedMaster(cell) {
   return cell.isMerged && cell.master?.address === cell.address;
 }
 
 function valueCellScore(cell) {
-  if (isMergedMaster(cell)) return 2;
-  return 1;
+  return isMergedMaster(cell) ? 2 : 1;
 }
 
 function technicianTarget(sheet, rowNumber, startCol) {
