@@ -26,8 +26,8 @@ export default async function SecretaryQueuePage({ searchParams }) {
     <main className={styles.adminScreen}>
       <header className={styles.adminHeader}>
         <p className="eyebrow">CM Services</p>
-        <h1>Cola secretaria</h1>
-        <p className="subtitle">{data.tenant?.name || 'Tenant secretaria requerido'}</p>
+        <h1>Cola administrativa</h1>
+        <p className="subtitle">{data.tenant?.name || 'Tenant administrativa requerido'}</p>
       </header>
 
       <section className={styles.adminSummary}>
