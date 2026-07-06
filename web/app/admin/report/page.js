@@ -36,7 +36,7 @@ export default async function AdminReportPage({ searchParams }) {
         <a className={styles.backLink} href="/admin">Volver</a>
         <div className={styles.reviewTopBar}>
           <div>
-            <h1>Revision OT {report.ot || '-'}</h1>
+            <h1>Revisi\u00f3n OT {report.ot || '-'}</h1>
             <div className={styles.reviewMeta}>
               <span>{workflowLabel(report.current_state)}</span>
               <span>{report.confidence_score ?? '-'}%</span>
