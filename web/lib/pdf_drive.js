@@ -1,11 +1,12 @@
+import ExcelJS from 'exceljs';
 import { Readable } from 'stream';
-import { driveClient, downloadDriveFile, env, sheetsClient, uploadDriveFile } from './xls/google_drive.js';
+import { driveClient, downloadDriveFile, env, uploadDriveFile } from './xls/google_drive.js';
 
 const XLS_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 const SHEET_MIME = 'application/vnd.google-apps.spreadsheet';
 const PDF_MIME = 'application/pdf';
 
-export const PDF_VERSION = 'main_and_photos_v1';
+export const PDF_VERSION = 'main_and_photos_v2';
 
 export function pdfOutputFolderId() {
   return env('GOOGLE_DRIVE_OUTPUT_FOLDER_ID') || env('CANDIDATES_TEMPLATES_FOLDER_ID');
@@ -13,6 +14,16 @@ export function pdfOutputFolderId() {
 
 function pdfName(report) {
   return `${report.ot || report.id}_FINAL.pdf`;
+}
+
+async function printableWorkbookBuffer(buffer) {
+  const workbook = new ExcelJS.Workbook();
+  await workbook.xlsx.load(buffer);
+  const keep = new Set([workbook.worksheets[0]?.id, workbook.getWorksheet('FOTOS')?.id]);
+  workbook.worksheets.slice().forEach((sheet) => {
+    if (!keep.has(sheet.id)) workbook.removeWorksheet(sheet.id);
+  });
+  return Buffer.from(await workbook.xlsx.writeBuffer());
 }
 
 async function uploadAsSheet({ buffer, filename, folderId }) {
@@ -24,24 +35,6 @@ async function uploadAsSheet({ buffer, filename, folderId }) {
     supportsAllDrives: true,
   });
   return res.data.id;
-}
-
-async function visibleSheetUpdates(sheetId) {
-  const res = await sheetsClient().spreadsheets.get({ spreadsheetId: sheetId });
-  const sheets = res.data.sheets || [];
-  const firstId = sheets[0]?.properties?.sheetId;
-  return sheets.map(({ properties }) => ({
-    updateSheetProperties: {
-      properties: { sheetId: properties.sheetId, hidden: !(properties.sheetId === firstId || properties.title === 'FOTOS') },
-      fields: 'hidden',
-    },
-  }));
-}
-
-async function keepOnlyMainAndPhotos(sheetId) {
-  const requests = await visibleSheetUpdates(sheetId);
-  if (!requests.length) return;
-  await sheetsClient().spreadsheets.batchUpdate({ spreadsheetId: sheetId, requestBody: { requests } });
 }
 
 async function exportSheetPdf(sheetId) {
@@ -63,9 +56,9 @@ export async function convertXlsDriveFileToPdf({ report, xlsFile }) {
   if (!xlsFile?.drive_file_id) throw new Error('XLS sin drive_file_id');
 
   const xlsBuffer = await downloadDriveFile(xlsFile.drive_file_id);
-  const sheetId = await uploadAsSheet({ buffer: xlsBuffer, filename: xlsFile.filename, folderId });
+  const printBuffer = await printableWorkbookBuffer(xlsBuffer);
+  const sheetId = await uploadAsSheet({ buffer: printBuffer, filename: xlsFile.filename, folderId });
   try {
-    await keepOnlyMainAndPhotos(sheetId);
     const pdfBuffer = await exportSheetPdf(sheetId);
     const filename = pdfName(report);
     const uploaded = await uploadDriveFile({ buffer: pdfBuffer, filename, folderId, mimeType: PDF_MIME });
