@@ -23,7 +23,9 @@ técnico sube informe + fotos
 → auditoría Gemini
 → recovery quirúrgico si aplica
 → publicación XLS
-→ admin revisa
+→ admin asigna secretaria
+→ secretaria revisa su cola
+→ secretaria aprueba OT
 ```
 
 ## Qué funciona
@@ -40,14 +42,17 @@ auditoría IA
 recovery limitado
 admin listado
 admin revisión visual
+asignación de secretaria
+cola por secretaria
+aprobación de secretaria
 ```
 
 ## Qué está incompleto
 
 ```txt
-aprobación formal desde admin
-rechazo formal desde admin
-edición controlada de campos desde admin
+rechazo formal desde admin/secretaria
+edición controlada de campos desde admin/secretaria
+generación PDF final
 flujo de cierre de OT
 calibración real del confidence_score
 ```
@@ -65,7 +70,8 @@ XLS = entregable, no fuente de verdad
 ```txt
 El técnico no corrige.
 El técnico solo sube evidencia.
-El admin revisa.
+El admin asigna.
+La secretaria revisa y aprueba.
 El sistema conserva trazabilidad.
 ```
 
