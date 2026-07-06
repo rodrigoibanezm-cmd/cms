@@ -27,7 +27,7 @@ export async function listReports(filters = {}) {
   await ensureAdminSchema();
   const where = [];
   const params = [];
-  addLikeFilter(where, params, 'r.ot', filters.ot);
+  addLikeFilter(where, params, 'CAST(r.ot AS text)', filters.ot);
   addExactFilter(where, params, 'r.current_state', filters.state);
   addExactFilter(where, params, 'r.tenant_id', filters.tenant_id);
   addLikeFilter(where, params, `r.extraction_json->>'tecnico'`, filters.tech);
