@@ -39,13 +39,13 @@ export default async function AdminReportPage({ searchParams }) {
           <span>{report.confidence_score ?? '-'}%</span>
         </div>
       </header>
+      <CriticalBox audit={data.audit} />
       <div className={styles.reviewMainGrid}>
         <VisualFile title="Informe original" files={originals} />
         <XlsPanel report={report} files={xlsFiles} />
       </div>
       <div className={styles.reviewSecondaryGrid}>
         <VisualFile title="Fotos detalle" files={photos} />
-        <CriticalBox audit={data.audit} />
         <AuditPanel audit={data.audit} events={data.events || []} />
       </div>
     </main>
