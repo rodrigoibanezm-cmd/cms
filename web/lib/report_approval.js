@@ -47,7 +47,7 @@ export async function approveReportBySecretary({ reportId, secretaryId }) {
 
   const res = await query(
     `UPDATE reports SET current_state='secretary_approved',
-       current_owner_type='admin', current_owner_id=NULL,
+       current_owner_type='secretary', current_owner_id=$2,
        secretary_approved_at=now(), approved_by_secretary_id=$2,
        last_workflow_event_at=now(), updated_at=now()
      WHERE id=$1 RETURNING *`,
