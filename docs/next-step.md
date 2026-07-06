@@ -19,7 +19,9 @@ cola muestra pendientes y aprobadas
 aprobación de secretaria implementada
 admin abre por defecto en planilla
 planilla muestra técnico y no semáforo
-PDF final se crea una vez y luego se reutiliza
+PDF final descarga archivo
+PDF conserva primera hoja y FOTOS
+PDF no usa Google Sheets API
 ```
 
 ## Decisiones tomadas
@@ -34,17 +36,18 @@ El PDF requiere secretary_approved_at.
 ## Próxima tarea
 
 ```txt
-Probar en producción el flujo PDF y corregir solo errores reales.
+Probar en producción el flujo PDF corregido y corregir solo errores reales.
 ```
 
 Debe validar:
 
 ```txt
 click en PDF después de aprobar
+se descarga PDF, no abre vista Drive
+PDF contiene solo primera hoja y FOTOS
 se crea report_files.generated_pdf
 se registra final_document_generated
-segundo click reutiliza el PDF existente
-Drive abre el PDF correcto
+segundo click reutiliza el PDF vigente
 ```
 
 ## No hacer
@@ -61,7 +64,7 @@ no agregar features antes de probar PDF
 
 ```txt
 @GitHub lee README.md, docs/current-state.md, docs/principles.md y docs/next-step.md.
-Prueba el flujo PDF en producción y corrige solo errores reales.
+Prueba el flujo PDF corregido en producción y corrige solo errores reales.
 No modificar extractor.
 Mantener archivos bajo 100 líneas.
 ```
