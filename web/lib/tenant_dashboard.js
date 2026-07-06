@@ -1,18 +1,20 @@
 import { query } from './db.js';
-import { getActiveTenant } from './tenant_store.js';
+import { ensureTenantSchema } from './tenant_store.js';
 
 export async function getDashboardTenant(tenantId) {
-  return getActiveTenant(tenantId, 'dashboard');
-}
-
-export async function getDashboardMetrics() {
-  const sql = `SELECT current_state, count(*)::int AS count
-    FROM reports GROUP BY current_state ORDER BY current_state`;
-  return (await query(sql)).rows;
+  if (!tenantId) return null;
+  await ensureTenantSchema();
+  const sql = `SELECT * FROM report_tenants
+    WHERE id=$1 AND active=true AND mode IN ('dashboard', 'admin', 'super_admin')`;
+  return (await query(sql, [tenantId])).rows[0] || null;
 }
 
 export async function listDashboardReports() {
-  const sql = `SELECT ot, semaforo, current_state, created_at
-    FROM reports ORDER BY created_at DESC LIMIT 50`;
+  await ensureTenantSchema();
+  const sql = `SELECT r.*, t.name AS tenant_name,
+      r.extraction_json->>'tecnico' AS technician_name
+    FROM reports r
+    LEFT JOIN report_tenants t ON t.id::text = r.tenant_id
+    ORDER BY r.created_at DESC LIMIT 200`;
   return (await query(sql)).rows;
 }
