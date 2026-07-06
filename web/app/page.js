@@ -1,4 +1,3 @@
-// web/app/page.js
 'use client';
 
 import { useState } from 'react';
@@ -20,6 +19,10 @@ export default function Page() {
     setLoading(true);
     const result = await processReport({ photos, report });
     setStatus(result);
+    if (result?.ok) {
+      setPhotos([]);
+      setReport([]);
+    }
     setLoading(false);
   }
 
