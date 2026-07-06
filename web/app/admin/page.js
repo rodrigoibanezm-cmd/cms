@@ -32,6 +32,7 @@ export default async function AdminPage({ searchParams }) {
       <nav className={styles.viewSwitch}>
         <a className={view === 'cards' ? styles.active : ''} href="/admin?view=cards">Tarjetas</a>
         <a className={view === 'table' ? styles.active : ''} href="/admin">Planilla</a>
+        <a href="/dashboard">Dashboard</a>
       </nav>
 
       {view === 'table'
