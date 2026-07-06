@@ -26,10 +26,10 @@
 
 .xlsFrame {
   border: 0;
-  height: 1380px;
-  transform: scale(0.5);
+  height: 1060px;
+  transform: scale(0.65);
   transform-origin: top left;
-  width: 200%;
+  width: 154%;
 }
 
 .imageStage {
@@ -89,5 +89,5 @@
 @media (max-width: 900px) {
   .visualBox, .xlsBox { min-height: 520px; }
   .driveFrame, .imageStage, .xlsViewport { height: 440px; }
-  .xlsFrame { height: 880px; }
+  .xlsFrame { height: 680px; }
 }
