@@ -3,15 +3,16 @@
 ## Responsabilidad
 
 ```txt
-Permitir que administración revise la OT procesada.
+Permitir revisión administrativa de OTs procesadas.
 Comparar informe original contra XLS generado.
-Ver alertas del auditor y trazabilidad.
+Mostrar alertas, archivos y trazabilidad.
 ```
 
 ## Rutas
 
 ```txt
 /admin
+/admin?view=cards
 /admin/report?id=report_id
 /admin/secretary?id=secretary_id
 ```
@@ -26,7 +27,7 @@ POST /api/admin/reports/assign
 POST /api/secretary/reports/id/approve
 ```
 
-## Pantalla listado
+## Listado admin
 
 Archivo:
 
@@ -34,20 +35,19 @@ Archivo:
 web/app/admin/page.js
 ```
 
-Muestra:
+Estado real:
 
 ```txt
-OT
-semaforo
-current_state
-fecha
-prioridad
-secretaria asignada
-link a revisión
-botón PDF cuando secretaria aprueba
+/admin abre en planilla
+/admin?view=cards abre tarjetas
+muestra OT, estado, técnico, fecha, prioridad, administrativa y acciones
+no muestra semáforo en planilla
+permite asignar secretaria si la OT está en cola admin
+mantiene visible la OT aprobada
+habilita PDF si existe secretary_approved_at
 ```
 
-## Pantalla revisión
+## Detalle revisión
 
 Archivo:
 
@@ -63,6 +63,15 @@ XLS generado
 fotos detalle
 issues del auditor
 historial de eventos
+estado workflow
+botón Aprobar OT cuando aplica
+```
+
+No muestra:
+
+```txt
+semaforo
+confidence_score
 ```
 
 ## Cola secretaria
@@ -76,17 +85,10 @@ web/app/admin/secretary/page.js
 Muestra:
 
 ```txt
-solo OTs asignadas a esa secretaria
-botón Aprobar OT
-```
-
-Al aprobar:
-
-```txt
-current_state = secretary_approved
-secretary_approved_at = now()
-approved_by_secretary_id = secretaria
-report_events.event = secretary_approved
+solo OTs de esa secretaria
+pendientes y aprobadas
+total y pendientes
+OT, estado, técnico, fecha, prioridad, administrativa y acciones
 ```
 
 ## Visualización de imágenes
@@ -101,7 +103,7 @@ El front usa lupa sobre la imagen original.
 ```txt
 No existe rechazo formal desde UI.
 No existe edición controlada de campos desde admin/secretaria.
-No existe generación PDF final.
+No existe generación PDF final real.
 ```
 
 ## Invariante
