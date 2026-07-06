@@ -13,7 +13,8 @@ async function ensureAdminSchema() {
 
 export async function listReports() {
   await ensureAdminSchema();
-  const sql = `SELECT r.*, t.name AS tenant_name, t.mode AS tenant_mode
+  const sql = `SELECT r.*, t.name AS tenant_name, t.mode AS tenant_mode,
+      r.extraction_json->>'tecnico' AS technician_name
     FROM ${reportsTable} r
     LEFT JOIN report_tenants t ON t.id::text = r.tenant_id
     ORDER BY r.created_at DESC LIMIT 200`;
@@ -29,7 +30,8 @@ function latestAudit(events) {
 
 export async function getReport(id) {
   await ensureAdminSchema();
-  const reportSql = `SELECT * FROM ${reportsTable} WHERE id=$1`;
+  const reportSql = `SELECT r.*, r.extraction_json->>'tecnico' AS technician_name
+    FROM ${reportsTable} r WHERE id=$1`;
   const filesSql = `SELECT * FROM ${filesTable} WHERE report_id=$1 ORDER BY created_at`;
   const eventsSql = `SELECT * FROM ${eventsTable} WHERE report_id=$1 ORDER BY created_at`;
   const report = await query(reportSql, [id]);
