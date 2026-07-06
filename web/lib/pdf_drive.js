@@ -6,7 +6,7 @@ const XLS_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sh
 const SHEET_MIME = 'application/vnd.google-apps.spreadsheet';
 const PDF_MIME = 'application/pdf';
 
-export const PDF_VERSION = 'main_and_photos_v2';
+export const PDF_VERSION = 'main_and_photos_v3';
 
 export function pdfOutputFolderId() {
   return env('GOOGLE_DRIVE_OUTPUT_FOLDER_ID') || env('CANDIDATES_TEMPLATES_FOLDER_ID');
@@ -16,6 +16,17 @@ function pdfName(report) {
   return `${report.ot || report.id}_FINAL.pdf`;
 }
 
+function bumpPdfFontSize(workbook) {
+  workbook.worksheets.forEach((sheet) => {
+    sheet.eachRow((row) => {
+      row.eachCell((cell) => {
+        if (!cell.value) return;
+        cell.font = { ...(cell.font || {}), size: Math.max(cell.font?.size || 0, 12) };
+      });
+    });
+  });
+}
+
 async function printableWorkbookBuffer(buffer) {
   const workbook = new ExcelJS.Workbook();
   await workbook.xlsx.load(buffer);
@@ -23,6 +34,7 @@ async function printableWorkbookBuffer(buffer) {
   workbook.worksheets.slice().forEach((sheet) => {
     if (!keep.has(sheet.id)) workbook.removeWorksheet(sheet.id);
   });
+  bumpPdfFontSize(workbook);
   return Buffer.from(await workbook.xlsx.writeBuffer());
 }
 
