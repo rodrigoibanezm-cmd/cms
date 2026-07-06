@@ -13,6 +13,9 @@ workflow mínimo persistido en reports
 cada OT conoce su estado y dueño actual
 process-report mueve la OT a admin_queue
 preview XLS eliminado
+asignación de secretaria implementada
+cola por secretaria implementada
+aprobación de secretaria implementada
 ```
 
 ## Decisiones tomadas
@@ -20,40 +23,41 @@ preview XLS eliminado
 ```txt
 No tocar review_status todavía.
 El workflow operativo usa current_state.
+El PDF se activa después de secretary_approved_at.
 ```
 
 ## Próxima tarea
 
 ```txt
-Implementar asignación de secretaria.
+Probar flujo completo de secretaria y definir generación PDF final.
 ```
 
-Debe incluir:
+Debe validar:
 
 ```txt
-catálogo de secretarias
-assigned_to_secretary
-cola por secretaria
-reasignación
+admin asigna OT a secretaria
+secretaria ve solo su cola
+secretaria aprueba OT
+OT sale de la cola de secretaria
+admin ve PDF habilitado
+report_events registra secretary_approved
 ```
 
 ## No hacer
 
 ```txt
-no generar PDF todavía
-no rediseñar dashboard todavía
 no tocar extractor
 no tocar prompts
 no cambiar XLS fill
 no reemplazar current_state por review_status
+no generar PDF sin definir contrato mínimo
 ```
 
 ## Pitch para nuevo chat
 
 ```txt
 @GitHub lee README.md, docs/current-state.md, docs/principles.md y docs/next-step.md.
-Implementa únicamente la asignación de secretaria usando current_state.
-No crear PDF.
+Prueba el flujo de secretaria aprobado y prepara el contrato mínimo del PDF final.
 No modificar extractor.
 Mantener archivos bajo 120 líneas.
-```}
+```
