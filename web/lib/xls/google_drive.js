@@ -32,7 +32,7 @@ function serviceAccountAuth() {
   return new google.auth.GoogleAuth({ credentials, scopes: ['https://www.googleapis.com/auth/drive'] });
 }
 
-function getAuth() {
+export function googleAuthClient() {
   if (env('GOOGLE_DRIVE_AUTH_MODE') === 'service_account') return serviceAccountAuth();
   const oauth = oauthAuth();
   if (oauth) return oauth;
@@ -41,7 +41,11 @@ function getAuth() {
 }
 
 export function driveClient() {
-  return google.drive({ version: 'v3', auth: getAuth() });
+  return google.drive({ version: 'v3', auth: googleAuthClient() });
+}
+
+export function sheetsClient() {
+  return google.sheets({ version: 'v4', auth: googleAuthClient() });
 }
 
 export async function findFileByName(drive, folderId, name) {
