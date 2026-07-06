@@ -58,6 +58,7 @@ Kinds actuales:
 original_report
 detail_photo
 generated_xls
+generated_pdf
 ```
 
 Kind legacy:
@@ -85,6 +86,7 @@ workflow_admin_queue
 workflow_error
 assigned_to_secretary
 secretary_approved
+final_document_generated
 ```
 
 ## report_tenants
@@ -143,4 +145,5 @@ El admin debe leer desde Neon, no reconstruir desde Drive.
 No crear generated_xls_preview para nuevas OTs.
 Cada OT debe saber dónde está y quién la tiene.
 La aprobación no borra la secretaria asignada.
+El PDF final se registra una sola vez como generated_pdf.
 ```
