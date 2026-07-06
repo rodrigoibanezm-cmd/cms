@@ -21,6 +21,13 @@
   text-decoration: none;
 }
 
+.reviewTopBar {
+  align-items: flex-start;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+}
+
 .reviewMeta {
   display: flex;
   flex-wrap: wrap;
@@ -37,6 +44,21 @@
   padding: 8px 10px;
 }
 
+.approveForm {
+  margin-top: 10px;
+}
+
+.approveForm button {
+  background: #1769c2;
+  border: 0;
+  border-radius: 12px;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 800;
+  padding: 11px 16px;
+}
+
 .reviewMainGrid {
   display: grid;
   gap: 14px;
@@ -51,6 +73,7 @@
 }
 
 @media (max-width: 900px) {
+  .reviewTopBar,
   .reviewMainGrid,
   .reviewSecondaryGrid {
     grid-template-columns: 1fr;
