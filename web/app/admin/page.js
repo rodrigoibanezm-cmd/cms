@@ -1,4 +1,5 @@
 import AdminCards from '../../components/admin/AdminCards.js';
+import AdminFilters from '../../components/admin/AdminFilters.js';
 import AdminTable from '../../components/admin/AdminTable.js';
 import SecretaryAdmin from '../../components/admin/SecretaryAdmin.js';
 import { listReports } from '../../lib/report_reads.js';
@@ -7,9 +8,19 @@ import styles from './admin.module.css';
 
 export const dynamic = 'force-dynamic';
 
+function readFilters(params) {
+  return {
+    ot: params?.ot || '',
+    state: params?.state || '',
+    tenant_id: params?.tenant_id || '',
+    tech: params?.tech || '',
+  };
+}
+
 export default async function AdminPage({ searchParams }) {
   const params = await searchParams;
-  const reports = await listReports();
+  const filters = readFilters(params);
+  const reports = await listReports(filters);
   const tenants = await listTenants({ activeOnly: true });
   const secretaries = tenants.filter((tenant) => tenant.mode === 'secretary');
   const view = params?.view === 'cards' ? 'cards' : 'table';
@@ -24,7 +35,7 @@ export default async function AdminPage({ searchParams }) {
 
       <section className={styles.adminSummary}>
         <strong>{reports.length}</strong>
-        <span>OTs cargadas</span>
+        <span>OTs visibles</span>
       </section>
 
       <SecretaryAdmin secretaries={tenants} />
@@ -34,6 +45,8 @@ export default async function AdminPage({ searchParams }) {
         <a className={view === 'table' ? styles.active : ''} href="/admin">Planilla</a>
         <a href="/dashboard">Dashboard</a>
       </nav>
+
+      <AdminFilters filters={filters} secretaries={secretaries} view={view} />
 
       {view === 'table'
         ? <AdminTable reports={reports} secretaries={secretaries} />
