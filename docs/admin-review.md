@@ -30,49 +30,22 @@ POST /api/secretary/reports/id/approve
 
 ## Listado admin
 
-Archivo:
-
-```txt
-web/app/admin/page.js
-```
-
-Estado real:
-
 ```txt
 /admin abre en planilla
 /admin?view=cards abre tarjetas
 muestra OT, estado, técnico, fecha, prioridad, administrativa y acciones
 no muestra semáforo en planilla
-permite asignar secretaria si la OT está en cola admin
 mantiene visible la OT aprobada
 PDF se habilita si existe secretary_approved_at
 ```
 
 ## Detalle revisión
 
-Archivo:
-
 ```txt
-web/app/admin/report/page.js
-```
-
-Muestra:
-
-```txt
-informe original
-XLS generado
-fotos detalle
-issues del auditor
-historial de eventos
-estado workflow
-botón Aprobar OT cuando aplica
-```
-
-No muestra:
-
-```txt
-semaforo
-confidence_score
+archivo: web/app/admin/report/page.js
+muestra informe original, XLS, fotos, auditoría, eventos y estado workflow
+botón Aprobar OT aparece cuando aplica
+no muestra semáforo ni confidence_score
 ```
 
 ## Cola secretaria
@@ -90,8 +63,11 @@ muestra total y pendientes
 ```txt
 ruta: GET /api/admin/reports/id/pdf
 requiere secretary_approved_at
-si generated_pdf existe, redirige a ese archivo
+responde como descarga, no como vista Drive
+si generated_pdf vigente existe, descarga ese archivo
 si no existe, convierte generated_xls a PDF
+exporta solo la primera hoja y FOTOS
+no exporta EXTRACCION_JSON ni hojas intermedias
 sube el PDF a Drive
 registra report_files.kind = generated_pdf
 registra report_events.event = final_document_generated
@@ -118,5 +94,5 @@ No existe cierre operativo final.
 El admin no debe depender de archivos sueltos.
 Debe leer report, files y events desde Neon.
 La revisión debe mostrar evidencia antes que confianza.
-El PDF final se crea una sola vez y luego se reutiliza.
+El PDF final se crea una sola vez por versión vigente y luego se reutiliza.
 ```
