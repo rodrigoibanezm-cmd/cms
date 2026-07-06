@@ -13,6 +13,12 @@ function minutesLabel(value) {
   return `${Math.round(value / 60)} h`;
 }
 
+function topItems(map) {
+  return Object.entries(map || {})
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5);
+}
+
 export default async function DashboardPage() {
   const reports = await listDashboardReports();
   const counts = buildDashboardCounts(reports);
@@ -32,6 +38,8 @@ export default async function DashboardPage() {
     ['OT abierta más antigua', times.oldestOpen?.ot || '-'],
   ];
 
+  const secretaries = topItems(counts.secretaries);
+
   return (
     <main className={styles.screen}>
       <header className={styles.header}>
@@ -43,6 +51,7 @@ export default async function DashboardPage() {
       <DashboardCards counts={counts} />
       <DashboardPanel title="Calidad" items={quality} />
       <DashboardPanel title="Tiempos promedio" items={timing} />
+      <DashboardPanel title="Por secretaria" items={secretaries} />
     </main>
   );
 }
