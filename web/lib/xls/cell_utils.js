@@ -24,7 +24,7 @@ export function makeValueVisible(cell, alignment = {}) {
   cell.font = {
     ...(cell.font || {}),
     bold: false,
-    size: 12,
+    size: 14,
     color: { argb: 'FF000000' },
   };
   cell.alignment = {
