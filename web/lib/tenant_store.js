@@ -2,7 +2,7 @@ import { randomUUID } from 'crypto';
 import { query } from './db.js';
 
 let ready;
-const MODES = ['admin', 'secretary', 'dashboard'];
+const MODES = ['super_admin', 'admin', 'secretary', 'dashboard'];
 
 async function createTenantCatalog() {
   await query(`CREATE TABLE IF NOT EXISTS report_tenants (
