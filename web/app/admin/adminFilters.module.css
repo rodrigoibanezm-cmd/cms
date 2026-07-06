@@ -1,0 +1,45 @@
+.filters {
+  background: white;
+  border: 1px solid #dfe7ef;
+  border-radius: 18px;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  margin-bottom: 14px;
+  padding: 14px;
+}
+
+.filters input,
+.filters select {
+  border: 1px solid #dfe7ef;
+  border-radius: 12px;
+  font: inherit;
+  padding: 10px;
+  width: 100%;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.actions a,
+.actions button {
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 800;
+  padding: 10px 12px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.actions button {
+  background: #1769c2;
+  border: 0;
+  color: white;
+}
+
+.actions a {
+  border: 1px solid #dfe7ef;
+  color: #1769c2;
+}
