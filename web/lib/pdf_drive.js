@@ -1,9 +1,11 @@
 import { Readable } from 'stream';
-import { driveClient, downloadDriveFile, env, uploadDriveFile } from './xls/google_drive.js';
+import { driveClient, downloadDriveFile, env, sheetsClient, uploadDriveFile } from './xls/google_drive.js';
 
 const XLS_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 const SHEET_MIME = 'application/vnd.google-apps.spreadsheet';
 const PDF_MIME = 'application/pdf';
+
+export const PDF_VERSION = 'main_and_photos_v1';
 
 export function pdfOutputFolderId() {
   return env('GOOGLE_DRIVE_OUTPUT_FOLDER_ID') || env('CANDIDATES_TEMPLATES_FOLDER_ID');
@@ -22,6 +24,24 @@ async function uploadAsSheet({ buffer, filename, folderId }) {
     supportsAllDrives: true,
   });
   return res.data.id;
+}
+
+async function visibleSheetUpdates(sheetId) {
+  const res = await sheetsClient().spreadsheets.get({ spreadsheetId: sheetId });
+  const sheets = res.data.sheets || [];
+  const firstId = sheets[0]?.properties?.sheetId;
+  return sheets.map(({ properties }) => ({
+    updateSheetProperties: {
+      properties: { sheetId: properties.sheetId, hidden: !(properties.sheetId === firstId || properties.title === 'FOTOS') },
+      fields: 'hidden',
+    },
+  }));
+}
+
+async function keepOnlyMainAndPhotos(sheetId) {
+  const requests = await visibleSheetUpdates(sheetId);
+  if (!requests.length) return;
+  await sheetsClient().spreadsheets.batchUpdate({ spreadsheetId: sheetId, requestBody: { requests } });
 }
 
 async function exportSheetPdf(sheetId) {
@@ -45,6 +65,7 @@ export async function convertXlsDriveFileToPdf({ report, xlsFile }) {
   const xlsBuffer = await downloadDriveFile(xlsFile.drive_file_id);
   const sheetId = await uploadAsSheet({ buffer: xlsBuffer, filename: xlsFile.filename, folderId });
   try {
+    await keepOnlyMainAndPhotos(sheetId);
     const pdfBuffer = await exportSheetPdf(sheetId);
     const filename = pdfName(report);
     const uploaded = await uploadDriveFile({ buffer: pdfBuffer, filename, folderId, mimeType: PDF_MIME });
