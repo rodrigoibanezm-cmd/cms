@@ -1,6 +1,6 @@
 # Documentación CMS
 
-Router documental de la repo...
+Router documental de la repo.
 
 ## Lectura mínima para un chat nuevo
 
@@ -26,6 +26,7 @@ No describe estado actual implementado.
 documentation-standard.md estándar para crear/auditar docs
 current-state.md           estado real del sistema
 workflow.md                flujo operacional y ownership de OT
+secretary-flow.md          asignación, cola y aprobación secretaria
 principles.md              reglas rectoras y manual de trabajo
 pipeline.md                flujo process-report
 data-model.md              Neon y eventos
