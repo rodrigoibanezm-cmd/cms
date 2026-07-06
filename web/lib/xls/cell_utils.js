@@ -24,6 +24,7 @@ export function makeValueVisible(cell, alignment = {}) {
   cell.font = {
     ...(cell.font || {}),
     bold: false,
+    size: 12,
     color: { argb: 'FF000000' },
   };
   cell.alignment = {
@@ -53,7 +54,7 @@ export function clearCell(sheet, address) {
 
 export function markCell(sheet, address) {
   if (!address) return;
-  writableCell(sheet.getCell(address)).value = 'X';
+  setVisibleCell(sheet.getCell(address), 'X');
 }
 
 export function findCellByLabel(sheet, labels, options = {}) {
