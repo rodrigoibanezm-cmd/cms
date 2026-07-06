@@ -21,7 +21,6 @@ export default async function SecretaryQueuePage({ searchParams }) {
   } catch (err) {
     data = { tenant: null, reports: [], error: err.message };
   }
-  const returnTo = `/admin/secretary${data.tenant ? `?id=${data.tenant.id}` : ''}`;
 
   return (
     <main className={styles.adminScreen}>
@@ -36,13 +35,7 @@ export default async function SecretaryQueuePage({ searchParams }) {
         <span>{data.error || 'OTs asignadas'}</span>
       </section>
 
-      <AdminTable
-        reports={data.reports}
-        secretaries={[]}
-        editableSecretary={false}
-        approveEnabled={Boolean(data.tenant)}
-        returnTo={returnTo}
-      />
+      <AdminTable reports={data.reports} secretaries={[]} editableSecretary={false} />
     </main>
   );
 }
