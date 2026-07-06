@@ -1,0 +1,49 @@
+.screen {
+  max-width: 1100px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 28px 18px;
+}
+
+.header {
+  margin-bottom: 18px;
+}
+
+.grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  margin-bottom: 16px;
+}
+
+.card {
+  background: white;
+  border: 1px solid #dfe7ef;
+  border-radius: 18px;
+  padding: 14px 16px;
+}
+
+.card strong {
+  display: block;
+  font-size: 24px;
+}
+
+.card span {
+  color: #637083;
+  font-size: 13px;
+}
+
+.panel {
+  background: white;
+  border: 1px solid #dfe7ef;
+  border-radius: 18px;
+  margin-bottom: 16px;
+  padding: 16px;
+}
+
+.row {
+  border-top: 1px solid #edf1f5;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 8px;
+}
