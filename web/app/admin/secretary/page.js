@@ -13,6 +13,10 @@ async function loadSecretaryPage(params) {
   return { tenant, reports, error: null };
 }
 
+function pendingCount(reports) {
+  return reports.filter((report) => report.current_state === 'assigned_to_secretary').length;
+}
+
 export default async function SecretaryQueuePage({ searchParams }) {
   const params = await searchParams;
   let data;
@@ -21,6 +25,7 @@ export default async function SecretaryQueuePage({ searchParams }) {
   } catch (err) {
     data = { tenant: null, reports: [], error: err.message };
   }
+  const pending = pendingCount(data.reports);
 
   return (
     <main className={styles.adminScreen}>
@@ -32,7 +37,7 @@ export default async function SecretaryQueuePage({ searchParams }) {
 
       <section className={styles.adminSummary}>
         <strong>{data.reports.length}</strong>
-        <span>{data.error || 'OTs asignadas'}</span>
+        <span>{data.error || `OTs total / ${pending} pendientes`}</span>
       </section>
 
       <AdminTable reports={data.reports} secretaries={[]} editableSecretary={false} />
