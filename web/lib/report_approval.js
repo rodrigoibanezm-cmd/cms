@@ -19,11 +19,12 @@ async function findApprovalTarget(reportId) {
 
 function assertCanApprove(report, secretaryId) {
   if (!report) throw new Error('OT no encontrada');
+  if (!secretaryId) throw new Error('OT sin secretaria asignada');
   if (report.secretary_approved_at) throw new Error('OT ya aprobada');
   if (report.current_state !== 'assigned_to_secretary') {
     throw new Error('OT no está asignada a secretaria');
   }
-  if (secretaryId && ![report.tenant_id, report.current_owner_id].includes(secretaryId)) {
+  if (![report.tenant_id, report.current_owner_id].includes(secretaryId)) {
     throw new Error('OT asignada a otra secretaria');
   }
 }
