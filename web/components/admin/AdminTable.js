@@ -29,7 +29,7 @@ export default function AdminTable({ reports, secretaries, editableSecretary = t
             <th>Semáforo</th>
             <th>Fecha</th>
             <th>Prioridad</th>
-            <th>Secretaria</th>
+            <th>Administrativa</th>
             <th>Acciones</th>
           </tr>
         </thead>
