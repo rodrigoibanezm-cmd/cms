@@ -2,7 +2,7 @@
 
 ## Contexto
 
-El proyecto ya cuenta con workflow admin/secretaria operativo parcial y documentación actualizada.
+El proyecto ya cuenta con workflow admin/secretaria y PDF final idempotente.
 
 ## Estado validado
 
@@ -19,6 +19,7 @@ cola muestra pendientes y aprobadas
 aprobación de secretaria implementada
 admin abre por defecto en planilla
 planilla muestra técnico y no semáforo
+PDF final se crea una vez y luego se reutiliza
 ```
 
 ## Decisiones tomadas
@@ -27,24 +28,23 @@ planilla muestra técnico y no semáforo
 No tocar review_status todavía.
 El workflow operativo usa current_state.
 La secretaria asignada no se borra al aprobar.
-El PDF se activa después de secretary_approved_at.
+El PDF requiere secretary_approved_at.
 ```
 
 ## Próxima tarea
 
 ```txt
-Definir e implementar el contrato mínimo del PDF final.
+Probar en producción el flujo PDF y corregir solo errores reales.
 ```
 
 Debe validar:
 
 ```txt
-qué archivo se convierte en PDF
-cuándo se genera
-qué ruta lo entrega
-qué se guarda en Neon
-qué evento se registra
-qué ve admin después de generado
+click en PDF después de aprobar
+se crea report_files.generated_pdf
+se registra final_document_generated
+segundo click reutiliza el PDF existente
+Drive abre el PDF correcto
 ```
 
 ## No hacer
@@ -54,14 +54,14 @@ no tocar extractor
 no tocar prompts
 no cambiar XLS fill
 no reemplazar current_state por review_status
-no generar PDF sin contrato mínimo
+no agregar features antes de probar PDF
 ```
 
 ## Pitch para nuevo chat
 
 ```txt
 @GitHub lee README.md, docs/current-state.md, docs/principles.md y docs/next-step.md.
-Define primero el contrato mínimo del PDF final y luego implementa solo eso.
+Prueba el flujo PDF en producción y corrige solo errores reales.
 No modificar extractor.
-Mantener archivos bajo 120 líneas.
+Mantener archivos bajo 100 líneas.
 ```
