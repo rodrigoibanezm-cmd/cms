@@ -55,7 +55,8 @@ export async function assignReportToSecretary({ reportId, secretaryId }) {
 export async function listSecretaryQueue(secretaryId) {
   if (!secretaryId) throw new Error('secretaryId requerido');
   await ensureAssignmentSchema();
-  const sql = `SELECT r.*, t.name AS tenant_name
+  const sql = `SELECT r.*, t.name AS tenant_name,
+      r.extraction_json->>'tecnico' AS technician_name
     FROM reports r
     LEFT JOIN report_tenants t ON t.id::text = r.tenant_id
     WHERE r.tenant_id=$1
