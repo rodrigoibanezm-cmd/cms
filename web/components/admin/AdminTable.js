@@ -4,7 +4,6 @@ import {
   dateLabel,
   pdfReady,
   priorityLabel,
-  semaforoClass,
   workflowLabel,
 } from './admin_helpers.js';
 
@@ -26,7 +25,7 @@ export default function AdminTable({ reports, secretaries, editableSecretary = t
           <tr>
             <th>OT</th>
             <th>Estado</th>
-            <th>Semáforo</th>
+            <th>Técnico</th>
             <th>Fecha</th>
             <th>Prioridad</th>
             <th>Administrativa</th>
@@ -38,7 +37,7 @@ export default function AdminTable({ reports, secretaries, editableSecretary = t
             <tr key={report.id}>
               <td><strong>{report.ot || '-'}</strong></td>
               <td>{workflowLabel(report.current_state)}</td>
-              <td><span className={semaforoClass(styles, report.semaforo)}>{report.semaforo || '-'}</span></td>
+              <td>{report.technician_name || '-'}</td>
               <td>{dateLabel(report.updated_at || report.created_at)}</td>
               <td>{priorityLabel(report.priority)}</td>
               <td><SecretaryCell report={report} secretaries={secretaries} editable={editableSecretary} /></td>
