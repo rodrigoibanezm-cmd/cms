@@ -6,13 +6,8 @@
   padding: 16px;
 }
 
-.visualBox {
-  min-height: 680px;
-}
-
-.xlsBox {
-  min-height: 760px;
-}
+.visualBox { min-height: 680px; }
+.xlsBox { min-height: 760px; }
 
 .driveFrame {
   border: 1px solid #dfe7ef;
@@ -31,49 +26,30 @@
 
 .xlsFrame {
   border: 0;
-  height: 920px;
-  transform: scale(0.75);
+  height: 1380px;
+  transform: scale(0.5);
   transform-origin: top left;
-  width: 133%;
+  width: 200%;
 }
 
 .imageStage {
-  align-items: center;
   background: #f6f8fb;
   border: 1px solid #dfe7ef;
   border-radius: 14px;
-  display: flex;
   height: 600px;
-  justify-content: center;
-  overflow: hidden;
+  overflow: auto;
   position: relative;
   width: 100%;
 }
 
 .reviewImage {
   display: block;
-  height: 100%;
-  max-width: 100%;
-  object-fit: contain;
-  width: 100%;
+  height: auto;
+  max-width: none;
+  width: 200%;
 }
 
-.imageLens {
-  background-repeat: no-repeat;
-  border: 3px solid white;
-  border-radius: 999px;
-  box-shadow: 0 10px 28px rgba(20, 35, 55, 0.32);
-  height: 190px;
-  pointer-events: none;
-  position: absolute;
-  transform: translate(-50%, -50%);
-  width: 190px;
-  z-index: 2;
-}
-
-.reviewBox h2 {
-  margin: 0 0 12px;
-}
+.reviewBox h2 { margin: 0 0 12px; }
 
 .muted {
   color: #637083;
@@ -111,22 +87,7 @@
 }
 
 @media (max-width: 900px) {
-  .visualBox,
-  .xlsBox {
-    min-height: 520px;
-  }
-
-  .driveFrame,
-  .imageStage,
-  .xlsViewport {
-    height: 440px;
-  }
-
-  .xlsFrame {
-    height: 590px;
-  }
-
-  .imageLens {
-    display: none;
-  }
+  .visualBox, .xlsBox { min-height: 520px; }
+  .driveFrame, .imageStage, .xlsViewport { height: 440px; }
+  .xlsFrame { height: 880px; }
 }
