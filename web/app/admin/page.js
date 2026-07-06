@@ -12,7 +12,7 @@ export default async function AdminPage({ searchParams }) {
   const reports = await listReports();
   const tenants = await listTenants({ activeOnly: true });
   const secretaries = tenants.filter((tenant) => tenant.mode === 'secretary');
-  const view = params?.view === 'table' ? 'table' : 'cards';
+  const view = params?.view === 'cards' ? 'cards' : 'table';
 
   return (
     <main className={styles.adminScreen}>
@@ -30,8 +30,8 @@ export default async function AdminPage({ searchParams }) {
       <SecretaryAdmin secretaries={tenants} />
 
       <nav className={styles.viewSwitch}>
-        <a className={view === 'cards' ? styles.active : ''} href="/admin">Tarjetas</a>
-        <a className={view === 'table' ? styles.active : ''} href="/admin?view=table">Planilla</a>
+        <a className={view === 'cards' ? styles.active : ''} href="/admin?view=cards">Tarjetas</a>
+        <a className={view === 'table' ? styles.active : ''} href="/admin">Planilla</a>
       </nav>
 
       {view === 'table'
