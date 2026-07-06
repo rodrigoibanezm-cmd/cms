@@ -81,6 +81,39 @@ h1 {
   display: none;
 }
 
+.previewGrid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 14px;
+}
+
+.previewItem {
+  border: 1px solid #dfe7ef;
+  border-radius: 12px;
+  height: 88px;
+  overflow: hidden;
+  position: relative;
+}
+
+.previewItem img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.previewRemove {
+  background: white;
+  border: 1px solid #dfe7ef;
+  border-radius: 999px;
+  font-weight: 800;
+  height: 24px;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  width: 24px;
+}
+
 .count {
   margin-top: 10px !important;
 }
