@@ -12,32 +12,23 @@ Neon/Postgres
 reports
 report_files
 report_events
+report_tenants
 ```
 
 ## reports
+
 Representa una OT procesada.
 
 Campos principales:
 
 ```txt
-id
-ot
-source_name
-status
-review_status
-semaforo
-confidence_score
-template_key
-template_filename
-excel_url
-drive_file_id
-extraction_json
-admin_corrections
-critical_checks
-admin_notes
-error_message
-created_at
-updated_at
+id, ot, source_name
+status, review_status
+semaforo, confidence_score
+template_key, template_filename
+excel_url, drive_file_id
+extraction_json, error_message
+created_at, updated_at
 ```
 
 Campos workflow:
@@ -46,6 +37,7 @@ Campos workflow:
 current_state
 current_owner_type
 current_owner_id
+tenant_id
 assigned_at
 opened_by_secretary_at
 secretary_approved_at
@@ -92,7 +84,34 @@ workflow_processing_started
 workflow_admin_queue
 workflow_error
 assigned_to_secretary
+secretary_approved
 ```
+
+## report_tenants
+
+Catálogo simple de actores visibles por UI.
+
+Campos:
+
+```txt
+id
+name
+email
+mode
+active
+created_at
+updated_at
+```
+
+Modos:
+
+```txt
+admin
+secretary
+dashboard
+```
+
+Hoy se usa principalmente `secretary`.
 
 ## Estado operacional
 
@@ -102,6 +121,17 @@ review_status = revisión admin/auditor
 current_state = ubicación operacional de la OT
 current_owner_type = tipo de actor que tiene la OT
 current_owner_id = actor específico, cuando existe
+tenant_id = secretaria asignada para filtrado de cola
+```
+
+## Estados workflow usados
+
+```txt
+processing
+admin_queue
+assigned_to_secretary
+secretary_approved
+error
 ```
 
 ## Invariante
@@ -112,4 +142,5 @@ Drive guarda bytes de archivos.
 El admin debe leer desde Neon, no reconstruir desde Drive.
 No crear generated_xls_preview para nuevas OTs.
 Cada OT debe saber dónde está y quién la tiene.
+La aprobación no borra la secretaria asignada.
 ```
