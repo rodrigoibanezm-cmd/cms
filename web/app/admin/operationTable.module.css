@@ -1,0 +1,104 @@
+.wrap {
+  background: white;
+  border: 1px solid #dfe7ef;
+  border-radius: 16px 16px 0 0;
+  overflow-x: auto;
+}
+
+.table {
+  border-collapse: collapse;
+  min-width: 1060px;
+  width: 100%;
+}
+
+.table th,
+.table td {
+  border-bottom: 1px solid #edf1f5;
+  font-size: 14px;
+  padding: 16px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.table th {
+  color: #132033;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.table small {
+  color: #132c54;
+  display: block;
+  margin-top: 5px;
+}
+
+.otLink {
+  color: #132033;
+  display: grid;
+  text-decoration: none;
+}
+
+.tone { font-weight: 900; }
+
+.pill {
+  border-radius: 6px;
+  display: inline-block;
+  font-weight: 900;
+  padding: 8px 12px;
+  white-space: nowrap;
+}
+
+.green { color: #16803a; }
+.yellow { color: #c26a00; }
+.red { color: #e00000; }
+.blue { color: #0b55d9; }
+.muted { color: #65748b; }
+
+.pill.green { background: #e8f7ed; }
+.pill.yellow { background: #fff5df; }
+.pill.red { background: #ffe8e8; }
+.pill.blue { background: #eaf2ff; }
+.pill.muted { background: #f0f3f6; }
+
+.secretary { position: relative; }
+
+.secretary summary {
+  cursor: pointer;
+  font-weight: 800;
+  list-style: none;
+}
+
+.secretary summary::-webkit-details-marker { display: none; }
+
+.secretary form {
+  background: white;
+  border: 1px solid #dfe7ef;
+  border-radius: 12px;
+  box-shadow: 0 14px 34px rgba(31, 51, 79, 0.14);
+  display: grid;
+  gap: 8px;
+  min-width: 190px;
+  padding: 10px;
+  position: absolute;
+  top: 26px;
+  z-index: 4;
+}
+
+.pdf {
+  border: 1px solid #ff2b2b;
+  border-radius: 4px;
+  color: #ff2b2b;
+  font-size: 11px;
+  font-weight: 900;
+  padding: 4px;
+  text-decoration: none;
+}
+
+.emptyPdf { color: #65748b; }
+
+.arrow {
+  color: #132033;
+  font-size: 18px;
+  font-weight: 900;
+  text-decoration: none;
+}
