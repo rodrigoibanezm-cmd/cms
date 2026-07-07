@@ -71,6 +71,11 @@
   font-weight: 800;
 }
 
+.row button.secondary {
+  background: white;
+  color: #33425a;
+}
+
 .table { border-collapse: collapse; width: 100%; }
 .table th { color: #637083; font-size: 12px; text-align: left; }
 .table td, .table th { border-top: 1px solid #edf1f5; padding: 10px 8px; }
