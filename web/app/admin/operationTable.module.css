@@ -7,7 +7,7 @@
 
 .table {
   border-collapse: collapse;
-  min-width: 1060px;
+  min-width: 1320px;
   width: 100%;
 }
 
@@ -30,6 +30,12 @@
   color: #132c54;
   display: block;
   margin-top: 5px;
+}
+
+.table th:nth-child(6),
+.table td:nth-child(6) {
+  min-width: 330px;
+  width: 330px;
 }
 
 .otLink {
@@ -60,28 +66,31 @@
 .pill.blue { background: #eaf2ff; }
 .pill.muted { background: #f0f3f6; }
 
-.secretary { position: relative; }
+.secretary {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  min-width: 300px;
+}
 
 .secretary summary {
   cursor: pointer;
+  flex: 0 0 105px;
   font-weight: 800;
   list-style: none;
+  white-space: nowrap;
 }
 
 .secretary summary::-webkit-details-marker { display: none; }
 
 .secretary form {
+  align-items: center;
   background: white;
   border: 1px solid #dfe7ef;
   border-radius: 12px;
-  box-shadow: 0 14px 34px rgba(31, 51, 79, 0.14);
-  display: grid;
+  display: flex;
   gap: 8px;
-  min-width: 190px;
-  padding: 10px;
-  position: absolute;
-  top: 26px;
-  z-index: 4;
+  padding: 8px;
 }
 
 .pdf {
