@@ -26,11 +26,12 @@ export async function markAudited(id, audit) {
     : audit?.decision === 'recover' ? 'recover'
       : 'review';
   const approved = status === 'approved';
+  const auditConfidence = Number(audit?.confidence || 0) || null;
   const sql = `UPDATE ${table} SET review_status=$2,
     semaforo=CASE WHEN $3 THEN 'VERDE' ELSE semaforo END,
-    confidence_score=CASE WHEN $3 THEN GREATEST(COALESCE(confidence_score,0),100) ELSE confidence_score END,
+    confidence_score=COALESCE($4, confidence_score),
     updated_at=now() WHERE id=$1`;
-  await query(sql, [id, status, approved]);
+  await query(sql, [id, status, approved, auditConfidence]);
   await addReportEvent(id, 'audit_completed', audit || {});
 }
 
