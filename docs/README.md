@@ -35,6 +35,7 @@ xls-generation.md          generación Excel
 audit-recovery.md          auditoría IA y recovery
 admin-review.md            front/admin de revisión
 ui-design-system.md        look & feel transversal del producto
+ui-operation-view.md       contrato visual de Vista Operación
 template-bases.md          workflow de bases XLS
 operations.md              operación y env vars
 deuda-tecnica.md           deuda real
