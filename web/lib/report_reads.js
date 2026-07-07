@@ -58,7 +58,7 @@ export async function listReports(filters = {}) {
     FROM ${reportsTable} r
     LEFT JOIN report_tenants t ON t.id::text = r.tenant_id
     ${whereSql}
-    ORDER BY COALESCE(r.sla_due_at, r.created_at) ASC LIMIT 200`;
+    ORDER BY r.created_at DESC LIMIT 200`;
   return (await query(sql, params)).rows;
 }
 
