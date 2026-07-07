@@ -34,9 +34,18 @@ POST /api/secretary/reports/id/approve
 /admin abre en planilla
 /admin?view=cards abre tarjetas
 muestra OT, estado, técnico, fecha, prioridad, administrativa y acciones
-no muestra semáforo en planilla
+no usa semáforo operacional en planilla
 mantiene visible la OT aprobada
 PDF se habilita si existe secretary_approved_at
+```
+
+## Operación V1
+
+```txt
+La bandeja debe evolucionar hacia Vista Operación.
+La tabla debe priorizar OT + técnico, Confianza IA, workflow, secretaria, SLA y PDF.
+Toda la fila debe abrir el detalle.
+No debe depender de botón Revisar.
 ```
 
 ## Detalle revisión
@@ -44,8 +53,26 @@ PDF se habilita si existe secretary_approved_at
 ```txt
 archivo: web/app/admin/report/page.js
 muestra informe original, XLS, fotos, auditoría, eventos y estado workflow
+Confianza IA debe ayudar a focalizar revisión
 botón Aprobar OT aparece cuando aplica
-no muestra semáforo ni confidence_score
+```
+
+## Confianza IA
+
+```txt
+Debe mostrarse como insumo de revisión.
+No decide aprobación.
+No reemplaza evidencia visual.
+No es precisión real IA.
+```
+
+Debe incluir cuando exista:
+
+```txt
+confidence_score
+motivos de duda
+campos sugeridos para revisar
+audit.issues
 ```
 
 ## Cola secretaria
@@ -87,6 +114,7 @@ El front usa lupa sobre la imagen original.
 No existe rechazo formal desde UI.
 No existe edición controlada de campos desde admin/secretaria.
 No existe cierre operativo final.
+No existe approved_json ni diff de correcciones.
 ```
 
 ## Invariante
