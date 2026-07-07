@@ -83,12 +83,6 @@ function findNextEmptyInspectionRow(sheet, cols, startRow) {
   return null;
 }
 
-function clearResultCells(sheet, row, cols) {
-  [cols.cumple, cols.noCumple, cols.noAplica].forEach((col) => {
-    writableCell(sheet.getCell(row, col)).value = null;
-  });
-}
-
 function resultColumn(cols, resultado) {
   if (resultado === 'CUMPLE') return cols.cumple;
   if (resultado === 'NO CUMPLE' || resultado === 'NO_CUMPLE') return cols.noCumple;
@@ -98,7 +92,9 @@ function resultColumn(cols, resultado) {
 
 function fillRow(sheet, row, cols, item) {
   if (!item.item || !item.resultado) return;
-  clearResultCells(sheet, row, cols);
+  [cols.cumple, cols.noCumple, cols.noAplica].forEach((col) => {
+    writableCell(sheet.getCell(row, col)).value = null;
+  });
   writableCell(sheet.getCell(row, resultColumn(cols, item.resultado))).value = 'X';
   if (cols.obs && text(item.observacion)) setVisibleCell(sheet.getCell(row, cols.obs), item.observacion);
   if (cols.reparacion && text(item.reparacion)) setVisibleCell(sheet.getCell(row, cols.reparacion), item.reparacion);
