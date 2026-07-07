@@ -45,7 +45,7 @@ export async function listTenants({ activeOnly = false, mode } = {}) {
 
 export async function createTenant({ name, email, mode }) {
   await ensureTenantSchema();
-  if (!name?.trim()) throw new Error('Nombre de tenant requerido');
+  if (!name?.trim()) throw new Error('Nombre de usuario requerido');
   const res = await query(
     `INSERT INTO report_tenants (id, name, email, mode)
      VALUES ($1, $2, $3, $4) RETURNING *`,
@@ -73,5 +73,12 @@ export async function setTenantActive(id, active) {
      WHERE id=$1 RETURNING *`,
     [id, Boolean(active)]
   );
+  return res.rows[0] || null;
+}
+
+export async function deleteTenant(id) {
+  await ensureTenantSchema();
+  await query(`UPDATE reports SET tenant_id=NULL WHERE tenant_id=$1`, [id]);
+  const res = await query(`DELETE FROM report_tenants WHERE id=$1 RETURNING *`, [id]);
   return res.rows[0] || null;
 }
