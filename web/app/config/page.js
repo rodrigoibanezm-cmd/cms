@@ -5,7 +5,7 @@ import styles from './config.module.css';
 export const dynamic = 'force-dynamic';
 
 const roles = [
-  ['secretary', 'Secretaria'],
+  ['secretary', 'Administrativa'],
   ['admin', 'Operación'],
   ['dashboard', 'Dashboard'],
   ['super_admin', 'Super admin'],
@@ -54,7 +54,7 @@ function UserRow({ user }) {
 
 export default async function ConfigPage() {
   const users = await listTenants({ activeOnly: false });
-  const secretaries = users.filter((user) => user.mode === 'secretary' && user.active);
+  const administrative = users.filter((user) => user.mode === 'secretary' && user.active);
   const admins = users.filter((user) => ['admin', 'super_admin'].includes(user.mode));
 
   return (
@@ -68,7 +68,7 @@ export default async function ConfigPage() {
 
       <section className={styles.grid}>
         <Stat label="Usuarios configurados" value={users.length} />
-        <Stat label="Secretarias asignables" value={secretaries.length} />
+        <Stat label="Administrativas asignables" value={administrative.length} />
         <Stat label="Admins operación" value={admins.length} />
       </section>
 
