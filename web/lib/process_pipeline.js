@@ -3,8 +3,9 @@ import path from 'path';
 import { callGemini } from './benchmark/gemini_client.js';
 import { validateExtraction } from './extraction_validator.js';
 import { calcularConfianza, scoreToSemaforo } from '../../benchmark/lib/confidence.js';
-import { decideMatch, matchTemplate, resolveFallbackEntry } from '../../benchmark/lib/catalog_matcher.js';
+import { decideMatch, resolveFallbackEntry } from '../../benchmark/lib/catalog_matcher.js';
 import { parseModelJson } from '../../benchmark/lib/io.js';
+import { matchTemplateWithSignals } from '../../benchmark/lib/template_matcher_with_signals.js';
 
 function safeFilePart(value) {
   return String(value || 'SIN_OT')
@@ -30,6 +31,15 @@ function cleanTemplateFilename(name) {
   return name ? name.replace(' (1).xlsx', '.xlsx') : null;
 }
 
+function templateSignals(pass1, sourceName) {
+  return {
+    titulo_formulario: pass1.titulo_formulario,
+    tipo_herramienta: pass1.tipo_herramienta,
+    accionamiento: pass1.accionamiento,
+    sourceName,
+  };
+}
+
 export async function runExtraction({
   image,
   otHint,
@@ -44,7 +54,11 @@ export async function runExtraction({
   if (otHint) pass1.ot = otHint;
   saveJson(targetDir, pass1.ot, 'pass1', pass1);
 
-  const { entry, similitud } = matchTemplate(pass1.checklist_items || [], catalog);
+  const { entry, similitud, structuralSignal } = matchTemplateWithSignals(
+    pass1.checklist_items || [],
+    catalog,
+    templateSignals(pass1, sourceName)
+  );
   const decision = decideMatch({ entry, similitud });
   const templateEntry = decision === 'varios' ? resolveFallbackEntry(catalog) : entry;
 
@@ -64,6 +78,7 @@ export async function runExtraction({
     template_status: templateEntry?.template_status || null,
     mejor_intento_familia: entry?.template_key || null,
     similitud_checklist: Math.round(similitud * 100) / 100,
+    structural_signal: structuralSignal,
     decision,
     confidence_score: confidence.score,
     razones: confidence.razones,
