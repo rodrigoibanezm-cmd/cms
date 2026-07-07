@@ -33,21 +33,32 @@ function CreateUserForm() {
   );
 }
 
-function UserRow({ user }) {
+function UserActions({ user }) {
   const nextActive = user.active ? 'false' : 'true';
+  return (
+    <div className={styles.row}>
+      <form action="/api/config/users" method="post">
+        <input type="hidden" name="intent" value="set_active" />
+        <input type="hidden" name="user_id" value={user.id} />
+        <input type="hidden" name="active" value={nextActive} />
+        <button type="submit">{user.active ? 'Desactivar' : 'Activar'}</button>
+      </form>
+      <form action="/api/config/users" method="post">
+        <input type="hidden" name="intent" value="remove_user" />
+        <input type="hidden" name="user_id" value={user.id} />
+        <button className={styles.secondary} type="submit">Borrar</button>
+      </form>
+    </div>
+  );
+}
+
+function UserRow({ user }) {
   return (
     <tr>
       <td><strong>{user.name}</strong><br /><span className={styles.muted}>{user.email || '-'}</span></td>
       <td><span className={styles.badge}>{roleLabel(user.mode)}</span></td>
       <td>{user.active ? 'Activo' : 'Inactivo'}</td>
-      <td>
-        <form className={styles.row} action="/api/config/users" method="post">
-          <input type="hidden" name="intent" value="set_active" />
-          <input type="hidden" name="user_id" value={user.id} />
-          <input type="hidden" name="active" value={nextActive} />
-          <button type="submit">{user.active ? 'Desactivar' : 'Activar'}</button>
-        </form>
-      </td>
+      <td><UserActions user={user} /></td>
     </tr>
   );
 }
