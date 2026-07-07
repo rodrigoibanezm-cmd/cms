@@ -98,11 +98,12 @@ function narrativeValue(item) {
 }
 
 function fillRow(sheet, row, cols, item) {
-  if (!item.item || !item.resultado) return;
+  if (!item.item) return;
   if (!cols.cumple) {
     if (cols.obs) setVisibleCell(sheet.getCell(row, cols.obs), narrativeValue(item));
     return;
   }
+  if (!item.resultado) return;
   [cols.cumple, cols.noCumple, cols.noAplica].forEach((col) => {
     writableCell(sheet.getCell(row, col)).value = null;
   });
