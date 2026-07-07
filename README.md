@@ -2,7 +2,7 @@
 
 Digitalización auditada de informes técnicos Covaclean.
 
-## Responsabilidad de esta repo
+## Responsabilidad
 
 ```txt
 front técnico de carga
@@ -50,7 +50,6 @@ XLS generado desde templates Drive
 inputs y outputs guardados en Drive
 reports/files/events guardados en Neon
 admin visual operativo
-vista admin por defecto en planilla
 asignación y cola de secretaria operativas
 aprobación secretaria operativa
 PDF final idempotente operativo
@@ -64,9 +63,11 @@ filtros admin server-side
 docs/ui-design-system.md
 ```
 
-La UI debe ser sobria, técnica, ejecutiva y operacional.
-La vista Operación funciona como bandeja de trabajo.
-El diseño debe ser transversal a Dashboard, Operación, OT y Configuración.
+```txt
+UI sobria, técnica, ejecutiva y operacional.
+Vista Operación como bandeja de trabajo.
+Lenguaje visual transversal a Dashboard, Operación, OT y Configuración.
+```
 
 ## Regla de trabajo
 
@@ -74,14 +75,14 @@ El diseño debe ser transversal a Dashboard, Operación, OT y Configuración.
 1 tarea = 1 chat.
 1 chat auditor por tarea.
 Al cerrar una tarea se documenta.
-El siguiente chat parte leyendo este README y docs/next-step.md.
+El siguiente chat parte leyendo README.md y docs/next-step.md.
 ```
 
 ## Regla de tamaño
 
 ```txt
 Ningún archivo debe superar 100 líneas.
-Si un archivo crece, se refactoriza.
+Si crece, se refactoriza.
 La misma regla aplica para docs.
 1 doc = 1 responsabilidad.
 ```
@@ -101,7 +102,7 @@ Ruta recomendada:
 4. docs/next-step.md
 ```
 
-## Documentos principales
+Documentos principales:
 
 ```txt
 docs/current-state.md
@@ -117,7 +118,7 @@ docs/next-step.md
 ## Invariante
 
 ```txt
-No documentar visión como si fuera estado real.
+No documentar visión como estado real.
 No mezclar deuda técnica con pendientes de diseño.
 No agregar casuística si existe una regla general.
 ```
