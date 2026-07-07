@@ -20,7 +20,7 @@
   border: 1px solid #dfe7ef;
   border-radius: 14px;
   height: 690px;
-  overflow: auto;
+  overflow: hidden;
   width: 100%;
 }
 
