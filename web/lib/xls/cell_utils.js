@@ -23,8 +23,8 @@ export function writableCell(cell) {
 export function makeValueVisible(cell, alignment = {}) {
   cell.font = {
     ...(cell.font || {}),
-    bold: false,
-    size: 18,
+    bold: true,
+    size: 26,
     color: { argb: 'FF000000' },
   };
   cell.alignment = {
