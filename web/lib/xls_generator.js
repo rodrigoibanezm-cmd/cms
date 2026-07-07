@@ -14,6 +14,7 @@ import { fillTextByMap, fillTextSections } from './xls/text_fill.js';
 import { fillParts } from './xls/parts_fill.js';
 import { fillSpecificFields } from './xls/specific_fields_fill.js';
 import { addPhotos, addTextBlocks } from './xls/workbook_extras.js';
+import { styleEditableCells } from './xls/input_cell_style.js';
 
 function outputFolderId() {
   return env('GOOGLE_DRIVE_OUTPUT_FOLDER_ID') || env('CANDIDATES_TEMPLATES_FOLDER_ID');
@@ -57,6 +58,7 @@ export async function generateFinalXls({ extraction, photos, publish = true }) {
   fillParts(sheet, extraction.repuestos || []);
   addTextBlocks(workbook, extraction);
   addPhotos(workbook, photos);
+  styleEditableCells(sheet);
 
   const outBuffer = await workbook.xlsx.writeBuffer();
   const xls = {
