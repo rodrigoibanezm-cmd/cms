@@ -12,6 +12,13 @@
   gap: 18px;
 }
 
+.tenant {
+  color: #0b55d9;
+  display: block;
+  font-weight: 900;
+  margin-bottom: 2px;
+}
+
 .left h1 {
   font-size: 28px;
   margin: 0;
