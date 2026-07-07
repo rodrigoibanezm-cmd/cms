@@ -4,12 +4,20 @@ import { transitionReportWorkflow, WORKFLOW } from './report_workflow.js';
 
 const table = 'reports';
 
+function confidencePercent(value) {
+  if (value === null || value === undefined) return null;
+  const number = Number(value);
+  if (!Number.isFinite(number)) return null;
+  const percent = number > 0 && number <= 1 ? number * 100 : number;
+  return Math.max(0, Math.min(100, Math.round(percent)));
+}
+
 export async function markExtracted(id, extraction) {
   const sql = `UPDATE ${table} SET ot=$2, semaforo=$3, confidence_score=$4,
     template_key=$5, template_filename=$6, extraction_json=$7,
     updated_at=now() WHERE id=$1`;
   await query(sql, [id, extraction.ot || null, extraction.semaforo || null,
-    extraction.confidence_score ?? null, extraction.template_key || null,
+    confidencePercent(extraction.confidence_score), extraction.template_key || null,
     extraction.template_filename || null, JSON.stringify(extraction)]);
   await addReportEvent(id, 'extracted', { semaforo: extraction.semaforo });
 }
@@ -26,7 +34,7 @@ export async function markAudited(id, audit) {
     : audit?.decision === 'recover' ? 'recover'
       : 'review';
   const approved = status === 'approved';
-  const auditConfidence = Number(audit?.confidence || 0) || null;
+  const auditConfidence = confidencePercent(audit?.confidence);
   const sql = `UPDATE ${table} SET review_status=$2,
     semaforo=CASE WHEN $3 THEN 'VERDE' ELSE semaforo END,
     confidence_score=COALESCE($4, confidence_score),
