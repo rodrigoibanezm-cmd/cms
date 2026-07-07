@@ -8,6 +8,7 @@ export default function OperationHeader({ filters }) {
       <div className={styles.left}>
         <OperationMenu />
         <div>
+          <small className={styles.tenant}>CM Services</small>
           <h1>Operación</h1>
           <p>Bandeja de trabajo del supervisor</p>
         </div>
