@@ -24,11 +24,35 @@ function sameInspectionItem(a, b) {
   return left === right;
 }
 
+function textScore(value) {
+  const normalized = norm(value);
+  if (!normalized || normalized.length < 3) return 0;
+  if (['X', 'CUMPLE', 'NO CUMPLE', 'NO APLICA'].includes(normalized)) return 0;
+  return normalized.length;
+}
+
+function inferItemColumn(sheet, headerRow, firstResultCol) {
+  const scores = new Map();
+  const minCol = Math.max(1, firstResultCol - 8);
+  for (let row = headerRow + 1; row <= Math.min(sheet.rowCount, headerRow + 30); row++) {
+    for (let col = minCol; col < firstResultCol; col++) {
+      const score = textScore(cellText(sheet.getCell(row, col)));
+      if (score) scores.set(col, (scores.get(col) || 0) + score);
+    }
+  }
+  return [...scores.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] || null;
+}
+
+function completeHeader(sheet, found) {
+  if (!found.item && found.cumple) found.item = inferItemColumn(sheet, found.row, found.cumple);
+  return found.item && found.cumple && found.noCumple && found.noAplica ? found : null;
+}
+
 function findHeaderColumns(sheet) {
   let cols = null;
   sheet.eachRow((row, rowNumber) => {
     if (cols) return;
-    const found = {};
+    const found = { row: rowNumber };
     row.eachCell((cell, colNumber) => {
       const value = norm(cellText(cell));
       if (!found.item && value.includes('DESCRIP')) found.item = colNumber;
@@ -38,7 +62,7 @@ function findHeaderColumns(sheet) {
       if (!found.obs && value.includes('OBSERV')) found.obs = colNumber;
       if (!found.reparacion && value.includes('REPAR')) found.reparacion = colNumber;
     });
-    if (found.item && found.cumple && found.noCumple && found.noAplica) cols = { row: rowNumber, ...found };
+    cols = completeHeader(sheet, found);
   });
   return cols;
 }
