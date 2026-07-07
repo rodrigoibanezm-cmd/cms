@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import styles from '../../app/admin/report/reviewVisual.module.css';
 
 function filePreviewUrl(file) {
@@ -20,6 +21,27 @@ function ZoomedImage({ src, alt }) {
   return (
     <div className={styles.imageStage}>
       <img className={styles.reviewImage} src={src} alt={alt} />
+    </div>
+  );
+}
+
+function XlsViewport({ frameUrl }) {
+  const [hovered, setHovered] = useState(false);
+
+  useEffect(() => {
+    if (!hovered) return undefined;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = previous; };
+  }, [hovered]);
+
+  return (
+    <div
+      className={styles.xlsViewport}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <iframe className={styles.xlsFrame} src={frameUrl} title="XLS generado" />
     </div>
   );
 }
@@ -59,11 +81,7 @@ export function XlsPanel({ report, files }) {
   return (
     <section className={`${styles.reviewBox} ${styles.visualBox} ${styles.xlsBox}`}>
       <h2>XLS generado</h2>
-      {frameUrl ? (
-        <div className={styles.xlsViewport}>
-          <iframe className={styles.xlsFrame} src={frameUrl} title="XLS generado" />
-        </div>
-      ) : <p className={styles.muted}>XLS pendiente.</p>}
+      {frameUrl ? <XlsViewport frameUrl={frameUrl} /> : <p className={styles.muted}>XLS pendiente.</p>}
       <div className={styles.adminActions}>
         {report.excel_url ? <a className={styles.adminButton} href={report.excel_url} target="_blank">Abrir XLS</a> : null}
       </div>
