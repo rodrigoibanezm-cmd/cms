@@ -13,7 +13,6 @@ subida de archivos a Drive
 persistencia Neon
 admin de revisión
 auditoría IA
-recovery quirúrgico
 workflow admin/secretaria
 PDF final desde XLS aprobado
 ```
@@ -33,7 +32,6 @@ workflow operativo externo a la revisión admin
 ```txt
 El técnico carga evidencia.
 La IA extrae y audita.
-El backend decide forma, persistencia y entregables.
 Neon es fuente de verdad.
 Drive guarda archivos.
 El admin asigna.
@@ -44,10 +42,8 @@ La secretaria revisa y aprueba.
 
 ```txt
 runtime Next.js
-frontend técnico simple
 pipeline IA conectado
 XLS generado desde templates Drive
-inputs y outputs guardados en Drive
 reports/files/events guardados en Neon
 admin visual operativo
 asignación y cola de secretaria operativas
@@ -83,7 +79,6 @@ El siguiente chat parte leyendo README.md y docs/next-step.md.
 ```txt
 Ningún archivo debe superar 100 líneas.
 Si crece, se refactoriza.
-La misma regla aplica para docs.
 1 doc = 1 responsabilidad.
 ```
 
