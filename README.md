@@ -41,6 +41,7 @@ admin visual operativo
 asignación y cola de secretaria operativas
 aprobación secretaria operativa
 PDF final idempotente operativo
+Confianza IA disponible como KPI V1
 dashboard operativo V1
 filtros admin server-side
 ```
@@ -51,7 +52,7 @@ docs/ui-design-system.md
 ```txt
 UI sobria, técnica, ejecutiva y operacional.
 Vista Operación como bandeja de trabajo.
-Lenguaje visual transversal a Dashboard, Operación, OT y Configuración.
+Lenguaje visual transversal a Indicadores, Operación, OT y Configuración.
 ```
 ## Regla de trabajo
 ```txt
@@ -85,6 +86,7 @@ docs/workflow.md
 docs/secretary-flow.md
 docs/data-model.md
 docs/admin-review.md
+docs/quality-metrics.md
 docs/ui-design-system.md
 docs/next-step.md
 ```
