@@ -33,6 +33,7 @@ data-model.md              Neon y eventos
 drive.md                   archivos en Google Drive
 xls-generation.md          generación Excel
 audit-recovery.md          auditoría IA y recovery
+quality-metrics.md         confianza IA V1 y precisión real V2
 admin-review.md            front/admin de revisión
 ui-design-system.md        look & feel transversal del producto
 ui-operation-view.md       contrato visual de Vista Operación
