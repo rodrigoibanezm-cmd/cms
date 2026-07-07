@@ -43,7 +43,7 @@ aprobación secretaria operativa
 PDF final idempotente operativo
 Confianza IA disponible como KPI V1
 dashboard operativo V1
-filtros admin server-side
+Config V1 operativa en /config
 ```
 ## Diseño visual
 ```txt
