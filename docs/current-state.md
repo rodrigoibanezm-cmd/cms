@@ -12,17 +12,16 @@ El sistema ya no está solo en diseño.
 
 ```txt
 técnico sube informe + fotos
-→ /api/process-report
-→ crea report en Neon
-→ sube inputs a Drive
-→ Gemini extrae y audita
-→ generación XLS determinística
-→ publicación XLS
-→ admin ve planilla por defecto
-→ admin asigna secretaria
-→ secretaria revisa su cola
-→ secretaria aprueba desde el detalle
-→ admin descarga PDF final
+/api/process-report crea report en Neon
+sube inputs a Drive
+Gemini extrae y audita
+generación XLS determinística
+publicación XLS
+admin ve Vista Operación
+admin asigna secretaria
+secretaria revisa su cola
+secretaria aprueba desde el detalle
+admin descarga PDF final
 ```
 
 ## Qué funciona
@@ -38,7 +37,7 @@ generación XLS desde template Drive
 auditoría IA
 confidence_score disponible como Confianza IA V1
 recovery limitado
-admin listado en planilla
+Vista Operación V1 en /admin
 detalle visual de revisión
 asignación de secretaria
 cola por secretaria con total/pendientes
@@ -47,6 +46,18 @@ aprobación de secretaria
 PDF final idempotente desde XLS generado
 PDF descarga archivo, no abre vista Drive
 PDF usa ExcelJS + Drive export, no Google Sheets API
+```
+
+## Vista Operación V1
+
+```txt
+menú compacto sin sidebar permanente
+header con tenant, usuario y rol
+resumen superior compacto
+búsqueda global por OT, técnico, cliente, PDF y plantilla
+tabla OT + técnico, Confianza IA, workflow, secretaria, espera y PDF
+PDF vacío cuando no corresponde generar
+asignación de secretaria sigue disponible desde la fila
 ```
 
 ## Qué está incompleto
