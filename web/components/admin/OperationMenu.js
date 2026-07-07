@@ -1,14 +1,18 @@
 import styles from '../../app/admin/operationHeader.module.css';
 
-export default function OperationMenu() {
+function linkClass(active, key) {
+  return active === key ? styles.active : undefined;
+}
+
+export default function OperationMenu({ active = 'operation' }) {
   return (
     <details className={styles.menu}>
       <summary aria-label="Abrir menú">☰</summary>
       <nav className={styles.menuPanel}>
-        <a href="/dashboard">Dashboard</a>
-        <a className={styles.active} href="/admin">Operación</a>
-        <a href="/admin?view=config">Configuración</a>
-        <a href="/">Cerrar sesión</a>
+        <a className={linkClass(active, 'dashboard')} href="/dashboard">Dashboard</a>
+        <a className={linkClass(active, 'operation')} href="/admin">Operación</a>
+        <a className={linkClass(active, 'config')} href="/config">Configuración</a>
+        <a href="/">Salir</a>
       </nav>
     </details>
   );
