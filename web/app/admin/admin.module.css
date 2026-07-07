@@ -1,57 +1,11 @@
 .adminScreen {
   width: 100%;
-  max-width: 1100px;
+  max-width: 1420px;
   min-height: 100vh;
   margin: 0 auto;
-  padding: 28px 18px;
+  padding: 22px 18px 32px;
 }
 
-.adminHeader {
-  margin-bottom: 18px;
-}
-
-.adminSummary {
-  align-items: baseline;
-  background: white;
-  border: 1px solid #dfe7ef;
-  border-radius: 18px;
-  display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
-  padding: 14px 16px;
-}
-
-.adminSummary strong {
-  font-size: 24px;
-}
-
-.adminSummary span {
-  color: #637083;
-  font-size: 14px;
-}
-
-.viewSwitch {
-  background: white;
-  border: 1px solid #dfe7ef;
-  border-radius: 16px;
-  display: flex;
-  gap: 8px;
-  margin-bottom: 14px;
-  padding: 6px;
-}
-
-.viewSwitch a {
-  border-radius: 12px;
-  color: #1769c2;
-  flex: 1;
-  font-size: 14px;
-  font-weight: 800;
-  padding: 10px;
-  text-align: center;
-  text-decoration: none;
-}
-
-.viewSwitch a.active {
-  background: #1769c2;
-  color: white;
+@media (max-width: 760px) {
+  .adminScreen { padding: 16px 12px 28px; }
 }
