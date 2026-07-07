@@ -38,66 +38,6 @@ admin: Dashboard, Operación
 dashboard: Dashboard
 secretary: Mi Cola
 ```
-## Vista Operación
-Debe sentirse como bandeja de trabajo, no como dashboard.
-```txt
-Operación
-Bandeja de trabajo del supervisor
-```
-La tabla es el centro de la pantalla.
-Contenido:
-```txt
-resumen compacto
-búsqueda única
-filtros desplegables
-tabla de OTs
-fila clickeable
-flecha final de entrada
-```
-Columnas recomendadas:
-```txt
-OT
-Técnico
-Semáforo IA
-Estado workflow
-Secretaria asignada
-Tiempo esperando
-PDF
-```
-Reglas:
-```txt
-No usar botón Revisar como acción principal.
-No convertir la vista en dashboard.
-No mostrar prioridad como columna fija.
-Usar prioridad para ordenar la cola.
-```
-## Vista Dashboard
-```txt
-mismo lenguaje visual
-solo lectura
-métricas
-calidad
-tiempos
-cuellos de botella
-```
-## Vista OT
-Tocar lo mínimo.
-Mantener flujo y estructura.
-Aplicar solo lenguaje visual común:
-```txt
-colores
-tipografía
-espaciados
-fondos
-bordes
-botones
-```
-## Vista Configuración
-```txt
-backoffice del super_admin
-mismo sistema visual
-sin diseño especial
-```
 ## Sistema visual
 ```txt
 fondo gris muy claro
@@ -108,6 +48,13 @@ bordes 12-16px
 sombras suaves
 espaciado en múltiplos de 8px
 Inter como tipografía base
+```
+## Aplicación por vista
+```txt
+Operación: docs/ui-operation-view.md
+Dashboard: mismo sistema, solo lectura
+OT: tocar lo mínimo, solo forma
+Configuración: backoffice del super_admin
 ```
 ## Invariante
 ```txt
