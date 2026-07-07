@@ -34,6 +34,7 @@ drive.md                   archivos en Google Drive
 xls-generation.md          generación Excel
 audit-recovery.md          auditoría IA y recovery
 admin-review.md            front/admin de revisión
+ui-design-system.md        look & feel transversal del producto
 template-bases.md          workflow de bases XLS
 operations.md              operación y env vars
 deuda-tecnica.md           deuda real
