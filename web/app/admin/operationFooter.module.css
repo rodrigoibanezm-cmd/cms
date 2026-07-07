@@ -1,0 +1,27 @@
+.footer {
+  align-items: center;
+  background: white;
+  border: 1px solid #dfe7ef;
+  border-radius: 0 0 16px 16px;
+  border-top: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 18px;
+}
+
+.pages {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+}
+
+.pages strong {
+  background: #0b55d9;
+  border-radius: 8px;
+  color: white;
+  padding: 10px 14px;
+}
+
+@media (max-width: 760px) {
+  .footer { flex-direction: column; gap: 12px; }
+}
