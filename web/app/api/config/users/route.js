@@ -1,5 +1,9 @@
 import { NextResponse } from 'next/server';
-import { createTenant, setTenantActive } from '../../../../lib/tenant_store.js';
+import {
+  createTenant,
+  deleteTenant as removeTenant,
+  setTenantActive,
+} from '../../../../lib/tenant_store.js';
 
 export const runtime = 'nodejs';
 
@@ -24,15 +28,12 @@ function redirectConfig(request) {
 
 async function applyIntent(payload) {
   if (payload.intent === 'create_user') {
-    return createTenant({
-      name: payload.name,
-      email: payload.email,
-      mode: payload.mode,
-    });
+    return createTenant({ name: payload.name, email: payload.email, mode: payload.mode });
   }
   if (payload.intent === 'set_active') {
     return setTenantActive(payload.user_id, payload.active === 'true');
   }
+  if (payload.intent === 'remove_user') return removeTenant(payload.user_id);
   throw new Error('Acción inválida');
 }
 
