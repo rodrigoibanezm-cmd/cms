@@ -4,7 +4,7 @@
 
 ```txt
 Definir el look & feel transversal del producto.
-No reemplaza las vistas ni describe lógica backend.
+No reemplaza vistas ni describe lógica backend.
 ```
 
 ## Objetivo visual
@@ -17,7 +17,7 @@ operacional
 ```
 
 La interfaz debe ayudar a decidir rápido.
-No debe competir con la información.
+La información es protagonista.
 
 ## Vistas principales
 
@@ -28,18 +28,18 @@ Vista OT
 Vista Configuración
 ```
 
-Los roles habilitan vistas.
-Las vistas no deben duplicarse por rol.
+Las vistas no se duplican por rol.
+Los roles solo habilitan acceso y acciones.
 
 ## Navegación
 
 ```txt
 No usar sidebar permanente como regla base.
-Usar menú desplegable compacto.
+Usar menú compacto desplegable.
 Renderizar opciones según permisos.
 ```
 
-Ejemplo por rol:
+Acceso esperado:
 
 ```txt
 super_admin: Dashboard, Operación, Configuración
@@ -53,8 +53,6 @@ secretary: Mi Cola
 Debe sentirse como bandeja de trabajo.
 No como dashboard.
 
-Título recomendado:
-
 ```txt
 Operación
 Bandeja de trabajo del supervisor
@@ -62,15 +60,15 @@ Bandeja de trabajo del supervisor
 
 La tabla es el centro de la pantalla.
 
-## Operación: contenido
+Contenido:
 
 ```txt
-Resumen compacto
-Búsqueda única
-Filtros desplegables
-Tabla de OTs
-Fila clickeable
-Flecha final de entrada
+resumen compacto
+búsqueda única
+filtros desplegables
+tabla de OTs
+fila clickeable
+flecha final de entrada
 ```
 
 Columnas recomendadas:
@@ -85,7 +83,7 @@ Tiempo esperando
 PDF
 ```
 
-## Operación: reglas
+Reglas:
 
 ```txt
 No usar botón Revisar como acción principal.
@@ -96,9 +94,14 @@ Usar prioridad para ordenar la cola.
 
 ## Vista Dashboard
 
-Debe usar el mismo lenguaje visual.
-Solo lectura.
-Muestra métricas, calidad, tiempos y cuellos de botella.
+```txt
+mismo lenguaje visual
+solo lectura
+métricas
+calidad
+tiempos
+cuellos de botella
+```
 
 ## Vista OT
 
@@ -117,8 +120,11 @@ botones
 
 ## Vista Configuración
 
-Backoffice del super_admin.
-Debe reutilizar el mismo sistema visual.
+```txt
+backoffice del super_admin
+mismo sistema visual
+sin diseño especial
+```
 
 ## Sistema visual
 
