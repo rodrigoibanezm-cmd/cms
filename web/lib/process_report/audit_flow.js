@@ -15,6 +15,15 @@ function hasRecoveryTarget(audit) {
   return targets.some(isJsonPatchField) || patches.some((patch) => isJsonPatchField(patch?.field));
 }
 
+function withRecoveryHints(finalAudit, sourceAudit, recovery) {
+  return {
+    ...finalAudit,
+    recovery_applied: true,
+    recovery_targets_checked: recovery?.targets || [],
+    recovery_review_issues: sourceAudit?.issues || [],
+  };
+}
+
 async function runAuditor({ reportImage, xls, extraction }) {
   return auditWithGemini({ reportImage, xlsBuffer: xls.buffer, extraction });
 }
@@ -38,6 +47,7 @@ export async function maybeRecover({ reportId, reportImage, extraction, photoPay
     extraction: recoveredExtraction,
     photoPayload,
   });
+  const finalAudit = withRecoveryHints(result.audit, audit, recovery);
 
-  return { ...result, extraction: recoveredExtraction, recovery };
+  return { ...result, audit: finalAudit, extraction: recoveredExtraction, recovery };
 }
