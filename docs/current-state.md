@@ -36,6 +36,7 @@ extracción pass1/pass2
 match contra catálogo
 generación XLS desde template Drive
 auditoría IA
+confidence_score disponible como Confianza IA V1
 recovery limitado
 admin listado en planilla
 detalle visual de revisión
@@ -55,6 +56,7 @@ rechazo formal desde admin/secretaria
 edición controlada de campos desde admin/secretaria
 flujo de cierre de OT
 calibración real del confidence_score
+precisión real IA por diff contra approved_json
 ```
 
 ## Fuente de verdad
@@ -82,6 +84,6 @@ El sistema conserva trazabilidad.
 ```txt
 No mover complejidad al front técnico.
 No usar IA para escribir celdas del Excel.
-No asumir aprobación automática por semáforo.
+No asumir aprobación automática por Confianza IA.
 No producir preview XLS.
 ```
