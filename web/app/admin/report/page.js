@@ -11,6 +11,11 @@ function filesOf(files, kind) {
   return files.filter((file) => file.kind === kind);
 }
 
+function confidenceLabel(report) {
+  if (report.confidence_score === null || report.confidence_score === undefined) return 'Confianza IA: -';
+  return `Confianza IA: ${report.confidence_score}%`;
+}
+
 export default async function AdminReportPage({ searchParams }) {
   const params = await searchParams;
   const id = params?.id;
@@ -36,15 +41,16 @@ export default async function AdminReportPage({ searchParams }) {
         <a className={styles.backLink} href="/admin">Volver</a>
         <div className={styles.reviewTopBar}>
           <div>
-            <h1>Revisi&oacute;n OT {report.ot || '-'}</h1>
+            <h1>Revision OT {report.ot || '-'}</h1>
             <div className={styles.reviewMeta}>
               <span>{workflowLabel(report.current_state)}</span>
+              <span>{confidenceLabel(report)}</span>
             </div>
           </div>
           <SecretaryApproveForm report={report} />
         </div>
       </header>
-      <CriticalBox audit={data.audit} />
+      <CriticalBox audit={data.audit} report={report} />
       <div className={styles.reviewMainGrid}>
         <VisualFile title="Informe original" files={originals} />
         <XlsPanel report={report} files={xlsFiles} />
