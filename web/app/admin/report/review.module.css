@@ -1,13 +1,17 @@
 .reviewScreen {
-  width: 100%;
-  max-width: 1500px;
-  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  height: 100vh;
   margin: 0 auto;
+  max-width: 1500px;
+  overflow: hidden;
   padding: 24px 18px;
+  width: 100%;
 }
 
 .reviewHeader {
-  margin-bottom: 16px;
+  flex: 0 0 auto;
 }
 
 .reviewHeader h1 {
@@ -61,19 +65,31 @@
 
 .reviewMainGrid {
   display: grid;
+  flex: 1 1 auto;
   gap: 14px;
   grid-template-columns: 1fr 1fr;
-  margin-bottom: 14px;
+  min-height: 0;
 }
 
 .reviewSecondaryGrid {
-  display: grid;
-  gap: 14px;
-  grid-template-columns: 1fr 1fr 1fr;
+  display: none;
 }
 
 @media (max-width: 900px) {
+  .reviewScreen {
+    height: auto;
+    overflow: visible;
+  }
+
   .reviewTopBar { flex-direction: column; }
-  .reviewMainGrid,
-  .reviewSecondaryGrid { grid-template-columns: 1fr; }
+
+  .reviewMainGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .reviewSecondaryGrid {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: 1fr;
+  }
 }
