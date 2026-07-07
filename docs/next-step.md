@@ -2,7 +2,7 @@
 
 ## Contexto
 
-El proyecto ya cuenta con workflow admin/secretaria, PDF final idempotente y definición V1 de Confianza IA.
+El proyecto ya cuenta con workflow admin/secretaria, PDF final idempotente, Confianza IA V1 y Vista Operación V1 inicial.
 
 ## Estado validado
 
@@ -17,12 +17,11 @@ asignación de secretaria implementada
 cola por secretaria implementada
 cola muestra pendientes y aprobadas
 aprobación de secretaria implementada
-admin abre por defecto en planilla
-planilla muestra técnico y no semáforo operacional
 PDF final descarga archivo
 PDF conserva primera hoja y FOTOS
 PDF no usa Google Sheets API
 Confianza IA definida como KPI V1
+Vista Operación V1 implementada en /admin
 ```
 
 ## Decisiones tomadas
@@ -39,10 +38,10 @@ Precisión real IA queda para V2 con approved_json.
 ## Próxima tarea
 
 ```txt
-Implementar Vista Operación V1 según docs/ui-operation-view.md.
+Auditar Vista Operación V1 en producción contra docs/ui-operation-view.md.
 ```
 
-Debe incluir:
+Debe validar:
 
 ```txt
 menú compacto sin sidebar permanente
@@ -50,9 +49,9 @@ header con tenant, usuario y rol
 resumen superior compacto
 búsqueda única global
 tabla OT + técnico, Confianza IA, workflow, secretaria, espera y PDF
-fila completa clickeable
 PDF vacío cuando no exista
 sin botón Revisar como acción principal
+asignación de secretaria sigue operativa
 ```
 
 ## No hacer
@@ -70,7 +69,7 @@ no implementar approved_json ni diff todavía
 
 ```txt
 @GitHub lee README.md, docs/current-state.md, docs/principles.md y docs/next-step.md.
-Implementa Vista Operación V1 según docs/ui-operation-view.md.
+Audita Vista Operación V1 en producción contra docs/ui-operation-view.md.
 No modificar extractor.
 Mantener archivos bajo 100 líneas.
 ```
