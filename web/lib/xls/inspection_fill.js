@@ -44,7 +44,9 @@ function inferItemColumn(sheet, headerRow, firstResultCol) {
 }
 
 function completeHeader(sheet, found) {
-  if (!found.item && found.cumple) found.item = inferItemColumn(sheet, found.row, found.cumple);
+  const firstResultCol = found.cumple || found.obs;
+  if (!found.item && firstResultCol) found.item = inferItemColumn(sheet, found.row, firstResultCol);
+  if (found.item && found.obs && !found.cumple) return found;
   return found.item && found.cumple && found.noCumple && found.noAplica ? found : null;
 }
 
@@ -90,8 +92,17 @@ function resultColumn(cols, resultado) {
   return cols.noAplica;
 }
 
+function narrativeValue(item) {
+  if (text(item.observacion)) return item.observacion;
+  return item.resultado ? item.resultado.replace(/_/g, ' ').toLowerCase() : '';
+}
+
 function fillRow(sheet, row, cols, item) {
   if (!item.item || !item.resultado) return;
+  if (!cols.cumple) {
+    if (cols.obs) setVisibleCell(sheet.getCell(row, cols.obs), narrativeValue(item));
+    return;
+  }
   [cols.cumple, cols.noCumple, cols.noAplica].forEach((col) => {
     writableCell(sheet.getCell(row, col)).value = null;
   });
