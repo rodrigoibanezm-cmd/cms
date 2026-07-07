@@ -3,40 +3,48 @@
   border: 1px solid #dfe7ef;
   border-radius: 22px;
   box-shadow: 0 12px 30px rgba(31, 51, 79, 0.08);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
   padding: 16px;
 }
 
-.visualBox { min-height: 680px; }
-.xlsBox { min-height: 760px; }
+.visualBox,
+.xlsBox {
+  height: 100%;
+}
 
 .driveFrame {
   border: 1px solid #dfe7ef;
   border-radius: 14px;
-  height: 600px;
+  flex: 1 1 auto;
+  min-height: 0;
   width: 100%;
 }
 
 .xlsViewport {
   border: 1px solid #dfe7ef;
   border-radius: 14px;
-  height: 690px;
+  flex: 1 1 auto;
+  min-height: 0;
   overflow: auto;
   width: 100%;
 }
 
 .xlsFrame {
   border: 0;
-  height: 1060px;
-  transform: scale(0.65);
+  height: 125%;
+  transform: scale(0.8);
   transform-origin: top left;
-  width: 154%;
+  width: 125%;
 }
 
 .imageStage {
   background: #f6f8fb;
   border: 1px solid #dfe7ef;
   border-radius: 14px;
-  height: 600px;
+  flex: 1 1 auto;
+  min-height: 0;
   overflow: auto;
   position: relative;
   width: 100%;
@@ -49,7 +57,10 @@
   width: 200%;
 }
 
-.reviewBox h2 { margin: 0 0 12px; }
+.reviewBox h2 {
+  flex: 0 0 auto;
+  margin: 0 0 12px;
+}
 
 .muted {
   color: #637083;
@@ -71,6 +82,7 @@
 .adminActions {
   align-items: center;
   display: flex;
+  flex: 0 0 auto;
   gap: 14px;
   margin-top: 16px;
 }
@@ -89,5 +101,5 @@
 @media (max-width: 900px) {
   .visualBox, .xlsBox { min-height: 520px; }
   .driveFrame, .imageStage, .xlsViewport { height: 440px; }
-  .xlsFrame { height: 680px; }
+  .xlsFrame { height: 125%; }
 }
