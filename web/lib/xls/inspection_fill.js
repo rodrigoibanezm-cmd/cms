@@ -20,8 +20,7 @@ function normalizeItem(item) {
 function sameInspectionItem(a, b) {
   const left = looseKey(a);
   const right = looseKey(b);
-  if (!left || !right) return false;
-  return left === right;
+  return Boolean(left && right && left === right);
 }
 
 function textScore(value) {
@@ -34,7 +33,8 @@ function textScore(value) {
 function inferItemColumn(sheet, headerRow, firstResultCol) {
   const scores = new Map();
   const minCol = Math.max(1, firstResultCol - 8);
-  for (let row = headerRow + 1; row <= Math.min(sheet.rowCount, headerRow + 30); row++) {
+  const maxRow = Math.min(sheet.rowCount, headerRow + 30);
+  for (let row = headerRow + 1; row <= maxRow; row++) {
     for (let col = minCol; col < firstResultCol; col++) {
       const score = textScore(cellText(sheet.getCell(row, col)));
       if (score) scores.set(col, (scores.get(col) || 0) + score);
@@ -107,19 +107,15 @@ function fillRow(sheet, row, cols, item) {
 export function fillInspection(sheet, inspeccion = []) {
   const cols = findHeaderColumns(sheet);
   if (!cols) return;
-
   let fallbackRow = cols.row + 1;
-
   for (const rawItem of inspeccion) {
     const item = normalizeItem(rawItem);
     let targetRow = findInspectionRow(sheet, cols, item);
-
     if (!targetRow) {
       targetRow = findNextEmptyInspectionRow(sheet, cols, fallbackRow);
       if (!targetRow) continue;
       setVisibleCell(sheet.getCell(targetRow, cols.item), item.item);
     }
-
     fallbackRow = Math.max(fallbackRow, targetRow + 1);
     fillRow(sheet, targetRow, cols, item);
   }
