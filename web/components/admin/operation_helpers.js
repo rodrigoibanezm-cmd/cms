@@ -30,12 +30,17 @@ export function clientLabel(report) {
   return report.client_name || report.source_name || report.template_filename || '-';
 }
 
+export function dateLabel(value) {
+  if (!value) return '-';
+  return new Date(value).toLocaleDateString('es-CL');
+}
+
 export function waitInfo(report) {
   if (['secretary_approved', 'closed'].includes(report.current_state)) {
-    return { label: '—', detail: 'Completada', tone: 'muted' };
+    return { label: '-', detail: 'Completada', tone: 'muted' };
   }
   const base = report.last_workflow_event_at || report.assigned_at || report.created_at;
-  if (!base) return { label: '—', detail: 'Sin fecha', tone: 'muted' };
+  if (!base) return { label: '-', detail: 'Sin fecha', tone: 'muted' };
   const minutes = Math.max(0, Math.floor((Date.now() - new Date(base).getTime()) / 60000));
   const label = formatMinutes(minutes);
   return { label, detail: slaLabel(report.sla_due_at), tone: waitTone(minutes) };
@@ -51,7 +56,7 @@ function formatMinutes(minutes) {
 }
 
 function slaLabel(value) {
-  if (!value) return 'SLA: —';
+  if (!value) return 'SLA: -';
   const hours = Math.max(0, Math.ceil((new Date(value).getTime() - Date.now()) / 3600000));
   return `SLA: ${hours} h`;
 }
