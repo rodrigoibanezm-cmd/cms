@@ -10,6 +10,23 @@
   margin: 0 0 12px;
 }
 
+.boxHeader {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.boxHeader span {
+  background: #eaf2ff;
+  border-radius: 999px;
+  color: #0b55d9;
+  font-size: 13px;
+  font-weight: 900;
+  padding: 8px 10px;
+  white-space: nowrap;
+}
+
 .muted {
   color: #637083;
   font-size: 14px;
