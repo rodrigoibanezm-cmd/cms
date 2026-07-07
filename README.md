@@ -54,7 +54,19 @@ vista admin por defecto en planilla
 asignación y cola de secretaria operativas
 aprobación secretaria operativa
 PDF final idempotente operativo
+dashboard operativo V1
+filtros admin server-side
 ```
+
+## Diseño visual
+
+```txt
+docs/ui-design-system.md
+```
+
+La UI debe ser sobria, técnica, ejecutiva y operacional.
+La vista Operación funciona como bandeja de trabajo.
+El diseño debe ser transversal a Dashboard, Operación, OT y Configuración.
 
 ## Regla de trabajo
 
@@ -98,6 +110,7 @@ docs/workflow.md
 docs/secretary-flow.md
 docs/data-model.md
 docs/admin-review.md
+docs/ui-design-system.md
 docs/next-step.md
 ```
 
