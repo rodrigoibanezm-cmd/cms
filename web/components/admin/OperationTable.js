@@ -2,6 +2,7 @@ import AssignSecretaryForm from './AssignSecretaryForm.js';
 import {
   clientLabel,
   confidenceInfo,
+  dateLabel,
   pdfReady,
   waitInfo,
   workflowInfo,
@@ -57,6 +58,7 @@ export default function OperationTable({ reports, secretaries }) {
         <thead>
           <tr>
             <th>OT</th>
+            <th>Ingreso</th>
             <th>Técnico</th>
             <th>Confianza IA</th>
             <th>Estado workflow</th>
@@ -70,6 +72,7 @@ export default function OperationTable({ reports, secretaries }) {
           {reports.map((report) => (
             <tr key={report.id}>
               <td><DetailCell report={report} /></td>
+              <td>{dateLabel(report.created_at)}</td>
               <td>{report.technician_name || '-'}</td>
               <td><ConfidenceCell report={report} /></td>
               <td><WorkflowCell report={report} /></td>
