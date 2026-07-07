@@ -37,6 +37,7 @@ generación XLS desde template Drive
 auditoría IA
 confidence_score disponible como Confianza IA V1
 recovery limitado
+hints de auditoría se conservan aunque recovery corrija
 Vista Operación V1 en /admin
 detalle visual de revisión
 asignación de secretaria
