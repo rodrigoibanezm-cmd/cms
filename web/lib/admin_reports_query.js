@@ -1,13 +1,23 @@
 import { query } from './db.js';
 
 const MAX_LIMIT = 100;
+const DEFAULT_LIMIT = 25;
 
 function clean(value) {
   return String(value || '').trim();
 }
 
+function positiveInt(value, fallback) {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed) || parsed <= 0) return fallback;
+  return Math.floor(parsed);
+}
+
 export function pageParams(searchParams) {
-  const limit = Math.min(Number(searchParams.get('limit')) || 25, MAX_LIMIT);
+  const limit = Math.min(
+    positiveInt(searchParams.get('limit'), DEFAULT_LIMIT),
+    MAX_LIMIT
+  );
   const offset = Math.max(Number(searchParams.get('offset')) || 0, 0);
   return { limit, offset };
 }
