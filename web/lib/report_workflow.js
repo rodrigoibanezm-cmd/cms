@@ -47,8 +47,8 @@ export function initialWorkflowValues() {
 
 async function addWorkflowEvent(reportId, transition, payload) {
   await query(
-    `INSERT INTO report_events (id, report_id, event, payload_json)
-     VALUES ($1, $2, $3, $4)`,
+    `INSERT INTO report_events (id, tenant_id, report_id, event, payload_json)
+     VALUES ($1, (SELECT tenant_id FROM reports WHERE id=$2), $2, $3, $4)`,
     [randomUUID(), reportId, transition.event, JSON.stringify(payload)]
   );
 }
