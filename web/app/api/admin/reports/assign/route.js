@@ -39,7 +39,7 @@ export async function POST(request) {
     const result = await assignReportToSecretary({
       reportId: payload?.report_id,
       secretaryId: payload?.secretary_id,
-      tenantId: access.tenantId,
+      access,
     });
     if (payload?.return_to) return redirectBack(request, payload);
     return NextResponse.json({ ok: true, ...result });
