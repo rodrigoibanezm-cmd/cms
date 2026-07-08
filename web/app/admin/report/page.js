@@ -1,11 +1,14 @@
+import { headers } from 'next/headers';
 import { AuditPanel, CriticalBox } from '../../../components/admin/ReviewAuditPanel.js';
 import { VisualFile, XlsPanel } from '../../../components/admin/ReviewVisualPanel.js';
 import SecretaryApproveForm from '../../../components/admin/SecretaryApproveForm.js';
 import { workflowLabel } from '../../../components/admin/admin_helpers.js';
 import { getReport } from '../../../lib/report_reads.js';
+import { requireRole, requireTenantAccess } from '../../../lib/tenant_access.js';
 import styles from './review.module.css';
 
 export const dynamic = 'force-dynamic';
+const DETAIL_ROLES = ['admin', 'super_admin', 'administrativa', 'secretary'];
 
 function filesOf(files, kind) {
   return files.filter((file) => file.kind === kind);
@@ -16,20 +19,32 @@ function confidenceLabel(report) {
   return `Confianza IA: ${report.confidence_score}%`;
 }
 
-function actorTenantId(params, report) {
-  return params?.tenant_id || report.tenant_id || report.current_owner_id || '';
+function queryString(params) {
+  const search = new URLSearchParams();
+  for (const [key, value] of Object.entries(params || {})) {
+    if (value !== undefined && value !== null) search.set(key, value);
+  }
+  return search.toString();
+}
+
+async function requireDetailAccess(params) {
+  const qs = queryString(params);
+  const request = { headers: await headers(), url: `http://local/admin/report${qs ? `?${qs}` : ''}` };
+  return requireRole(await requireTenantAccess(request), DETAIL_ROLES);
 }
 
 export default async function AdminReportPage({ searchParams }) {
   const params = await searchParams;
+  const access = await requireDetailAccess(params);
   const id = params?.id;
-  const data = id ? await getReport(id) : { report: null, files: [], events: [] };
+  const token = params?.token || '';
+  const data = id ? await getReport(id, access.tenantId) : { report: null, files: [], events: [] };
   const report = data.report;
 
   if (!report) {
     return (
       <main className={styles.reviewScreen}>
-        <a className={styles.backLink} href="/admin">Volver</a>
+        <a className={styles.backLink} href={token ? `/admin?token=${encodeURIComponent(token)}` : '/admin'}>Volver</a>
         <p>Reporte no encontrado.</p>
       </main>
     );
@@ -38,29 +53,24 @@ export default async function AdminReportPage({ searchParams }) {
   const originals = filesOf(data.files, 'original_report');
   const photos = filesOf(data.files, 'detail_photo');
   const xlsFiles = filesOf(data.files, 'generated_xls');
+  const backUrl = token ? `/admin?token=${encodeURIComponent(token)}` : '/admin';
 
   return (
     <main className={styles.reviewScreen}>
       <header className={styles.reviewHeader}>
-        <a className={styles.backLink} href="/admin">Volver</a>
+        <a className={styles.backLink} href={backUrl}>Volver</a>
         <div className={styles.reviewTopBar}>
-          <div>
-            <h1>Revision OT {report.ot || '-'}</h1>
-            <div className={styles.reviewMeta}>
-              <span>{workflowLabel(report.current_state)}</span>
-              <span>{confidenceLabel(report)}</span>
-            </div>
-          </div>
-          <SecretaryApproveForm report={report} tenantId={actorTenantId(params, report)} />
+          <div><h1>Revision OT {report.ot || '-'}</h1><div className={styles.reviewMeta}><span>{workflowLabel(report.current_state)}</span><span>{confidenceLabel(report)}</span></div></div>
+          <SecretaryApproveForm report={report} token={token} />
         </div>
       </header>
       <CriticalBox audit={data.audit} report={report} />
       <div className={styles.reviewMainGrid}>
-        <VisualFile title="Informe original" files={originals} />
+        <VisualFile title="Informe original" files={originals} token={token} />
         <XlsPanel report={report} files={xlsFiles} />
       </div>
       <div className={styles.reviewSecondaryGrid}>
-        <VisualFile title="Fotos detalle" files={photos} />
+        <VisualFile title="Fotos detalle" files={photos} token={token} />
         <AuditPanel audit={data.audit} events={data.events || []} />
       </div>
     </main>
