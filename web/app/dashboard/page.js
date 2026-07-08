@@ -1,4 +1,5 @@
 import { headers } from 'next/headers';
+import OperationMenu from '../../components/admin/OperationMenu.js';
 import DashboardCards from '../../components/dashboard/DashboardCards.js';
 import DashboardPanel from '../../components/dashboard/DashboardPanel.js';
 import { buildDashboardCounts } from '../../lib/dashboard_counts.js';
@@ -63,6 +64,7 @@ export default async function DashboardPage({ searchParams }) {
   return (
     <main className={styles.screen}>
       <header className={styles.header}>
+        <OperationMenu active="dashboard" token={params.token || ''} />
         <p className="eyebrow">CM Services</p>
         <h1>Dashboard operacional</h1>
         <p className="subtitle">Vista general</p>
