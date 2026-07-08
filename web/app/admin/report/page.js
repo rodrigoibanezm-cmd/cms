@@ -33,32 +33,30 @@ async function requireDetailAccess(params) {
   return requireRole(await requireTenantAccess(request), DETAIL_ROLES);
 }
 
+function backUrl(token) {
+  return token ? `/admin?token=${encodeURIComponent(token)}` : '/admin';
+}
+
 export default async function AdminReportPage({ searchParams }) {
   const params = await searchParams;
   const access = await requireDetailAccess(params);
   const id = params?.id;
   const token = params?.token || '';
-  const data = id ? await getReport(id, access.tenantId) : { report: null, files: [], events: [] };
+  const data = id ? await getReport(id, access) : { report: null, files: [], events: [] };
   const report = data.report;
 
   if (!report) {
-    return (
-      <main className={styles.reviewScreen}>
-        <a className={styles.backLink} href={token ? `/admin?token=${encodeURIComponent(token)}` : '/admin'}>Volver</a>
-        <p>Reporte no encontrado.</p>
-      </main>
-    );
+    return <main className={styles.reviewScreen}><a className={styles.backLink} href={backUrl(token)}>Volver</a><p>Reporte no encontrado.</p></main>;
   }
 
   const originals = filesOf(data.files, 'original_report');
   const photos = filesOf(data.files, 'detail_photo');
   const xlsFiles = filesOf(data.files, 'generated_xls');
-  const backUrl = token ? `/admin?token=${encodeURIComponent(token)}` : '/admin';
 
   return (
     <main className={styles.reviewScreen}>
       <header className={styles.reviewHeader}>
-        <a className={styles.backLink} href={backUrl}>Volver</a>
+        <a className={styles.backLink} href={backUrl(token)}>Volver</a>
         <div className={styles.reviewTopBar}>
           <div><h1>Revision OT {report.ot || '-'}</h1><div className={styles.reviewMeta}><span>{workflowLabel(report.current_state)}</span><span>{confidenceLabel(report)}</span></div></div>
           <SecretaryApproveForm report={report} token={token} />
