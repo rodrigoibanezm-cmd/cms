@@ -16,7 +16,7 @@ function CreatedTokenBox({ link }) {
   return (
     <div className={styles.card}>
       <strong>Link creado</strong>
-      <input readOnly value={link} onFocus={(event) => event.currentTarget.select()} />
+      <input readOnly value={link} />
       <span className={styles.muted}>Copiar y pegar. El token no se vuelve a mostrar.</span>
     </div>
   );
