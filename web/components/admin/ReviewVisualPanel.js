@@ -62,13 +62,14 @@ export function VisualFile({ title, files, token }) {
 
 export function XlsPanel({ report, files }) {
   const xls = files[files.length - 1];
-  const frameUrl = compactSheetsUrl(report.excel_url);
+  const xlsUrl = report.excel_url || xls?.url || '';
+  const frameUrl = compactSheetsUrl(xlsUrl);
   return (
     <section className={`${styles.reviewBox} ${styles.visualBox} ${styles.xlsBox}`}>
       <h2>XLS generado</h2>
       {frameUrl ? <XlsViewport frameUrl={frameUrl} /> : <p className={styles.muted}>XLS pendiente.</p>}
       <div className={styles.adminActions}>
-        {report.excel_url ? <a className={styles.adminButton} href={report.excel_url} target="_blank">Abrir XLS</a> : null}
+        {xlsUrl ? <a className={styles.adminButton} href={xlsUrl} target="_blank">Abrir XLS</a> : null}
       </div>
       {xls ? <p className={styles.muted}>{xls.filename}</p> : null}
     </section>
