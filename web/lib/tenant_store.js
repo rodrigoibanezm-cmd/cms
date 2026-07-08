@@ -30,6 +30,13 @@ function cleanMode(mode) {
   return MODES.includes(mode) ? mode : 'secretary';
 }
 
+export function roleLabel(mode) {
+  if (mode === 'super_admin') return 'Super admin';
+  if (mode === 'admin') return 'Administrador';
+  if (mode === 'dashboard') return 'Dashboard';
+  return 'Administrativa';
+}
+
 export async function listTenants({ activeOnly = false, mode } = {}) {
   await ensureTenantSchema();
   const filters = [];
@@ -70,6 +77,15 @@ export async function getActiveTenant(id, mode) {
     params
   );
   return res.rows[0] || null;
+}
+
+export async function authUserLabel(access) {
+  const user = await getTenant(access.userId);
+  return {
+    initials: (user?.name || access.role || 'U').slice(0, 2).toUpperCase(),
+    name: user?.name || access.userId || 'Usuario',
+    role: roleLabel(access.role),
+  };
 }
 
 export async function setTenantActive(id, active) {
