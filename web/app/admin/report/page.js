@@ -9,6 +9,7 @@ import styles from './review.module.css';
 
 export const dynamic = 'force-dynamic';
 const DETAIL_ROLES = ['admin', 'super_admin', 'administrativa', 'secretary'];
+const QUEUE_ROLES = ['administrativa', 'secretary'];
 
 function filesOf(files, kind) {
   return files.filter((file) => file.kind === kind);
@@ -33,8 +34,9 @@ async function requireDetailAccess(params) {
   return requireRole(await requireTenantAccess(request), DETAIL_ROLES);
 }
 
-function backUrl(token) {
-  return token ? `/admin?token=${encodeURIComponent(token)}` : '/admin';
+function backUrl(token, access) {
+  const path = QUEUE_ROLES.includes(access?.role) ? '/admin/secretary' : '/admin';
+  return token ? `${path}?token=${encodeURIComponent(token)}` : path;
 }
 
 export default async function AdminReportPage({ searchParams }) {
@@ -44,9 +46,10 @@ export default async function AdminReportPage({ searchParams }) {
   const token = params?.token || '';
   const data = id ? await getReport(id, access) : { report: null, files: [], events: [] };
   const report = data.report;
+  const back = backUrl(token, access);
 
   if (!report) {
-    return <main className={styles.reviewScreen}><a className={styles.backLink} href={backUrl(token)}>Volver</a><p>Reporte no encontrado.</p></main>;
+    return <main className={styles.reviewScreen}><a className={styles.backLink} href={back}>Volver</a><p>Reporte no encontrado.</p></main>;
   }
 
   const originals = filesOf(data.files, 'original_report');
@@ -56,7 +59,7 @@ export default async function AdminReportPage({ searchParams }) {
   return (
     <main className={styles.reviewScreen}>
       <header className={styles.reviewHeader}>
-        <a className={styles.backLink} href={backUrl(token)}>Volver</a>
+        <a className={styles.backLink} href={back}>Volver</a>
         <div className={styles.reviewTopBar}>
           <div><h1>Revision OT {report.ot || '-'}</h1><div className={styles.reviewMeta}><span>{workflowLabel(report.current_state)}</span><span>{confidenceLabel(report)}</span></div></div>
           <SecretaryApproveForm report={report} token={token} />
