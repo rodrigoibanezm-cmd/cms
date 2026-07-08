@@ -1,22 +1,41 @@
+import { headers } from 'next/headers';
 import AdminTable from '../../../components/admin/AdminTable.js';
 import { listSecretaryQueue } from '../../../lib/report_assignment.js';
-import { getActiveTenant, listTenants } from '../../../lib/tenant_store.js';
+import { getActiveTenant } from '../../../lib/tenant_store.js';
+import {
+  requireRole,
+  requireTenantAccess,
+} from '../../../lib/tenant_access.js';
 import styles from '../admin.module.css';
 
 export const dynamic = 'force-dynamic';
 
-function readQueueIds(params, fallbackId) {
+const SECRETARY_ROLES = ['administrativa', 'secretary'];
+
+function queryString(params) {
+  const search = new URLSearchParams();
+  for (const [key, value] of Object.entries(params || {})) {
+    if (value !== undefined && value !== null) search.set(key, value);
+  }
+  return search.toString();
+}
+
+async function requestFromPage(params) {
+  const qs = queryString(params);
   return {
-    tenantId: params?.tenant_id || fallbackId || null,
-    userId: params?.user_id || params?.id || fallbackId || null,
+    headers: await headers(),
+    url: `http://local/admin/secretary${qs ? `?${qs}` : ''}`,
   };
 }
 
 async function loadSecretaryPage(params) {
-  const fallback = await listTenants({ activeOnly: true, mode: 'secretary' });
-  const ids = readQueueIds(params, fallback[0]?.id);
-  const tenant = ids.tenantId ? await getActiveTenant(ids.tenantId) : null;
-  const reports = tenant ? await listSecretaryQueue(ids) : [];
+  const request = await requestFromPage(params);
+  const access = requireRole(await requireTenantAccess(request), SECRETARY_ROLES);
+  const tenant = await getActiveTenant(access.tenantId);
+  const reports = await listSecretaryQueue({
+    tenantId: access.tenantId,
+    userId: access.userId,
+  });
   return { tenant, reports, error: null };
 }
 
@@ -39,7 +58,7 @@ export default async function SecretaryQueuePage({ searchParams }) {
       <header className={styles.adminHeader}>
         <p className="eyebrow">CM Services</p>
         <h1>Cola administrativa</h1>
-        <p className="subtitle">{data.tenant?.name || 'Tenant administrativa requerido'}</p>
+        <p className="subtitle">{data.tenant?.name || 'Token administrativa requerido'}</p>
       </header>
 
       <section className={styles.adminSummary}>
