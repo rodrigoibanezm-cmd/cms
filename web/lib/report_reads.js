@@ -34,10 +34,7 @@ function addGlobalFilter(filters, params, value) {
     OR r.extraction_json->>'tecnico' ILIKE ${key}
     OR r.extraction_json->>'cliente' ILIKE ${key}
     OR r.extraction_json->>'empresa' ILIKE ${key}
-    OR EXISTS (
-      SELECT 1 FROM ${filesTable} sf
-      WHERE sf.report_id=r.id AND sf.filename ILIKE ${key}
-    )
+    OR EXISTS (SELECT 1 FROM ${filesTable} sf WHERE sf.report_id=r.id AND sf.filename ILIKE ${key})
   )`);
 }
 
@@ -63,21 +60,21 @@ export async function listReports(filters = {}) {
 }
 
 function latestAudit(events) {
-  return events
-    .slice()
-    .reverse()
-    .find((event) => event.event === 'audit_completed')?.payload_json || null;
+  return events.slice().reverse().find((event) => event.event === 'audit_completed')?.payload_json || null;
 }
 
-export async function getReport(id) {
+export async function getReport(id, tenantId) {
   await ensureAdminSchema();
+  if (!tenantId) throw new Error('tenantId requerido');
   const reportSql = `SELECT r.*, r.extraction_json->>'tecnico' AS technician_name
-    FROM ${reportsTable} r WHERE id=$1`;
-  const filesSql = `SELECT * FROM ${filesTable} WHERE report_id=$1 ORDER BY created_at`;
-  const eventsSql = `SELECT * FROM ${eventsTable} WHERE report_id=$1 ORDER BY created_at`;
-  const report = await query(reportSql, [id]);
-  const files = await query(filesSql, [id]);
-  const events = await query(eventsSql, [id]);
+    FROM ${reportsTable} r WHERE id=$1 AND tenant_id=$2`;
+  const filesSql = `SELECT * FROM ${filesTable}
+    WHERE report_id=$1 AND tenant_id=$2 ORDER BY created_at`;
+  const eventsSql = `SELECT * FROM ${eventsTable}
+    WHERE report_id=$1 AND tenant_id=$2 ORDER BY created_at`;
+  const report = await query(reportSql, [id, tenantId]);
+  const files = await query(filesSql, [id, tenantId]);
+  const events = await query(eventsSql, [id, tenantId]);
   return {
     report: report.rows[0] || null,
     files: files.rows,
