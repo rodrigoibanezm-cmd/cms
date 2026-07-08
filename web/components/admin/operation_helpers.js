@@ -12,7 +12,7 @@ export function workflowInfo(value) {
   const map = {
     processing: ['Procesando', 'blue'],
     admin_queue: ['Pendiente', 'yellow'],
-    assigned_to_secretary: ['Esperando secretaria', 'yellow'],
+    assigned_to_secretary: ['Esperando administrativa', 'yellow'],
     secretary_review: ['En revisión', 'blue'],
     secretary_approved: ['Aprobada', 'green'],
     closed: ['Cerrada', 'green'],
@@ -23,7 +23,7 @@ export function workflowInfo(value) {
 }
 
 export function pdfReady(report) {
-  return Boolean(report.secretary_approved_at || report.closed_at);
+  return Boolean(report.approved_at || report.secretary_approved_at || report.closed_at);
 }
 
 export function clientLabel(report) {
