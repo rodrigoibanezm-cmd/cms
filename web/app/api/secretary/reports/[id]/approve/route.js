@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { approveReportByTenant } from '../../../../../../lib/report_approval.js';
+import { approveReportWithAccess } from '../../../../../../lib/report_approval.js';
 import {
   requireRole,
   requireTenantAccess,
@@ -33,10 +33,7 @@ export async function POST(request, { params }) {
     const access = requireRole(await requireTenantAccess(request), APPROVE_ROLES);
     const routeParams = await params;
     const payload = await readPayload(request);
-    const result = await approveReportByTenant({
-      reportId: routeParams.id,
-      tenantId: access.tenantId,
-    });
+    const result = await approveReportWithAccess({ reportId: routeParams.id, access });
     if (payload?.return_to) return redirectBack(request, payload);
     return NextResponse.json({ ok: true, ...result });
   } catch (err) {
