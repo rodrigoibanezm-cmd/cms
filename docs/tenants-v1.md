@@ -1,0 +1,118 @@
+# Tenants V1
+
+## Estado
+
+```txt
+implementado y auditado V1
+```
+
+## Objetivo
+
+```txt
+Separar operación por tenant.
+Evitar que tenant_id, user_id o id desde query params sean autoridad.
+Usar token como transporte de acceso.
+Mantener trazabilidad en reports, report_files y report_events.
+```
+
+## Modelo operativo
+
+```txt
+tenant_id = organización / empresa operativa
+user_id = usuario dentro del tenant
+role = permiso del usuario
+current_owner_id = usuario asignado a la OT
+```
+
+## Roles V1
+
+```txt
+super_admin   configuración y operación completa del tenant
+admin         operación completa del tenant
+dashboard     solo indicadores del tenant
+administrativa cola propia y aprobación de OTs asignadas
+secretary      alias legacy de administrativa
+```
+
+## Token de acceso
+
+```txt
+tenant_access_tokens guarda token_hash, no token plano.
+El token puede viajar por query param, header x-tenant-token o Bearer.
+requireTenantAccess devuelve tenantId, userId y role.
+requireRole valida permiso por ruta.
+```
+
+## Regla de autoridad
+
+```txt
+Query params pueden transportar token.
+Query params no deciden tenant.
+Query params no deciden usuario actor.
+tenantId viene desde requireTenantAccess.
+userId viene desde requireTenantAccess.
+```
+
+## Entrada del sistema
+
+```txt
+/api/process-report exige token tenant.
+runProcessReport exige tenantId.
+createReport inserta reports.tenant_id.
+report_files y report_events heredan tenant desde reports si no se pasa explícito.
+```
+
+## Operación admin
+
+```txt
+/admin exige admin o super_admin.
+listReports filtra por access.tenantId.
+Las administrativas asignables salen de tenant_access_tokens activas del mismo tenant.
+La asignación valida que la OT y la administrativa pertenezcan al tenant.
+```
+
+## Cola administrativa
+
+```txt
+/admin/secretary exige administrativa o secretary.
+La cola filtra por tenant_id y current_owner_id.
+La administrativa ve solo OTs asignadas a su userId.
+```
+
+## Detalle, archivos y PDF
+
+```txt
+/admin/report exige token.
+/api/admin/reports/[id] exige token.
+/api/report-file exige token.
+/api/admin/reports/[id]/pdf exige token.
+admin y super_admin acceden a OTs del tenant.
+administrativa/secretary acceden solo si current_owner_id = userId.
+```
+
+## Aprobación
+
+```txt
+El form de aprobación no manda tenant_id.
+La aprobación usa approveReportWithAccess.
+Admin puede aprobar OTs del tenant.
+Administrativa solo puede aprobar OTs asignadas a su userId.
+El evento approved guarda approved_by_user_id y approved_by_user_role.
+```
+
+## Config V1
+
+```txt
+/config exige super_admin.
+Crear usuario genera token de acceso una sola vez.
+El link generado se muestra para copiar/pegar.
+La gestión usa report_tenants como catálogo operativo de usuarios V1.
+```
+
+## Deuda menor
+
+```txt
+En listReports, tenant_name actualmente representa el usuario asignado.
+Renombrar a assigned_user_name o separar dos joins.
+Normalizar role canónico administrativa y mantener secretary solo como legacy.
+```
