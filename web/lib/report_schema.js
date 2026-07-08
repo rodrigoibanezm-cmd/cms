@@ -77,11 +77,13 @@ async function createTenantAccessTokensTable() {
     role text NOT NULL,
     user_id text,
     token_hash text PRIMARY KEY,
+    token_plain text,
     active boolean NOT NULL DEFAULT true,
     expires_at timestamptz,
     created_at timestamptz NOT NULL DEFAULT now(),
     last_used_at timestamptz
   )`);
+  await query(`ALTER TABLE tenant_access_tokens ADD COLUMN IF NOT EXISTS token_plain text`);
   await query(`CREATE INDEX IF NOT EXISTS idx_tenant_access_active ON tenant_access_tokens(active)`);
 }
 
