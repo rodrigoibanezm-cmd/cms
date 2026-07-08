@@ -16,8 +16,7 @@ preview XLS eliminado
 asignación de administrativa implementada
 cola por administrativa implementada
 cola muestra pendientes y aprobadas
-aprobación de administrativa implementada
-aprobación de admin implementada
+aprobación por tenant implementada
 PDF final descarga archivo
 PDF conserva primera hoja y FOTOS
 PDF no usa Google Sheets API
@@ -41,11 +40,16 @@ SLA, templates, tenant y mantenimiento quedan visibles como alcance V1
 ## Trazabilidad aprobación
 
 ```txt
-reports.approved_at registra aprobación genérica
-reports.approved_by_user_id registra quién aprobó
-reports.approved_by_user_role registra admin o administrativa
-approved_by_secretary_id queda solo por compatibilidad
-report_events registra event=approved con payload del aprobador
+La UI muestra un solo botón Aprobar.
+La aprobación recibe tenant_id como actor.
+report_tenants.mode define el rol real del aprobador.
+secretary se normaliza a administrativa.
+admin y super_admin se normalizan a admin.
+reports.approved_at registra la aprobación.
+reports.approved_by_user_id guarda el tenant aprobador.
+reports.approved_by_user_role guarda admin o administrativa.
+approved_by_secretary_id queda solo por compatibilidad.
+report_events registra event=approved con payload del tenant aprobador.
 ```
 
 ## Decisiones tomadas
@@ -75,8 +79,8 @@ menú compacto sin sidebar permanente
 crear usuario operativo funciona
 activar/desactivar usuario funciona
 administrativa inactiva deja de aparecer como asignable
-aprobar como administrativa registra approved_by_user_role=administrativa
-aprobar como admin registra approved_by_user_role=admin
+aprobar desde cola administrativa registra approved_by_user_role=administrativa
+aprobar desde tenant admin registra approved_by_user_role=admin
 PDF vacío cuando no exista
 asignación de administrativa sigue operativa
 ```
