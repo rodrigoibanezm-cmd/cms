@@ -8,6 +8,8 @@ const reportColumns = `
   ADD COLUMN IF NOT EXISTS admin_notes text,
   ADD COLUMN IF NOT EXISTS approved_at timestamptz,
   ADD COLUMN IF NOT EXISTS approved_by text,
+  ADD COLUMN IF NOT EXISTS approved_by_user_id text,
+  ADD COLUMN IF NOT EXISTS approved_by_user_role text,
   ADD COLUMN IF NOT EXISTS rejected_at timestamptz,
   ADD COLUMN IF NOT EXISTS rejected_reason text,
   ADD COLUMN IF NOT EXISTS current_state text NOT NULL DEFAULT 'processing',
