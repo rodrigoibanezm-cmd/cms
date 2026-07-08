@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server';
 import { ensureReportSchema } from '../../../../lib/report_store.js';
-import { requireTenantAccess, TenantAccessError } from '../../../../lib/tenant_access.js';
+import {
+  requireRole,
+  requireTenantAccess,
+  TenantAccessError,
+} from '../../../../lib/tenant_access.js';
 import {
   countReports,
   listReports,
@@ -9,6 +13,8 @@ import {
 } from '../../../../lib/admin_reports_query.js';
 
 export const runtime = 'nodejs';
+
+const ADMIN_ROLES = ['admin', 'super_admin'];
 
 function errorResponse(err) {
   const status = err instanceof TenantAccessError ? err.status : 500;
@@ -32,7 +38,7 @@ function responseBody(rows, total, page) {
 export async function GET(request) {
   try {
     await ensureReportSchema();
-    const access = await requireTenantAccess(request);
+    const access = requireRole(await requireTenantAccess(request), ADMIN_ROLES);
     const { searchParams } = new URL(request.url);
     const page = pageParams(searchParams);
     const where = whereClause(searchParams, access.tenantId);
