@@ -6,15 +6,15 @@ function canAssign(report) {
   return report.current_state === 'processing' && Boolean(report.excel_url || report.status === 'processed');
 }
 
-export default function AssignSecretaryForm({ report, secretaries, returnTo }) {
+export default function AssignSecretaryForm({ report, secretaries, action, returnTo }) {
   if (!canAssign(report)) return <span className={styles.muted}>{report.tenant_name || 'No editable'}</span>;
   if (!secretaries.length) return <span className={styles.muted}>Sin administrativas</span>;
 
   return (
-    <form className={styles.form} action="/api/admin/reports/assign" method="post">
+    <form className={styles.form} action={action} method="post">
       <input type="hidden" name="report_id" value={report.id} />
       <input type="hidden" name="return_to" value={returnTo} />
-      <select name="secretary_id" defaultValue={report.tenant_id || report.current_owner_id || ''} required>
+      <select name="secretary_id" defaultValue={report.current_owner_id || ''} required>
         <option value="" disabled>Sin asignar</option>
         {secretaries.map((secretary) => (
           <option key={secretary.id} value={secretary.id}>{secretary.name}</option>
