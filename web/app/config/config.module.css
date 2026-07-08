@@ -57,7 +57,7 @@
   margin-bottom: 12px;
 }
 
-.form input, .form select, .form button, .row button {
+.form input, .form select, .form button, .row button, .linkCell button, .linkCell input {
   border: 1px solid #cfd9e5;
   border-radius: 10px;
   font: inherit;
@@ -71,7 +71,7 @@
   font-weight: 800;
 }
 
-.row button.secondary {
+.row button.secondary, .linkCell button.secondary {
   background: white;
   color: #33425a;
 }
@@ -94,6 +94,16 @@
   align-items: center;
   display: flex;
   gap: 8px;
+}
+
+.linkCell {
+  display: grid;
+  gap: 6px;
+  max-width: 360px;
+}
+
+.linkCell input {
+  width: 100%;
 }
 
 @media (max-width: 760px) {
