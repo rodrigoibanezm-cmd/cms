@@ -3,6 +3,7 @@ import { query } from './db.js';
 let ready;
 
 const reportColumns = `
+  ADD COLUMN IF NOT EXISTS tenant_id text,
   ADD COLUMN IF NOT EXISTS admin_corrections jsonb NOT NULL DEFAULT '{}'::jsonb,
   ADD COLUMN IF NOT EXISTS critical_checks jsonb NOT NULL DEFAULT '{}'::jsonb,
   ADD COLUMN IF NOT EXISTS admin_notes text,
@@ -27,7 +28,7 @@ const reportColumns = `
 
 async function createReportsTable() {
   await query(`CREATE TABLE IF NOT EXISTS reports (
-    id uuid PRIMARY KEY, ot text, source_name text,
+    id uuid PRIMARY KEY, tenant_id text, ot text, source_name text,
     status text NOT NULL DEFAULT 'processing',
     review_status text NOT NULL DEFAULT 'pending',
     semaforo text, confidence_score integer,
@@ -38,11 +39,13 @@ async function createReportsTable() {
     updated_at timestamptz NOT NULL DEFAULT now()
   )`);
   await query(`ALTER TABLE reports ${reportColumns}`);
+  await query(`CREATE INDEX IF NOT EXISTS idx_reports_tenant_id ON reports(tenant_id)`);
 }
 
 async function createReportFilesTable() {
   await query(`CREATE TABLE IF NOT EXISTS report_files (
     id uuid PRIMARY KEY,
+    tenant_id text,
     report_id uuid NOT NULL REFERENCES reports(id),
     kind text NOT NULL,
     filename text,
@@ -51,16 +54,35 @@ async function createReportFilesTable() {
     url text,
     created_at timestamptz NOT NULL DEFAULT now()
   )`);
+  await query(`ALTER TABLE report_files ADD COLUMN IF NOT EXISTS tenant_id text`);
+  await query(`CREATE INDEX IF NOT EXISTS idx_report_files_tenant_id ON report_files(tenant_id)`);
 }
 
 async function createReportEventsTable() {
   await query(`CREATE TABLE IF NOT EXISTS report_events (
     id uuid PRIMARY KEY,
+    tenant_id text,
     report_id uuid NOT NULL REFERENCES reports(id),
     event text NOT NULL,
     payload_json jsonb,
     created_at timestamptz NOT NULL DEFAULT now()
   )`);
+  await query(`ALTER TABLE report_events ADD COLUMN IF NOT EXISTS tenant_id text`);
+  await query(`CREATE INDEX IF NOT EXISTS idx_report_events_tenant_id ON report_events(tenant_id)`);
+}
+
+async function createTenantAccessTokensTable() {
+  await query(`CREATE TABLE IF NOT EXISTS tenant_access_tokens (
+    tenant_id text NOT NULL,
+    role text NOT NULL,
+    user_id text,
+    token_hash text PRIMARY KEY,
+    active boolean NOT NULL DEFAULT true,
+    expires_at timestamptz,
+    created_at timestamptz NOT NULL DEFAULT now(),
+    last_used_at timestamptz
+  )`);
+  await query(`CREATE INDEX IF NOT EXISTS idx_tenant_access_active ON tenant_access_tokens(active)`);
 }
 
 export async function ensureReportSchema() {
@@ -69,6 +91,7 @@ export async function ensureReportSchema() {
     createReportsTable(),
     createReportFilesTable(),
     createReportEventsTable(),
+    createTenantAccessTokensTable(),
   ]);
   return ready;
 }
