@@ -1,6 +1,6 @@
 import { query } from './db.js';
 import { ensureReportSchema } from './report_schema.js';
-import { ensureTenantSchema, getActiveTenant } from './tenant_store.js';
+import { ensureTenantSchema } from './tenant_store.js';
 import { transitionReportWorkflow, WORKFLOW } from './report_workflow.js';
 
 async function ensureAssignmentSchema() {
@@ -24,12 +24,17 @@ function canAssign(report) {
   return report.current_state === 'processing' && Boolean(report.excel_url || report.status === 'processed');
 }
 
-async function setReportTenant(reportId, fromTenantId, tenant) {
-  await query(
-    `UPDATE reports SET tenant_id=$3, updated_at=now()
-     WHERE id=$1 AND tenant_id=$2`,
-    [reportId, fromTenantId, tenant.id]
+async function findAssignableUser(tenantId, userId) {
+  const res = await query(
+    `SELECT user_id FROM tenant_access_tokens
+     WHERE tenant_id=$1 AND user_id=$2
+       AND role IN ('administrativa', 'secretary')
+       AND active=true
+       AND (expires_at IS NULL OR expires_at > now())
+     LIMIT 1`,
+    [tenantId, userId]
   );
+  return res.rows[0] || null;
 }
 
 export async function assignReportToSecretary({ reportId, secretaryId, tenantId }) {
@@ -41,28 +46,24 @@ export async function assignReportToSecretary({ reportId, secretaryId, tenantId 
   if (!report) throw new Error('OT no encontrada');
   if (!canAssign(report)) throw new Error('OT no asignable en su estado actual');
 
-  const tenant = await getActiveTenant(secretaryId, 'secretary');
-  if (!tenant) throw new Error('Tenant secretaria activo no encontrado');
+  const secretary = await findAssignableUser(tenantId, secretaryId);
+  if (!secretary) throw new Error('Administrativa no pertenece al tenant');
 
   await transitionReportWorkflow(reportId, WORKFLOW.ASSIGNED_TO_SECRETARY, {
-    secretary_id: tenant.id,
-    secretary_name: tenant.name,
-    tenant_id: tenant.id,
+    secretary_id: secretary.user_id,
+    tenant_id: tenantId,
     previous_state: report.current_state,
   });
-  await setReportTenant(reportId, tenantId, tenant);
 
-  return { report_id: reportId, tenant };
+  return { report_id: reportId, secretary_id: secretary.user_id };
 }
 
 export async function listSecretaryQueue(secretaryId) {
   if (!secretaryId) throw new Error('secretaryId requerido');
   await ensureAssignmentSchema();
-  const sql = `SELECT r.*, t.name AS tenant_name,
-      r.extraction_json->>'tecnico' AS technician_name
+  const sql = `SELECT r.*, r.extraction_json->>'tecnico' AS technician_name
     FROM reports r
-    LEFT JOIN report_tenants t ON t.id::text = r.tenant_id
-    WHERE r.tenant_id=$1
+    WHERE r.current_owner_id=$1
       AND r.current_state IN ('assigned_to_secretary', 'secretary_approved')
     ORDER BY r.secretary_approved_at NULLS FIRST,
       r.assigned_at DESC NULLS LAST, r.created_at DESC`;
