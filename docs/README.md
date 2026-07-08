@@ -27,6 +27,7 @@ documentation-standard.md estándar para crear/auditar docs
 current-state.md           estado real del sistema
 workflow.md                flujo operacional y ownership de OT
 secretary-flow.md          asignación, cola y aprobación secretaria
+tenants-v1.md              tenantización, tokens y reglas de acceso V1
 principles.md              reglas rectoras y manual de trabajo
 pipeline.md                flujo process-report
 data-model.md              Neon y eventos
