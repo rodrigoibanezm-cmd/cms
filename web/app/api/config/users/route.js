@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import {
   createTenant,
   deleteTenant as removeTenant,
+  getTenant,
   setTenantActive,
 } from '../../../../lib/tenant_store.js';
 import {
@@ -9,7 +10,7 @@ import {
   requireTenantAccess,
   TenantAccessError,
 } from '../../../../lib/tenant_access.js';
-import { issueTenantAccessToken } from '../../../../lib/tenant_tokens.js';
+import { issueTenantAccessToken, tokenLinkForRole } from '../../../../lib/tenant_tokens.js';
 
 export const runtime = 'nodejs';
 
@@ -28,31 +29,41 @@ async function readPayload(request) {
   };
 }
 
+function fullTokenLink(request, role, token) {
+  return new URL(tokenLinkForRole(role, token), request.url).toString();
+}
+
 function redirectConfig(request, result) {
   const url = new URL(request.url);
-  if (result?.token) {
-    url.searchParams.set('created_user', result.user.id);
-    url.searchParams.set('created_role', result.user.mode);
-    url.searchParams.set('created_token', result.token);
+  if (result?.link && result?.user?.id) {
+    url.searchParams.set('link_user', result.user.id);
+    url.searchParams.set('link_url', result.link);
   }
   return NextResponse.redirect(new URL(`/config${url.search}`, request.url), 303);
 }
 
-async function createUser(payload, access) {
-  const user = await createTenant({ name: payload.name, email: payload.email, mode: payload.mode });
+async function issueUserLink(user, access, request) {
   const token = await issueTenantAccessToken({
     tenantId: access.tenantId,
     userId: user.id,
     role: user.mode,
   });
-  return { user, token };
+  return { user, link: fullTokenLink(request, user.mode, token) };
 }
 
-async function applyIntent(payload, access) {
-  if (payload.intent === 'create_user') return createUser(payload, access);
-  if (payload.intent === 'set_active') {
-    return setTenantActive(payload.user_id, payload.active === 'true');
+async function createUser(payload, access, request) {
+  const user = await createTenant({ name: payload.name, email: payload.email, mode: payload.mode });
+  return issueUserLink(user, access, request);
+}
+
+async function applyIntent(payload, access, request) {
+  if (payload.intent === 'create_user') return createUser(payload, access, request);
+  if (payload.intent === 'issue_link') {
+    const user = await getTenant(payload.user_id);
+    if (!user) throw new Error('Usuario inválido');
+    return issueUserLink(user, access, request);
   }
+  if (payload.intent === 'set_active') return setTenantActive(payload.user_id, payload.active === 'true');
   if (payload.intent === 'remove_user') return removeTenant(payload.user_id);
   throw new Error('Acción inválida');
 }
@@ -65,7 +76,7 @@ export async function POST(request) {
   try {
     const access = requireRole(await requireTenantAccess(request), ['super_admin']);
     const payload = await readPayload(request);
-    const result = await applyIntent(payload, access);
+    const result = await applyIntent(payload, access, request);
     if (!request.headers.get('content-type')?.includes('application/json')) {
       return redirectConfig(request, result);
     }
