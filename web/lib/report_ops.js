@@ -7,7 +7,7 @@ export async function addReportEvent(reportId, event, payload = {}, tenantId = n
   await ensureReportSchema();
   await query(
     `INSERT INTO report_events (id, tenant_id, report_id, event, payload_json)
-     VALUES ($1, $2, $3, $4, $5)`,
+     VALUES ($1, COALESCE($2, (SELECT tenant_id FROM reports WHERE id=$3)), $3, $4, $5)`,
     [randomUUID(), tenantId, reportId, event, JSON.stringify(payload)]
   );
 }
@@ -33,7 +33,8 @@ export async function addReportFile(reportId, file, tenantId = null) {
   await query(
     `INSERT INTO report_files
      (id, tenant_id, report_id, kind, filename, mime_type, drive_file_id, url)
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+     VALUES ($1, COALESCE($2, (SELECT tenant_id FROM reports WHERE id=$3)),
+       $3, $4, $5, $6, $7, $8)`,
     [randomUUID(), tenantId, reportId, file.kind, file.filename,
       file.mimeType, file.driveFileId, file.url]
   );
