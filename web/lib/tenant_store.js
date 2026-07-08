@@ -54,6 +54,12 @@ export async function createTenant({ name, email, mode }) {
   return res.rows[0];
 }
 
+export async function getTenant(id) {
+  await ensureTenantSchema();
+  const res = await query(`SELECT * FROM report_tenants WHERE id=$1 AND active=true`, [id]);
+  return res.rows[0] || null;
+}
+
 export async function getActiveTenant(id, mode) {
   await ensureTenantSchema();
   const params = [id];
