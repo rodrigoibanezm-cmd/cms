@@ -27,5 +27,5 @@ export function dateLabel(value) {
 }
 
 export function pdfReady(report) {
-  return Boolean(report.secretary_approved_at || report.closed_at);
+  return Boolean(report.approved_at || report.secretary_approved_at || report.closed_at);
 }
