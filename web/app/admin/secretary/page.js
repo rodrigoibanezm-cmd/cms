@@ -1,11 +1,11 @@
 import { headers } from 'next/headers';
-import AdminTable from '../../../components/admin/AdminTable.js';
-import { listSecretaryQueue } from '../../../lib/report_assignment.js';
+import OperationFooter from '../../../components/admin/OperationFooter.js';
+import OperationHeader from '../../../components/admin/OperationHeader.js';
+import OperationSummary from '../../../components/admin/OperationSummary.js';
+import OperationTable from '../../../components/admin/OperationTable.js';
+import { listReports } from '../../../lib/report_reads.js';
 import { authUserLabel } from '../../../lib/tenant_store.js';
-import {
-  requireRole,
-  requireTenantAccess,
-} from '../../../lib/tenant_access.js';
+import { requireRole, requireTenantAccess } from '../../../lib/tenant_access.js';
 import styles from '../admin.module.css';
 
 export const dynamic = 'force-dynamic';
@@ -20,27 +20,25 @@ function queryString(params) {
   return search.toString();
 }
 
-async function requestFromPage(params) {
+function readFilters(params) {
+  return { q: params?.q || '', state: params?.state || '', token: params?.token || '' };
+}
+
+async function requireSecretaryAccess(params) {
   const qs = queryString(params);
-  return {
+  const request = {
     headers: await headers(),
     url: `http://local/admin/secretary${qs ? `?${qs}` : ''}`,
   };
+  return requireRole(await requireTenantAccess(request), SECRETARY_ROLES);
 }
 
 async function loadSecretaryPage(params) {
-  const request = await requestFromPage(params);
-  const access = requireRole(await requireTenantAccess(request), SECRETARY_ROLES);
+  const access = await requireSecretaryAccess(params);
+  const filters = readFilters(params);
+  const reports = await listReports(filters, access);
   const label = await authUserLabel(access);
-  const reports = await listSecretaryQueue({
-    tenantId: access.tenantId,
-    userId: access.userId,
-  });
-  return { label, reports, error: null };
-}
-
-function pendingCount(reports) {
-  return reports.filter((report) => report.current_state === 'assigned_to_secretary').length;
+  return { filters, label, reports, error: null };
 }
 
 export default async function SecretaryQueuePage({ searchParams }) {
@@ -49,24 +47,28 @@ export default async function SecretaryQueuePage({ searchParams }) {
   try {
     data = await loadSecretaryPage(params);
   } catch (err) {
-    data = { label: null, reports: [], error: err.message };
+    data = { filters: readFilters(params), label: null, reports: [], error: err.message };
   }
-  const pending = pendingCount(data.reports);
 
   return (
     <main className={styles.adminScreen}>
-      <header className={styles.adminHeader}>
-        <p className="eyebrow">CM Services</p>
-        <h1>Cola administrativa</h1>
-        <p className="subtitle">{data.label?.name || 'Token administrativa requerido'}</p>
-      </header>
-
-      <section className={styles.adminSummary}>
-        <strong>{data.reports.length}</strong>
-        <span>{data.error || `OTs total / ${pending} pendientes`}</span>
-      </section>
-
-      <AdminTable reports={data.reports} secretaries={[]} editableSecretary={false} />
+      <OperationHeader
+        filters={data.filters}
+        label={data.label}
+        title="Cola administrativa"
+        subtitle={data.error || 'Bandeja de trabajo administrativa'}
+        searchAction="/admin/secretary"
+      />
+      <OperationSummary reports={data.reports} />
+      <OperationTable
+        reports={data.reports}
+        secretaries={[]}
+        token={data.filters.token}
+        canAssign={false}
+        showPdf={false}
+        showSecretary={false}
+      />
+      <OperationFooter count={data.reports.length} />
     </main>
   );
 }
