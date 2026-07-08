@@ -4,6 +4,7 @@
 
 ```txt
 Construir XLS base limpios desde candidatos reales.
+Mantener catálogo de bases disponible para render XLS.
 ```
 
 ## Workflow
@@ -40,6 +41,25 @@ tools/templates/build_missing_bases.py
 3. elige candidato XLSX
 4. limpia template
 5. sube {FAMILIA}_TECNICOS_BASE.xlsx a Bases
+```
+
+## Cambio manual desde OT
+
+```txt
+Cuando el matching falle en borde, la Vista OT puede cambiar plantilla.
+El usuario debe poder elegir una base existente del catálogo.
+También debe poder subir una nueva base XLSX al catálogo.
+El sistema debe regenerar el XLS desde el JSON ya extraído.
+No se debe reejecutar extracción IA por este cambio.
+```
+
+## Trazabilidad esperada
+
+```txt
+registrar report_events.event = template_changed
+guardar template_key/template_filename vigente en reports
+invalidar PDF previo si existía
+mantener archivos originales intactos
 ```
 
 ## Limpieza
@@ -83,4 +103,5 @@ GOOGLE_REFRESH_TOKEN
 Una base limpia conserva layout.
 Una base limpia no conserva datos de una OT real.
 No usar bases generadas como fuente de verdad de extracción.
+Cambiar plantilla no cambia la extracción original.
 ```
