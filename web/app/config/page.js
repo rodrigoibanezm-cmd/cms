@@ -2,6 +2,7 @@ import { headers } from 'next/headers';
 import OperationMenu from '../../components/admin/OperationMenu.js';
 import { listTenants } from '../../lib/tenant_store.js';
 import { requireRole, requireTenantAccess } from '../../lib/tenant_access.js';
+import { linkableTenantTokens, tokenLinkForRole } from '../../lib/tenant_tokens.js';
 import ConfigUsersPanel from './ConfigUsersPanel.js';
 import styles from './config.module.css';
 
@@ -30,15 +31,15 @@ function configAction(params) {
   return `/api/config/users${qs ? `?${qs}` : ''}`;
 }
 
-function issuedLink(params) {
-  if (!params?.link_user || !params?.link_url) return null;
-  return { userId: params.link_user, url: params.link_url };
+function userLinks(tokens) {
+  return Object.fromEntries(tokens.map((row) => [row.user_id, tokenLinkForRole(row.role, row.token_plain)]));
 }
 
 export default async function ConfigPage({ searchParams }) {
   const params = await searchParams;
   await requireConfigAccess(params);
   const users = await listTenants({ activeOnly: false });
+  const links = userLinks(await linkableTenantTokens());
   const administrative = users.filter((user) => user.mode === 'secretary' && user.active);
   const admins = users.filter((user) => ['admin', 'super_admin'].includes(user.mode));
 
@@ -57,7 +58,7 @@ export default async function ConfigPage({ searchParams }) {
         <Stat label="Admins operación" value={admins.length} />
       </section>
 
-      <ConfigUsersPanel users={users} action={configAction(params)} issuedLink={issuedLink(params)} />
+      <ConfigUsersPanel users={users} action={configAction(params)} userLinks={links} />
     </main>
   );
 }
