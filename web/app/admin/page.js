@@ -35,7 +35,7 @@ export default async function AdminPage({ searchParams }) {
   const params = await searchParams;
   const access = await requireAdminAccess(params);
   const filters = readFilters(params);
-  const reports = await listReports({ ...filters, tenantId: access.tenantId });
+  const reports = await listReports(filters, access);
   const secretaries = await listAssignableUsers(access.tenantId);
   const label = await authUserLabel(access);
 
