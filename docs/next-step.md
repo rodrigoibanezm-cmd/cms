@@ -44,6 +44,18 @@ tenant_id y user_id no se toman desde query params como autoridad
 docs/tenants-v1.md
 docs/current-state.md
 docs/principles.md
+docs/template-bases.md
+```
+
+## Decisión pendiente anotada
+
+```txt
+Vista OT debe permitir cambiar plantilla cuando el matching falle en borde.
+Debe existir botón Cambiar plantilla en el detalle OT.
+Debe permitir elegir una base existente del catálogo.
+Debe permitir agregar una nueva base XLSX al catálogo.
+El cambio debe regenerar XLS determinístico y registrar evento.
+No debe tocar extractor, prompts ni matching automático todavía.
 ```
 
 ## Deuda menor registrada
@@ -57,15 +69,13 @@ normalizar role canónico administrativa y mantener secretary solo como legacy
 ## Próxima tarea sugerida
 
 ```txt
-Probar flujo real en producción con token:
-1. crear administrativa desde Config
-2. copiar link generado
-3. subir una OT con token válido
-4. verificar que nace con tenant_id
-5. asignarla desde /admin
-6. abrirla desde cola administrativa
-7. aprobar
-8. descargar PDF
+Diseñar e implementar cambio manual de plantilla en Vista OT:
+1. listar bases disponibles
+2. seleccionar nueva base para la OT
+3. opcionalmente subir nueva base al catálogo
+4. regenerar XLS desde JSON existente
+5. registrar cambio en report_events
+6. invalidar PDF anterior si existía
 ```
 
 ## No hacer todavía
@@ -73,7 +83,7 @@ Probar flujo real en producción con token:
 ```txt
 no tocar extractor
 no tocar prompts
-no cambiar render XLS
+no cambiar matching automático
 no implementar approved_json
 no hacer refactor grande de usuarios/tenants
 no cambiar modelo report_tenants todavía
@@ -82,8 +92,10 @@ no cambiar modelo report_tenants todavía
 ## Pitch para nuevo chat
 
 ```txt
-@GitHub lee README.md, docs/principles.md, docs/tenants-v1.md y docs/next-step.md.
-Audita el flujo real Tenants V1 en producción con una OT nueva.
-No tocar extractor ni render XLS.
+@GitHub lee README.md, docs/principles.md, docs/template-bases.md y docs/next-step.md.
+Implementa botón Cambiar plantilla en Vista OT.
+Debe elegir base existente o agregar nueva base al catálogo.
+Regenera XLS desde JSON existente, registra evento e invalida PDF anterior.
+No tocar extractor, prompts ni matching automático.
 Mantener archivos bajo 100 líneas.
 ```
