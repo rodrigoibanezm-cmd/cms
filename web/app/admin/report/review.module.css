@@ -44,7 +44,11 @@
   padding: 8px 10px;
 }
 
-.approveForm {
+.approveGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
   margin-top: 10px;
 }
 
