@@ -36,7 +36,8 @@ function WorkflowCell({ report }) {
   return <span className={`${styles.pill} ${styles[info.tone]}`}>{info.label}</span>;
 }
 
-function SecretaryCell({ report, secretaries, token }) {
+function SecretaryCell({ report, secretaries, token, canAssign }) {
+  if (!canAssign) return <span>{report.tenant_name || '-'}</span>;
   return (
     <details className={styles.secretary}>
       <summary>{report.tenant_name || 'Sin asignar'}</summary>
@@ -60,7 +61,14 @@ function PdfCell({ report, token }) {
   return <a className={styles.pdf} href={withToken(`/api/admin/reports/${report.id}/pdf`, token)}>PDF</a>;
 }
 
-export default function OperationTable({ reports, secretaries, token }) {
+export default function OperationTable({
+  reports,
+  secretaries,
+  token,
+  canAssign = true,
+  showPdf = true,
+  showSecretary = true,
+}) {
   return (
     <section className={styles.wrap}>
       <table className={styles.table}>
@@ -71,9 +79,9 @@ export default function OperationTable({ reports, secretaries, token }) {
             <th>Técnico</th>
             <th>Confianza IA</th>
             <th>Estado workflow</th>
-            <th>Secretaria asignada</th>
+            {showSecretary ? <th>Administrativa asignada</th> : null}
             <th>Tiempo esperando</th>
-            <th>PDF</th>
+            {showPdf ? <th>PDF</th> : null}
             <th></th>
           </tr>
         </thead>
@@ -85,9 +93,11 @@ export default function OperationTable({ reports, secretaries, token }) {
               <td>{report.technician_name || '-'}</td>
               <td><ConfidenceCell report={report} /></td>
               <td><WorkflowCell report={report} /></td>
-              <td><SecretaryCell report={report} secretaries={secretaries} token={token} /></td>
+              {showSecretary ? (
+                <td><SecretaryCell report={report} secretaries={secretaries} token={token} canAssign={canAssign} /></td>
+              ) : null}
               <td><WaitCell report={report} /></td>
-              <td><PdfCell report={report} token={token} /></td>
+              {showPdf ? <td><PdfCell report={report} token={token} /></td> : null}
               <td><a className={styles.arrow} href={withToken(`/admin/report?id=${report.id}`, token)}>Abrir</a></td>
             </tr>
           ))}
