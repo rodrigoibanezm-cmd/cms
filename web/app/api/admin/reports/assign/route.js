@@ -1,7 +1,14 @@
 import { NextResponse } from 'next/server';
 import { assignReportToSecretary } from '../../../../../lib/report_assignment.js';
+import {
+  requireRole,
+  requireTenantAccess,
+  TenantAccessError,
+} from '../../../../../lib/tenant_access.js';
 
 export const runtime = 'nodejs';
+
+const ASSIGN_ROLES = ['admin', 'super_admin'];
 
 async function readPayload(request) {
   const type = request.headers.get('content-type') || '';
@@ -20,16 +27,23 @@ function redirectBack(request, payload) {
   return NextResponse.redirect(new URL(target, request.url), 303);
 }
 
+function errorResponse(err) {
+  const status = err instanceof TenantAccessError ? err.status : 400;
+  return NextResponse.json({ ok: false, error: err.message }, { status });
+}
+
 export async function POST(request) {
   try {
+    const access = requireRole(await requireTenantAccess(request), ASSIGN_ROLES);
     const payload = await readPayload(request);
     const result = await assignReportToSecretary({
       reportId: payload?.report_id,
       secretaryId: payload?.secretary_id,
+      tenantId: access.tenantId,
     });
     if (payload?.return_to) return redirectBack(request, payload);
     return NextResponse.json({ ok: true, ...result });
   } catch (err) {
-    return NextResponse.json({ ok: false, error: err.message }, { status: 400 });
+    return errorResponse(err);
   }
 }
