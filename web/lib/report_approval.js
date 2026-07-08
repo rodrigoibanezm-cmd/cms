@@ -1,12 +1,6 @@
 import { randomUUID } from 'crypto';
 import { query } from './db.js';
 import { ensureReportSchema } from './report_schema.js';
-import { ensureTenantSchema, getTenant } from './tenant_store.js';
-
-async function ensureApprovalSchema() {
-  await ensureReportSchema();
-  await ensureTenantSchema();
-}
 
 async function findApprovalTarget(reportId, tenantId) {
   const res = await query(
@@ -18,62 +12,72 @@ async function findApprovalTarget(reportId, tenantId) {
   return res.rows[0] || null;
 }
 
-function approvalRole(mode) {
-  if (mode === 'admin' || mode === 'super_admin') return 'admin';
-  if (mode === 'secretary') return 'administrativa';
-  throw new Error('Tenant no autorizado para aprobar');
+function canAdminApprove(role) {
+  return ['admin', 'super_admin'].includes(role);
 }
 
-function assertCanApprove(report, tenant) {
+function canUserApprove(report, access) {
+  if (canAdminApprove(access.role)) return true;
+  if (!['administrativa', 'secretary'].includes(access.role)) return false;
+  return report.current_owner_id === access.userId;
+}
+
+function assertCanApprove(report, access) {
   if (!report) throw new Error('OT no encontrada');
-  if (!tenant) throw new Error('Tenant aprobador requerido');
+  if (!access?.tenantId) throw new Error('tenantId requerido');
+  if (!access?.userId) throw new Error('userId requerido');
   if (report.approved_at || report.secretary_approved_at) throw new Error('OT ya aprobada');
   if (!['assigned_to_secretary', 'admin_queue'].includes(report.current_state)) {
     throw new Error('OT no aprobable en su estado actual');
   }
-  if (tenant.mode === 'secretary' && ![report.tenant_id, report.current_owner_id].includes(tenant.id)) {
-    throw new Error('OT asignada a otra administrativa');
-  }
+  if (!canUserApprove(report, access)) throw new Error('OT asignada a otra administrativa');
 }
 
-async function addApprovalEvent(reportId, tenant, role) {
+async function addApprovalEvent(reportId, access) {
   await query(
     `INSERT INTO report_events (id, tenant_id, report_id, event, payload_json)
       VALUES ($1, $2, $3, $4, $5)`,
-    [randomUUID(), tenant.id, reportId, 'approved', JSON.stringify({
-      approved_by_tenant_id: tenant.id,
-      approved_by_tenant_mode: tenant.mode,
-      approved_by_user_role: role,
+    [randomUUID(), access.tenantId, reportId, 'approved', JSON.stringify({
+      approved_by_user_id: access.userId,
+      approved_by_user_role: access.role,
     })]
   );
 }
 
-export async function approveReportByTenant({ reportId, tenantId }) {
+export async function approveReportWithAccess({ reportId, access }) {
   if (!reportId) throw new Error('reportId requerido');
-  if (!tenantId) throw new Error('tenantId requerido');
-  await ensureApprovalSchema();
+  await ensureReportSchema();
 
-  const report = await findApprovalTarget(reportId, tenantId);
-  const tenant = await getTenant(tenantId);
-  const role = approvalRole(tenant?.mode);
-  assertCanApprove(report, tenant);
+  const report = await findApprovalTarget(reportId, access.tenantId);
+  assertCanApprove(report, access);
 
   const res = await query(
     `UPDATE reports SET current_state='secretary_approved',
-        current_owner_type=$3, current_owner_id=$2,
-        approved_at=now(), approved_by_user_id=$2,
-        approved_by_user_role=$3, approved_by=$2,
+        current_owner_type=$3, current_owner_id=$4,
+        approved_at=now(), approved_by_user_id=$4,
+        approved_by_user_role=$3, approved_by=$4,
         secretary_approved_at=now(),
-        approved_by_secretary_id=CASE WHEN $4='secretary' THEN $2 ELSE approved_by_secretary_id END,
+        approved_by_secretary_id=CASE
+          WHEN $3 IN ('administrativa', 'secretary') THEN $4
+          ELSE approved_by_secretary_id END,
         last_workflow_event_at=now(), updated_at=now()
       WHERE id=$1 AND tenant_id=$2 RETURNING *`,
-    [reportId, tenant.id, role, tenant.mode]
+    [reportId, access.tenantId, access.role, access.userId]
   );
-  await addApprovalEvent(reportId, tenant, role);
+  await addApprovalEvent(reportId, access);
 
   return { report: res.rows[0] };
 }
 
-export async function approveReportBySecretary({ reportId, secretaryId }) {
-  return approveReportByTenant({ reportId, tenantId: secretaryId });
+export async function approveReportByTenant({ reportId, tenantId, userId, role }) {
+  return approveReportWithAccess({ reportId, access: { tenantId, userId, role } });
+}
+
+export async function approveReportBySecretary({ reportId, secretaryId, tenantId }) {
+  return approveReportByTenant({
+    reportId,
+    tenantId,
+    userId: secretaryId,
+    role: 'administrativa',
+  });
 }
