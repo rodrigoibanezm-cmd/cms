@@ -25,25 +25,30 @@ function filesByKind(files) {
 
 function errorResponse(err) {
   const status = err instanceof TenantAccessError ? err.status : 500;
-  return NextResponse.json(
-    { ok: false, error: err.message || 'Error cargando revisión.' },
-    { status }
-  );
+  return NextResponse.json({ ok: false, error: err.message || 'Error cargando revisión.' }, { status });
 }
 
-async function readReport(id, tenantId) {
+function ownerSql(access) {
+  return ['admin', 'super_admin'].includes(access.role) ? '' : 'AND current_owner_id=$3';
+}
+
+function params(id, access) {
+  const values = [id, access.tenantId];
+  if (!['admin', 'super_admin'].includes(access.role)) values.push(access.userId);
+  return values;
+}
+
+async function readReport(id, access) {
   const res = await query(
-    'SELECT * FROM reports WHERE id=$1 AND tenant_id=$2',
-    [id, tenantId]
+    `SELECT * FROM reports WHERE id=$1 AND tenant_id=$2 ${ownerSql(access)}`,
+    params(id, access)
   );
   return res.rows[0] || null;
 }
 
 async function readFiles(id, tenantId) {
   const res = await query(
-    `SELECT * FROM report_files
-     WHERE report_id=$1 AND tenant_id=$2
-     ORDER BY created_at ASC`,
+    `SELECT * FROM report_files WHERE report_id=$1 AND tenant_id=$2 ORDER BY created_at ASC`,
     [id, tenantId]
   );
   return res.rows;
@@ -51,36 +56,24 @@ async function readFiles(id, tenantId) {
 
 async function readEvents(id, tenantId) {
   const res = await query(
-    `SELECT event, payload_json, created_at
-     FROM report_events
-     WHERE report_id=$1 AND tenant_id=$2
-     ORDER BY created_at DESC`,
+    `SELECT event, payload_json, created_at FROM report_events
+     WHERE report_id=$1 AND tenant_id=$2 ORDER BY created_at DESC`,
     [id, tenantId]
   );
   return res.rows;
 }
 
-export async function GET(request, { params }) {
+export async function GET(request, { params: routeParams }) {
   try {
     await ensureReportSchema();
     const access = requireRole(await requireTenantAccess(request), DETAIL_ROLES);
-    const { id } = await params;
-    const report = await readReport(id, access.tenantId);
-    if (!report) {
-      return NextResponse.json({ ok: false, error: 'Reporte no encontrado.' }, { status: 404 });
-    }
+    const { id } = await routeParams;
+    const report = await readReport(id, access);
+    if (!report) return NextResponse.json({ ok: false, error: 'Reporte no encontrado.' }, { status: 404 });
 
     const files = await readFiles(id, access.tenantId);
     const events = await readEvents(id, access.tenantId);
-
-    return NextResponse.json({
-      ok: true,
-      report,
-      files,
-      files_by_kind: filesByKind(files),
-      audit: latestAudit(events),
-      events,
-    });
+    return NextResponse.json({ ok: true, report, files, files_by_kind: filesByKind(files), audit: latestAudit(events), events });
   } catch (err) {
     console.error(err);
     return errorResponse(err);
