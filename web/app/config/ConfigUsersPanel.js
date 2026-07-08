@@ -25,10 +25,20 @@ function CreateUserForm({ action }) {
   );
 }
 
-function UserLink({ link }) {
+function CreateLinkButton({ user, action }) {
+  return (
+    <form action={action} method="post">
+      <input type="hidden" name="intent" value="create_link" />
+      <input type="hidden" name="user_id" value={user.id} />
+      <button className={styles.secondary} type="submit">Crear link</button>
+    </form>
+  );
+}
+
+function UserLink({ user, action, link }) {
   return (
     <div className={styles.linkCell}>
-      {link ? <input readOnly aria-label="Link de acceso" value={link} /> : <span className={styles.muted}>Sin token</span>}
+      {link ? <input readOnly aria-label="Link de acceso" value={link} /> : <CreateLinkButton user={user} action={action} />}
     </div>
   );
 }
@@ -58,7 +68,7 @@ function UserRow({ user, action, userLinks }) {
       <td><strong>{user.name}</strong><br /><span className={styles.muted}>{user.email || '-'}</span></td>
       <td><span className={styles.badge}>{roleLabel(user.mode)}</span></td>
       <td>{user.active ? 'Activo' : 'Inactivo'}</td>
-      <td><UserLink link={userLinks[user.id]} /></td>
+      <td><UserLink user={user} action={action} link={userLinks[user.id]} /></td>
       <td><UserActions user={user} action={action} /></td>
     </tr>
   );
