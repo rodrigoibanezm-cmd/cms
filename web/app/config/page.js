@@ -57,7 +57,7 @@ export default async function ConfigPage({ searchParams }) {
     <main className={styles.screen}>
       <header className={styles.header}>
         <div className={styles.titleRow}>
-          <OperationMenu active="config" />
+          <OperationMenu active="config" token={params.token || ''} />
           <div><small className={styles.tenant}>CM Services</small><h1>Configuración</h1><p>Parámetros mínimos del flujo operativo</p></div>
         </div>
       </header>
