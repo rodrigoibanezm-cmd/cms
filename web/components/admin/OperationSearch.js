@@ -3,6 +3,7 @@ import styles from '../../app/admin/operationSearch.module.css';
 export default function OperationSearch({ filters }) {
   return (
     <form className={styles.search} action="/admin" method="get">
+      {filters.token ? <input type="hidden" name="token" value={filters.token} /> : null}
       <input
         name="q"
         placeholder="Buscar OT, técnico, cliente, PDF, plantilla..."
