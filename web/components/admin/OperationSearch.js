@@ -15,7 +15,7 @@ export default function OperationSearch({ filters, action = '/admin' }) {
         <select name="state" defaultValue={filters.state || ''}>
           <option value="">Todos los estados</option>
           <option value="admin_queue">Pendientes</option>
-          <option value="assigned_to_secretary">Esperando secretaria</option>
+          <option value="assigned_to_secretary">Esperando administrativa</option>
           <option value="secretary_review">En revisión</option>
           <option value="secretary_approved">Aprobadas</option>
           <option value="error">Requieren revisión</option>
