@@ -11,6 +11,17 @@ function roleLabel(mode) {
   return roles.find(([key]) => key === mode)?.[1] || mode;
 }
 
+function CreatedTokenBox({ link }) {
+  if (!link) return null;
+  return (
+    <div className={styles.card}>
+      <strong>Link creado</strong>
+      <input readOnly value={link} onFocus={(event) => event.currentTarget.select()} />
+      <span className={styles.muted}>Copiar y pegar. El token no se vuelve a mostrar.</span>
+    </div>
+  );
+}
+
 function CreateUserForm({ action }) {
   return (
     <form className={styles.form} action={action} method="post">
@@ -55,10 +66,11 @@ function UserRow({ user, action }) {
   );
 }
 
-export default function ConfigUsersPanel({ users, action }) {
+export default function ConfigUsersPanel({ users, action, createdLink }) {
   return (
     <section className={styles.panel}>
       <h2>Usuarios operativos</h2>
+      <CreatedTokenBox link={createdLink} />
       <CreateUserForm action={action} />
       <table className={styles.table}>
         <thead><tr><th>Usuario</th><th>Rol</th><th>Estado</th><th>Acción</th></tr></thead>
