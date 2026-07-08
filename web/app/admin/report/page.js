@@ -16,6 +16,10 @@ function confidenceLabel(report) {
   return `Confianza IA: ${report.confidence_score}%`;
 }
 
+function actorTenantId(params, report) {
+  return params?.tenant_id || report.tenant_id || report.current_owner_id || '';
+}
+
 export default async function AdminReportPage({ searchParams }) {
   const params = await searchParams;
   const id = params?.id;
@@ -47,7 +51,7 @@ export default async function AdminReportPage({ searchParams }) {
               <span>{confidenceLabel(report)}</span>
             </div>
           </div>
-          <SecretaryApproveForm report={report} />
+          <SecretaryApproveForm report={report} tenantId={actorTenantId(params, report)} />
         </div>
       </header>
       <CriticalBox audit={data.audit} report={report} />
