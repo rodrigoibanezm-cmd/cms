@@ -1,8 +1,8 @@
 import styles from '../../app/admin/operationSearch.module.css';
 
-export default function OperationSearch({ filters }) {
+export default function OperationSearch({ filters, action = '/admin' }) {
   return (
-    <form className={styles.search} action="/admin" method="get">
+    <form className={styles.search} action={action} method="get">
       {filters.token ? <input type="hidden" name="token" value={filters.token} /> : null}
       <input
         name="q"
