@@ -2,7 +2,6 @@ import { headers } from 'next/headers';
 import OperationMenu from '../../components/admin/OperationMenu.js';
 import { listTenants } from '../../lib/tenant_store.js';
 import { requireRole, requireTenantAccess } from '../../lib/tenant_access.js';
-import { tokenLinkForRole } from '../../lib/tenant_tokens.js';
 import ConfigUsersPanel from './ConfigUsersPanel.js';
 import styles from './config.module.css';
 
@@ -31,9 +30,9 @@ function configAction(params) {
   return `/api/config/users${qs ? `?${qs}` : ''}`;
 }
 
-function createdLink(params) {
-  if (!params?.created_token || !params?.created_role) return null;
-  return tokenLinkForRole(params.created_role, params.created_token);
+function issuedLink(params) {
+  if (!params?.link_user || !params?.link_url) return null;
+  return { userId: params.link_user, url: params.link_url };
 }
 
 export default async function ConfigPage({ searchParams }) {
@@ -58,7 +57,7 @@ export default async function ConfigPage({ searchParams }) {
         <Stat label="Admins operación" value={admins.length} />
       </section>
 
-      <ConfigUsersPanel users={users} action={configAction(params)} createdLink={createdLink(params)} />
+      <ConfigUsersPanel users={users} action={configAction(params)} issuedLink={issuedLink(params)} />
     </main>
   );
 }
