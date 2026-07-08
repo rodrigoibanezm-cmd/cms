@@ -82,7 +82,12 @@ async function processAfterCreate(input, reportRow) {
 }
 
 export async function runProcessReport(input) {
-  const reportRow = await createReport({ ot: input.otHint, sourceName: input.sourceName });
+  if (!input.tenantId) throw new Error('tenantId requerido');
+  const reportRow = await createReport({
+    ot: input.otHint,
+    sourceName: input.sourceName,
+    tenantId: input.tenantId,
+  });
   try {
     return { reportRow, body: await processAfterCreate(input, reportRow) };
   } catch (err) {
