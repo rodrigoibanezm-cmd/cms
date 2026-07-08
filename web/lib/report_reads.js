@@ -27,15 +27,17 @@ function addGlobalFilter(filters, params, value) {
   if (!value?.trim()) return;
   params.push(`%${value.trim()}%`);
   const key = `$${params.length}`;
-  filters.push(`(
-    CAST(r.ot AS text) ILIKE ${key}
-    OR r.source_name ILIKE ${key}
-    OR r.template_filename ILIKE ${key}
-    OR r.extraction_json->>'tecnico' ILIKE ${key}
-    OR r.extraction_json->>'cliente' ILIKE ${key}
-    OR r.extraction_json->>'empresa' ILIKE ${key}
-    OR EXISTS (SELECT 1 FROM ${filesTable} sf WHERE sf.report_id=r.id AND sf.filename ILIKE ${key})
-  )`);
+  filters.push(`(CAST(r.ot AS text) ILIKE ${key} OR r.source_name ILIKE ${key}
+    OR r.template_filename ILIKE ${key} OR r.extraction_json->>'tecnico' ILIKE ${key}
+    OR r.extraction_json->>'cliente' ILIKE ${key} OR r.extraction_json->>'empresa' ILIKE ${key}
+    OR EXISTS (SELECT 1 FROM ${filesTable} sf WHERE sf.report_id=r.id AND sf.filename ILIKE ${key}))`);
+}
+
+function addAccessFilter(where, params, access) {
+  addExactFilter(where, params, 'r.tenant_id', access.tenantId);
+  if (!['admin', 'super_admin'].includes(access.role)) {
+    addExactFilter(where, params, 'r.current_owner_id', access.userId);
+  }
 }
 
 export async function listReports(filters = {}) {
@@ -63,22 +65,18 @@ function latestAudit(events) {
   return events.slice().reverse().find((event) => event.event === 'audit_completed')?.payload_json || null;
 }
 
-export async function getReport(id, tenantId) {
+export async function getReport(id, access) {
   await ensureAdminSchema();
-  if (!tenantId) throw new Error('tenantId requerido');
-  const reportSql = `SELECT r.*, r.extraction_json->>'tecnico' AS technician_name
-    FROM ${reportsTable} r WHERE id=$1 AND tenant_id=$2`;
-  const filesSql = `SELECT * FROM ${filesTable}
-    WHERE report_id=$1 AND tenant_id=$2 ORDER BY created_at`;
-  const eventsSql = `SELECT * FROM ${eventsTable}
-    WHERE report_id=$1 AND tenant_id=$2 ORDER BY created_at`;
-  const report = await query(reportSql, [id, tenantId]);
-  const files = await query(filesSql, [id, tenantId]);
-  const events = await query(eventsSql, [id, tenantId]);
-  return {
-    report: report.rows[0] || null,
-    files: files.rows,
-    events: events.rows,
-    audit: latestAudit(events.rows),
-  };
+  if (!access?.tenantId) throw new Error('tenantId requerido');
+  const where = ['r.id=$1'];
+  const params = [id];
+  addAccessFilter(where, params, access);
+  const whereSql = `WHERE ${where.join(' AND ')}`;
+  const reportSql = `SELECT r.*, r.extraction_json->>'tecnico' AS technician_name FROM ${reportsTable} r ${whereSql}`;
+  const filesSql = `SELECT f.* FROM ${filesTable} f JOIN ${reportsTable} r ON r.id=f.report_id ${whereSql} ORDER BY f.created_at`;
+  const eventsSql = `SELECT e.* FROM ${eventsTable} e JOIN ${reportsTable} r ON r.id=e.report_id ${whereSql} ORDER BY e.created_at`;
+  const report = await query(reportSql, params);
+  const files = report.rows[0] ? await query(filesSql, params) : { rows: [] };
+  const events = report.rows[0] ? await query(eventsSql, params) : { rows: [] };
+  return { report: report.rows[0] || null, files: files.rows, events: events.rows, audit: latestAudit(events.rows) };
 }
