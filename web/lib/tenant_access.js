@@ -49,6 +49,11 @@ async function findAccess(tokenHash) {
   return res.rows[0] || null;
 }
 
+export function requireRole(access, allowedRoles) {
+  if (allowedRoles.includes(access.role)) return access;
+  throw new TenantAccessError(403, 'Rol no autorizado');
+}
+
 export async function requireTenantAccess(req) {
   await ensureReportSchema();
   const token = readToken(req);
