@@ -2,18 +2,28 @@ import { randomUUID } from 'crypto';
 import { query } from './db.js';
 import { ensureReportSchema } from './report_schema.js';
 
-async function findApprovalTarget(reportId, tenantId) {
+function canAdminApprove(role) {
+  return ['admin', 'super_admin'].includes(role);
+}
+
+function targetSql(access) {
+  if (canAdminApprove(access?.role)) return 'id=$1';
+  return 'id=$1 AND tenant_id=$2';
+}
+
+function targetParams(reportId, access) {
+  if (canAdminApprove(access?.role)) return [reportId];
+  return [reportId, access.tenantId];
+}
+
+async function findApprovalTarget(reportId, access) {
   const res = await query(
     `SELECT id, tenant_id, current_state, current_owner_id,
         secretary_approved_at, approved_at
-      FROM reports WHERE id=$1 AND tenant_id=$2`,
-    [reportId, tenantId]
+       FROM reports WHERE ${targetSql(access)}`,
+    targetParams(reportId, access)
   );
   return res.rows[0] || null;
-}
-
-function canAdminApprove(role) {
-  return ['admin', 'super_admin'].includes(role);
 }
 
 function canUserApprove(report, access) {
@@ -22,10 +32,14 @@ function canUserApprove(report, access) {
   return report.current_owner_id === access.userId;
 }
 
+function assertIdentity(access) {
+  if (!access?.userId) throw new Error('userId requerido');
+  if (!canAdminApprove(access.role) && !access?.tenantId) throw new Error('tenantId requerido');
+}
+
 function assertCanApprove(report, access) {
   if (!report) throw new Error('OT no encontrada');
-  if (!access?.tenantId) throw new Error('tenantId requerido');
-  if (!access?.userId) throw new Error('userId requerido');
+  assertIdentity(access);
   if (report.approved_at || report.secretary_approved_at) throw new Error('OT ya aprobada');
   if (!['assigned_to_secretary', 'admin_queue'].includes(report.current_state)) {
     throw new Error('OT no aprobable en su estado actual');
@@ -36,19 +50,24 @@ function assertCanApprove(report, access) {
 async function addApprovalEvent(reportId, access) {
   await query(
     `INSERT INTO report_events (id, tenant_id, report_id, event, payload_json)
-      VALUES ($1, $2, $3, $4, $5)`,
-    [randomUUID(), access.tenantId, reportId, 'approved', JSON.stringify({
+       VALUES ($1, (SELECT tenant_id FROM reports WHERE id=$2), $2, $3, $4)`,
+    [randomUUID(), reportId, 'approved', JSON.stringify({
       approved_by_user_id: access.userId,
       approved_by_user_role: access.role,
     })]
   );
 }
 
+function updateSql(access) {
+  if (canAdminApprove(access.role)) return 'WHERE id=$1 RETURNING *';
+  return 'WHERE id=$1 AND tenant_id=$2 RETURNING *';
+}
+
 export async function approveReportWithAccess({ reportId, access }) {
   if (!reportId) throw new Error('reportId requerido');
   await ensureReportSchema();
 
-  const report = await findApprovalTarget(reportId, access.tenantId);
+  const report = await findApprovalTarget(reportId, access);
   assertCanApprove(report, access);
 
   const res = await query(
@@ -61,7 +80,7 @@ export async function approveReportWithAccess({ reportId, access }) {
           WHEN $3 IN ('administrativa', 'secretary') THEN $4
           ELSE approved_by_secretary_id END,
         last_workflow_event_at=now(), updated_at=now()
-      WHERE id=$1 AND tenant_id=$2 RETURNING *`,
+      ${updateSql(access)}`,
     [reportId, access.tenantId, access.role, access.userId]
   );
   await addApprovalEvent(reportId, access);
