@@ -32,7 +32,7 @@ export async function GET(request, { params }) {
   try {
     const access = requireRole(await requireTenantAccess(request), PDF_ROLES);
     const routeParams = await params;
-    const result = await getOrCreateFinalPdf(routeParams.id, access.tenantId);
+    const result = await getOrCreateFinalPdf(routeParams.id, access);
     const buffer = await downloadDriveFile(result.file.drive_file_id);
     return pdfResponse(buffer, result.file.filename);
   } catch (err) {
