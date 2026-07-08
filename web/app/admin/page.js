@@ -37,11 +37,11 @@ export default async function AdminPage({ searchParams }) {
   const filters = readFilters(params);
   const reports = await listReports({ ...filters, tenantId: access.tenantId });
   const secretaries = await listAssignableUsers(access.tenantId);
-  const user = await authUserLabel(access);
+  const label = await authUserLabel(access);
 
   return (
     <main className={styles.adminScreen}>
-      <OperationHeader filters={filters} user={user} />
+      <OperationHeader filters={filters} label={label} />
       <OperationSummary reports={reports} />
       <OperationTable reports={reports} secretaries={secretaries} token={filters.token} />
       <OperationFooter count={reports.length} />
