@@ -11,12 +11,22 @@ export const runtime = 'nodejs';
 
 const FILE_ROLES = ['admin', 'super_admin', 'administrativa', 'secretary'];
 
-async function findReportFile(id, tenantId) {
+function ownerSql(access) {
+  return ['admin', 'super_admin'].includes(access.role) ? '' : 'AND r.current_owner_id=$3';
+}
+
+function params(id, access) {
+  const values = [id, access.tenantId];
+  if (!['admin', 'super_admin'].includes(access.role)) values.push(access.userId);
+  return values;
+}
+
+async function findReportFile(id, access) {
   const res = await query(
-    `SELECT id, filename, mime_type, drive_file_id
-     FROM report_files
-     WHERE id=$1 AND tenant_id=$2`,
-    [id, tenantId]
+    `SELECT f.id, f.filename, f.mime_type, f.drive_file_id
+     FROM report_files f JOIN reports r ON r.id=f.report_id
+     WHERE f.id=$1 AND f.tenant_id=$2 AND r.tenant_id=$2 ${ownerSql(access)}`,
+    params(id, access)
   );
   return res.rows[0] || null;
 }
@@ -32,7 +42,7 @@ export async function GET(request) {
     const id = new URL(request.url).searchParams.get('id');
     if (!id) return NextResponse.json({ ok: false, error: 'Falta id.' }, { status: 400 });
 
-    const file = await findReportFile(id, access.tenantId);
+    const file = await findReportFile(id, access);
     if (!file?.drive_file_id) {
       return NextResponse.json({ ok: false, error: 'Archivo no encontrado.' }, { status: 404 });
     }
