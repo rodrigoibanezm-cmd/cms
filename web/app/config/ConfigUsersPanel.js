@@ -1,3 +1,5 @@
+'use client';
+
 import styles from './config.module.css';
 
 const roles = [
@@ -35,10 +37,17 @@ function CreateLinkButton({ user, action }) {
   );
 }
 
+function CopyLinkButton({ link }) {
+  async function copyLink() {
+    await navigator.clipboard.writeText(link);
+  }
+  return <button className={styles.secondary} type="button" onClick={copyLink}>Copiar link</button>;
+}
+
 function UserLink({ user, action, link }) {
   return (
     <div className={styles.linkCell}>
-      {link ? <input readOnly aria-label="Link de acceso" value={link} /> : <CreateLinkButton user={user} action={action} />}
+      {link ? <CopyLinkButton link={link} /> : <CreateLinkButton user={user} action={action} />}
     </div>
   );
 }
@@ -80,7 +89,7 @@ export default function ConfigUsersPanel({ users, action, userLinks }) {
       <h2>Usuarios operativos</h2>
       <CreateUserForm action={action} />
       <table className={styles.table}>
-        <thead><tr><th>Usuario</th><th>Rol</th><th>Estado</th><th>Copiar link</th><th>Acción</th></tr></thead>
+        <thead><tr><th>Usuario</th><th>Rol</th><th>Estado</th><th>Link</th><th>Acción</th></tr></thead>
         <tbody>{users.map((user) => <UserRow key={user.id} user={user} action={action} userLinks={userLinks} />)}</tbody>
       </table>
     </section>
