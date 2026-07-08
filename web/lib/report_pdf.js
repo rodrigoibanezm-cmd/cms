@@ -2,24 +2,29 @@ import { query } from './db.js';
 import { addReportEvent, addReportFile, ensureReportSchema } from './report_store.js';
 import { convertXlsDriveFileToPdf, PDF_VERSION } from './pdf_drive.js';
 
+function roleOf(access) {
+  return String(access?.role || '').trim().toLowerCase();
+}
+
 function isAdmin(access) {
-  return ['admin', 'super_admin'].includes(access.role);
+  return ['admin', 'super_admin'].includes(roleOf(access));
 }
 
 function reportWhere(access) {
-  if (isAdmin(access)) return 'id=$1';
-  return 'id=$1 AND tenant_id=$2 AND current_owner_id=$3';
+  const idMatch = '(id::text=$1 OR ot::text=$1)';
+  if (isAdmin(access)) return idMatch;
+  return `${idMatch} AND tenant_id=$2 AND current_owner_id=$3`;
 }
 
-function reportParams(reportId, access) {
-  if (isAdmin(access)) return [reportId];
-  return [reportId, access.tenantId, access.userId];
+function reportParams(key, access) {
+  if (isAdmin(access)) return [key];
+  return [key, access.tenantId, access.userId];
 }
 
-async function loadReport(reportId, access) {
+async function loadReport(key, access) {
   const res = await query(
-    `SELECT * FROM reports WHERE ${reportWhere(access)}`,
-    reportParams(reportId, access)
+    `SELECT * FROM reports WHERE ${reportWhere(access)} ORDER BY created_at DESC LIMIT 1`,
+    reportParams(key, access)
   );
   return res.rows[0] || null;
 }
@@ -36,8 +41,7 @@ function fileParams(reportId, access, kind) {
 
 async function latestFile(reportId, access, kind) {
   const res = await query(
-    `SELECT * FROM report_files
-     WHERE ${fileWhere(access)}
+    `SELECT * FROM report_files WHERE ${fileWhere(access)}
      ORDER BY created_at DESC LIMIT 1`,
     fileParams(reportId, access, kind)
   );
@@ -75,22 +79,22 @@ async function currentPdf(reportId, access) {
   return await hasCurrentPdfEvent(reportId, existing.drive_file_id) ? existing : null;
 }
 
-export async function getOrCreateFinalPdf(reportId, access) {
-  if (!reportId) throw new Error('reportId requerido');
+export async function getOrCreateFinalPdf(reportKey, access) {
+  if (!reportKey) throw new Error('reportId requerido');
   assertAccess(access);
   await ensureReportSchema();
 
-  const report = await loadReport(reportId, access);
+  const report = await loadReport(reportKey, access);
   assertCanGenerate(report);
-  const existing = await currentPdf(reportId, access);
+  const existing = await currentPdf(report.id, access);
   if (existing) return fileResponse(existing, false);
 
-  const xlsFile = await latestFile(reportId, access, 'generated_xls');
+  const xlsFile = await latestFile(report.id, access, 'generated_xls');
   if (!xlsFile) throw new Error('XLS generado no encontrado');
 
   const pdf = await convertXlsDriveFileToPdf({ report, xlsFile });
-  await addReportFile(reportId, { kind: 'generated_pdf', ...pdf }, report.tenant_id);
-  await addReportEvent(reportId, 'final_document_generated', {
+  await addReportFile(report.id, { kind: 'generated_pdf', ...pdf }, report.tenant_id);
+  await addReportEvent(report.id, 'final_document_generated', {
     filename: pdf.filename,
     drive_file_id: pdf.driveFileId,
     pdf_version: PDF_VERSION,
