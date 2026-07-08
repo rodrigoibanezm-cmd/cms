@@ -5,11 +5,18 @@ import styles from '../admin.module.css';
 
 export const dynamic = 'force-dynamic';
 
+function readQueueIds(params, fallbackId) {
+  return {
+    tenantId: params?.tenant_id || fallbackId || null,
+    userId: params?.user_id || params?.id || fallbackId || null,
+  };
+}
+
 async function loadSecretaryPage(params) {
   const fallback = await listTenants({ activeOnly: true, mode: 'secretary' });
-  const secretaryId = params?.id || fallback[0]?.id || null;
-  const tenant = secretaryId ? await getActiveTenant(secretaryId, 'secretary') : null;
-  const reports = tenant ? await listSecretaryQueue(tenant.id) : [];
+  const ids = readQueueIds(params, fallback[0]?.id);
+  const tenant = ids.tenantId ? await getActiveTenant(ids.tenantId) : null;
+  const reports = tenant ? await listSecretaryQueue(ids) : [];
   return { tenant, reports, error: null };
 }
 
