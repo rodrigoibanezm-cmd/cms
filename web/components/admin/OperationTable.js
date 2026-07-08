@@ -13,9 +13,13 @@ function ToneText({ info }) {
   return <span className={`${styles.tone} ${styles[info.tone]}`}>{info.label}</span>;
 }
 
-function DetailCell({ report }) {
+function withToken(path, token) {
+  return token ? `${path}${path.includes('?') ? '&' : '?'}token=${encodeURIComponent(token)}` : path;
+}
+
+function DetailCell({ report, token }) {
   return (
-    <a className={styles.otLink} href={`/admin/report?id=${report.id}`}>
+    <a className={styles.otLink} href={withToken(`/admin/report?id=${report.id}`, token)}>
       <strong>{report.ot || '-'}</strong>
       <small>{clientLabel(report)}</small>
     </a>
@@ -32,11 +36,16 @@ function WorkflowCell({ report }) {
   return <span className={`${styles.pill} ${styles[info.tone]}`}>{info.label}</span>;
 }
 
-function SecretaryCell({ report, secretaries }) {
+function SecretaryCell({ report, secretaries, token }) {
   return (
     <details className={styles.secretary}>
       <summary>{report.tenant_name || 'Sin asignar'}</summary>
-      <AssignSecretaryForm report={report} secretaries={secretaries} returnTo="/admin" />
+      <AssignSecretaryForm
+        report={report}
+        secretaries={secretaries}
+        action={withToken('/api/admin/reports/assign', token)}
+        returnTo={withToken('/admin', token)}
+      />
     </details>
   );
 }
@@ -46,12 +55,12 @@ function WaitCell({ report }) {
   return <div><ToneText info={info} /><small>{info.detail}</small></div>;
 }
 
-function PdfCell({ report }) {
+function PdfCell({ report, token }) {
   if (!pdfReady(report)) return <span className={styles.emptyPdf}>-</span>;
-  return <a className={styles.pdf} href={`/api/admin/reports/${report.id}/pdf`}>PDF</a>;
+  return <a className={styles.pdf} href={withToken(`/api/admin/reports/${report.id}/pdf`, token)}>PDF</a>;
 }
 
-export default function OperationTable({ reports, secretaries }) {
+export default function OperationTable({ reports, secretaries, token }) {
   return (
     <section className={styles.wrap}>
       <table className={styles.table}>
@@ -71,15 +80,15 @@ export default function OperationTable({ reports, secretaries }) {
         <tbody>
           {reports.map((report) => (
             <tr key={report.id}>
-              <td><DetailCell report={report} /></td>
+              <td><DetailCell report={report} token={token} /></td>
               <td>{dateLabel(report.created_at)}</td>
               <td>{report.technician_name || '-'}</td>
               <td><ConfidenceCell report={report} /></td>
               <td><WorkflowCell report={report} /></td>
-              <td><SecretaryCell report={report} secretaries={secretaries} /></td>
+              <td><SecretaryCell report={report} secretaries={secretaries} token={token} /></td>
               <td><WaitCell report={report} /></td>
-              <td><PdfCell report={report} /></td>
-              <td><a className={styles.arrow} href={`/admin/report?id=${report.id}`}>Abrir</a></td>
+              <td><PdfCell report={report} token={token} /></td>
+              <td><a className={styles.arrow} href={withToken(`/admin/report?id=${report.id}`, token)}>Abrir</a></td>
             </tr>
           ))}
         </tbody>
