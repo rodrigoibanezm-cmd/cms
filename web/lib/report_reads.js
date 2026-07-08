@@ -33,6 +33,12 @@ function addGlobalFilter(filters, params, value) {
     OR EXISTS (SELECT 1 FROM ${filesTable} sf WHERE sf.report_id=r.id AND sf.filename ILIKE ${key}))`);
 }
 
+function addTenantFilter(where, params, tenantId) {
+  if (!tenantId) throw new Error('tenantId requerido');
+  params.push(tenantId);
+  where.push(`r.tenant_id = $${params.length}`);
+}
+
 function addAccessFilter(where, params, access) {
   if (['admin', 'super_admin'].includes(access.role)) return;
   addExactFilter(where, params, 'r.current_owner_id', access.userId);
@@ -42,11 +48,12 @@ export async function listReports(filters = {}) {
   await ensureAdminSchema();
   const where = [];
   const params = [];
+  addTenantFilter(where, params, filters.tenantId);
   addGlobalFilter(where, params, filters.q);
   addLikeFilter(where, params, 'CAST(r.ot AS text)', filters.ot);
   addExactFilter(where, params, 'r.current_state', filters.state);
   addLikeFilter(where, params, `r.extraction_json->>'tecnico'`, filters.tech);
-  const whereSql = where.length ? `WHERE ${where.join(' AND ')}` : '';
+  const whereSql = `WHERE ${where.join(' AND ')}`;
   const sql = `SELECT r.*, t.name AS tenant_name, t.mode AS tenant_mode,
       r.extraction_json->>'tecnico' AS technician_name,
       COALESCE(r.extraction_json->>'cliente', r.extraction_json->>'empresa') AS client_name,
@@ -67,6 +74,7 @@ export async function getReport(id, access) {
   if (!access?.tenantId) throw new Error('tenantId requerido');
   const where = ['r.id=$1'];
   const params = [id];
+  addTenantFilter(where, params, access.tenantId);
   addAccessFilter(where, params, access);
   const whereSql = `WHERE ${where.join(' AND ')}`;
   const reportSql = `SELECT r.*, r.extraction_json->>'tecnico' AS technician_name FROM ${reportsTable} r ${whereSql}`;
