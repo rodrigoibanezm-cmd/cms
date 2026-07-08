@@ -58,14 +58,16 @@ export async function assignReportToSecretary({ reportId, secretaryId, tenantId 
   return { report_id: reportId, secretary_id: secretary.user_id };
 }
 
-export async function listSecretaryQueue(secretaryId) {
-  if (!secretaryId) throw new Error('secretaryId requerido');
+export async function listSecretaryQueue({ tenantId, userId }) {
+  if (!tenantId) throw new Error('tenantId requerido');
+  if (!userId) throw new Error('userId requerido');
   await ensureAssignmentSchema();
   const sql = `SELECT r.*, r.extraction_json->>'tecnico' AS technician_name
     FROM reports r
-    WHERE r.current_owner_id=$1
+    WHERE r.tenant_id=$1
+      AND r.current_owner_id=$2
       AND r.current_state IN ('assigned_to_secretary', 'secretary_approved')
     ORDER BY r.secretary_approved_at NULLS FIRST,
       r.assigned_at DESC NULLS LAST, r.created_at DESC`;
-  return (await query(sql, [secretaryId])).rows;
+  return (await query(sql, [tenantId, userId])).rows;
 }
