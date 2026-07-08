@@ -3,8 +3,11 @@
 import { useEffect, useState } from 'react';
 import styles from '../../app/admin/report/reviewVisual.module.css';
 
-function filePreviewUrl(file) {
-  return file?.drive_file_id ? `/api/report-file?id=${file.id}` : '';
+function filePreviewUrl(file, token) {
+  if (!file?.drive_file_id) return '';
+  const qs = new URLSearchParams({ id: file.id });
+  if (token) qs.set('token', token);
+  return `/api/report-file?${qs.toString()}`;
 }
 
 function isImage(file) {
@@ -18,53 +21,35 @@ function compactSheetsUrl(url) {
 }
 
 function ZoomedImage({ src, alt }) {
-  return (
-    <div className={styles.imageStage}>
-      <img className={styles.reviewImage} src={src} alt={alt} />
-    </div>
-  );
+  return <div className={styles.imageStage}><img className={styles.reviewImage} src={src} alt={alt} /></div>;
 }
 
 function XlsViewport({ frameUrl }) {
   const [hovered, setHovered] = useState(false);
-
   useEffect(() => {
     if (!hovered) return undefined;
     const previous = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     return () => { document.body.style.overflow = previous; };
   }, [hovered]);
-
   return (
-    <div
-      className={styles.xlsViewport}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
+    <div className={styles.xlsViewport} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
       <iframe className={styles.xlsFrame} src={frameUrl} title="XLS generado" />
     </div>
   );
 }
 
-export function VisualFile({ title, files }) {
+export function VisualFile({ title, files, token }) {
   const file = files[files.length - 1];
-  const previewUrl = filePreviewUrl(file);
+  const previewUrl = filePreviewUrl(file, token);
   return (
     <section className={`${styles.reviewBox} ${styles.visualBox}`}>
       <h2>{title}</h2>
       {!file ? <p className={styles.muted}>Sin archivo visible.</p> : null}
-      {previewUrl && isImage(file) ? (
-        <ZoomedImage src={previewUrl} alt={title} />
-      ) : file?.url ? (
+      {previewUrl && isImage(file) ? <ZoomedImage src={previewUrl} alt={title} /> : file?.url ? (
         <iframe className={styles.driveFrame} src={file.url} title={title} />
-      ) : (
-        file ? <p className={styles.muted}>{file.filename}</p> : null
-      )}
-      {file?.url ? (
-        <div className={styles.adminActions}>
-          <a className={styles.adminButton} href={file.url} target="_blank">Abrir original</a>
-        </div>
-      ) : null}
+      ) : (file ? <p className={styles.muted}>{file.filename}</p> : null)}
+      {file?.url ? <div className={styles.adminActions}><a className={styles.adminButton} href={file.url} target="_blank">Abrir original</a></div> : null}
       {files.length > 1 ? (
         <details className={styles.collapseBox}>
           <summary>Ver otros archivos</summary>
