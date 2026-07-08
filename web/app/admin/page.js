@@ -5,6 +5,7 @@ import OperationSummary from '../../components/admin/OperationSummary.js';
 import OperationTable from '../../components/admin/OperationTable.js';
 import { listReports } from '../../lib/report_reads.js';
 import { requireRole, requireTenantAccess } from '../../lib/tenant_access.js';
+import { authUserLabel } from '../../lib/tenant_store.js';
 import { listAssignableUsers } from '../../lib/tenant_users.js';
 import styles from './admin.module.css';
 
@@ -36,10 +37,11 @@ export default async function AdminPage({ searchParams }) {
   const filters = readFilters(params);
   const reports = await listReports({ ...filters, tenantId: access.tenantId });
   const secretaries = await listAssignableUsers(access.tenantId);
+  const user = await authUserLabel(access);
 
   return (
     <main className={styles.adminScreen}>
-      <OperationHeader filters={filters} />
+      <OperationHeader filters={filters} user={user} />
       <OperationSummary reports={reports} />
       <OperationTable reports={reports} secretaries={secretaries} token={filters.token} />
       <OperationFooter count={reports.length} />
