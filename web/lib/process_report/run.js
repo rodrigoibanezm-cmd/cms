@@ -11,7 +11,6 @@ function needsRetake(extraction) {
   const text = [extraction.mensaje, ...(extraction.razones || [])]
     .join(' ')
     .toLowerCase();
-
   return score === 0 || text.includes('toma nuevamente') || text.includes('no se pudo leer el checklist');
 }
 
@@ -21,15 +20,12 @@ function technicianColor(extraction) {
 
 function responseBody({ reportId, extraction, xls, audit, recovery }) {
   const retake = needsRetake(extraction);
-
   return {
     ok: true,
     report_id: reportId,
     color: technicianColor(extraction),
     needs_retake: retake,
-    message: retake
-      ? 'La foto no se pudo leer bien. Toma nuevamente la imagen.'
-      : `Informe procesado. Excel generado: ${xls.filename}`,
+    message: retake ? 'La foto no se pudo leer bien. Toma nuevamente la imagen.' : `Informe procesado. Excel generado: ${xls.filename}`,
     ot: extraction.ot,
     semaforo: extraction.semaforo,
     confidence_score: extraction.confidence_score,
@@ -82,11 +78,10 @@ async function processAfterCreate(input, reportRow) {
 }
 
 export async function runProcessReport(input) {
-  if (!input.tenantId) throw new Error('tenantId requerido');
   const reportRow = await createReport({
     ot: input.otHint,
     sourceName: input.sourceName,
-    tenantId: input.tenantId,
+    tenantId: input.tenantId || null,
   });
   try {
     return { reportRow, body: await processAfterCreate(input, reportRow) };
