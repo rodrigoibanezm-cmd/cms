@@ -12,6 +12,12 @@ function SecretaryCell({ report, secretaries, editable }) {
   return <AssignSecretaryForm report={report} secretaries={secretaries} returnTo="/admin?view=table" />;
 }
 
+function reviewHref(report) {
+  const tenant = report.tenant_id || report.current_owner_id;
+  const suffix = tenant ? `&tenant_id=${tenant}` : '';
+  return `/admin/report?id=${report.id}${suffix}`;
+}
+
 function PdfAction({ report }) {
   if (pdfReady(report)) return <a href={`/api/admin/reports/${report.id}/pdf`}>PDF</a>;
   return <span className={styles.disabled}>PDF</span>;
@@ -42,7 +48,7 @@ export default function AdminTable({ reports, secretaries, editableSecretary = t
               <td>{priorityLabel(report.priority)}</td>
               <td><SecretaryCell report={report} secretaries={secretaries} editable={editableSecretary} /></td>
               <td className={styles.tableActions}>
-                <a href={`/admin/report?id=${report.id}`}>Revisar</a>
+                <a href={reviewHref(report)}>Revisar</a>
                 <PdfAction report={report} />
               </td>
             </tr>
