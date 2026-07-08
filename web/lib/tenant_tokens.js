@@ -19,11 +19,22 @@ export async function issueTenantAccessToken({ tenantId, userId, role }) {
   const token = randomToken();
   await query(
     `INSERT INTO tenant_access_tokens
-      (tenant_id, role, user_id, token_hash, active)
-     VALUES ($1, $2, $3, $4, true)`,
-    [tenantId, role, userId, hashToken(token)]
+      (tenant_id, role, user_id, token_hash, token_plain, active)
+     VALUES ($1, $2, $3, $4, $5, true)`,
+    [tenantId, role, userId, hashToken(token), token]
   );
   return token;
+}
+
+export async function linkableTenantTokens() {
+  await ensureReportSchema();
+  const res = await query(
+    `SELECT DISTINCT ON (user_id) user_id, role, token_plain
+     FROM tenant_access_tokens
+     WHERE active=true AND token_plain IS NOT NULL
+     ORDER BY user_id, created_at DESC`
+  );
+  return res.rows;
 }
 
 export function pathForRole(role) {
