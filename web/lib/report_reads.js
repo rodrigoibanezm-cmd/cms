@@ -34,17 +34,14 @@ function addGlobalFilter(filters, params, value) {
 }
 
 function addAccessFilter(where, params, access) {
-  addExactFilter(where, params, 'r.tenant_id', access.tenantId);
-  if (!['admin', 'super_admin'].includes(access.role)) {
-    addExactFilter(where, params, 'r.current_owner_id', access.userId);
-  }
+  if (['admin', 'super_admin'].includes(access.role)) return;
+  addExactFilter(where, params, 'r.current_owner_id', access.userId);
 }
 
 export async function listReports(filters = {}) {
   await ensureAdminSchema();
   const where = [];
   const params = [];
-  addExactFilter(where, params, 'r.tenant_id', filters.tenantId);
   addGlobalFilter(where, params, filters.q);
   addLikeFilter(where, params, 'CAST(r.ot AS text)', filters.ot);
   addExactFilter(where, params, 'r.current_state', filters.state);
