@@ -2,7 +2,8 @@ import OperationMenu from './OperationMenu.js';
 import OperationSearch from './OperationSearch.js';
 import styles from '../../app/admin/operationHeader.module.css';
 
-export default function OperationHeader({ filters }) {
+export default function OperationHeader({ filters, label }) {
+  const shown = label || { initials: '-', name: 'Usuario', role: 'Rol' };
   return (
     <header className={styles.header}>
       <div className={styles.left}>
@@ -15,13 +16,11 @@ export default function OperationHeader({ filters }) {
       </div>
       <OperationSearch filters={filters} />
       <div className={styles.userBox}>
-        <span className={styles.bell}>🔔</span>
-        <span className={styles.avatar}>JR</span>
+        <span className={styles.avatar}>{shown.initials}</span>
         <div>
-          <strong>Juan Rodríguez</strong>
-          <small>Administrador</small>
+          <strong>{shown.name}</strong>
+          <small>{shown.role}</small>
         </div>
-        <span className={styles.gear}>⚙</span>
       </div>
     </header>
   );
