@@ -1,7 +1,7 @@
 import { headers } from 'next/headers';
 import AdminTable from '../../../components/admin/AdminTable.js';
 import { listSecretaryQueue } from '../../../lib/report_assignment.js';
-import { getActiveTenant } from '../../../lib/tenant_store.js';
+import { authUserLabel } from '../../../lib/tenant_store.js';
 import {
   requireRole,
   requireTenantAccess,
@@ -31,12 +31,12 @@ async function requestFromPage(params) {
 async function loadSecretaryPage(params) {
   const request = await requestFromPage(params);
   const access = requireRole(await requireTenantAccess(request), SECRETARY_ROLES);
-  const tenant = await getActiveTenant(access.tenantId);
+  const label = await authUserLabel(access);
   const reports = await listSecretaryQueue({
     tenantId: access.tenantId,
     userId: access.userId,
   });
-  return { tenant, reports, error: null };
+  return { label, reports, error: null };
 }
 
 function pendingCount(reports) {
@@ -49,7 +49,7 @@ export default async function SecretaryQueuePage({ searchParams }) {
   try {
     data = await loadSecretaryPage(params);
   } catch (err) {
-    data = { tenant: null, reports: [], error: err.message };
+    data = { label: null, reports: [], error: err.message };
   }
   const pending = pendingCount(data.reports);
 
@@ -58,7 +58,7 @@ export default async function SecretaryQueuePage({ searchParams }) {
       <header className={styles.adminHeader}>
         <p className="eyebrow">CM Services</p>
         <h1>Cola administrativa</h1>
-        <p className="subtitle">{data.tenant?.name || 'Token administrativa requerido'}</p>
+        <p className="subtitle">{data.label?.name || 'Token administrativa requerido'}</p>
       </header>
 
       <section className={styles.adminSummary}>
