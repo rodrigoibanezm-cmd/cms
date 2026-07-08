@@ -20,7 +20,7 @@ export default function OperationSummary({ reports }) {
   const items = [
     ['▣', reports.length, 'OTs totales'],
     ['◷', countPending(reports), 'Pendientes'],
-    ['♙', countWaiting(reports), 'Esperando secretaria'],
+    ['♙', countWaiting(reports), 'Esperando administrativa'],
     ['!', countReview(reports), 'Requieren revisión'],
   ];
 
