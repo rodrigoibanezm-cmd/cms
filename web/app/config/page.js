@@ -31,15 +31,25 @@ function configAction(params) {
   return `/api/config/users${qs ? `?${qs}` : ''}`;
 }
 
-function userLinks(tokens) {
-  return Object.fromEntries(tokens.map((row) => [row.user_id, tokenLinkForRole(row.role, row.token_plain)]));
+function baseUrl(headerList) {
+  const proto = headerList.get('x-forwarded-proto') || 'https';
+  const host = headerList.get('x-forwarded-host') || headerList.get('host') || '';
+  return host ? `${proto}://${host}` : '';
+}
+
+function userLinks(tokens, base) {
+  return Object.fromEntries(tokens.map((row) => {
+    const path = tokenLinkForRole(row.role, row.token_plain);
+    return [row.user_id, `${base}${path}`];
+  }));
 }
 
 export default async function ConfigPage({ searchParams }) {
   const params = await searchParams;
+  const headerList = await headers();
   await requireConfigAccess(params);
   const users = await listTenants({ activeOnly: false });
-  const links = userLinks(await linkableTenantTokens());
+  const links = userLinks(await linkableTenantTokens(), baseUrl(headerList));
   const administrative = users.filter((user) => user.mode === 'secretary' && user.active);
   const admins = users.filter((user) => ['admin', 'super_admin'].includes(user.mode));
 
