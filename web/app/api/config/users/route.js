@@ -4,6 +4,11 @@ import {
   deleteTenant as removeTenant,
   setTenantActive,
 } from '../../../../lib/tenant_store.js';
+import {
+  requireRole,
+  requireTenantAccess,
+  TenantAccessError,
+} from '../../../../lib/tenant_access.js';
 
 export const runtime = 'nodejs';
 
@@ -23,7 +28,8 @@ async function readPayload(request) {
 }
 
 function redirectConfig(request) {
-  return NextResponse.redirect(new URL('/config', request.url), 303);
+  const url = new URL(request.url);
+  return NextResponse.redirect(new URL(`/config${url.search}`, request.url), 303);
 }
 
 async function applyIntent(payload) {
@@ -37,8 +43,13 @@ async function applyIntent(payload) {
   throw new Error('Acción inválida');
 }
 
+function errorStatus(err) {
+  return err instanceof TenantAccessError ? err.status : 400;
+}
+
 export async function POST(request) {
   try {
+    requireRole(await requireTenantAccess(request), ['super_admin']);
     const payload = await readPayload(request);
     const result = await applyIntent(payload);
     if (!request.headers.get('content-type')?.includes('application/json')) {
@@ -46,6 +57,6 @@ export async function POST(request) {
     }
     return NextResponse.json({ ok: true, result });
   } catch (err) {
-    return NextResponse.json({ ok: false, error: err.message }, { status: 400 });
+    return NextResponse.json({ ok: false, error: err.message }, { status: errorStatus(err) });
   }
 }
