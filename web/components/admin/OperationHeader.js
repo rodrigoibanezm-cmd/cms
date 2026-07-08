@@ -6,7 +6,7 @@ export default function OperationHeader({ filters }) {
   return (
     <header className={styles.header}>
       <div className={styles.left}>
-        <OperationMenu />
+        <OperationMenu token={filters.token} />
         <div>
           <small className={styles.tenant}>CM Services</small>
           <h1>Operación</h1>
