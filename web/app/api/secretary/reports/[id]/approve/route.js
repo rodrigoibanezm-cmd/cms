@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { approveReportBySecretary } from '../../../../../../lib/report_approval.js';
+import { approveReportByTenant } from '../../../../../../lib/report_approval.js';
 
 export const runtime = 'nodejs';
 
@@ -9,7 +9,7 @@ async function readPayload(request) {
 
   const form = await request.formData();
   return {
-    secretary_id: form.get('secretary_id'),
+    tenant_id: form.get('tenant_id') || form.get('secretary_id'),
     return_to: form.get('return_to'),
   };
 }
@@ -23,9 +23,9 @@ export async function POST(request, { params }) {
   try {
     const routeParams = await params;
     const payload = await readPayload(request);
-    const result = await approveReportBySecretary({
+    const result = await approveReportByTenant({
       reportId: routeParams.id,
-      secretaryId: payload?.secretary_id,
+      tenantId: payload?.tenant_id,
     });
     if (payload?.return_to) return redirectBack(request, payload);
     return NextResponse.json({ ok: true, ...result });
