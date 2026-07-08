@@ -11,21 +11,25 @@ export const runtime = 'nodejs';
 
 const FILE_ROLES = ['admin', 'super_admin', 'administrativa', 'secretary'];
 
-function ownerSql(access) {
-  return ['admin', 'super_admin'].includes(access.role) ? '' : 'AND r.current_owner_id=$3';
+function isAdmin(access) {
+  return ['admin', 'super_admin'].includes(access.role);
+}
+
+function fileSql(access) {
+  if (isAdmin(access)) return 'WHERE f.id=$1';
+  return 'WHERE f.id=$1 AND r.current_owner_id=$2';
 }
 
 function params(id, access) {
-  const values = [id, access.tenantId];
-  if (!['admin', 'super_admin'].includes(access.role)) values.push(access.userId);
-  return values;
+  if (isAdmin(access)) return [id];
+  return [id, access.userId];
 }
 
 async function findReportFile(id, access) {
   const res = await query(
     `SELECT f.id, f.filename, f.mime_type, f.drive_file_id
      FROM report_files f JOIN reports r ON r.id=f.report_id
-     WHERE f.id=$1 AND f.tenant_id=$2 AND r.tenant_id=$2 ${ownerSql(access)}`,
+     ${fileSql(access)}`,
     params(id, access)
   );
   return res.rows[0] || null;
