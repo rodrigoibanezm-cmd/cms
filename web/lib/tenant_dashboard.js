@@ -9,12 +9,14 @@ export async function getDashboardTenant(tenantId) {
   return (await query(sql, [tenantId])).rows[0] || null;
 }
 
-export async function listDashboardReports() {
+export async function listDashboardReports(tenantId) {
+  if (!tenantId) throw new Error('tenantId requerido');
   await ensureTenantSchema();
   const sql = `SELECT r.*, t.name AS tenant_name,
       r.extraction_json->>'tecnico' AS technician_name
     FROM reports r
     LEFT JOIN report_tenants t ON t.id::text = r.tenant_id
+    WHERE r.tenant_id=$1
     ORDER BY r.created_at DESC LIMIT 200`;
-  return (await query(sql)).rows;
+  return (await query(sql, [tenantId])).rows;
 }
