@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import {
   createTenant,
   deleteTenant as removeTenant,
+  getTenant,
   setTenantActive,
 } from '../../../../lib/tenant_store.js';
 import {
@@ -39,8 +40,15 @@ async function createUser(payload, access) {
   return user;
 }
 
+async function createUserLink(payload, access) {
+  const user = await getTenant(payload.user_id);
+  if (!user) throw new Error('Usuario inválido');
+  return issueTenantAccessToken({ tenantId: access.tenantId, userId: user.id, role: user.mode });
+}
+
 async function applyIntent(payload, access) {
   if (payload.intent === 'create_user') return createUser(payload, access);
+  if (payload.intent === 'create_link') return createUserLink(payload, access);
   if (payload.intent === 'set_active') return setTenantActive(payload.user_id, payload.active === 'true');
   if (payload.intent === 'remove_user') return removeTenant(payload.user_id);
   throw new Error('Acción inválida');
