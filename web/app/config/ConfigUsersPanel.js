@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import styles from './config.module.css';
 
 const roles = [
@@ -38,10 +39,17 @@ function CreateLinkButton({ user, action }) {
 }
 
 function CopyLinkButton({ link }) {
+  const [copied, setCopied] = useState(false);
   async function copyLink() {
     await navigator.clipboard.writeText(link);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1600);
   }
-  return <button className={styles.secondary} type="button" onClick={copyLink}>Copiar link</button>;
+  return (
+    <button className={styles.secondary} type="button" onClick={copyLink}>
+      {copied ? 'Link copiado' : 'Copiar link'}
+    </button>
+  );
 }
 
 function UserLink({ user, action, link }) {
