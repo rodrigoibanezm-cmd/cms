@@ -8,11 +8,12 @@ async function ensureAssignmentSchema() {
   await ensureTenantSchema();
 }
 
-async function findReport(reportId) {
+async function findReport(reportId, tenantId) {
   await ensureAssignmentSchema();
   const res = await query(
-    `SELECT id, status, current_state, excel_url FROM reports WHERE id=$1`,
-    [reportId]
+    `SELECT id, status, current_state, excel_url
+     FROM reports WHERE id=$1 AND tenant_id=$2`,
+    [reportId, tenantId]
   );
   return res.rows[0] || null;
 }
@@ -23,18 +24,20 @@ function canAssign(report) {
   return report.current_state === 'processing' && Boolean(report.excel_url || report.status === 'processed');
 }
 
-async function setReportTenant(reportId, tenant) {
+async function setReportTenant(reportId, fromTenantId, tenant) {
   await query(
-    `UPDATE reports SET tenant_id=$2, updated_at=now() WHERE id=$1`,
-    [reportId, tenant.id]
+    `UPDATE reports SET tenant_id=$3, updated_at=now()
+     WHERE id=$1 AND tenant_id=$2`,
+    [reportId, fromTenantId, tenant.id]
   );
 }
 
-export async function assignReportToSecretary({ reportId, secretaryId }) {
+export async function assignReportToSecretary({ reportId, secretaryId, tenantId }) {
   if (!reportId) throw new Error('reportId requerido');
   if (!secretaryId) throw new Error('secretaryId requerido');
+  if (!tenantId) throw new Error('tenantId requerido');
 
-  const report = await findReport(reportId);
+  const report = await findReport(reportId, tenantId);
   if (!report) throw new Error('OT no encontrada');
   if (!canAssign(report)) throw new Error('OT no asignable en su estado actual');
 
@@ -47,7 +50,7 @@ export async function assignReportToSecretary({ reportId, secretaryId }) {
     tenant_id: tenant.id,
     previous_state: report.current_state,
   });
-  await setReportTenant(reportId, tenant);
+  await setReportTenant(reportId, tenantId, tenant);
 
   return { report_id: reportId, tenant };
 }
