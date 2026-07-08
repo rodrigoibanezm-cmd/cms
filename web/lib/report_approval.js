@@ -58,9 +58,14 @@ async function addApprovalEvent(reportId, access) {
   );
 }
 
-function updateSql(access) {
-  if (canAdminApprove(access.role)) return 'WHERE id=$1 RETURNING *';
-  return 'WHERE id=$1 AND tenant_id=$2 RETURNING *';
+function updateShape(access) {
+  if (canAdminApprove(access.role)) {
+    return { where: 'WHERE id=$1 RETURNING *', params: [access.role, access.userId] };
+  }
+  return {
+    where: 'WHERE id=$1 AND tenant_id=$4 RETURNING *',
+    params: [access.role, access.userId, access.tenantId],
+  };
 }
 
 export async function approveReportWithAccess({ reportId, access }) {
@@ -69,19 +74,20 @@ export async function approveReportWithAccess({ reportId, access }) {
 
   const report = await findApprovalTarget(reportId, access);
   assertCanApprove(report, access);
+  const shape = updateShape(access);
 
   const res = await query(
     `UPDATE reports SET current_state='secretary_approved',
-        current_owner_type=$3, current_owner_id=$4,
-        approved_at=now(), approved_by_user_id=$4,
-        approved_by_user_role=$3, approved_by=$4,
+        current_owner_type=$2, current_owner_id=$3,
+        approved_at=now(), approved_by_user_id=$3,
+        approved_by_user_role=$2, approved_by=$3,
         secretary_approved_at=now(),
         approved_by_secretary_id=CASE
-          WHEN $3 IN ('administrativa', 'secretary') THEN $4
+          WHEN $2 IN ('administrativa', 'secretary') THEN $3
           ELSE approved_by_secretary_id END,
         last_workflow_event_at=now(), updated_at=now()
-      ${updateSql(access)}`,
-    [reportId, access.tenantId, access.role, access.userId]
+      ${shape.where}`,
+    [reportId, ...shape.params]
   );
   await addApprovalEvent(reportId, access);
 
@@ -93,10 +99,5 @@ export async function approveReportByTenant({ reportId, tenantId, userId, role }
 }
 
 export async function approveReportBySecretary({ reportId, secretaryId, tenantId }) {
-  return approveReportByTenant({
-    reportId,
-    tenantId,
-    userId: secretaryId,
-    role: 'administrativa',
-  });
+  return approveReportByTenant({ reportId, tenantId, userId: secretaryId, role: 'administrativa' });
 }
