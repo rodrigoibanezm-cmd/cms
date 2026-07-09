@@ -15,6 +15,7 @@ import { fillParts } from './xls/parts_fill.js';
 import { fillSpecificFields } from './xls/specific_fields_fill.js';
 import { addPhotos, addTextBlocks } from './xls/workbook_extras.js';
 import { styleEditableCells } from './xls/input_cell_style.js';
+import { sanitizeTemplateWorkbook } from './xls/template_sanitize.js';
 
 const SHORTCUT_MIME = 'application/vnd.google-apps.shortcut';
 const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
@@ -77,6 +78,7 @@ export async function generateFinalXls({ extraction, photos, publish = true }) {
 
   const templateBuffer = await downloadDriveFile(template.id);
   const workbook = await loadTemplateWorkbook(templateBuffer, template.name);
+  sanitizeTemplateWorkbook(workbook);
   const sheet = workbook.worksheets[0];
   const cellMap = getCellMap(extraction.template_key);
   if (!fillHeaderByMap(sheet, extraction, cellMap)) fillHeader(sheet, extraction);
