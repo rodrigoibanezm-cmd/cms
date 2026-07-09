@@ -16,13 +16,13 @@ function isAdmin(access) {
 }
 
 function fileSql(access) {
-  if (isAdmin(access)) return 'WHERE f.id=$1';
-  return 'WHERE f.id=$1 AND r.current_owner_id=$2';
+  if (isAdmin(access)) return 'WHERE f.id=$1 AND (r.tenant_id=$2 OR r.tenant_id IS NULL)';
+  return 'WHERE f.id=$1 AND r.tenant_id=$2 AND r.current_owner_id=$3';
 }
 
 function params(id, access) {
-  if (isAdmin(access)) return [id];
-  return [id, access.userId];
+  if (isAdmin(access)) return [id, access.tenantId];
+  return [id, access.tenantId, access.userId];
 }
 
 async function findReportFile(id, access) {
