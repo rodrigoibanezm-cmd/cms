@@ -22,7 +22,9 @@ const INPUT_LABELS = new Set([
 const DIRTY_TEXT = ['ANDRES FELIPE', 'FRANK', 'JEFE DE TALLER', 'JEFE DE AREA', 'TECNICO ESPECIALIZADO', 'ESCONDIDA'];
 
 function clearCell(cell) {
-  if (cell?.type === 1 || cell?.master === cell) cell.value = null;
+  if (!cell) return;
+  if (cell.master && cell.master !== cell) return;
+  cell.value = null;
 }
 
 function isInputLabel(value) {
