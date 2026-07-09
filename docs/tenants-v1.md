@@ -41,7 +41,7 @@ La asignación de administrativa fija tenant_id en reports/files/events.
 ```txt
 super_admin   configuración y operación completa del tenant
 admin         operación completa del tenant
-ashboard      solo indicadores del tenant
+dashboard     solo indicadores del tenant
 administrativa cola propia y aprobación de OTs asignadas
 secretary      alias legacy de administrativa
 ```
