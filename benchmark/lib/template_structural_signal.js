@@ -12,6 +12,7 @@ export function structuralToolSignal(signals = {}) {
     signals.titulo_formulario,
     signals.sourceName,
   ].filter(Boolean).join(' '));
+  if (text.includes('CARRETE')) return 'CARRETE';
   if (text.includes('ESMERIL')) return 'ESMERIL';
   if (text.includes('TALADRO')) return 'TALADRO';
   return null;
