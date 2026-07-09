@@ -4,6 +4,7 @@ const PESOS = {
   varios: 60,
   revision_manual: 40,
   pending_match: 15,
+  checklist_reconstruido: 10,
   campo_obligatorio_faltante: 8,
   item_sin_marca: 5,
   item_sin_marca_max: 20,
@@ -31,6 +32,24 @@ function contarSinMarca(inspeccion) {
   return inspeccion.filter((i) => i.observacion === "sin marca visible").length;
 }
 
+function hasChecklist(pass1) {
+  return Array.isArray(pass1.checklist_items) && pass1.checklist_items.length > 0;
+}
+
+function hasRecoveredInspection(inspeccion) {
+  return Array.isArray(inspeccion) && inspeccion.some((item) => {
+    return item?.item && item?.resultado && item.resultado !== "NO APLICA";
+  });
+}
+
+function unreadableResult() {
+  return {
+    score: 0,
+    razones: ["no se pudo leer el checklist del formulario"],
+    mensaje: "La calidad de la imagen no permite identificar el checklist. Toma nuevamente la fotografía.",
+  };
+}
+
 function mensajePorScore(score, razones) {
   if (score >= 90) return "El informe se procesó correctamente.";
 
@@ -51,16 +70,12 @@ export function calcularConfianza({ pass1, decision, inspeccion }) {
   let score = 100;
   const razones = [];
 
-  if (
-    pass1._parse_error ||
-    !Array.isArray(pass1.checklist_items) ||
-    pass1.checklist_items.length === 0
-  ) {
-    return {
-      score: 0,
-      razones: ["no se pudo leer el checklist del formulario"],
-      mensaje: "La calidad de la imagen no permite identificar el checklist. Toma nuevamente la fotografía.",
-    };
+  if (pass1._parse_error) return unreadableResult();
+
+  if (!hasChecklist(pass1)) {
+    if (!hasRecoveredInspection(inspeccion)) return unreadableResult();
+    score -= PESOS.checklist_reconstruido;
+    razones.push("checklist reconstruido desde observación narrativa");
   }
 
   if (decision === "varios") {
