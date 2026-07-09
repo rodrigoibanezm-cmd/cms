@@ -52,6 +52,8 @@ async function findAssignableUser(access, userId) {
 
 async function attachTenant(reportId, tenantId) {
   await query(`UPDATE reports SET tenant_id=$2, updated_at=now() WHERE id=$1`, [reportId, tenantId]);
+  await query(`UPDATE report_files SET tenant_id=$2 WHERE report_id=$1`, [reportId, tenantId]);
+  await query(`UPDATE report_events SET tenant_id=$2 WHERE report_id=$1`, [reportId, tenantId]);
 }
 
 export async function assignReportToSecretary({ reportId, secretaryId, access }) {
