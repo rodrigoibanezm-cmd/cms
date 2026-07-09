@@ -55,25 +55,19 @@ async function readReport(id, access) {
   return res.rows[0] || null;
 }
 
-function tenantFileSql(report) {
-  return report.tenant_id ? 'AND tenant_id=$2' : 'AND tenant_id IS NULL';
-}
-
 async function readFiles(report) {
-  const args = report.tenant_id ? [report.id, report.tenant_id] : [report.id];
   const res = await query(
-    `SELECT * FROM report_files WHERE report_id=$1 ${tenantFileSql(report)} ORDER BY created_at ASC`,
-    args
+    `SELECT * FROM report_files WHERE report_id=$1 ORDER BY created_at ASC`,
+    [report.id]
   );
   return res.rows;
 }
 
 async function readEvents(report) {
-  const args = report.tenant_id ? [report.id, report.tenant_id] : [report.id];
   const res = await query(
     `SELECT event, payload_json, created_at FROM report_events
-     WHERE report_id=$1 ${tenantFileSql(report)} ORDER BY created_at DESC`,
-    args
+     WHERE report_id=$1 ORDER BY created_at DESC`,
+    [report.id]
   );
   return res.rows;
 }
