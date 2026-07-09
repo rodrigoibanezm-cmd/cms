@@ -1,6 +1,7 @@
 import { parseModelJson } from '../../../benchmark/lib/io.js';
 import { AUTO_RECOVERY_FIELD_SET } from '../audit/audit_fields.js';
 import { callGemini } from '../benchmark/gemini_client.js';
+import { geminiModel } from '../gemini_models.js';
 import { buildRecoveryPrompt } from './recovery_prompt.js';
 
 function filterTargets(items) {
@@ -23,7 +24,7 @@ export async function runRecovery({ image, extraction, audit }) {
 
   console.log('[recovery] start', { ot: extraction?.ot, fields: targets });
   const prompt = buildRecoveryPrompt({ extraction, targets, audit });
-  const raw = await callGemini({ model: 'gemini-2.5-pro', prompt, image });
+  const raw = await callGemini({ model: geminiModel('GEMINI_RECOVERY_MODEL'), prompt, image });
   const parsed = parseModelJson(raw);
   const patch = parsed?.patch && typeof parsed.patch === 'object' ? parsed.patch : null;
   if (!patch || Array.isArray(patch)) {
