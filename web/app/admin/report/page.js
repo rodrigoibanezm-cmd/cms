@@ -2,7 +2,9 @@ import { headers } from 'next/headers';
 import { AuditPanel, CriticalBox } from '../../../components/admin/ReviewAuditPanel.js';
 import { VisualFile, XlsPanel } from '../../../components/admin/ReviewVisualPanel.js';
 import SecretaryApproveForm from '../../../components/admin/SecretaryApproveForm.js';
+import TemplateChangeForm from '../../../components/admin/TemplateChangeForm.js';
 import { workflowLabel } from '../../../components/admin/admin_helpers.js';
+import { listTemplates } from '../../../lib/template_catalog.js';
 import { getReport } from '../../../lib/report_reads.js';
 import { requireRole, requireTenantAccess } from '../../../lib/tenant_access.js';
 import styles from './review.module.css';
@@ -55,6 +57,7 @@ export default async function AdminReportPage({ searchParams }) {
   const originals = filesOf(data.files, 'original_report');
   const photos = filesOf(data.files, 'detail_photo');
   const xlsFiles = filesOf(data.files, 'generated_xls');
+  const templates = await listTemplates().catch(() => []);
 
   return (
     <main className={styles.reviewScreen}>
@@ -62,7 +65,10 @@ export default async function AdminReportPage({ searchParams }) {
         <a className={styles.backLink} href={back}>Volver</a>
         <div className={styles.reviewTopBar}>
           <div><h1>Revision OT {report.ot || '-'}</h1><div className={styles.reviewMeta}><span>{workflowLabel(report.current_state)}</span><span>{confidenceLabel(report)}</span></div></div>
-          <SecretaryApproveForm report={report} token={token} />
+          <div className={styles.approveGroup}>
+            <TemplateChangeForm report={report} token={token} templates={templates} />
+            <SecretaryApproveForm report={report} token={token} />
+          </div>
         </div>
       </header>
       <CriticalBox audit={data.audit} report={report} />
