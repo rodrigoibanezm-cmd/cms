@@ -1,5 +1,7 @@
 import { driveClient, env, uploadDriveFile } from './xls/google_drive.js';
 
+const SHEETS_MIME = 'application/vnd.google-apps.spreadsheet';
+const SHORTCUT_MIME = 'application/vnd.google-apps.shortcut';
 const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
 export function templateFolderId() {
@@ -20,19 +22,26 @@ function safeTemplateName(name) {
   return String(name || 'plantilla.xlsx').replace(/[^a-zA-Z0-9_. -]/g, '_');
 }
 
+function isSpreadsheetFile(file) {
+  if (file.mimeType === XLSX_MIME || file.mimeType === SHEETS_MIME) return true;
+  if (file.mimeType !== SHORTCUT_MIME) return false;
+  const target = file.shortcutDetails?.targetMimeType;
+  return target === XLSX_MIME || target === SHEETS_MIME;
+}
+
 export async function listTemplates() {
   const drive = driveClient();
   const folderId = assertFolder();
   const res = await drive.files.list({
-    q: `'${folderId}' in parents and trashed=false and name contains '.xlsx'`,
-    fields: 'files(id,name,modifiedTime)',
+    q: `'${folderId}' in parents and trashed=false`,
+    fields: 'files(id,name,mimeType,shortcutDetails,modifiedTime)',
     orderBy: 'name',
     pageSize: 100,
     supportsAllDrives: true,
     includeItemsFromAllDrives: true,
   });
   return (res.data.files || [])
-    .filter((file) => isXlsxName(file.name))
+    .filter((file) => isXlsxName(file.name) && isSpreadsheetFile(file))
     .map((file) => ({ id: file.id, name: file.name, modifiedTime: file.modifiedTime }));
 }
 
