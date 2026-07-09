@@ -81,6 +81,16 @@ borra textos variables
 conserva formato base
 ```
 
+## Requisito de formato
+
+```txt
+Las bases deben ser archivos XLSX nativos.
+No usar Google Sheets como base aunque el nombre termine en .xlsx.
+No convertir una base por Google Sheets para hacerla compatible.
+La conversion por Google Sheets puede perder merges, alturas y anchos.
+Si una base no abre como XLSX nativo, se reemplaza la base.
+```
+
 ## Autenticación
 
 Soporta:
