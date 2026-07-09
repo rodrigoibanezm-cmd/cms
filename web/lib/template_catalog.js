@@ -2,6 +2,7 @@ import { driveClient, env, uploadDriveFile } from './xls/google_drive.js';
 
 const SHORTCUT_MIME = 'application/vnd.google-apps.shortcut';
 const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+const FALLBACK_TEMPLATE = 'INFORMES_VARIOS.xlsx';
 
 export function templateFolderId() {
   return env('GOOGLE_DRIVE_TEMPLATES_FOLDER_ID') || env('BASES_FOLDER_ID');
@@ -15,6 +16,11 @@ function assertFolder() {
 
 function isXlsxName(name) {
   return String(name || '').toLowerCase().endsWith('.xlsx');
+}
+
+function isFinalBaseName(name) {
+  const filename = String(name || '');
+  return filename === FALLBACK_TEMPLATE || filename.endsWith('_TECNICOS_BASE.xlsx');
 }
 
 function safeTemplateName(name) {
@@ -39,7 +45,7 @@ export async function listTemplates() {
     includeItemsFromAllDrives: true,
   });
   return (res.data.files || [])
-    .filter((file) => isXlsxName(file.name) && isNativeXlsxFile(file))
+    .filter((file) => isXlsxName(file.name) && isFinalBaseName(file.name) && isNativeXlsxFile(file))
     .map((file) => ({ id: file.id, name: file.name, modifiedTime: file.modifiedTime }));
 }
 
