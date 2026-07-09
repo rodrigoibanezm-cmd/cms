@@ -15,6 +15,10 @@ function isAdmin(access) {
   return ['admin', 'super_admin'].includes(roleOf(access));
 }
 
+function tenantSql(access) {
+  return isAdmin(access) ? '(tenant_id=$2 OR tenant_id IS NULL)' : 'tenant_id=$2';
+}
+
 function ownerSql(access) {
   return isAdmin(access) ? '' : 'AND current_owner_id=$3';
 }
@@ -27,17 +31,17 @@ function params(id, access) {
 
 async function loadReport(id, access) {
   const res = await query(
-    `SELECT * FROM reports WHERE id::text=$1 AND tenant_id=$2 ${ownerSql(access)}`,
+    `SELECT * FROM reports WHERE id::text=$1 AND ${tenantSql(access)} ${ownerSql(access)}`,
     params(id, access)
   );
   return res.rows[0] || null;
 }
 
-async function loadPhotos(reportId, tenantId) {
+async function loadPhotos(reportId) {
   const res = await query(
     `SELECT filename, mime_type, drive_file_id FROM report_files
-     WHERE report_id=$1 AND tenant_id=$2 AND kind=$3 ORDER BY created_at`,
-    [reportId, tenantId, PHOTO_KIND]
+     WHERE report_id=$1 AND kind=$2 ORDER BY created_at`,
+    [reportId, PHOTO_KIND]
   );
   return Promise.all(res.rows.map(async (file) => ({
     filename: file.filename,
@@ -46,11 +50,15 @@ async function loadPhotos(reportId, tenantId) {
   })));
 }
 
+function tenantWhere(tenantId) {
+  return tenantId ? 'tenant_id=$7' : 'tenant_id IS NULL';
+}
+
 async function registerXls(report, xls) {
   await query(
     `UPDATE reports SET template_key=$2, template_filename=$3, excel_url=$4,
       drive_file_id=$5, extraction_json=$6, status='processed', updated_at=now()
-      WHERE id=$1 AND tenant_id=$7`,
+      WHERE id=$1 AND ${tenantWhere(report.tenant_id)}`,
     [report.id, report.extraction_json?.template_key || null,
       report.extraction_json?.template_filename || null, xls.excel_url,
       xls.drive_file_id, JSON.stringify(report.extraction_json), report.tenant_id]
@@ -62,9 +70,10 @@ async function registerXls(report, xls) {
 }
 
 async function invalidatePdf(reportId, tenantId) {
+  const tenant = tenantId ? 'tenant_id=$2' : 'tenant_id IS NULL';
   await query(
-    `DELETE FROM report_files WHERE report_id=$1 AND tenant_id=$2 AND kind='generated_pdf'`,
-    [reportId, tenantId]
+    `DELETE FROM report_files WHERE report_id=$1 AND ${tenant} AND kind='generated_pdf'`,
+    tenantId ? [reportId, tenantId] : [reportId]
   );
 }
 
@@ -74,16 +83,16 @@ function selectedTemplate(form) {
 
 export async function changeReportTemplate({ reportId, access, form }) {
   await ensureReportSchema();
-  const uploaded = await uploadTemplateFile(form.get('template_file'));
-  const template = uploaded?.filename || selectedTemplate(form);
-  if (!template) throw new Error('Debe seleccionar o subir una plantilla');
-
   const report = await loadReport(reportId, access);
   if (!report) throw new Error('OT no encontrada');
   if (!report.extraction_json) throw new Error('OT sin extracción');
 
+  const uploaded = await uploadTemplateFile(form.get('template_file'));
+  const template = uploaded?.filename || selectedTemplate(form);
+  if (!template) throw new Error('Debe seleccionar o subir una plantilla');
+
   const extraction = { ...report.extraction_json, template_filename: template };
-  const photos = await loadPhotos(report.id, report.tenant_id);
+  const photos = await loadPhotos(report.id);
   const xls = await generateFinalXls({ extraction, photos, publish: true });
   await registerXls({ ...report, extraction_json: extraction }, xls);
   await invalidatePdf(report.id, report.tenant_id);
