@@ -4,6 +4,10 @@ function withToken(path, token) {
   return token ? `${path}${path.includes('?') ? '&' : '?'}token=${encodeURIComponent(token)}` : path;
 }
 
+function templateRef(template) {
+  return `${template.id || ''}|${template.name || ''}`;
+}
+
 export default function TemplateChangeForm({ report, token, templates = [] }) {
   const returnTo = withToken(`/admin/report?id=${report.id}`, token);
   const action = withToken(`/api/admin/reports/${report.id}/template`, token);
@@ -15,10 +19,10 @@ export default function TemplateChangeForm({ report, token, templates = [] }) {
         <input type="hidden" name="return_to" value={returnTo} />
         <label>
           Cambiar plantilla
-          <select name="template_filename" defaultValue="">
+          <select name="template_ref" defaultValue="">
             <option value="">Elegir base existente</option>
             {templates.map((template) => (
-              <option key={template.id || template.name} value={template.name}>{template.name}</option>
+              <option key={template.id || template.name} value={templateRef(template)}>{template.name}</option>
             ))}
           </select>
         </label>
