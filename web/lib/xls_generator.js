@@ -20,6 +20,26 @@ function outputFolderId() {
   return env('GOOGLE_DRIVE_OUTPUT_FOLDER_ID') || env('CANDIDATES_TEMPLATES_FOLDER_ID');
 }
 
+async function selectedTemplate(extraction, folderId) {
+  if (extraction.template_drive_file_id) {
+    return { id: extraction.template_drive_file_id, name: extraction.template_filename };
+  }
+  const drive = driveClient();
+  return findFileByName(drive, folderId, extraction.template_filename);
+}
+
+async function loadTemplateWorkbook(buffer, filename) {
+  const workbook = new ExcelJS.Workbook();
+  try {
+    await workbook.xlsx.load(buffer);
+  } catch (err) {
+    console.error('[xls] invalid template', { filename, error: err.message });
+    throw new Error(`La base seleccionada no es un XLSX válido: ${filename}`);
+  }
+  if (!workbook.worksheets[0]) throw new Error(`La base seleccionada no tiene hojas: ${filename}`);
+  return workbook;
+}
+
 export async function publishGeneratedXls({ xls, extraction }) {
   const folderId = outputFolderId();
   if (!folderId) throw new Error('Falta carpeta Drive de salida');
@@ -40,14 +60,11 @@ export async function generateFinalXls({ extraction, photos, publish = true }) {
 
   console.log('[xls] start', { ot: extraction.ot, template: extraction.template_filename, recovered: Boolean(extraction.recovery?.applied) });
 
-  const drive = driveClient();
-  const template = await findFileByName(drive, templateFolderId, extraction.template_filename);
+  const template = await selectedTemplate(extraction, templateFolderId);
   if (!template) throw new Error(`Plantilla no encontrada: ${extraction.template_filename}`);
 
   const templateBuffer = await downloadDriveFile(template.id);
-  const workbook = new ExcelJS.Workbook();
-  await workbook.xlsx.load(templateBuffer);
-
+  const workbook = await loadTemplateWorkbook(templateBuffer, template.name);
   const sheet = workbook.worksheets[0];
   const cellMap = getCellMap(extraction.template_key);
   if (!fillHeaderByMap(sheet, extraction, cellMap)) fillHeader(sheet, extraction);
