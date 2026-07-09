@@ -16,9 +16,9 @@ function errorResponse(err) {
 }
 
 function redirectTo(form, request) {
-  const fallback = new URL(request.url);
-  fallback.pathname = '/admin';
-  const target = String(form.get('return_to') || fallback.toString());
+  const fallback = new URL('/admin', request.url);
+  const rawTarget = String(form.get('return_to') || '');
+  const target = rawTarget ? new URL(rawTarget, request.url) : fallback;
   return NextResponse.redirect(target, 303);
 }
 
