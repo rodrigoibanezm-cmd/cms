@@ -27,12 +27,23 @@ function bumpPdfFontSize(workbook) {
   });
 }
 
+function contentBounds(sheet) {
+  const bounds = { top: null, left: null, bottom: 1, right: 1 };
+  sheet.eachRow((row, rowNumber) => {
+    row.eachCell((cell, colNumber) => {
+      if (cell.value === null || cell.value === undefined || cell.value === '') return;
+      bounds.top = Math.min(bounds.top || rowNumber, rowNumber);
+      bounds.left = Math.min(bounds.left || colNumber, colNumber);
+      bounds.bottom = Math.max(bounds.bottom, rowNumber);
+      bounds.right = Math.max(bounds.right, colNumber);
+    });
+  });
+  return bounds;
+}
+
 function mainPrintArea(sheet) {
-  const start = sheet.dimensions?.top || 1;
-  const end = sheet.dimensions?.bottom || sheet.rowCount || 1;
-  const left = sheet.dimensions?.left || 1;
-  const right = sheet.dimensions?.right || sheet.columnCount || 1;
-  return `${sheet.getCell(start, left).address}:${sheet.getCell(end, right).address}`;
+  const bounds = contentBounds(sheet);
+  return `${sheet.getCell(bounds.top || 1, bounds.left || 1).address}:${sheet.getCell(bounds.bottom, bounds.right).address}`;
 }
 
 function tuneMainSheet(sheet) {
