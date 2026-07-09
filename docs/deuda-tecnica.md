@@ -6,7 +6,7 @@ No es backlog de ideas.
 No es roadmap comercial.
 No es visión futura.
 
-## 1. Admin no cierra OT
+## 1. Rechazo y cierre operativo pendientes
 
 Estado:
 
@@ -17,14 +17,15 @@ DEUDA FUNCIONAL
 Problema:
 
 ```txt
-Existen campos approved/rejected en Neon.
-Pero no existe flujo UI/API completo para cerrar aprobación o rechazo.
+Existe aprobación desde UI/API.
+No existe rechazo formal desde UI.
+No existe cierre operativo final posterior al PDF.
 ```
 
 Nota:
 
 ```txt
-No corregir ahora.
+No mezclar con edición controlada.
 Se revisará dentro del nuevo target flow.
 ```
 
@@ -68,7 +69,8 @@ PENDIENTE DE DISEÑO
 Problema:
 
 ```txt
-admin aún no corrige campos estructurados.
+admin/secretaria aún no corrigen campos estructurados.
+No existe approved_json ni diff de correcciones.
 ```
 
 No hacer todavía:
@@ -83,4 +85,6 @@ workflow de usuarios avanzado
 ```txt
 preview XLS dejó de producirse
 process-report fue modularizado bajo 120 líneas
+aprobación secretaria/admin quedó operativa
+PDF final idempotente quedó operativo
 ```
