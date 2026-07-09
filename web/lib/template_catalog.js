@@ -1,6 +1,5 @@
 import { driveClient, env, uploadDriveFile } from './xls/google_drive.js';
 
-const SHEETS_MIME = 'application/vnd.google-apps.spreadsheet';
 const SHORTCUT_MIME = 'application/vnd.google-apps.shortcut';
 const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
@@ -22,11 +21,10 @@ function safeTemplateName(name) {
   return String(name || 'plantilla.xlsx').replace(/[^a-zA-Z0-9_. -]/g, '_');
 }
 
-function isSpreadsheetFile(file) {
-  if (file.mimeType === XLSX_MIME || file.mimeType === SHEETS_MIME) return true;
+function isNativeXlsxFile(file) {
+  if (file.mimeType === XLSX_MIME) return true;
   if (file.mimeType !== SHORTCUT_MIME) return false;
-  const target = file.shortcutDetails?.targetMimeType;
-  return target === XLSX_MIME || target === SHEETS_MIME;
+  return file.shortcutDetails?.targetMimeType === XLSX_MIME;
 }
 
 export async function listTemplates() {
@@ -41,7 +39,7 @@ export async function listTemplates() {
     includeItemsFromAllDrives: true,
   });
   return (res.data.files || [])
-    .filter((file) => isXlsxName(file.name) && isSpreadsheetFile(file))
+    .filter((file) => isXlsxName(file.name) && isNativeXlsxFile(file))
     .map((file) => ({ id: file.id, name: file.name, modifiedTime: file.modifiedTime }));
 }
 
