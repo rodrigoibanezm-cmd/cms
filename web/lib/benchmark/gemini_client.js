@@ -1,3 +1,5 @@
+import { resolveGeminiModel } from '../gemini_models.js';
+
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -14,7 +16,7 @@ function apiKey() {
 }
 
 function endpoint(model) {
-  const encodedModel = encodeURIComponent(model);
+  const encodedModel = encodeURIComponent(resolveGeminiModel(model));
   return `https://generativelanguage.googleapis.com/v1beta/models/${encodedModel}:generateContent?key=${apiKey()}`;
 }
 
@@ -66,17 +68,18 @@ async function requestGemini({ model, prompt, image }) {
 }
 
 export async function callGemini({ model, prompt, image, retries = 4 }) {
+  const resolvedModel = resolveGeminiModel(model);
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
-      return await requestGemini({ model, prompt, image });
+      return await requestGemini({ model: resolvedModel, prompt, image });
     } catch (err) {
       if (!isRetryable(err) || attempt === retries) throw err;
 
       const waitMs = attempt * 7000;
-      console.warn(`Gemini ${model} falló. Reintento ${attempt}/${retries} en ${waitMs / 1000}s...`);
+      console.warn(`Gemini ${resolvedModel} falló. Reintento ${attempt}/${retries} en ${waitMs / 1000}s...`);
       await sleep(waitMs);
     }
   }
 
-  throw new Error(`Gemini ${model} falló sin respuesta`);
+  throw new Error(`Gemini ${resolvedModel} falló sin respuesta`);
 }
