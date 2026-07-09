@@ -7,12 +7,11 @@ function canAdminApprove(role) {
 }
 
 function targetSql(access) {
-  if (canAdminApprove(access?.role)) return 'id=$1';
+  if (canAdminApprove(access?.role)) return 'id=$1 AND (tenant_id=$2 OR tenant_id IS NULL)';
   return 'id=$1 AND tenant_id=$2';
 }
 
 function targetParams(reportId, access) {
-  if (canAdminApprove(access?.role)) return [reportId];
   return [reportId, access.tenantId];
 }
 
@@ -34,7 +33,7 @@ function canUserApprove(report, access) {
 
 function assertIdentity(access) {
   if (!access?.userId) throw new Error('userId requerido');
-  if (!canAdminApprove(access.role) && !access?.tenantId) throw new Error('tenantId requerido');
+  if (!access?.tenantId) throw new Error('tenantId requerido');
 }
 
 function assertCanApprove(report, access) {
@@ -45,6 +44,12 @@ function assertCanApprove(report, access) {
     throw new Error('OT no aprobable en su estado actual');
   }
   if (!canUserApprove(report, access)) throw new Error('OT asignada a otra administrativa');
+}
+
+async function attachTenantIfMissing(reportId, tenantId) {
+  await query(`UPDATE reports SET tenant_id=COALESCE(tenant_id, $2) WHERE id=$1`, [reportId, tenantId]);
+  await query(`UPDATE report_files SET tenant_id=COALESCE(tenant_id, $2) WHERE report_id=$1`, [reportId, tenantId]);
+  await query(`UPDATE report_events SET tenant_id=COALESCE(tenant_id, $2) WHERE report_id=$1`, [reportId, tenantId]);
 }
 
 async function addApprovalEvent(reportId, access) {
@@ -60,12 +65,9 @@ async function addApprovalEvent(reportId, access) {
 
 function updateShape(access) {
   if (canAdminApprove(access.role)) {
-    return { where: 'WHERE id=$1 RETURNING *', params: [access.role, access.userId] };
+    return { where: 'WHERE id=$1 AND (tenant_id=$4 OR tenant_id IS NULL) RETURNING *' };
   }
-  return {
-    where: 'WHERE id=$1 AND tenant_id=$4 RETURNING *',
-    params: [access.role, access.userId, access.tenantId],
-  };
+  return { where: 'WHERE id=$1 AND tenant_id=$4 RETURNING *' };
 }
 
 export async function approveReportWithAccess({ reportId, access }) {
@@ -74,6 +76,7 @@ export async function approveReportWithAccess({ reportId, access }) {
 
   const report = await findApprovalTarget(reportId, access);
   assertCanApprove(report, access);
+  await attachTenantIfMissing(reportId, access.tenantId);
   const shape = updateShape(access);
 
   const res = await query(
@@ -87,7 +90,7 @@ export async function approveReportWithAccess({ reportId, access }) {
           ELSE approved_by_secretary_id END,
         last_workflow_event_at=now(), updated_at=now()
       ${shape.where}`,
-    [reportId, ...shape.params]
+    [reportId, access.role, access.userId, access.tenantId]
   );
   await addApprovalEvent(reportId, access);
 
