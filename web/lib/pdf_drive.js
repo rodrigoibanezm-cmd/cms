@@ -6,7 +6,7 @@ const XLS_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sh
 const SHEET_MIME = 'application/vnd.google-apps.spreadsheet';
 const PDF_MIME = 'application/pdf';
 
-export const PDF_VERSION = 'main_and_photos_v4';
+export const PDF_VERSION = 'main_and_photos_v5';
 
 export function pdfOutputFolderId() {
   return env('GOOGLE_DRIVE_OUTPUT_FOLDER_ID') || env('CANDIDATES_TEMPLATES_FOLDER_ID');
@@ -27,12 +27,22 @@ function bumpPdfFontSize(workbook) {
   });
 }
 
+function mainPrintArea(sheet) {
+  const start = sheet.dimensions?.top || 1;
+  const end = sheet.dimensions?.bottom || sheet.rowCount || 1;
+  const left = sheet.dimensions?.left || 1;
+  const right = sheet.dimensions?.right || sheet.columnCount || 1;
+  return `${sheet.getCell(start, left).address}:${sheet.getCell(end, right).address}`;
+}
+
 function tuneMainSheet(sheet) {
   if (!sheet) return;
   sheet.pageSetup = {
     ...(sheet.pageSetup || {}),
-    fitToPage: false,
-    scale: 125,
+    printArea: mainPrintArea(sheet),
+    fitToPage: true,
+    fitToWidth: 1,
+    fitToHeight: 1,
     paperSize: 9,
     orientation: 'portrait',
     horizontalCentered: true,
