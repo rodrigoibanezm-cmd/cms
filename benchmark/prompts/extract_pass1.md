@@ -19,6 +19,7 @@ Devuelve exactamente esta estructura:
 {
   "ot": null,
   "titulo_formulario": null,
+  "tipo_herramienta": null,
 
   "tecnico": null,
   "cliente": null,
@@ -50,6 +51,11 @@ INSTRUCCIONES
 
 "titulo_formulario"
 Transcribe exactamente el título impreso del formulario.
+
+"tipo_herramienta"
+Transcribe el nombre visible del equipo o herramienta cuando aparezca en la cabecera, incluso si está manuscrito arriba o cerca del título.
+Ejemplos: "Carrete eléctrico", "Taladro eléctrico", "Esmeril", "Llave de torque".
+No lo inventes desde el checklist: solo úsalo si está escrito o impreso de forma visible.
 
 "estado_herramienta"
 Lee cuidadosamente las casillas REPARACION / MANTENCION / DE BAJA / CERTIFICACION.
