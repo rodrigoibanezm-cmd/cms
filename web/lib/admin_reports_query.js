@@ -23,7 +23,7 @@ export function pageParams(searchParams) {
 }
 
 export function whereClause(searchParams, tenantId) {
-  const clauses = ['r.tenant_id = $1'];
+  const clauses = ['(r.tenant_id = $1 OR r.tenant_id IS NULL)'];
   const params = [tenantId];
   const filters = {
     status: clean(searchParams.get('status')),
