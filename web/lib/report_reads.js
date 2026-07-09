@@ -38,9 +38,11 @@ function addGlobalFilter(filters, params, value) {
 }
 
 function addAccessFilter(where, params, access) {
-  addExactFilter(where, params, 'r.tenant_id', access?.tenantId);
-  if (isAdmin(access)) return;
-  addExactFilter(where, params, 'r.current_owner_id', access?.userId);
+  params.push(access?.tenantId);
+  where.push(isAdmin(access)
+    ? `(r.tenant_id = $${params.length} OR r.tenant_id IS NULL)`
+    : `r.tenant_id = $${params.length}`);
+  if (!isAdmin(access)) addExactFilter(where, params, 'r.current_owner_id', access?.userId);
 }
 
 export async function listReports(filters = {}, access = {}) {
