@@ -25,6 +25,14 @@ function accessParams(id, access) {
   return values;
 }
 
+function selectedTemplate(form) {
+  const ref = String(form.get('template_ref') || '').trim();
+  const [driveFileId, ...nameParts] = ref.split('|');
+  const filename = nameParts.join('|').trim();
+  if (!driveFileId || !filename) return null;
+  return { filename, driveFileId };
+}
+
 async function loadReport(id, access) {
   const res = await query(
     `SELECT * FROM reports WHERE id::text=$1 AND ${tenantSql(access)} ${ownerSql(access)}`,
@@ -81,15 +89,20 @@ export async function changeReportTemplate({ reportId, access, form }) {
   if (!report.extraction_json) throw new Error('OT sin extracción');
 
   const uploaded = await uploadTemplateFile(form.get('template_file'));
-  const template = uploaded?.filename || String(form.get('template_filename') || '').trim();
+  const selected = selectedTemplate(form);
+  const template = uploaded || selected;
   if (!template) throw new Error('Debe seleccionar o subir una plantilla');
 
-  const extraction = { ...report.extraction_json, template_filename: template };
+  const extraction = {
+    ...report.extraction_json,
+    template_filename: template.filename,
+    template_drive_file_id: template.driveFileId,
+  };
   const xls = await generateFinalXls({ extraction, photos: await loadPhotos(report.id), publish: true });
   await registerXls({ ...report, extraction_json: extraction }, xls);
   await invalidatePdf(report.id, report.tenant_id);
   await addReportEvent(report.id, 'template_changed', {
-    template_filename: template, uploaded_template: Boolean(uploaded), generated_xls: xls.filename,
+    template_filename: template.filename, uploaded_template: Boolean(uploaded), generated_xls: xls.filename,
   }, report.tenant_id);
-  return { template, xls };
+  return { template: template.filename, xls };
 }
