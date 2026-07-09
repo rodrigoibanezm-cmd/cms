@@ -11,13 +11,13 @@ function isAdmin(access) {
 }
 
 function reportWhere(access) {
-  const idMatch = '(id::text=$1 OR ot::text=$1)';
+  const idMatch = '(id::text=$1 OR ot::text=$1) AND tenant_id=$2';
   if (isAdmin(access)) return idMatch;
-  return `${idMatch} AND tenant_id=$2 AND current_owner_id=$3`;
+  return `${idMatch} AND current_owner_id=$3`;
 }
 
 function reportParams(key, access) {
-  if (isAdmin(access)) return [key];
+  if (isAdmin(access)) return [key, access.tenantId];
   return [key, access.tenantId, access.userId];
 }
 
@@ -29,38 +29,28 @@ async function loadReport(key, access) {
   return res.rows[0] || null;
 }
 
-function fileWhere(access) {
-  if (isAdmin(access)) return 'report_id=$1 AND kind=$2';
-  return 'report_id=$1 AND tenant_id=$2 AND kind=$3';
-}
-
-function fileParams(reportId, access, kind) {
-  if (isAdmin(access)) return [reportId, kind];
-  return [reportId, access.tenantId, kind];
-}
-
-async function latestFile(reportId, access, kind) {
+async function latestFile(reportId, tenantId, kind) {
   const res = await query(
-    `SELECT * FROM report_files WHERE ${fileWhere(access)}
+    `SELECT * FROM report_files WHERE report_id=$1 AND tenant_id=$2 AND kind=$3
      ORDER BY created_at DESC LIMIT 1`,
-    fileParams(reportId, access, kind)
+    [reportId, tenantId, kind]
   );
   return res.rows[0] || null;
 }
 
-async function hasCurrentPdfEvent(reportId, fileId) {
+async function hasCurrentPdfEvent(reportId, tenantId, fileId) {
   const res = await query(
     `SELECT 1 FROM report_events
-     WHERE report_id=$1 AND event='final_document_generated'
-       AND payload_json->>'drive_file_id'=$2 AND payload_json->>'pdf_version'=$3
+     WHERE report_id=$1 AND tenant_id=$2 AND event='final_document_generated'
+       AND payload_json->>'drive_file_id'=$3 AND payload_json->>'pdf_version'=$4
      LIMIT 1`,
-    [reportId, fileId, PDF_VERSION]
+    [reportId, tenantId, fileId, PDF_VERSION]
   );
   return Boolean(res.rows[0]);
 }
 
 function assertAccess(access) {
-  if (!isAdmin(access) && !access?.tenantId) throw new Error('tenantId requerido');
+  if (!access?.tenantId) throw new Error('tenantId requerido');
   if (!access?.userId) throw new Error('userId requerido');
 }
 
@@ -73,10 +63,10 @@ function fileResponse(file, created) {
   return { created, file: { filename: file.filename, drive_file_id: file.drive_file_id, url: file.url } };
 }
 
-async function currentPdf(reportId, access) {
-  const existing = await latestFile(reportId, access, 'generated_pdf');
+async function currentPdf(reportId, tenantId) {
+  const existing = await latestFile(reportId, tenantId, 'generated_pdf');
   if (!existing) return null;
-  return await hasCurrentPdfEvent(reportId, existing.drive_file_id) ? existing : null;
+  return await hasCurrentPdfEvent(reportId, tenantId, existing.drive_file_id) ? existing : null;
 }
 
 export async function getOrCreateFinalPdf(reportKey, access) {
@@ -86,10 +76,10 @@ export async function getOrCreateFinalPdf(reportKey, access) {
 
   const report = await loadReport(reportKey, access);
   assertCanGenerate(report);
-  const existing = await currentPdf(report.id, access);
+  const existing = await currentPdf(report.id, report.tenant_id);
   if (existing) return fileResponse(existing, false);
 
-  const xlsFile = await latestFile(report.id, access, 'generated_xls');
+  const xlsFile = await latestFile(report.id, report.tenant_id, 'generated_xls');
   if (!xlsFile) throw new Error('XLS generado no encontrado');
 
   const pdf = await convertXlsDriveFileToPdf({ report, xlsFile });
