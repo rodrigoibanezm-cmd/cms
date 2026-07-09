@@ -7,12 +7,8 @@ import { uploadTemplateFile } from './template_catalog.js';
 const PHOTO_KIND = 'detail_photo';
 const XLS_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
-function roleOf(access) {
-  return String(access?.role || '').trim().toLowerCase();
-}
-
 function isAdmin(access) {
-  return ['admin', 'super_admin'].includes(roleOf(access));
+  return ['admin', 'super_admin'].includes(String(access?.role || '').toLowerCase());
 }
 
 function tenantSql(access) {
@@ -23,7 +19,7 @@ function ownerSql(access) {
   return isAdmin(access) ? '' : 'AND current_owner_id=$3';
 }
 
-function params(id, access) {
+function accessParams(id, access) {
   const values = [id, access.tenantId];
   if (!isAdmin(access)) values.push(access.userId);
   return values;
@@ -32,7 +28,7 @@ function params(id, access) {
 async function loadReport(id, access) {
   const res = await query(
     `SELECT * FROM reports WHERE id::text=$1 AND ${tenantSql(access)} ${ownerSql(access)}`,
-    params(id, access)
+    accessParams(id, access)
   );
   return res.rows[0] || null;
 }
@@ -50,18 +46,21 @@ async function loadPhotos(reportId) {
   })));
 }
 
-function tenantWhere(tenantId) {
-  return tenantId ? 'tenant_id=$7' : 'tenant_id IS NULL';
+function tenantUpdate(report) {
+  const base = [report.id, report.extraction_json?.template_key || null,
+    report.extraction_json?.template_filename || null,
+    report.xls.excel_url, report.xls.drive_file_id, JSON.stringify(report.extraction_json)];
+  if (!report.tenant_id) return { where: 'tenant_id IS NULL', params: base };
+  return { where: 'tenant_id=$7', params: [...base, report.tenant_id] };
 }
 
 async function registerXls(report, xls) {
+  const target = tenantUpdate({ ...report, xls });
   await query(
     `UPDATE reports SET template_key=$2, template_filename=$3, excel_url=$4,
       drive_file_id=$5, extraction_json=$6, status='processed', updated_at=now()
-      WHERE id=$1 AND ${tenantWhere(report.tenant_id)}`,
-    [report.id, report.extraction_json?.template_key || null,
-      report.extraction_json?.template_filename || null, xls.excel_url,
-      xls.drive_file_id, JSON.stringify(report.extraction_json), report.tenant_id]
+      WHERE id=$1 AND ${target.where}`,
+    target.params
   );
   await addReportFile(report.id, {
     kind: 'generated_xls', filename: xls.filename, mimeType: XLS_MIME,
@@ -70,11 +69,9 @@ async function registerXls(report, xls) {
 }
 
 async function invalidatePdf(reportId, tenantId) {
-  const tenant = tenantId ? 'tenant_id=$2' : 'tenant_id IS NULL';
-  await query(
-    `DELETE FROM report_files WHERE report_id=$1 AND ${tenant} AND kind='generated_pdf'`,
-    tenantId ? [reportId, tenantId] : [reportId]
-  );
+  const where = tenantId ? 'tenant_id=$2' : 'tenant_id IS NULL';
+  const params = tenantId ? [reportId, tenantId] : [reportId];
+  await query(`DELETE FROM report_files WHERE report_id=$1 AND ${where} AND kind='generated_pdf'`, params);
 }
 
 function selectedTemplate(form) {
@@ -92,14 +89,11 @@ export async function changeReportTemplate({ reportId, access, form }) {
   if (!template) throw new Error('Debe seleccionar o subir una plantilla');
 
   const extraction = { ...report.extraction_json, template_filename: template };
-  const photos = await loadPhotos(report.id);
-  const xls = await generateFinalXls({ extraction, photos, publish: true });
+  const xls = await generateFinalXls({ extraction, photos: await loadPhotos(report.id), publish: true });
   await registerXls({ ...report, extraction_json: extraction }, xls);
   await invalidatePdf(report.id, report.tenant_id);
   await addReportEvent(report.id, 'template_changed', {
-    template_filename: template,
-    uploaded_template: Boolean(uploaded),
-    generated_xls: xls.filename,
+    template_filename: template, uploaded_template: Boolean(uploaded), generated_xls: xls.filename,
   }, report.tenant_id);
   return { template, xls };
 }
