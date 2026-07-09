@@ -11,7 +11,7 @@ implementado y auditado V1
 ```txt
 Separar operación por tenant.
 Evitar que tenant_id, user_id o id desde query/body sean autoridad.
-Usar token como transporte de acceso.
+Usar token como transporte de acceso en vistas operacionales.
 Mantener trazabilidad en reports, report_files y report_events.
 Permitir OTs nuevas sin tenant hasta asignación.
 ```
@@ -29,7 +29,7 @@ reports.tenant_id NULL = OT nueva pendiente de asignación
 ## Invariantes
 
 ```txt
-Toda operación autenticada obtiene acceso desde requireTenantAccess().
+Toda operación administrativa obtiene acceso desde requireTenantAccess().
 Nunca se acepta tenant_id desde query/body como autoridad.
 Admin y super_admin ven OTs de su tenant y OTs sin tenant.
 Administrativas solo ven OTs con tenant y current_owner_id propio.
@@ -59,7 +59,7 @@ Query params pueden transportar token, no decidir tenant ni actor.
 ## Entrada del sistema
 
 ```txt
-/api/process-report exige token de acceso.
+/api/process-report no exige token de tenant.
 La OT nace con reports.tenant_id NULL.
 runProcessReport crea la OT sin tenant operativo.
 files/events nacen sin tenant mientras la OT no se asigne.
@@ -102,7 +102,7 @@ Crear usuario genera token y link de acceso para copiar/pegar.
 ## Checklist de auditoría V1
 
 ```txt
-[x] Process-report
+[x] Process-report sin tenant inicial
 [x] Admin
 [x] Dashboard
 [x] Config
