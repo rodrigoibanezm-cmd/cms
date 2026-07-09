@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { callGemini } from './benchmark/gemini_client.js';
+import { geminiModel } from './gemini_models.js';
 import { validateExtraction } from './extraction_validator.js';
 import { calcularConfianza, scoreToSemaforo } from '../../benchmark/lib/confidence.js';
 import { decideMatch, resolveFallbackEntry } from '../../benchmark/lib/catalog_matcher.js';
@@ -49,8 +50,8 @@ export async function runExtraction({
   promptPass2Template,
   catalog,
 }) {
-  console.log('Pasada 1 (Flash)...');
-  const pass1 = parseModelJson(await callGemini({ model: 'gemini-2.5-flash', prompt: promptPass1, image }));
+  console.log('Pasada 1 (Gemini)...');
+  const pass1 = parseModelJson(await callGemini({ model: geminiModel('GEMINI_EXTRACT_MODEL'), prompt: promptPass1, image }));
   if (otHint) pass1.ot = otHint;
   saveJson(targetDir, pass1.ot, 'pass1', pass1);
 
@@ -64,9 +65,9 @@ export async function runExtraction({
 
   let inspeccion = [];
   if (shouldRunPass2(decision)) {
-    console.log('Pasada 2 (Pro)...');
+    console.log('Pasada 2 (Gemini)...');
     const prompt = buildPass2Prompt(promptPass2Template, entry.checklist);
-    const pass2 = parseModelJson(await callGemini({ model: 'gemini-2.5-pro', prompt, image }));
+    const pass2 = parseModelJson(await callGemini({ model: geminiModel('GEMINI_EXTRACT_DETAIL_MODEL'), prompt, image }));
     inspeccion = pass2.inspeccion || [];
   }
 
