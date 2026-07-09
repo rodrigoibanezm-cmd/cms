@@ -11,7 +11,7 @@ OT nueva queda temporalmente sin tenant hasta asignación administrativa.
 ## Estado validado
 
 ```txt
-/api/process-report exige token de acceso
+/api/process-report no exige token de tenant
 runProcessReport crea OT con tenant_id NULL
 createReport permite reports.tenant_id NULL
 /admin exige admin o super_admin
@@ -59,7 +59,7 @@ Administrativa nunca ve OTs sin tenant.
 ## Cambio manual de plantilla
 
 ```txt
-Vista OT muestra Cambiar plantilla.
+Vista OT muestra Regenerar XLS.
 Permite elegir una base existente del catálogo Drive.
 Permite subir una nueva base XLSX al catálogo Drive.
 Regenera XLS desde extraction_json existente.
@@ -91,7 +91,7 @@ normalizar role canónico administrativa y mantener secretary solo como legacy
 
 ```txt
 Probar flujo real en producción:
-1. subir OT con token válido
+1. subir OT desde el front técnico
 2. confirmar que aparece como sin tenant en admin
 3. abrir detalle OT
 4. cambiar a una base existente
