@@ -40,14 +40,16 @@
 }
 
 .approveGroup {
+  align-items: flex-start;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
   justify-content: flex-end;
   margin-top: 10px;
 }
 
 .approveForm button,
+.templateToggle,
 .templateForm button {
   background: #1769c2;
   border: 0;
@@ -59,12 +61,30 @@
   padding: 11px 16px;
 }
 
+.templatePanel {
+  position: relative;
+}
+
+.templateToggle {
+  display: block;
+  list-style: none;
+}
+
+.templateToggle::-webkit-details-marker { display: none; }
+
 .templateForm {
-  align-items: flex-end;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: flex-end;
+  background: white;
+  border: 1px solid #dfe7ef;
+  border-radius: 16px;
+  box-shadow: 0 14px 34px rgba(6, 37, 73, 0.12);
+  display: grid;
+  gap: 12px;
+  margin-top: 10px;
+  min-width: 360px;
+  padding: 14px;
+  position: absolute;
+  right: 0;
+  z-index: 4;
 }
 
 .templateForm label {
@@ -72,7 +92,7 @@
   display: grid;
   font-size: 12px;
   font-weight: 800;
-  gap: 4px;
+  gap: 5px;
 }
 
 .templateForm input,
@@ -98,6 +118,7 @@
 
 @media (max-width: 900px) {
   .reviewTopBar { flex-direction: column; }
+  .templateForm { left: 0; right: auto; min-width: 300px; }
   .reviewMainGrid,
   .reviewSecondaryGrid { grid-template-columns: 1fr; }
 }
