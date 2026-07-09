@@ -4,6 +4,8 @@
 
 Tenants V1 quedó implementado y auditado.
 
+Cambio manual de plantilla en Vista OT quedó implementado.
+
 ## Estado validado
 
 ```txt
@@ -15,6 +17,8 @@ createReport inserta reports.tenant_id
 /dashboard exige admin, super_admin o dashboard
 /config exige super_admin
 /admin/secretary exige administrativa o secretary
+/admin/report filtra tenant y owner cuando corresponde
+PDF final filtra tenant y owner cuando corresponde
 ```
 
 ## Endpoints sensibles cerrados
@@ -24,8 +28,10 @@ createReport inserta reports.tenant_id
 /api/admin/reports/[id]
 /api/admin/reports/assign
 /api/admin/reports/[id]/pdf
+/api/admin/reports/[id]/template
 /api/secretary/reports/[id]/approve
 /api/report-file
+/api/templates
 ```
 
 ## Regla de acceso actual
@@ -38,6 +44,19 @@ token transporta acceso
 tenant_id y user_id no se toman desde query params como autoridad
 ```
 
+## Cambio manual de plantilla
+
+```txt
+Vista OT muestra Cambiar plantilla.
+Permite elegir una base existente del catálogo Drive.
+Permite subir una nueva base XLSX al catálogo Drive.
+Regenera XLS desde extraction_json existente.
+Registra report_events.event = template_changed.
+Elimina generated_pdf previo si existía.
+No reejecuta extracción IA.
+No toca prompts ni matching automático.
+```
+
 ## Documentación relevante
 
 ```txt
@@ -45,17 +64,6 @@ docs/tenants-v1.md
 docs/current-state.md
 docs/principles.md
 docs/template-bases.md
-```
-
-## Decisión pendiente anotada
-
-```txt
-Vista OT debe permitir cambiar plantilla cuando el matching falle en borde.
-Debe existir botón Cambiar plantilla en el detalle OT.
-Debe permitir elegir una base existente del catálogo.
-Debe permitir agregar una nueva base XLSX al catálogo.
-El cambio debe regenerar XLS determinístico y registrar evento.
-No debe tocar extractor, prompts ni matching automático todavía.
 ```
 
 ## Deuda menor registrada
@@ -69,13 +77,15 @@ normalizar role canónico administrativa y mantener secretary solo como legacy
 ## Próxima tarea sugerida
 
 ```txt
-Diseñar e implementar cambio manual de plantilla en Vista OT:
-1. listar bases disponibles
-2. seleccionar nueva base para la OT
-3. opcionalmente subir nueva base al catálogo
-4. regenerar XLS desde JSON existente
-5. registrar cambio en report_events
-6. invalidar PDF anterior si existía
+Probar flujo real en producción:
+1. subir OT con token válido
+2. abrir detalle OT
+3. cambiar a una base existente
+4. verificar XLS nuevo
+5. subir nueva base XLSX desde Vista OT
+6. verificar que aparece en catálogo
+7. aprobar
+8. generar PDF vigente
 ```
 
 ## No hacer todavía
@@ -93,9 +103,8 @@ no cambiar modelo report_tenants todavía
 
 ```txt
 @GitHub lee README.md, docs/principles.md, docs/template-bases.md y docs/next-step.md.
-Implementa botón Cambiar plantilla en Vista OT.
-Debe elegir base existente o agregar nueva base al catálogo.
-Regenera XLS desde JSON existente, registra evento e invalida PDF anterior.
+Audita en producción el cambio manual de plantilla en Vista OT.
+Verifica tenant, owner, regeneración XLS, evento template_changed y PDF vigente.
 No tocar extractor, prompts ni matching automático.
 Mantener archivos bajo 100 líneas.
 ```
