@@ -10,6 +10,7 @@ import {
 export const runtime = 'nodejs';
 
 const DETAIL_ROLES = ['admin', 'super_admin', 'administrativa', 'secretary'];
+const ADMIN_ROLES = ['admin', 'super_admin'];
 
 function latestAudit(events) {
   return events.find((event) => event.event === 'audit_completed')?.payload_json || null;
@@ -28,37 +29,51 @@ function errorResponse(err) {
   return NextResponse.json({ ok: false, error: err.message || 'Error cargando revisión.' }, { status });
 }
 
+function isAdmin(access) {
+  return ADMIN_ROLES.includes(access.role);
+}
+
 function ownerSql(access) {
-  return ['admin', 'super_admin'].includes(access.role) ? '' : 'AND current_owner_id=$3';
+  return isAdmin(access) ? '' : 'AND current_owner_id=$3';
+}
+
+function tenantSql(access) {
+  return isAdmin(access) ? '(tenant_id=$2 OR tenant_id IS NULL)' : 'tenant_id=$2';
 }
 
 function params(id, access) {
   const values = [id, access.tenantId];
-  if (!['admin', 'super_admin'].includes(access.role)) values.push(access.userId);
+  if (!isAdmin(access)) values.push(access.userId);
   return values;
 }
 
 async function readReport(id, access) {
   const res = await query(
-    `SELECT * FROM reports WHERE id=$1 AND tenant_id=$2 ${ownerSql(access)}`,
+    `SELECT * FROM reports WHERE id=$1 AND ${tenantSql(access)} ${ownerSql(access)}`,
     params(id, access)
   );
   return res.rows[0] || null;
 }
 
-async function readFiles(id, tenantId) {
+function tenantFileSql(report) {
+  return report.tenant_id ? 'AND tenant_id=$2' : 'AND tenant_id IS NULL';
+}
+
+async function readFiles(report) {
+  const args = report.tenant_id ? [report.id, report.tenant_id] : [report.id];
   const res = await query(
-    `SELECT * FROM report_files WHERE report_id=$1 AND tenant_id=$2 ORDER BY created_at ASC`,
-    [id, tenantId]
+    `SELECT * FROM report_files WHERE report_id=$1 ${tenantFileSql(report)} ORDER BY created_at ASC`,
+    args
   );
   return res.rows;
 }
 
-async function readEvents(id, tenantId) {
+async function readEvents(report) {
+  const args = report.tenant_id ? [report.id, report.tenant_id] : [report.id];
   const res = await query(
     `SELECT event, payload_json, created_at FROM report_events
-     WHERE report_id=$1 AND tenant_id=$2 ORDER BY created_at DESC`,
-    [id, tenantId]
+     WHERE report_id=$1 ${tenantFileSql(report)} ORDER BY created_at DESC`,
+    args
   );
   return res.rows;
 }
@@ -71,8 +86,8 @@ export async function GET(request, { params: routeParams }) {
     const report = await readReport(id, access);
     if (!report) return NextResponse.json({ ok: false, error: 'Reporte no encontrado.' }, { status: 404 });
 
-    const files = await readFiles(id, access.tenantId);
-    const events = await readEvents(id, access.tenantId);
+    const files = await readFiles(report);
+    const events = await readEvents(report);
     return NextResponse.json({ ok: true, report, files, files_by_kind: filesByKind(files), audit: latestAudit(events), events });
   } catch (err) {
     console.error(err);
