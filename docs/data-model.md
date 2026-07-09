@@ -85,7 +85,8 @@ workflow_processing_started
 workflow_admin_queue
 workflow_error
 assigned_to_secretary
-secretary_approved
+approved
+template_changed
 final_document_generated
 ```
 
@@ -102,12 +103,11 @@ id, name, email, mode, active, created_at, updated_at
 Modos:
 
 ```txt
+super_admin
 admin
 secretary
 dashboard
 ```
-
-Hoy se usa principalmente `secretary`.
 
 ## Estado operacional
 
@@ -117,7 +117,7 @@ review_status = revisión admin/auditor
 current_state = ubicación operacional de la OT
 current_owner_type = tipo de actor que tiene la OT
 current_owner_id = actor específico, cuando existe
-tenant_id = secretaria asignada para filtrado de cola
+tenant_id = tenant operativo para acceso y filtrado
 ```
 
 ## Invariante
