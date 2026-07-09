@@ -21,18 +21,35 @@ function needsRetake(extraction) {
   return hasExplicitRetakeSignal(extraction) || lacksMinimumExtraction(extraction);
 }
 
-function technicianColor(extraction) {
-  return needsRetake(extraction) ? 'red' : 'green';
+function hasGeneratedXls(xls) {
+  return Boolean(xls?.filename || xls?.excel_url || xls?.drive_file_id);
+}
+
+function isReview(audit) {
+  return String(audit?.decision || '').toLowerCase() === 'review';
+}
+
+function technicianColor({ extraction, xls, audit }) {
+  if (!hasGeneratedXls(xls) && needsRetake(extraction)) return 'red';
+  return isReview(audit) ? 'yellow' : 'green';
+}
+
+function responseMessage({ extraction, xls, audit }) {
+  if (!hasGeneratedXls(xls) && needsRetake(extraction)) {
+    return 'La foto no se pudo leer bien. Toma nuevamente la imagen.';
+  }
+  if (isReview(audit)) return 'Informe recibido. Quedó pendiente de revisión administrativa.';
+  return `Informe procesado. Excel generado: ${xls.filename}`;
 }
 
 function responseBody({ reportId, extraction, xls, audit, recovery }) {
-  const retake = needsRetake(extraction);
+  const retake = !hasGeneratedXls(xls) && needsRetake(extraction);
   return {
     ok: true,
     report_id: reportId,
-    color: technicianColor(extraction),
+    color: technicianColor({ extraction, xls, audit }),
     needs_retake: retake,
-    message: retake ? 'La foto no se pudo leer bien. Toma nuevamente la imagen.' : `Informe procesado. Excel generado: ${xls.filename}`,
+    message: responseMessage({ extraction, xls, audit }),
     ot: extraction.ot,
     semaforo: extraction.semaforo,
     confidence_score: extraction.confidence_score,
