@@ -74,10 +74,6 @@ async function invalidatePdf(reportId, tenantId) {
   await query(`DELETE FROM report_files WHERE report_id=$1 AND ${where} AND kind='generated_pdf'`, params);
 }
 
-function selectedTemplate(form) {
-  return String(form.get('template_filename') || '').trim();
-}
-
 export async function changeReportTemplate({ reportId, access, form }) {
   await ensureReportSchema();
   const report = await loadReport(reportId, access);
@@ -85,7 +81,7 @@ export async function changeReportTemplate({ reportId, access, form }) {
   if (!report.extraction_json) throw new Error('OT sin extracción');
 
   const uploaded = await uploadTemplateFile(form.get('template_file'));
-  const template = uploaded?.filename || selectedTemplate(form);
+  const template = uploaded?.filename || String(form.get('template_filename') || '').trim();
   if (!template) throw new Error('Debe seleccionar o subir una plantilla');
 
   const extraction = { ...report.extraction_json, template_filename: template };
