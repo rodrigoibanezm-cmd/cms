@@ -6,12 +6,19 @@ import { createReport } from '../report_store.js';
 import { markAudited, markExtracted, markReportError } from '../report_updates.js';
 import { transitionReportWorkflow, WORKFLOW } from '../report_workflow.js';
 
-function needsRetake(extraction) {
-  const score = Number(extraction.confidence_score) || 0;
+function hasExplicitRetakeSignal(extraction) {
   const text = [extraction.mensaje, ...(extraction.razones || [])]
     .join(' ')
     .toLowerCase();
-  return score === 0 || text.includes('toma nuevamente') || text.includes('no se pudo leer el checklist');
+  return text.includes('toma nuevamente') || text.includes('no se pudo leer el checklist');
+}
+
+function lacksMinimumExtraction(extraction) {
+  return !extraction.ot || !extraction.template_filename;
+}
+
+function needsRetake(extraction) {
+  return hasExplicitRetakeSignal(extraction) || lacksMinimumExtraction(extraction);
 }
 
 function technicianColor(extraction) {
