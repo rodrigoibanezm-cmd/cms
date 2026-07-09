@@ -15,11 +15,11 @@ function errorResponse(err) {
 
 export async function POST(request) {
   try {
-    const access = await requireTenantAccess(request);
+    await requireTenantAccess(request);
     const input = await parseProcessReportRequest(request);
     if (input.error) return NextResponse.json(input.body, { status: input.status });
 
-    const result = await runProcessReport({ ...input, tenantId: access.tenantId });
+    const result = await runProcessReport(input);
     return NextResponse.json(result.body);
   } catch (err) {
     console.error(err);
