@@ -52,7 +52,8 @@
   margin-top: 10px;
 }
 
-.approveForm button {
+.approveForm button,
+.templateForm button {
   background: #1769c2;
   border: 0;
   border-radius: 12px;
@@ -61,6 +62,30 @@
   font-size: 14px;
   font-weight: 800;
   padding: 11px 16px;
+}
+
+.templateForm {
+  align-items: flex-end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.templateForm label {
+  color: #526272;
+  display: grid;
+  font-size: 12px;
+  font-weight: 800;
+  gap: 4px;
+}
+
+.templateForm input,
+.templateForm select {
+  border: 1px solid #dfe7ef;
+  border-radius: 10px;
+  font-size: 13px;
+  padding: 9px 10px;
 }
 
 .reviewMainGrid {
