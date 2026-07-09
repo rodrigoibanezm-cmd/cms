@@ -49,9 +49,11 @@ async function loadPhotos(reportId, tenantId) {
 async function registerXls(report, xls) {
   await query(
     `UPDATE reports SET template_key=$2, template_filename=$3, excel_url=$4,
-      drive_file_id=$5, status='processed', updated_at=now() WHERE id=$1`,
+      drive_file_id=$5, extraction_json=$6, status='processed', updated_at=now()
+      WHERE id=$1 AND tenant_id=$7`,
     [report.id, report.extraction_json?.template_key || null,
-      report.extraction_json?.template_filename || null, xls.excel_url, xls.drive_file_id]
+      report.extraction_json?.template_filename || null, xls.excel_url,
+      xls.drive_file_id, JSON.stringify(report.extraction_json), report.tenant_id]
   );
   await addReportFile(report.id, {
     kind: 'generated_xls', filename: xls.filename, mimeType: XLS_MIME,
@@ -83,8 +85,7 @@ export async function changeReportTemplate({ reportId, access, form }) {
   const extraction = { ...report.extraction_json, template_filename: template };
   const photos = await loadPhotos(report.id, report.tenant_id);
   const xls = await generateFinalXls({ extraction, photos, publish: true });
-  const updated = { ...report, extraction_json: extraction };
-  await registerXls(updated, xls);
+  await registerXls({ ...report, extraction_json: extraction }, xls);
   await invalidatePdf(report.id, report.tenant_id);
   await addReportEvent(report.id, 'template_changed', {
     template_filename: template,
