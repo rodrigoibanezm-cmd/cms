@@ -1,13 +1,16 @@
 const GENERIC_SIGNALS = new Set([
   'INFORME',
-  'INFORME TECNICO',
   'TECNICO',
+  'TECNICA',
   'ELECTRICO',
   'ELECTRICA',
   'NEUMATICO',
   'NEUMATICA',
   'INALAMBRICO',
   'INALAMBRICA',
+  'HIDRAULICO',
+  'HIDRAULICA',
+  'BASE',
 ]);
 
 function removeAccents(value) {
@@ -24,9 +27,14 @@ export function normSignal(value) {
     .trim();
 }
 
+function tokens(value) {
+  return normSignal(value)
+    .split(' ')
+    .filter((token) => token.length > 3 && !GENERIC_SIGNALS.has(token));
+}
+
 export function isGenericSignal(value) {
-  const normalized = normSignal(value);
-  return !normalized || GENERIC_SIGNALS.has(normalized);
+  return tokens(value).length === 0;
 }
 
 function candidateNames(entry) {
@@ -35,10 +43,17 @@ function candidateNames(entry) {
     .filter((value) => value && !isGenericSignal(value));
 }
 
+function tokenMatch(signal, name) {
+  const signalTokens = tokens(signal);
+  const nameTokens = new Set(tokens(name));
+  return signalTokens.some((token) => nameTokens.has(token));
+}
+
 function signalMatchesName(signal, name) {
   if (signal === name) return true;
   if (signal.length > 5 && name.includes(signal)) return true;
-  return name.length > 5 && signal.includes(name);
+  if (name.length > 5 && signal.includes(name)) return true;
+  return tokenMatch(signal, name);
 }
 
 export function matchCatalogSignal(catalog, signal) {
