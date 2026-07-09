@@ -1,54 +1,10 @@
-import { cellText, norm, setVisibleCell, text, writableCell } from './cell_utils.js';
-
-const KEY_ALIASES = {
-  BRAZOSDEAPOYO: 'BRAZODEAPOYO',
-  BRAZODEAPOYO: 'BRAZODEAPOYO',
-  MANIJADETRASLADO: 'MANILLASDEAGARRE',
-  MANILLADETRASLADO: 'MANILLASDEAGARRE',
-  MANILLASDEAGARRE: 'MANILLASDEAGARRE',
-  MANILLADEAGARRE: 'MANILLASDEAGARRE',
-  SEGURODEPEDESTAL: 'PEDESTALYSEGUROS',
-  SEGUROSDEPEDESTAL: 'PEDESTALYSEGUROS',
-  PEDESTAL: 'PEDESTALYSEGUROS',
-  PEDESTALYSEGUROS: 'PEDESTALYSEGUROS',
-  SWITCHENCENDIDO: 'SWITCHDEENCENDIDO',
-  SWITCHDEENCENDIDO: 'SWITCHDEENCENDIDO',
-  PERNOSYTUERCAS: 'PERNOS',
-  TORNILLOSYTUERCAS: 'PERNOS',
-};
-
-function looseKey(value) {
-  return norm(value)
-    .replace(/PRICIPAL/g, 'PRINCIPAL')
-    .replace(/SISTEMADE/g, 'SISTEMA DE')
-    .replace(/SISTEMAS/g, 'SISTEMA')
-    .replace(/[^A-Z0-9]/g, '');
-}
-
-function canonicalKey(value) {
-  const key = looseKey(value);
-  return KEY_ALIASES[key] || key;
-}
-
-function normalizeItem(item) {
-  return {
-    item: item?.item || item?.descripcion || item?.description || '',
-    resultado: norm(item?.resultado || item?.estado || item?.result || ''),
-    observacion: item?.observacion || item?.observación || item?.observation || null,
-    reparacion: item?.reparacion || item?.reparación || null,
-  };
-}
-
-function sameInspectionItem(a, b) {
-  const left = canonicalKey(a);
-  const right = canonicalKey(b);
-  return Boolean(left && right && left === right);
-}
+import { cellText, setVisibleCell, text, writableCell } from './cell_utils.js';
+import { itemKey, normalizeItem, sameInspectionItem } from './inspection_match.js';
 
 function textScore(value) {
-  const normalized = norm(value);
+  const normalized = itemKey(value);
   if (!normalized || normalized.length < 3) return 0;
-  if (['X', 'CUMPLE', 'NO CUMPLE', 'NO APLICA'].includes(normalized)) return 0;
+  if (['X', 'CUMPLE', 'NOCUMPLE', 'NOAPLICA'].includes(normalized)) return 0;
   return normalized.length;
 }
 
@@ -78,11 +34,11 @@ function findHeaderColumns(sheet) {
     if (cols) return;
     const found = { row: rowNumber };
     row.eachCell((cell, colNumber) => {
-      const value = norm(cellText(cell));
+      const value = itemKey(cellText(cell));
       if (!found.item && value.includes('DESCRIP')) found.item = colNumber;
       if (!found.cumple && value === 'CUMPLE') found.cumple = colNumber;
-      if (!found.noCumple && value.includes('NO CUMPLE')) found.noCumple = colNumber;
-      if (!found.noAplica && value.includes('NO APLICA')) found.noAplica = colNumber;
+      if (!found.noCumple && value.includes('NOCUMPLE')) found.noCumple = colNumber;
+      if (!found.noAplica && value.includes('NOAPLICA')) found.noAplica = colNumber;
       if (!found.obs && value.includes('OBSERV')) found.obs = colNumber;
       if (!found.reparacion && value.includes('REPAR')) found.reparacion = colNumber;
     });
@@ -98,6 +54,13 @@ function findInspectionRow(sheet, cols, item) {
     if (sameInspectionItem(cellText(row.getCell(cols.item)), item.item)) targetRow = rowNumber;
   });
   return targetRow;
+}
+
+function templateHasFixedRows(sheet, cols) {
+  for (let row = cols.row + 1; row <= Math.min(sheet.rowCount, cols.row + 40); row++) {
+    if (textScore(cellText(sheet.getCell(row, cols.item)))) return true;
+  }
+  return false;
 }
 
 function findNextEmptyInspectionRow(sheet, cols, startRow) {
@@ -137,10 +100,12 @@ function fillRow(sheet, row, cols, item) {
 export function fillInspection(sheet, inspeccion = []) {
   const cols = findHeaderColumns(sheet);
   if (!cols) return;
+  const fixedRows = templateHasFixedRows(sheet, cols);
   let fallbackRow = cols.row + 1;
   for (const rawItem of inspeccion) {
     const item = normalizeItem(rawItem);
     let targetRow = findInspectionRow(sheet, cols, item);
+    if (!targetRow && fixedRows) continue;
     if (!targetRow) {
       targetRow = findNextEmptyInspectionRow(sheet, cols, fallbackRow);
       if (!targetRow) continue;
