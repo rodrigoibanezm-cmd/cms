@@ -1,6 +1,9 @@
 import { google } from 'googleapis';
 import { Readable } from 'stream';
 
+const SHEETS_MIME = 'application/vnd.google-apps.spreadsheet';
+const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+
 export function env(name) {
   return process.env[name] || '';
 }
@@ -52,7 +55,7 @@ export async function findFileByName(drive, folderId, name) {
     const safeName = candidate.replace(/'/g, "\\'");
     const res = await drive.files.list({
       q: `'${folderId}' in parents and name='${safeName}' and trashed=false`,
-      fields: 'files(id,name)',
+      fields: 'files(id,name,mimeType)',
       pageSize: 1,
       supportsAllDrives: true,
       includeItemsFromAllDrives: true,
@@ -63,12 +66,18 @@ export async function findFileByName(drive, folderId, name) {
   return null;
 }
 
+async function driveFileMeta(drive, fileId) {
+  const res = await drive.files.get({ fileId, fields: 'id,name,mimeType', supportsAllDrives: true });
+  return res.data || {};
+}
+
 export async function downloadDriveFile(fileId) {
   const drive = driveClient();
-  const res = await drive.files.get(
-    { fileId, alt: 'media', supportsAllDrives: true },
-    { responseType: 'arraybuffer' }
-  );
+  const meta = await driveFileMeta(drive, fileId);
+  const request = meta.mimeType === SHEETS_MIME
+    ? drive.files.export({ fileId, mimeType: XLSX_MIME }, { responseType: 'arraybuffer' })
+    : drive.files.get({ fileId, alt: 'media', supportsAllDrives: true }, { responseType: 'arraybuffer' });
+  const res = await request;
   return Buffer.from(res.data);
 }
 
@@ -77,7 +86,7 @@ export async function uploadDriveFile({ buffer, filename, folderId, mimeType }) 
   const res = await drive.files.create({
     requestBody: { name: filename, parents: [folderId] },
     media: {
-      mimeType: mimeType || 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      mimeType: mimeType || XLSX_MIME,
       body: Readable.from(Buffer.from(buffer)),
     },
     fields: 'id,webViewLink',
