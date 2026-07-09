@@ -1,11 +1,33 @@
 import { cellText, norm, setVisibleCell, text, writableCell } from './cell_utils.js';
 
+const KEY_ALIASES = {
+  BRAZOSDEAPOYO: 'BRAZODEAPOYO',
+  BRAZODEAPOYO: 'BRAZODEAPOYO',
+  MANIJADETRASLADO: 'MANILLASDEAGARRE',
+  MANILLADETRASLADO: 'MANILLASDEAGARRE',
+  MANILLASDEAGARRE: 'MANILLASDEAGARRE',
+  MANILLADEAGARRE: 'MANILLASDEAGARRE',
+  SEGURODEPEDESTAL: 'PEDESTALYSEGUROS',
+  SEGUROSDEPEDESTAL: 'PEDESTALYSEGUROS',
+  PEDESTAL: 'PEDESTALYSEGUROS',
+  PEDESTALYSEGUROS: 'PEDESTALYSEGUROS',
+  SWITCHENCENDIDO: 'SWITCHDEENCENDIDO',
+  SWITCHDEENCENDIDO: 'SWITCHDEENCENDIDO',
+  PERNOSYTUERCAS: 'PERNOS',
+  TORNILLOSYTUERCAS: 'PERNOS',
+};
+
 function looseKey(value) {
   return norm(value)
     .replace(/PRICIPAL/g, 'PRINCIPAL')
     .replace(/SISTEMADE/g, 'SISTEMA DE')
     .replace(/SISTEMAS/g, 'SISTEMA')
     .replace(/[^A-Z0-9]/g, '');
+}
+
+function canonicalKey(value) {
+  const key = looseKey(value);
+  return KEY_ALIASES[key] || key;
 }
 
 function normalizeItem(item) {
@@ -18,8 +40,8 @@ function normalizeItem(item) {
 }
 
 function sameInspectionItem(a, b) {
-  const left = looseKey(a);
-  const right = looseKey(b);
+  const left = canonicalKey(a);
+  const right = canonicalKey(b);
   return Boolean(left && right && left === right);
 }
 
