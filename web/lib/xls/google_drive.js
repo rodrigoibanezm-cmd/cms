@@ -2,6 +2,7 @@ import { google } from 'googleapis';
 import { Readable } from 'stream';
 
 const SHEETS_MIME = 'application/vnd.google-apps.spreadsheet';
+const SHORTCUT_MIME = 'application/vnd.google-apps.shortcut';
 const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
 export function env(name) {
@@ -55,7 +56,7 @@ export async function findFileByName(drive, folderId, name) {
     const safeName = candidate.replace(/'/g, "\\'");
     const res = await drive.files.list({
       q: `'${folderId}' in parents and name='${safeName}' and trashed=false`,
-      fields: 'files(id,name,mimeType)',
+      fields: 'files(id,name,mimeType,shortcutDetails)',
       pageSize: 1,
       supportsAllDrives: true,
       includeItemsFromAllDrives: true,
@@ -67,16 +68,31 @@ export async function findFileByName(drive, folderId, name) {
 }
 
 async function driveFileMeta(drive, fileId) {
-  const res = await drive.files.get({ fileId, fields: 'id,name,mimeType', supportsAllDrives: true });
+  const res = await drive.files.get({
+    fileId,
+    fields: 'id,name,mimeType,shortcutDetails',
+    supportsAllDrives: true,
+  });
   return res.data || {};
+}
+
+function resolveShortcut(meta) {
+  if (meta.mimeType !== SHORTCUT_MIME) return meta;
+  return {
+    id: meta.shortcutDetails?.targetId,
+    name: meta.name,
+    mimeType: meta.shortcutDetails?.targetMimeType,
+  };
 }
 
 export async function downloadDriveFile(fileId) {
   const drive = driveClient();
-  const meta = await driveFileMeta(drive, fileId);
+  const meta = resolveShortcut(await driveFileMeta(drive, fileId));
+  if (!meta.id) throw new Error('Shortcut de Drive sin archivo destino');
+
   const request = meta.mimeType === SHEETS_MIME
-    ? drive.files.export({ fileId, mimeType: XLSX_MIME }, { responseType: 'arraybuffer' })
-    : drive.files.get({ fileId, alt: 'media', supportsAllDrives: true }, { responseType: 'arraybuffer' });
+    ? drive.files.export({ fileId: meta.id, mimeType: XLSX_MIME }, { responseType: 'arraybuffer' })
+    : drive.files.get({ fileId: meta.id, alt: 'media', supportsAllDrives: true }, { responseType: 'arraybuffer' });
   const res = await request;
   return Buffer.from(res.data);
 }
