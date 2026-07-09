@@ -12,9 +12,8 @@ Mostrar alertas, archivos y trazabilidad.
 
 ```txt
 /admin
-/admin?view=cards
 /admin/report?id=report_id
-/admin/secretary?id=secretary_id
+/admin/secretary
 ```
 
 ## API admin
@@ -32,8 +31,7 @@ POST /api/secretary/reports/id/approve
 
 ```txt
 /admin abre en planilla
-/admin?view=cards abre tarjetas
-muestra OT, estado, técnico, fecha, prioridad, administrativa y acciones
+muestra OT, ingreso, técnico, Confianza IA, workflow, administrativa, espera y PDF
 no usa semáforo operacional en planilla
 mantiene visible la OT aprobada
 PDF se habilita si existe secretary_approved_at
@@ -42,10 +40,10 @@ PDF se habilita si existe secretary_approved_at
 ## Operación V1
 
 ```txt
-La bandeja debe evolucionar hacia Vista Operación.
-La tabla debe priorizar OT + técnico, Confianza IA, workflow, secretaria, SLA y PDF.
-Toda la fila debe abrir el detalle.
-No debe depender de botón Revisar.
+La bandeja es Vista Operación.
+La tabla prioriza OT + cliente, técnico, Confianza IA, workflow, secretaria, espera y PDF.
+La OT y la acción Abrir llevan al detalle.
+No debe depender de preview XLS.
 ```
 
 ## Detalle revisión
@@ -54,7 +52,8 @@ No debe depender de botón Revisar.
 archivo: web/app/admin/report/page.js
 muestra informe original, XLS, fotos, auditoría, eventos y estado workflow
 Confianza IA debe ayudar a focalizar revisión
-botón Aprobar OT aparece cuando aplica
+botón Aprobar aparece cuando aplica
+Regenerar XLS permite cambiar plantilla manualmente
 ```
 
 ## Confianza IA
@@ -78,9 +77,9 @@ audit.issues
 ## Cola secretaria
 
 ```txt
-ruta: /admin/secretary?id=secretary_id
+ruta: /admin/secretary
 archivo: web/app/admin/secretary/page.js
-muestra solo OTs de esa secretaria
+muestra solo OTs de esa secretaria por token
 incluye pendientes y aprobadas
 muestra total y pendientes
 ```
