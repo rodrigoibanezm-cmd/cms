@@ -15,6 +15,7 @@ import { fillParts } from './xls/parts_fill.js';
 import { fillSpecificFields } from './xls/specific_fields_fill.js';
 import { addPhotos, addTextBlocks } from './xls/workbook_extras.js';
 import { styleEditableCells } from './xls/input_cell_style.js';
+import { normalizeTemplateBuffer } from './xls/template_normalize.js';
 
 function outputFolderId() {
   return env('GOOGLE_DRIVE_OUTPUT_FOLDER_ID') || env('CANDIDATES_TEMPLATES_FOLDER_ID');
@@ -28,16 +29,27 @@ async function selectedTemplate(extraction, folderId) {
   return findFileByName(drive, folderId, extraction.template_filename);
 }
 
-async function loadTemplateWorkbook(buffer, filename) {
+async function readWorkbook(buffer) {
   const workbook = new ExcelJS.Workbook();
-  try {
-    await workbook.xlsx.load(buffer);
-  } catch (err) {
-    console.error('[xls] invalid template', { filename, error: err.message });
-    throw new Error(`La base seleccionada no es un XLSX válido: ${filename}`);
-  }
-  if (!workbook.worksheets[0]) throw new Error(`La base seleccionada no tiene hojas: ${filename}`);
+  await workbook.xlsx.load(buffer);
+  if (!workbook.worksheets[0]) throw new Error('workbook sin hojas');
   return workbook;
+}
+
+async function loadTemplateWorkbook({ buffer, filename, fileId }) {
+  try {
+    return await readWorkbook(buffer);
+  } catch (err) {
+    console.error('[xls] invalid template, normalizing', { filename, error: err.message });
+  }
+
+  try {
+    const normalized = await normalizeTemplateBuffer(driveClient(), fileId, filename);
+    return await readWorkbook(normalized);
+  } catch (err) {
+    console.error('[xls] normalized template failed', { filename, error: err.message });
+    throw new Error(`La base seleccionada no se pudo normalizar como XLSX: ${filename}`);
+  }
 }
 
 export async function publishGeneratedXls({ xls, extraction }) {
@@ -64,7 +76,11 @@ export async function generateFinalXls({ extraction, photos, publish = true }) {
   if (!template) throw new Error(`Plantilla no encontrada: ${extraction.template_filename}`);
 
   const templateBuffer = await downloadDriveFile(template.id);
-  const workbook = await loadTemplateWorkbook(templateBuffer, template.name);
+  const workbook = await loadTemplateWorkbook({
+    buffer: templateBuffer,
+    filename: template.name,
+    fileId: template.id,
+  });
   const sheet = workbook.worksheets[0];
   const cellMap = getCellMap(extraction.template_key);
   if (!fillHeaderByMap(sheet, extraction, cellMap)) fillHeader(sheet, extraction);
