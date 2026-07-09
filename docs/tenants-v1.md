@@ -13,7 +13,7 @@ Separar operación por tenant.
 Evitar que tenant_id, user_id o id desde query/body sean autoridad.
 Usar token como transporte de acceso.
 Mantener trazabilidad en reports, report_files y report_events.
-Permitir OTs nuevas temporalmente sin tenant hasta asignación.
+Permitir OTs nuevas sin tenant hasta asignación.
 ```
 
 ## Modelo
@@ -32,8 +32,8 @@ reports.tenant_id NULL = OT nueva pendiente de asignación
 Toda operación autenticada obtiene acceso desde requireTenantAccess().
 Nunca se acepta tenant_id desde query/body como autoridad.
 Admin y super_admin ven OTs de su tenant y OTs sin tenant.
-Las administrativas solo ven OTs con tenant y current_owner_id propio.
-La asignación de administrativa fija tenant_id en reports/files/events.
+Administrativas solo ven OTs con tenant y current_owner_id propio.
+Asignar administrativa fija tenant_id en reports/files/events.
 ```
 
 ## Roles V1
@@ -62,7 +62,7 @@ Query params pueden transportar token, no decidir tenant ni actor.
 /api/process-report exige token de acceso.
 La OT nace con reports.tenant_id NULL.
 runProcessReport crea la OT sin tenant operativo.
-report_files y report_events nacen sin tenant mientras la OT no se asigne.
+files/events nacen sin tenant mientras la OT no se asigne.
 ```
 
 ## Operación y colas
@@ -70,7 +70,7 @@ report_files y report_events nacen sin tenant mientras la OT no se asigne.
 ```txt
 /admin exige admin o super_admin.
 listReports incluye OTs del tenant y OTs sin tenant para admin/super_admin.
-Las administrativas asignables salen de tenant_access_tokens activas.
+Administrativas asignables salen de tenant_access_tokens activas.
 /admin/secretary exige administrativa o secretary.
 La cola administrativa filtra por tenant_id y current_owner_id.
 ```
@@ -94,7 +94,7 @@ El form de aprobación no manda tenant_id.
 La aprobación usa approveReportWithAccess.
 Admin puede aprobar OTs del tenant o sin tenant.
 Si admin aprueba una OT sin tenant, toma el tenant del admin.
-Administrativa solo puede aprobar OTs asignadas a su userId.
+Administrativa solo aprueba OTs asignadas a su userId.
 /config exige super_admin.
 Crear usuario genera token y link de acceso para copiar/pegar.
 ```
@@ -120,5 +120,5 @@ Crear usuario genera token y link de acceso para copiar/pegar.
 ```txt
 tenant_name en Vista Operación representa usuario asignado.
 Renombrar a assigned_user_name o separar joins.
-Normalizar role canónico administrativa y mantener secretary solo como legacy.
+Normalizar role canónico administrativa y secretary legacy.
 ```
