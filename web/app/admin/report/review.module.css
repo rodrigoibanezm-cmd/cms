@@ -51,8 +51,9 @@
 
 .approveForm button,
 .templateToggle,
-.templateForm button {
-  background: #1769c2;
+.templateForm button,
+.rejectPanel summary,
+.rejectActions button {
   border: 0;
   border-radius: 12px;
   color: white;
@@ -62,16 +63,27 @@
   padding: 11px 16px;
 }
 
-.templatePanel { position: relative; }
+.approveForm button,
+.templateToggle,
+.templateForm button { background: #1769c2; }
 
-.templateToggle {
+.templatePanel,
+.rejectPanel { position: relative; }
+
+.templateToggle,
+.rejectPanel summary {
   display: block;
   list-style: none;
 }
 
-.templateToggle::-webkit-details-marker { display: none; }
+.templateToggle::-webkit-details-marker,
+.rejectPanel summary::-webkit-details-marker { display: none; }
 
-.templateForm {
+.rejectPanel summary { background: #b42318; }
+.rejectActions button { background: #b42318; width: 100%; }
+
+.templateForm,
+.rejectPanel form {
   background: white;
   border: 1px solid #dfe7ef;
   border-radius: 16px;
@@ -79,14 +91,17 @@
   display: grid;
   gap: 12px;
   margin-top: 10px;
-  min-width: 360px;
   padding: 14px;
   position: absolute;
   right: 0;
   z-index: 4;
 }
 
-.templateForm label {
+.templateForm { min-width: 360px; }
+.rejectPanel form { min-width: 280px; }
+
+.templateForm label,
+.rejectPanel label {
   color: #526272;
   display: grid;
   font-size: 12px;
@@ -95,12 +110,16 @@
 }
 
 .templateForm input,
-.templateForm select {
+.templateForm select,
+.rejectPanel textarea {
   border: 1px solid #dfe7ef;
   border-radius: 10px;
+  font: inherit;
   font-size: 13px;
   padding: 9px 10px;
 }
+
+.rejectPanel textarea { resize: vertical; }
 
 .reviewMainGrid,
 .reviewSecondaryGrid {
@@ -114,7 +133,8 @@
 @media (max-width: 900px) {
   .reviewTopBar { flex-direction: column; }
   .approveGroup { justify-content: flex-start; max-width: none; width: 100%; }
-  .templateForm { left: 0; right: auto; min-width: 300px; }
+  .templateForm,
+  .rejectPanel form { left: 0; right: auto; min-width: 280px; }
   .reviewMainGrid,
   .reviewSecondaryGrid { grid-template-columns: 1fr; }
 }
