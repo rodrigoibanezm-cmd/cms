@@ -14,10 +14,9 @@ function isImage(file) {
   return String(file?.mime_type || '').startsWith('image/');
 }
 
-function compactSheetsUrl(url) {
+function previewUrl(url) {
   if (!url) return '';
-  const sep = url.includes('?') ? '&' : '?';
-  return `${url}${sep}rm=minimal&single=true&widget=false&chrome=false`;
+  return url.replace('/edit', '/preview');
 }
 
 function ZoomedImage({ src, alt }) {
@@ -32,30 +31,19 @@ function XlsViewport({ frameUrl }) {
     document.body.style.overflow = 'hidden';
     return () => { document.body.style.overflow = previous; };
   }, [hovered]);
-  return (
-    <div className={styles.xlsViewport} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
-      <iframe className={styles.xlsFrame} src={frameUrl} title="XLS generado" />
-    </div>
-  );
+  return <div className={styles.xlsViewport} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}><iframe className={styles.xlsFrame} src={frameUrl} title="XLS generado" /></div>;
 }
 
 export function VisualFile({ title, files, token }) {
   const file = files[files.length - 1];
-  const previewUrl = filePreviewUrl(file, token);
+  const preview = filePreviewUrl(file, token);
   return (
     <section className={`${styles.reviewBox} ${styles.visualBox}`}>
       <h2>{title}</h2>
       {!file ? <p className={styles.muted}>Sin archivo visible.</p> : null}
-      {previewUrl && isImage(file) ? <ZoomedImage src={previewUrl} alt={title} /> : file?.url ? (
-        <iframe className={styles.driveFrame} src={file.url} title={title} />
-      ) : (file ? <p className={styles.muted}>{file.filename}</p> : null)}
+      {preview && isImage(file) ? <ZoomedImage src={preview} alt={title} /> : file?.url ? <iframe className={styles.driveFrame} src={file.url} title={title} /> : (file ? <p className={styles.muted}>{file.filename}</p> : null)}
       {file?.url ? <div className={styles.adminActions}><a className={styles.adminButton} href={file.url} target="_blank">Abrir original</a></div> : null}
-      {files.length > 1 ? (
-        <details className={styles.collapseBox}>
-          <summary>Ver otros archivos</summary>
-          {files.map((item) => <p className={styles.muted} key={item.id}>{item.filename}</p>)}
-        </details>
-      ) : null}
+      {files.length > 1 ? <details className={styles.collapseBox}><summary>Ver otros archivos</summary>{files.map((item) => <p className={styles.muted} key={item.id}>{item.filename}</p>)}</details> : null}
     </section>
   );
 }
@@ -63,14 +51,13 @@ export function VisualFile({ title, files, token }) {
 export function XlsPanel({ report, files }) {
   const xls = files[files.length - 1];
   const xlsUrl = report.excel_url || xls?.url || '';
-  const frameUrl = compactSheetsUrl(xlsUrl);
+  const frameUrl = previewUrl(xlsUrl);
   return (
     <section className={`${styles.reviewBox} ${styles.visualBox} ${styles.xlsBox}`}>
       <h2>XLS generado</h2>
       {frameUrl ? <XlsViewport frameUrl={frameUrl} /> : <p className={styles.muted}>XLS pendiente.</p>}
-      <div className={styles.adminActions}>
-        {xlsUrl ? <a className={styles.adminButton} href={xlsUrl} target="_blank">Abrir XLS</a> : null}
-      </div>
+      {frameUrl ? <p className={styles.muted}>Vista previa de Drive. Si no carga, abre el XLS directamente.</p> : null}
+      <div className={styles.adminActions}>{xlsUrl ? <a className={styles.adminButton} href={xlsUrl} target="_blank">Abrir XLS</a> : null}</div>
       {xls ? <p className={styles.muted}>{xls.filename}</p> : null}
     </section>
   );
