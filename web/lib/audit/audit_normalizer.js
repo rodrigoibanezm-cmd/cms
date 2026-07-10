@@ -1,4 +1,4 @@
-import { AUTO_RECOVERY_FIELD_SET } from './audit_fields.js';
+import { isAutoRecoveryField } from './audit_fields.js';
 
 export function parseAuditJson(raw) {
   try {
@@ -24,7 +24,7 @@ function criticalAutoFieldSet(issues) {
   return new Set(
     criticalIssues(issues)
       .map((issue) => String(issue?.field || '').trim())
-      .filter((field) => AUTO_RECOVERY_FIELD_SET.has(field))
+      .filter(isAutoRecoveryField)
   );
 }
 
@@ -45,7 +45,7 @@ function normalizePatches(audit, decision, issues) {
   return Array.isArray(audit?.patches)
     ? audit.patches.filter((patch) => {
       const field = String(patch?.field || '').trim();
-      return AUTO_RECOVERY_FIELD_SET.has(field)
+      return isAutoRecoveryField(field)
         && hasCriticalIssueForPatch(field, issues)
         && patch?.instruction
         && !isLayoutPatch(patch);
@@ -59,7 +59,7 @@ function normalizeRecoveryTargets(audit, decision, patches) {
   const fromPatches = patches.map((patch) => patch.field);
   return [...new Set([...direct, ...fromPatches]
     .map((field) => String(field || '').trim())
-    .filter((field) => AUTO_RECOVERY_FIELD_SET.has(field)))];
+    .filter(isAutoRecoveryField))];
 }
 
 function normalizeInternalRecovery(decision, recoveryTargets) {
