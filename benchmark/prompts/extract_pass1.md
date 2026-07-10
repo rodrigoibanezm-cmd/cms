@@ -87,7 +87,8 @@ Matias Mura, Nicolas Ramos, Jhon Ramírez, Danilo Cortes, Alejandro Correa, Yimg
 "especificos"
 Incluye solamente campos adicionales visibles en cabecera.
 Si es TORQUE MANUAL, incluye "tipo_torque" con CLICK, RELOJ o DIGITAL.
-Ejemplo: {"cuadrante":"3/4","tipo":"CADENA","accionamiento":"NEUMATICO","tipo_torque":"CLICK"}
+Si es TORQUE MANUAL y aparece PRESICIÓN ±, incluye "precision_cw" y "precision_ccw" con los valores manuscritos visibles bajo CW y CCW.
+Ejemplo: {"cuadrante":"3/4","tipo":"CADENA","accionamiento":"NEUMATICO","tipo_torque":"CLICK","precision_cw":"±6%","precision_ccw":"±6%"}
 Si no existen campos adicionales devuelve {}.
 
 "checklist_items"
