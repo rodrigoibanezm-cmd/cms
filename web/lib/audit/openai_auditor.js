@@ -1,5 +1,6 @@
 import OpenAI from 'openai';
 import { buildAuditPrompt } from './audit_prompt.js';
+import { applyDeterministicAuditChecks } from './deterministic_checks.js';
 import { excelToAuditView } from './excel_audit_view.js';
 import { logAuditDone, normalizeAudit, parseAuditJson } from './audit_normalizer.js';
 
@@ -30,7 +31,10 @@ export async function auditWithOpenAI({ reportImage, xlsBuffer, extraction }) {
   });
 
   const raw = response.choices?.[0]?.message?.content || '';
-  const audit = normalizeAudit(parseAuditJson(raw));
+  const audit = applyDeterministicAuditChecks(
+    normalizeAudit(parseAuditJson(raw)),
+    { extraction, excelView }
+  );
   audit.model = model;
   logAuditDone({ audit, extraction });
   return audit;
