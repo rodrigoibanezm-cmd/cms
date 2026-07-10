@@ -23,12 +23,14 @@
   justify-content: space-between;
 }
 
-.reviewMeta {
+.reviewMeta,
+.approveGroup {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 12px;
 }
+
+.reviewMeta { margin-top: 12px; }
 
 .reviewMeta span {
   background: white;
@@ -41,8 +43,6 @@
 
 .approveGroup {
   align-items: flex-start;
-  display: flex;
-  flex-wrap: wrap;
   gap: 10px;
   justify-content: flex-end;
   margin-top: 10px;
@@ -102,18 +102,14 @@
   padding: 9px 10px;
 }
 
-.reviewMainGrid {
-  display: grid;
-  gap: 14px;
-  grid-template-columns: 1fr 1fr;
-  margin-bottom: 14px;
-}
-
+.reviewMainGrid,
 .reviewSecondaryGrid {
   display: grid;
   gap: 14px;
-  grid-template-columns: 1fr 1fr 1fr;
 }
+
+.reviewMainGrid { grid-template-columns: 1fr 1fr; margin-bottom: 14px; }
+.reviewSecondaryGrid { grid-template-columns: 1fr 1fr 1fr; }
 
 @media (max-width: 900px) {
   .reviewTopBar { flex-direction: column; }
