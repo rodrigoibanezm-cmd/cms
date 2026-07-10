@@ -22,6 +22,10 @@ export function pageParams(searchParams) {
   return { limit, offset };
 }
 
+function hideFailedWithoutXls(filters) {
+  return !filters.status;
+}
+
 export function whereClause(searchParams, tenantId) {
   const clauses = ['(r.tenant_id = $1 OR r.tenant_id IS NULL)'];
   const params = [tenantId];
@@ -30,6 +34,9 @@ export function whereClause(searchParams, tenantId) {
     review_status: clean(searchParams.get('review_status')),
     semaforo: clean(searchParams.get('semaforo')),
   };
+  if (hideFailedWithoutXls(filters)) {
+    clauses.push("NOT (r.status = 'error' AND r.drive_file_id IS NULL AND r.excel_url IS NULL)");
+  }
   for (const [field, value] of Object.entries(filters)) {
     if (!value) continue;
     params.push(value);
