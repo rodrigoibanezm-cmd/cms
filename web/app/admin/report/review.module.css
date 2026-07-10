@@ -46,6 +46,7 @@
   gap: 10px;
   justify-content: flex-end;
   margin-top: 10px;
+  max-width: 760px;
 }
 
 .approveForm button,
@@ -61,9 +62,7 @@
   padding: 11px 16px;
 }
 
-.templatePanel {
-  position: relative;
-}
+.templatePanel { position: relative; }
 
 .templateToggle {
   display: block;
@@ -118,6 +117,7 @@
 
 @media (max-width: 900px) {
   .reviewTopBar { flex-direction: column; }
+  .approveGroup { justify-content: flex-start; max-width: none; width: 100%; }
   .templateForm { left: 0; right: auto; min-width: 300px; }
   .reviewMainGrid,
   .reviewSecondaryGrid { grid-template-columns: 1fr; }
