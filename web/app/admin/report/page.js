@@ -1,4 +1,5 @@
 import { headers } from 'next/headers';
+import AssignSecretaryForm from '../../../components/admin/AssignSecretaryForm.js';
 import { AuditPanel, CriticalBox } from '../../../components/admin/ReviewAuditPanel.js';
 import { VisualFile, XlsPanel } from '../../../components/admin/ReviewVisualPanel.js';
 import SecretaryApproveForm from '../../../components/admin/SecretaryApproveForm.js';
@@ -7,10 +8,12 @@ import { workflowLabel } from '../../../components/admin/admin_helpers.js';
 import { listTemplates } from '../../../lib/template_catalog.js';
 import { getReport } from '../../../lib/report_reads.js';
 import { requireRole, requireTenantAccess } from '../../../lib/tenant_access.js';
+import { listAssignableUsers } from '../../../lib/tenant_users.js';
 import styles from './review.module.css';
 
 export const dynamic = 'force-dynamic';
-const DETAIL_ROLES = ['admin', 'super_admin', 'administrativa', 'secretary'];
+const ADMIN_ROLES = ['admin', 'super_admin'];
+const DETAIL_ROLES = [...ADMIN_ROLES, 'administrativa', 'secretary'];
 const QUEUE_ROLES = ['administrativa', 'secretary'];
 
 function filesOf(files, kind) {
@@ -41,6 +44,14 @@ function backUrl(token, access) {
   return token ? `${path}?token=${encodeURIComponent(token)}` : path;
 }
 
+function withToken(path, token) {
+  return token ? `${path}${path.includes('?') ? '&' : '?'}token=${encodeURIComponent(token)}` : path;
+}
+
+function canManageAssignments(access) {
+  return ADMIN_ROLES.includes(access?.role);
+}
+
 export default async function AdminReportPage({ searchParams }) {
   const params = await searchParams;
   const access = await requireDetailAccess(params);
@@ -58,6 +69,7 @@ export default async function AdminReportPage({ searchParams }) {
   const photos = filesOf(data.files, 'detail_photo');
   const xlsFiles = filesOf(data.files, 'generated_xls');
   const templates = await listTemplates().catch(() => []);
+  const secretaries = canManageAssignments(access) ? await listAssignableUsers(access.tenantId).catch(() => []) : [];
 
   return (
     <main className={styles.reviewScreen}>
@@ -66,6 +78,7 @@ export default async function AdminReportPage({ searchParams }) {
         <div className={styles.reviewTopBar}>
           <div><h1>Revision OT {report.ot || '-'}</h1><div className={styles.reviewMeta}><span>{workflowLabel(report.current_state)}</span><span>{confidenceLabel(report)}</span></div></div>
           <div className={styles.approveGroup}>
+            {canManageAssignments(access) ? <AssignSecretaryForm report={report} secretaries={secretaries} action={withToken('/api/admin/reports/assign', token)} returnTo={withToken(`/admin/report?id=${report.id}`, token)} /> : null}
             <TemplateChangeForm report={report} token={token} templates={templates} />
             <SecretaryApproveForm report={report} token={token} />
           </div>
