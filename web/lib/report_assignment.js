@@ -17,15 +17,18 @@ async function findReport(reportId, access) {
   const where = isSuperAdmin(access) ? 'id=$1' : '(id=$1 AND (tenant_id=$2 OR tenant_id IS NULL))';
   const params = isSuperAdmin(access) ? [reportId] : [reportId, access.tenantId];
   const res = await query(
-    `SELECT id, status, current_state, excel_url FROM reports WHERE ${where}`,
+    `SELECT id, status, tenant_id, current_state, current_owner_id,
+        excel_url, approved_at, secretary_approved_at, closed_at
+       FROM reports WHERE ${where}`,
     params
   );
   return res.rows[0] || null;
 }
 
 function canAssign(report) {
+  if (report.closed_at || report.approved_at || report.secretary_approved_at) return false;
   if (!report.current_state) return true;
-  if (['admin_queue', 'assigned_to_secretary'].includes(report.current_state)) return true;
+  if (['admin_queue', 'assigned_to_secretary', 'secretary_review'].includes(report.current_state)) return true;
   return report.current_state === 'processing' && Boolean(report.excel_url || report.status === 'processed');
 }
 
@@ -56,6 +59,18 @@ async function attachTenant(reportId, tenantId) {
   await query(`UPDATE report_events SET tenant_id=$2 WHERE report_id=$1`, [reportId, tenantId]);
 }
 
+function assignmentPayload(report, secretary, access) {
+  return {
+    secretary_id: secretary.user_id,
+    tenant_id: secretary.tenant_id,
+    assigned_by_user_id: access.userId,
+    assigned_by_user_role: access.role,
+    previous_state: report.current_state,
+    previous_owner_id: report.current_owner_id,
+    reassigned: Boolean(report.current_owner_id && report.current_owner_id !== secretary.user_id),
+  };
+}
+
 export async function assignReportToSecretary({ reportId, secretaryId, access }) {
   if (!reportId) throw new Error('reportId requerido');
   if (!secretaryId) throw new Error('secretaryId requerido');
@@ -70,13 +85,11 @@ export async function assignReportToSecretary({ reportId, secretaryId, access })
   if (!secretary) throw new Error('Administrativa no pertenece al tenant');
 
   await attachTenant(report.id, secretary.tenant_id);
-  await transitionReportWorkflow(report.id, WORKFLOW.ASSIGNED_TO_SECRETARY, {
-    secretary_id: secretary.user_id,
-    tenant_id: secretary.tenant_id,
-    assigned_by_user_id: access.userId,
-    assigned_by_user_role: access.role,
-    previous_state: report.current_state,
-  });
+  await transitionReportWorkflow(
+    report.id,
+    WORKFLOW.ASSIGNED_TO_SECRETARY,
+    assignmentPayload(report, secretary, access)
+  );
 
   return { report_id: report.id, secretary_id: secretary.user_id };
 }
