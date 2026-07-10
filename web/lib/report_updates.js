@@ -12,13 +12,24 @@ function confidencePercent(value) {
   return Math.max(0, Math.min(100, Math.round(percent)));
 }
 
+function issuePenalty(issue) {
+  const severity = String(issue?.severity || '').toLowerCase();
+  if (['critical', 'fatal', 'blocker'].includes(severity)) return 15;
+  if (['high', 'major'].includes(severity)) return 12;
+  if (['medium', 'warning', 'review'].includes(severity)) return 8;
+  if (['low', 'minor', 'info'].includes(severity)) return 5;
+  return 8;
+}
+
 function auditConfidenceCap(audit) {
   const issues = Array.isArray(audit?.issues) ? audit.issues : [];
   if (!issues.length && audit?.decision === 'approve') return null;
-  if (issues.some((issue) => issue?.severity === 'critical')) return 45;
-  if (audit?.decision === 'review') return 60;
-  if (audit?.decision === 'recover') return 70;
-  return issues.length ? 75 : null;
+
+  const totalPenalty = issues.reduce((sum, issue) => sum + issuePenalty(issue), 0);
+  const issueCap = issues.length ? Math.max(45, 100 - totalPenalty) : null;
+  if (audit?.decision === 'recover') return issueCap === null ? 70 : Math.min(issueCap, 70);
+  if (audit?.decision === 'review') return issueCap ?? 90;
+  return issueCap;
 }
 
 export async function markExtracted(id, extraction) {
