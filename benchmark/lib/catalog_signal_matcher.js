@@ -2,14 +2,6 @@ const GENERIC_SIGNALS = new Set([
   'INFORME',
   'TECNICO',
   'TECNICA',
-  'ELECTRICO',
-  'ELECTRICA',
-  'NEUMATICO',
-  'NEUMATICA',
-  'INALAMBRICO',
-  'INALAMBRICA',
-  'HIDRAULICO',
-  'HIDRAULICA',
   'BASE',
 ]);
 
@@ -46,6 +38,7 @@ function candidateNames(entry) {
 function tokenMatch(signal, name) {
   const signalTokens = tokens(signal);
   const nameTokens = new Set(tokens(name));
+  if (signalTokens.length > 1) return signalTokens.every((token) => nameTokens.has(token));
   return signalTokens.some((token) => nameTokens.has(token));
 }
 
