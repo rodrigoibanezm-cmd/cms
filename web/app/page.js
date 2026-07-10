@@ -26,26 +26,35 @@ export default function Page() {
     setLoading(false);
   }
 
+  const missing = report.length === 0
+    ? 'Falta la foto del informe'
+    : photos.length === 0
+      ? 'Falta al menos una foto del equipo'
+      : '';
+
   return (
     <main className="screen">
       <Header />
       <UploadCard
-        title="Fotos de detalle"
-        hint="Agrega todas las fotos necesarias del equipo."
-        files={photos}
-        multiple={true}
-        onChange={setPhotos}
-      />
-      <UploadCard
-        title="Foto del informe"
-        hint="Sube una sola foto completa y legible del informe."
+        step="1"
+        title="Fotografía el informe"
+        hint="Debe verse completo, derecho y con buena luz."
         files={report}
         multiple={false}
         onChange={setReport}
       />
+      <UploadCard
+        step="2"
+        title="Fotografía el equipo"
+        hint="Agrega una o más fotos donde se vea claramente."
+        files={photos}
+        multiple={true}
+        onChange={setPhotos}
+      />
       <SubmitButton
         loading={loading}
         disabled={!canSubmit}
+        missing={missing}
         onClick={handleSubmit}
       />
       <StatusCard status={status} />
