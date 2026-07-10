@@ -9,15 +9,15 @@ function withToken(path, token) {
   return token ? `${path}${path.includes('?') ? '&' : '?'}token=${encodeURIComponent(token)}` : path;
 }
 
-export default function SecretaryRejectForm({ report, token }) {
+export default function SecretaryRejectForm({ report, token, returnTo }) {
   if (!canReject(report)) return null;
-  const returnTo = withToken(`/admin/report?id=${report.id}`, token);
+  const target = returnTo || `/admin/report?id=${report.id}`;
 
   return (
     <details className={styles.rejectPanel}>
       <summary>Rechazar</summary>
       <form action={withToken(`/api/secretary/reports/${report.id}/reject`, token)} method="post">
-        <input type="hidden" name="return_to" value={returnTo} />
+        <input type="hidden" name="return_to" value={withToken(target, token)} />
         <label>
           <span>Motivo breve</span>
           <textarea name="reason" rows="3" placeholder="Opcional" />
