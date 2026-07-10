@@ -53,6 +53,11 @@ function canManageAssignments(access) {
   return ADMIN_ROLES.includes(access?.role);
 }
 
+function rejectReturnPath(report, access) {
+  if (QUEUE_ROLES.includes(access?.role)) return '/admin/secretary';
+  return `/admin/report?id=${report.id}`;
+}
+
 export default async function AdminReportPage({ searchParams }) {
   const params = await searchParams;
   const access = await requireDetailAccess(params);
@@ -79,7 +84,7 @@ export default async function AdminReportPage({ searchParams }) {
           <div className={styles.approveGroup}>
             {canManageAssignments(access) ? <AssignSecretaryForm report={report} secretaries={secretaries} action={withToken('/api/admin/reports/assign', token)} returnTo={withToken(`/admin/report?id=${report.id}`, token)} /> : null}
             <TemplateChangeForm report={report} token={token} templates={templates} />
-            <SecretaryRejectForm report={report} token={token} />
+            <SecretaryRejectForm report={report} token={token} returnTo={rejectReturnPath(report, access)} />
             <SecretaryApproveForm report={report} token={token} />
           </div>
         </div>
