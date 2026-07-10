@@ -1,85 +1,87 @@
-/* web/app/globals.css */
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
-  background: #eef3f8;
+  background: #f2f5f8;
   color: #132033;
-  font-family: Arial, sans-serif;
+  font-family: Inter, Arial, sans-serif;
 }
+
+button, input { font: inherit; }
 
 .screen {
   width: 100%;
-  max-width: 430px;
+  max-width: 480px;
   min-height: 100vh;
   margin: 0 auto;
-  padding: 28px 18px;
+  padding: 24px 16px 40px;
 }
 
-.header {
-  margin-bottom: 22px;
-}
-
-.eyebrow {
-  margin: 0 0 8px;
-  color: #1c6dd0;
-  font-size: 14px;
-  font-weight: 700;
-}
+.header { margin-bottom: 24px; }
+.brand { margin: 0 0 6px; color: #0b55d9; font-size: 14px; font-weight: 800; }
 
 h1 {
   margin: 0;
-  font-size: 28px;
-  line-height: 1.05;
+  font-size: 30px;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
 }
 
 .subtitle {
-  margin: 12px 0 0;
-  color: #637083;
-  font-size: 15px;
+  margin: 10px 0 0;
+  color: #536174;
+  font-size: 16px;
+  line-height: 1.45;
 }
 
-.card,
-.status {
-  background: white;
-  border: 1px solid #dfe7ef;
-  border-radius: 22px;
-  box-shadow: 0 12px 30px rgba(31, 51, 79, 0.08);
-  margin-bottom: 16px;
+.card, .status {
+  background: #fff;
+  border: 1px solid #d8e1eb;
+  border-radius: 16px;
+  margin-bottom: 14px;
   padding: 18px;
 }
 
-.card h2,
-.status h2 {
-  font-size: 18px;
-  margin: 0 0 6px;
+.cardReady { border-color: #9fd7af; }
+.cardTitle { display: flex; gap: 12px; align-items: flex-start; }
+
+.step {
+  display: grid;
+  flex: 0 0 32px;
+  height: 32px;
+  place-items: center;
+  border-radius: 50%;
+  background: #eaf2ff;
+  color: #0b55d9;
+  font-weight: 900;
 }
 
-.card p,
-.status p {
+.cardReady .step { background: #e8f7ed; color: #16803a; }
+.card h2, .status h2 { margin: 2px 0 5px; font-size: 18px; }
+
+.card p, .status p {
+  margin: 0;
   color: #637083;
   font-size: 14px;
-  margin: 0;
+  line-height: 1.4;
 }
 
 .upload {
-  align-items: center;
-  background: #edf5ff;
-  border: 1px dashed #7cb3f2;
-  border-radius: 16px;
-  color: #1259a8;
   display: flex;
-  font-weight: 700;
+  min-height: 58px;
+  align-items: center;
   justify-content: center;
+  gap: 10px;
   margin-top: 16px;
-  padding: 16px;
+  border: 2px solid #0b55d9;
+  border-radius: 12px;
+  color: #0b55d9;
+  font-weight: 800;
+  cursor: pointer;
 }
 
-.upload input {
-  display: none;
-}
+.upload input { display: none; }
+.camera { font-size: 12px; }
 
 .previewGrid {
   display: grid;
@@ -89,57 +91,53 @@ h1 {
 }
 
 .previewItem {
-  border: 1px solid #dfe7ef;
-  border-radius: 12px;
-  height: 88px;
-  overflow: hidden;
   position: relative;
+  height: 96px;
+  overflow: hidden;
+  border: 1px solid #dfe7ef;
+  border-radius: 10px;
 }
 
-.previewItem img {
-  height: 100%;
-  object-fit: cover;
-  width: 100%;
-}
+.previewItem img { width: 100%; height: 100%; object-fit: cover; }
 
 .previewRemove {
-  background: white;
-  border: 1px solid #dfe7ef;
-  border-radius: 999px;
-  font-weight: 800;
-  height: 24px;
   position: absolute;
-  right: 5px;
   top: 5px;
-  width: 24px;
+  right: 5px;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(19, 32, 51, .82);
+  color: #fff;
+  font-size: 20px;
 }
 
-.count {
-  margin-top: 10px !important;
-}
+.count { margin-top: 12px !important; font-weight: 700; }
+.count.ready { color: #16803a; }
+.submitArea { margin-top: 20px; }
 
 .submit {
-  background: #1769c2;
-  border: 0;
-  border-radius: 18px;
-  color: white;
-  font-size: 17px;
-  font-weight: 800;
-  margin: 4px 0 16px;
-  padding: 17px;
   width: 100%;
+  min-height: 60px;
+  border: 0;
+  border-radius: 12px;
+  background: #0b55d9;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 900;
 }
 
-.submit:disabled {
-  opacity: 0.7;
+.submit:disabled { background: #aeb8c5; color: #f7f9fb; }
+
+.submitHint {
+  margin: 9px 0 18px;
+  color: #6a7585;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
 }
 
-.status {
-  align-items: center;
-  display: flex;
-  gap: 14px;
-}
-
-.statusIcon {
-  font-size: 32px;
-}
+.submitReady { color: #16803a; }
+.status { display: flex; align-items: center; gap: 14px; }
+.statusIcon { font-size: 30px; }
