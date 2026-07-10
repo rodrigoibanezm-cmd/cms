@@ -17,6 +17,7 @@ const RECOVERY = `Relectura quirúrgica:
 Si el problema está en campos cortos y visibles, devuelve recovery_targets usando solo:
 ${autoRecoveryFieldsText()}
 
+Para campos específicos de una plantilla usa la ruta especificos.nombre_campo.
 Si el checklist está vacío o faltan marcas claras, usa recovery_targets ["inspeccion"].
 Si el problema es amplio o dudoso, manda review.
 No reescribas textos largos ni rehagas todo el informe.`;
@@ -25,8 +26,8 @@ const EXAMPLE = `Ejemplo:
 Imagen: Operativo marcado. Excel: Operativo vacío.
 Respuesta: decision recover, issue critical, recovery_targets ["estado_operativo"].
 
-Imagen: Torque manual con PRESICIÓN ± visible en CW/CCW. Excel: CW o CCW vacío.
-Respuesta: decision recover, issue critical, recovery_targets ["especificos.precision_cw", "especificos.precision_ccw"].
+Imagen: campo específico corto visible en cabecera. Excel: ese valor está vacío.
+Respuesta: decision recover, issue critical, recovery_targets ["especificos.nombre_campo"].
 
 Imagen: checklist visible en la imagen, pero vacío en Excel.
 Respuesta: decision recover, issue critical, recovery_targets ["inspeccion"].
