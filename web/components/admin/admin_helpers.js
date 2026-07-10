@@ -10,6 +10,7 @@ export function workflowLabel(value) {
   if (value === 'assigned_to_secretary') return 'Asignada';
   if (value === 'secretary_review') return 'En revisión';
   if (value === 'secretary_approved') return 'Aprobada';
+  if (value === 'rejected') return 'Rechazada';
   if (value === 'closed') return 'Cerrada';
   if (value === 'error') return 'Error';
   return value || '-';
