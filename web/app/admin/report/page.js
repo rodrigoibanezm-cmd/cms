@@ -21,9 +21,9 @@ function filesOf(files, kind) {
   return files.filter((file) => file.kind === kind);
 }
 
-function confidenceLabel(report) {
-  if (report.confidence_score === null || report.confidence_score === undefined) return 'Confianza IA: -';
-  return `Confianza IA: ${report.confidence_score}%`;
+function qualityLabel(report) {
+  if (report.confidence_score === null || report.confidence_score === undefined) return 'Calidad XLS: -';
+  return `Calidad XLS: ${report.confidence_score}%`;
 }
 
 function queryString(params) {
@@ -80,7 +80,7 @@ export default async function AdminReportPage({ searchParams }) {
       <header className={styles.reviewHeader}>
         <a className={styles.backLink} href={back}>Volver</a>
         <div className={styles.reviewTopBar}>
-          <div><h1>Revision OT {report.ot || '-'}</h1><div className={styles.reviewMeta}><span>{workflowLabel(report.current_state)}</span><span>{confidenceLabel(report)}</span></div></div>
+          <div><h1>Revision OT {report.ot || '-'}</h1><div className={styles.reviewMeta}><span>{workflowLabel(report.current_state)}</span><span>{qualityLabel(report)}</span></div></div>
           <div className={styles.approveGroup}>
             {canManageAssignments(access) ? <AssignSecretaryForm report={report} secretaries={secretaries} action={withToken('/api/admin/reports/assign', token)} returnTo={withToken(`/admin/report?id=${report.id}`, token)} /> : null}
             <TemplateChangeForm report={report} token={token} templates={templates} />
