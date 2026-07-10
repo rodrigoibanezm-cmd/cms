@@ -1,0 +1,34 @@
+[
+  {
+    "template_key": "LUMINARIA_INALAMBRICA_TECNICOS_BASE",
+    "display_name": "Luminaria Inalambrica",
+    "aliases": [
+      "INFORME TECNICO LUMINARIA INALAMBRICA",
+      "LUMINARIA INALAMBRICA",
+      "LUMINARIA INALÁMBRICA"
+    ],
+    "checklist": [
+      "ESTRUCTURA PRINCIPAL",
+      "SOPORTE FOCO LED",
+      "FOCO LED",
+      "BRAZO DE APOYO",
+      "PUERTO DE CONEXIÓN",
+      "MANILLA DE AGARRE",
+      "PEDESTAL Y SEGUROS",
+      "COMPONENTES INTERNOS",
+      "PLACA CONTROLADORA",
+      "BOTÓN DE ENCENDIDO"
+    ],
+    "n_ots_total_grupo": 1,
+    "n_ots_evidencia": 1,
+    "cohesion": 1.0,
+    "template_status": "approved",
+    "reason": "base_extraida_de_secretaria",
+    "template_filename": "LUMINARIA_INALAMBRICA_TECNICOS_BASE.xlsx",
+    "similitud_template": 1.0,
+    "candidate_ot": "24227",
+    "template_drive_id": "1VEcYCcIVRTZ5JQsh_Yg7Mbn2an8IB9S0",
+    "template_version": 1,
+    "priority": null
+  }
+]
