@@ -1,5 +1,5 @@
 import { parseModelJson } from '../../../benchmark/lib/io.js';
-import { AUTO_RECOVERY_FIELD_SET } from '../audit/audit_fields.js';
+import { isAutoRecoveryField } from '../audit/audit_fields.js';
 import { callGemini } from '../benchmark/gemini_client.js';
 import { geminiModel } from '../gemini_models.js';
 import { buildRecoveryPrompt } from './recovery_prompt.js';
@@ -7,7 +7,7 @@ import { buildRecoveryPrompt } from './recovery_prompt.js';
 function filterTargets(items) {
   return [...new Set((items || [])
     .map((item) => String(item?.field || item || '').trim())
-    .filter((field) => AUTO_RECOVERY_FIELD_SET.has(field)))];
+    .filter(isAutoRecoveryField))];
 }
 
 export async function runRecovery({ image, extraction, audit }) {
