@@ -7,7 +7,7 @@
 
 .table {
   border-collapse: collapse;
-  min-width: 1320px;
+  min-width: 1360px;
   width: 100%;
 }
 
@@ -34,8 +34,8 @@
 
 .table th:nth-child(6),
 .table td:nth-child(6) {
-  min-width: 330px;
-  width: 330px;
+  min-width: 360px;
+  width: 360px;
 }
 
 .otLink {
@@ -66,31 +66,35 @@
 .pill.blue { background: #eaf2ff; }
 .pill.muted { background: #f0f3f6; }
 
-.secretary {
-  align-items: center;
-  display: flex;
-  gap: 12px;
-  min-width: 300px;
+.assignmentCell {
+  display: grid;
+  gap: 10px;
+  max-width: 330px;
 }
 
-.secretary summary {
-  cursor: pointer;
-  flex: 0 0 105px;
-  font-weight: 800;
-  list-style: none;
+.assignmentStatus {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.assignmentStatus strong {
+  color: #132033;
+  font-weight: 900;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.secretary summary::-webkit-details-marker { display: none; }
-
-.secretary form {
-  align-items: center;
-  background: white;
-  border: 1px solid #dfe7ef;
-  border-radius: 12px;
-  display: flex;
-  gap: 8px;
-  padding: 8px;
+.assignmentStatus small {
+  color: #65748b;
+  flex: 0 0 auto;
+  font-size: 11px;
+  font-weight: 800;
+  margin: 0;
+  text-transform: uppercase;
 }
 
 .pdf {
