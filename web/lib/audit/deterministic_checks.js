@@ -37,12 +37,12 @@ const FIELD_CHECKS = [
   {
     field: 'especificos.precision_cw',
     label: 'precisión CW',
-    penalty: 3,
+    penalty: 1.5,
   },
   {
     field: 'especificos.precision_ccw',
     label: 'precisión CCW',
-    penalty: 3,
+    penalty: 1.5,
   },
 ];
 
