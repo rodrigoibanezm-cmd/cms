@@ -13,6 +13,8 @@ function confidencePercent(value) {
 }
 
 function issuePenalty(issue) {
+  const explicit = Number(issue?.quality_penalty);
+  if (Number.isFinite(explicit) && explicit >= 0) return explicit;
   const severity = String(issue?.severity || '').toLowerCase();
   if (['critical', 'fatal', 'blocker'].includes(severity)) return 15;
   if (['high', 'major'].includes(severity)) return 12;
@@ -26,8 +28,8 @@ function auditConfidenceCap(audit) {
   if (!issues.length && audit?.decision === 'approve') return null;
 
   const totalPenalty = issues.reduce((sum, issue) => sum + issuePenalty(issue), 0);
-  const issueCap = issues.length ? Math.max(45, 100 - totalPenalty) : null;
-  if (audit?.decision === 'recover') return issueCap === null ? 70 : Math.min(issueCap, 70);
+  const issueCap = issues.length ? Math.max(45, Math.round(100 - totalPenalty)) : null;
+  if (audit?.decision === 'recover') return issueCap ?? 97;
   if (audit?.decision === 'review') return issueCap ?? 90;
   return issueCap;
 }
