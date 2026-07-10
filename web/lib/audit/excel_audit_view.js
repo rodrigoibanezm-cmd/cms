@@ -7,6 +7,12 @@ function cellText(cell) {
   return value ?? null;
 }
 
+function isVisibleCell(sheet, row, colNumber) {
+  if (row.hidden || row.height === 0) return false;
+  const column = sheet.getColumn(colNumber);
+  return !(column.hidden || column.width === 0);
+}
+
 export async function excelToAuditView(buffer) {
   const workbook = new ExcelJS.Workbook();
   await workbook.xlsx.load(buffer);
@@ -14,8 +20,9 @@ export async function excelToAuditView(buffer) {
   const cells = [];
 
   sheet.eachRow((row, rowNumber) => {
-    if (rowNumber > 90) return;
+    if (rowNumber > 90 || row.hidden || row.height === 0) return;
     row.eachCell({ includeEmpty: false }, (cell, colNumber) => {
+      if (!isVisibleCell(sheet, row, colNumber)) return;
       const value = cellText(cell);
       if (value === null || String(value).trim() === '') return;
       cells.push({
