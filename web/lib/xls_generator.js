@@ -31,11 +31,8 @@ function isNativeXlsxTemplate(template) {
 }
 
 async function selectedTemplate(extraction, folderId) {
-  if (extraction.template_drive_file_id) {
-    return { id: extraction.template_drive_file_id, name: extraction.template_filename };
-  }
-  const drive = driveClient();
-  return findFileByName(drive, folderId, extraction.template_filename);
+  if (extraction.template_drive_file_id) return { id: extraction.template_drive_file_id, name: extraction.template_filename };
+  return findFileByName(driveClient(), folderId, extraction.template_filename);
 }
 
 async function loadTemplateWorkbook(buffer, filename) {
@@ -50,17 +47,18 @@ async function loadTemplateWorkbook(buffer, filename) {
   return workbook;
 }
 
+function normalizeMainSheetName(sheet) {
+  const clean = String(sheet?.name || '').trim();
+  if (clean && clean !== sheet.name) sheet.name = clean;
+}
+
 export async function publishGeneratedXls({ xls, extraction }) {
   const folderId = outputFolderId();
   if (!folderId) throw new Error('Falta carpeta Drive de salida');
   if (xls.excel_url) return xls;
   const uploaded = await uploadDriveFile({ buffer: xls.buffer, filename: xls.filename, folderId });
   console.log('[xls] uploaded', { ot: extraction?.ot, filename: xls.filename, driveFileId: uploaded.id, recovered: Boolean(extraction?.recovery?.applied) });
-  return {
-    ...xls,
-    drive_file_id: uploaded.id,
-    excel_url: uploaded.webViewLink,
-  };
+  return { ...xls, drive_file_id: uploaded.id, excel_url: uploaded.webViewLink };
 }
 
 export async function generateFinalXls({ extraction, photos, publish = true }) {
@@ -72,14 +70,13 @@ export async function generateFinalXls({ extraction, photos, publish = true }) {
 
   const template = await selectedTemplate(extraction, templateFolderId);
   if (!template) throw new Error(`Plantilla no encontrada: ${extraction.template_filename}`);
-  if (!isNativeXlsxTemplate(template)) {
-    throw new Error(`La base debe ser un XLSX real, no una Hoja de Google: ${template.name}`);
-  }
+  if (!isNativeXlsxTemplate(template)) throw new Error(`La base debe ser un XLSX real, no una Hoja de Google: ${template.name}`);
 
   const templateBuffer = await downloadDriveFile(template.id);
   const workbook = await loadTemplateWorkbook(templateBuffer, template.name);
   sanitizeTemplateWorkbook(workbook);
   const sheet = workbook.worksheets[0];
+  normalizeMainSheetName(sheet);
   const cellMap = getCellMap(extraction.template_key);
   if (!fillHeaderByMap(sheet, extraction, cellMap)) fillHeader(sheet, extraction);
   fillSpecificFields(sheet, extraction);
@@ -92,11 +89,6 @@ export async function generateFinalXls({ extraction, photos, publish = true }) {
   styleEditableCells(sheet);
 
   const outBuffer = await workbook.xlsx.writeBuffer();
-  const xls = {
-    filename: `${extraction.ot || 'SIN_OT'}_${Date.now()}_GENERADO.xlsx`,
-    buffer: Buffer.from(outBuffer),
-  };
-
-  if (!publish) return xls;
-  return publishGeneratedXls({ xls, extraction });
+  const xls = { filename: `${extraction.ot || 'SIN_OT'}_${Date.now()}_GENERADO.xlsx`, buffer: Buffer.from(outBuffer) };
+  return publish ? publishGeneratedXls({ xls, extraction }) : xls;
 }
