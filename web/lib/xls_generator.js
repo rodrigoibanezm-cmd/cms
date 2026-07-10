@@ -1,4 +1,3 @@
-import ExcelJS from 'exceljs';
 import { getCellMap } from './xls_cell_maps.js';
 import {
   downloadDriveFile,
@@ -16,6 +15,7 @@ import { fillSpecificFields } from './xls/specific_fields_fill.js';
 import { addPhotos, addTextBlocks } from './xls/workbook_extras.js';
 import { styleEditableCells } from './xls/input_cell_style.js';
 import { sanitizeTemplateWorkbook } from './xls/template_sanitize.js';
+import { loadTemplateWorkbook } from './xls/template_loader.js';
 
 const SHORTCUT_MIME = 'application/vnd.google-apps.shortcut';
 const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
@@ -33,18 +33,6 @@ function isNativeXlsxTemplate(template) {
 async function selectedTemplate(extraction, folderId) {
   if (extraction.template_drive_file_id) return { id: extraction.template_drive_file_id, name: extraction.template_filename };
   return findFileByName(driveClient(), folderId, extraction.template_filename);
-}
-
-async function loadTemplateWorkbook(buffer, filename) {
-  const workbook = new ExcelJS.Workbook();
-  try {
-    await workbook.xlsx.load(buffer);
-  } catch (err) {
-    console.error('[xls] invalid native xlsx template', { filename, error: err.message });
-    throw new Error(`La base seleccionada no es un XLSX compatible: ${filename}`);
-  }
-  if (!workbook.worksheets[0]) throw new Error(`La base seleccionada no tiene hojas: ${filename}`);
-  return workbook;
 }
 
 function normalizeMainSheetName(sheet) {
