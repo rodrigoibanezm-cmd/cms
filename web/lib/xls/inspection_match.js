@@ -15,11 +15,13 @@ const KEY_ALIASES = {
   SWITCHDEENCENDIDO: 'SWITCHDEENCENDIDO',
   PERNOSYTUERCAS: 'PERNOS',
   TORNILLOSYTUERCAS: 'PERNOS',
+  COMPONENTESINTYERNOS: 'COMPONENTESINTERNOS',
 };
 
 function looseKey(value) {
   return norm(value)
     .replace(/PRICIPAL/g, 'PRINCIPAL')
+    .replace(/INTYERNOS/g, 'INTERNOS')
     .replace(/SISTEMADE/g, 'SISTEMA DE')
     .replace(/SISTEMAS/g, 'SISTEMA')
     .replace(/[^A-Z0-9]/g, '');
