@@ -10,6 +10,10 @@ function norm(value) {
     .replace(/\s+/g, '');
 }
 
+function isShortScalar(value) {
+  return ['string', 'number', 'boolean'].includes(typeof value) && text(value).length > 0 && text(value).length <= 60;
+}
+
 function valueAtPath(source, path) {
   return String(path || '').split('.').reduce((current, key) => current?.[key], source);
 }
@@ -33,23 +37,36 @@ function uniqueItems(items) {
   });
 }
 
-const FIELD_CHECKS = [
-  {
-    field: 'especificos.precision_cw',
-    label: 'precisión CW',
-    penalty: 1.5,
-  },
-  {
-    field: 'especificos.precision_ccw',
-    label: 'precisión CCW',
-    penalty: 1.5,
-  },
+const HEADER_FIELDS = [
+  'ot',
+  'cliente',
+  'rotulo',
+  'fecha_evaluacion',
+  'tecnico',
+  'marca',
+  'modelo',
+  'serie',
+  'capacidad',
+  'estado_herramienta',
+  'estado_operativo',
 ];
 
+function labelFor(path) {
+  return path.replace(/^especificos\./, '').replace(/_/g, ' ');
+}
+
+function expectedShortFields(extraction) {
+  const fields = HEADER_FIELDS.map((field) => ({ field, penalty: 3 }));
+  Object.entries(extraction?.especificos || {}).forEach(([key, value]) => {
+    if (isShortScalar(value)) fields.push({ field: `especificos.${key}`, penalty: 1.5 });
+  });
+  return fields;
+}
+
 function missingExpectedFields({ extraction, excelView }) {
-  return FIELD_CHECKS.filter((check) => {
+  return expectedShortFields(extraction).filter((check) => {
     const expected = valueAtPath(extraction, check.field);
-    return text(expected) && !excelHasValue(excelView, expected);
+    return isShortScalar(expected) && !excelHasValue(excelView, expected);
   });
 }
 
@@ -63,7 +80,7 @@ export function applyDeterministicAuditChecks(audit, { extraction, excelView }) 
       field: check.field,
       severity: 'minor',
       quality_penalty: check.penalty,
-      reason: `La extracción trae ${check.label}, pero el valor no aparece en el Excel generado.`,
+      reason: `La extracción trae ${labelFor(check.field)}, pero el valor no aparece en el Excel generado.`,
     })),
   ];
   const recovery_targets = uniqueItems([...(audit?.recovery_targets || []), ...missing.map((check) => check.field)]);
