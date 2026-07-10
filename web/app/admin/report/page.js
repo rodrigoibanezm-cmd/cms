@@ -3,6 +3,7 @@ import AssignSecretaryForm from '../../../components/admin/AssignSecretaryForm.j
 import { AuditPanel, CriticalBox } from '../../../components/admin/ReviewAuditPanel.js';
 import { VisualFile, XlsPanel } from '../../../components/admin/ReviewVisualPanel.js';
 import SecretaryApproveForm from '../../../components/admin/SecretaryApproveForm.js';
+import SecretaryRejectForm from '../../../components/admin/SecretaryRejectForm.js';
 import TemplateChangeForm from '../../../components/admin/TemplateChangeForm.js';
 import { workflowLabel } from '../../../components/admin/admin_helpers.js';
 import { listTemplates } from '../../../lib/template_catalog.js';
@@ -61,9 +62,7 @@ export default async function AdminReportPage({ searchParams }) {
   const report = data.report;
   const back = backUrl(token, access);
 
-  if (!report) {
-    return <main className={styles.reviewScreen}><a className={styles.backLink} href={back}>Volver</a><p>Reporte no encontrado.</p></main>;
-  }
+  if (!report) return <main className={styles.reviewScreen}><a className={styles.backLink} href={back}>Volver</a><p>Reporte no encontrado.</p></main>;
 
   const originals = filesOf(data.files, 'original_report');
   const photos = filesOf(data.files, 'detail_photo');
@@ -80,6 +79,7 @@ export default async function AdminReportPage({ searchParams }) {
           <div className={styles.approveGroup}>
             {canManageAssignments(access) ? <AssignSecretaryForm report={report} secretaries={secretaries} action={withToken('/api/admin/reports/assign', token)} returnTo={withToken(`/admin/report?id=${report.id}`, token)} /> : null}
             <TemplateChangeForm report={report} token={token} templates={templates} />
+            <SecretaryRejectForm report={report} token={token} />
             <SecretaryApproveForm report={report} token={token} />
           </div>
         </div>
