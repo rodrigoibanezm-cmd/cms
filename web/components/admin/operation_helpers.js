@@ -15,6 +15,7 @@ export function workflowInfo(value) {
     assigned_to_secretary: ['Esperando administrativa', 'yellow'],
     secretary_review: ['En revisión', 'blue'],
     secretary_approved: ['Aprobada', 'green'],
+    rejected: ['Rechazada', 'red'],
     closed: ['Cerrada', 'green'],
     error: ['Requiere revisión', 'red'],
   };
@@ -36,7 +37,7 @@ export function dateLabel(value) {
 }
 
 export function waitInfo(report) {
-  if (['secretary_approved', 'closed'].includes(report.current_state)) {
+  if (['secretary_approved', 'closed', 'rejected'].includes(report.current_state)) {
     return { label: '-', detail: 'Completada', tone: 'muted' };
   }
   const base = report.last_workflow_event_at || report.assigned_at || report.created_at;
