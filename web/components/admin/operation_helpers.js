@@ -1,11 +1,11 @@
 export function confidenceInfo(score) {
   if (score === null || score === undefined) {
-    return { label: 'Sin dato', detail: 'Confianza IA', tone: 'muted' };
+    return { label: 'Sin dato', detail: 'Calidad XLS', tone: 'muted' };
   }
   const value = Number(score);
-  if (value >= 85) return { label: `Alta ${value}%`, detail: 'Revisión simple', tone: 'green' };
-  if (value >= 60) return { label: `Media ${value}%`, detail: 'Revisión sugerida', tone: 'yellow' };
-  return { label: `Baja ${value}%`, detail: 'Revisión requerida', tone: 'red' };
+  if (value >= 85) return { label: `Alta ${value}%`, detail: 'XLS entregable', tone: 'green' };
+  if (value >= 60) return { label: `Media ${value}%`, detail: 'Revisar XLS', tone: 'yellow' };
+  return { label: `Baja ${value}%`, detail: 'Corregir XLS', tone: 'red' };
 }
 
 export function workflowInfo(value) {
