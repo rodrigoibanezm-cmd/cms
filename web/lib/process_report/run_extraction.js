@@ -10,12 +10,28 @@ function repoRoot() {
   return process.cwd();
 }
 
+function fullPath(relativePath) {
+  return path.join(repoRoot(), relativePath);
+}
+
 function textFile(relativePath) {
-  return fs.readFileSync(path.join(repoRoot(), relativePath), 'utf8');
+  return fs.readFileSync(fullPath(relativePath), 'utf8');
 }
 
 function jsonFile(relativePath) {
   return JSON.parse(textFile(relativePath));
+}
+
+function optionalJsonFile(relativePath) {
+  const target = fullPath(relativePath);
+  return fs.existsSync(target) ? JSON.parse(fs.readFileSync(target, 'utf8')) : [];
+}
+
+function catalogWithCustomBases() {
+  return [
+    ...optionalJsonFile('benchmark/catalog/custom_bases.json'),
+    ...jsonFile('benchmark/catalog/family_catalog.json'),
+  ];
 }
 
 function safePart(value) {
@@ -33,6 +49,6 @@ export async function runReportExtraction({ image, otHint, sourceName, reportId 
     targetDir: path.join(os.tmpdir(), 'cms-extractions', safePart(otHint || reportId)),
     promptPass1: textFile('benchmark/prompts/extract_pass1.md'),
     promptPass2Template: textFile('benchmark/prompts/extract_pass2.md'),
-    catalog: jsonFile('benchmark/catalog/family_catalog.json'),
+    catalog: catalogWithCustomBases(),
   });
 }
