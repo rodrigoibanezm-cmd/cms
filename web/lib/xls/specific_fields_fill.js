@@ -1,4 +1,4 @@
-import { cellText, findCellByLabel, norm, setBesideLabel, setVisibleCell, text, writableCell } from './cell_utils.js';
+import { cellText, findCellByLabel, norm, setBesideLabel, setVisibleCell, text, writableCell, writableCellToRight } from './cell_utils.js';
 
 const OPTION_LABELS = {
   CLICK: ['CLICK'],
@@ -33,6 +33,12 @@ function markTargetForLabel(sheet, found) {
   const sameCell = sheet.getCell(found.row, found.col);
   const below = sheet.getCell(found.row + 1, found.col);
   return text(cellText(below)) ? sameCell : below;
+}
+
+function valueTargetForLabel(sheet, found) {
+  const right = writableCellToRight(sheet, found.row, found.col);
+  if (!text(cellText(right))) return right;
+  return sheet.getCell(found.row + 1, found.col);
 }
 
 function clearOptionGroup(sheet, value) {
@@ -77,7 +83,7 @@ function fillPrecisionValue(sheet, labels, value) {
   if (!text(value)) return;
   const found = findCellByLabel(sheet, labels, { maxRow: 16, exactOnly: true });
   if (!found) return;
-  setVisibleCell(sheet.getCell(found.row + 1, found.col), value);
+  setVisibleCell(valueTargetForLabel(sheet, found), value);
 }
 
 function fillTorquePrecision(sheet, data) {
