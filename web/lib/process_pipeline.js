@@ -76,6 +76,7 @@ export async function runExtraction({
     ...pass1,
     template_key: templateEntry?.template_key || null,
     template_filename: cleanTemplateFilename(templateEntry?.template_filename),
+    template_drive_file_id: templateEntry?.template_drive_id || null,
     template_status: templateEntry?.template_status || null,
     mejor_intento_familia: entry?.template_key || null,
     similitud_checklist: Math.round(similitud * 100) / 100,
