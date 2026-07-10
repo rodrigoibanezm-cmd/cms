@@ -67,8 +67,8 @@ export async function markAudited(id, audit) {
 
 export async function markReportError(id, err) {
   const message = err?.message || String(err);
-  const sql = `UPDATE ${table} SET status='error', error_message=$2,
-    updated_at=now() WHERE id=$1`;
+  const sql = `UPDATE ${table} SET status='error', review_status='review',
+    confidence_score=NULL, error_message=$2, updated_at=now() WHERE id=$1`;
   await query(sql, [id, message]);
   await transitionReportWorkflow(id, WORKFLOW.PROCESSING_FAILED, { message });
   await addReportEvent(id, 'error', { message });
