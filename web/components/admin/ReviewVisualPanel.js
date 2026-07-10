@@ -14,11 +14,6 @@ function isImage(file) {
   return String(file?.mime_type || '').startsWith('image/');
 }
 
-function previewUrl(url) {
-  if (!url) return '';
-  return url.replace('/edit', '/preview');
-}
-
 function ZoomedImage({ src, alt }) {
   return <div className={styles.imageStage}><img className={styles.reviewImage} src={src} alt={alt} /></div>;
 }
@@ -51,12 +46,11 @@ export function VisualFile({ title, files, token }) {
 export function XlsPanel({ report, files }) {
   const xls = files[files.length - 1];
   const xlsUrl = report.excel_url || xls?.url || '';
-  const frameUrl = previewUrl(xlsUrl);
   return (
     <section className={`${styles.reviewBox} ${styles.visualBox} ${styles.xlsBox}`}>
       <h2>XLS generado</h2>
-      {frameUrl ? <XlsViewport frameUrl={frameUrl} /> : <p className={styles.muted}>XLS pendiente.</p>}
-      {frameUrl ? <p className={styles.muted}>Vista previa de Drive. Si no carga, abre el XLS directamente.</p> : null}
+      {xlsUrl ? <XlsViewport frameUrl={xlsUrl} /> : <p className={styles.muted}>XLS pendiente.</p>}
+      {xlsUrl ? <p className={styles.muted}>Si la vista de Drive no carga, abre el XLS directamente.</p> : null}
       <div className={styles.adminActions}>{xlsUrl ? <a className={styles.adminButton} href={xlsUrl} target="_blank">Abrir XLS</a> : null}</div>
       {xls ? <p className={styles.muted}>{xls.filename}</p> : null}
     </section>
