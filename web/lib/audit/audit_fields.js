@@ -13,8 +13,7 @@ export const AUDIT_PATCH_FIELDS = [
   'tipo',
   'tipo_torque',
   'accionamiento',
-  'especificos.precision_cw',
-  'especificos.precision_ccw',
+  'especificos.*',
   'estado_herramienta',
   'estado_final',
   'estado_operativo',
@@ -39,8 +38,7 @@ export const AUTO_RECOVERY_FIELDS = [
   'tipo',
   'tipo_torque',
   'accionamiento',
-  'especificos.precision_cw',
-  'especificos.precision_ccw',
+  'especificos.*',
   'estado_herramienta',
   'estado_operativo',
   'estado_final',
@@ -49,6 +47,11 @@ export const AUTO_RECOVERY_FIELDS = [
 
 export const AUDIT_PATCH_FIELD_SET = new Set(AUDIT_PATCH_FIELDS);
 export const AUTO_RECOVERY_FIELD_SET = new Set(AUTO_RECOVERY_FIELDS);
+
+export function isAutoRecoveryField(field) {
+  const value = String(field || '').trim();
+  return AUTO_RECOVERY_FIELD_SET.has(value) || /^especificos\.[A-Za-z0-9_]+$/.test(value);
+}
 
 export function auditPatchFieldsText() {
   return AUDIT_PATCH_FIELDS.join('|');
