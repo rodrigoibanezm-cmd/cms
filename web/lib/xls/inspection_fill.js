@@ -56,11 +56,12 @@ function findInspectionRow(sheet, cols, item) {
   return targetRow;
 }
 
-function templateHasFixedRows(sheet, cols) {
+function fixedRows(sheet, cols) {
+  const rows = [];
   for (let row = cols.row + 1; row <= Math.min(sheet.rowCount, cols.row + 40); row++) {
-    if (textScore(cellText(sheet.getCell(row, cols.item)))) return true;
+    if (textScore(cellText(sheet.getCell(row, cols.item)))) rows.push(row);
   }
-  return false;
+  return rows;
 }
 
 function findNextEmptyInspectionRow(sheet, cols, startRow) {
@@ -77,35 +78,30 @@ function resultColumn(cols, resultado) {
   return cols.noAplica;
 }
 
-function narrativeValue(item) {
-  if (text(item.observacion)) return item.observacion;
-  return item.resultado ? item.resultado.replace(/_/g, ' ').toLowerCase() : '';
-}
-
 function fillRow(sheet, row, cols, item) {
-  if (!item.item) return;
-  if (!cols.cumple) {
-    if (cols.obs) setVisibleCell(sheet.getCell(row, cols.obs), narrativeValue(item));
-    return;
-  }
-  if (!item.resultado) return;
-  [cols.cumple, cols.noCumple, cols.noAplica].forEach((col) => {
-    writableCell(sheet.getCell(row, col)).value = null;
-  });
+  if (!item.item || !item.resultado) return;
+  [cols.cumple, cols.noCumple, cols.noAplica].forEach((col) => { writableCell(sheet.getCell(row, col)).value = null; });
   writableCell(sheet.getCell(row, resultColumn(cols, item.resultado))).value = 'X';
   if (cols.obs && text(item.observacion)) setVisibleCell(sheet.getCell(row, cols.obs), item.observacion);
   if (cols.reparacion && text(item.reparacion)) setVisibleCell(sheet.getCell(row, cols.reparacion), item.reparacion);
 }
 
+function fillBlankFixedRows(sheet, cols, rows) {
+  for (const row of rows) {
+    const marked = [cols.cumple, cols.noCumple, cols.noAplica].some((col) => text(cellText(sheet.getCell(row, col))));
+    if (!marked) writableCell(sheet.getCell(row, cols.noAplica)).value = 'X';
+  }
+}
+
 export function fillInspection(sheet, inspeccion = []) {
   const cols = findHeaderColumns(sheet);
-  if (!cols) return;
-  const fixedRows = templateHasFixedRows(sheet, cols);
+  if (!cols?.cumple) return;
+  const rows = fixedRows(sheet, cols);
   let fallbackRow = cols.row + 1;
   for (const rawItem of inspeccion) {
     const item = normalizeItem(rawItem);
     let targetRow = findInspectionRow(sheet, cols, item);
-    if (!targetRow && fixedRows) continue;
+    if (!targetRow && rows.length) continue;
     if (!targetRow) {
       targetRow = findNextEmptyInspectionRow(sheet, cols, fallbackRow);
       if (!targetRow) continue;
@@ -114,4 +110,5 @@ export function fillInspection(sheet, inspeccion = []) {
     fallbackRow = Math.max(fallbackRow, targetRow + 1);
     fillRow(sheet, targetRow, cols, item);
   }
+  if (rows.length) fillBlankFixedRows(sheet, cols, rows);
 }
