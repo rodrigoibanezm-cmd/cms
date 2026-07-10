@@ -25,6 +25,9 @@ const EXAMPLE = `Ejemplo:
 Imagen: Operativo marcado. Excel: Operativo vacío.
 Respuesta: decision recover, issue critical, recovery_targets ["estado_operativo"].
 
+Imagen: Torque manual con PRESICIÓN ± visible en CW/CCW. Excel: CW o CCW vacío.
+Respuesta: decision recover, issue critical, recovery_targets ["especificos.precision_cw", "especificos.precision_ccw"].
+
 Imagen: checklist visible en la imagen, pero vacío en Excel.
 Respuesta: decision recover, issue critical, recovery_targets ["inspeccion"].
 
