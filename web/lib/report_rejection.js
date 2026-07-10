@@ -42,6 +42,12 @@ function cleanReason(reason) {
   return String(reason || '').trim().slice(0, 500) || null;
 }
 
+async function attachTenantIfMissing(reportId, tenantId) {
+  await query(`UPDATE reports SET tenant_id=COALESCE(tenant_id, $2) WHERE id=$1`, [reportId, tenantId]);
+  await query(`UPDATE report_files SET tenant_id=COALESCE(tenant_id, $2) WHERE report_id=$1`, [reportId, tenantId]);
+  await query(`UPDATE report_events SET tenant_id=COALESCE(tenant_id, $2) WHERE report_id=$1`, [reportId, tenantId]);
+}
+
 async function addRejectEvent(reportId, access, report, reason) {
   await query(
     `INSERT INTO report_events (id, tenant_id, report_id, event, payload_json)
@@ -61,6 +67,7 @@ export async function rejectReportWithAccess({ reportId, reason, access }) {
   await ensureReportSchema();
   const report = await findTarget(reportId, access);
   assertCanReject(report, access);
+  await attachTenantIfMissing(reportId, access.tenantId);
   const clean = cleanReason(reason);
   const res = await query(
     `UPDATE reports SET current_state='rejected', current_owner_type='admin',
