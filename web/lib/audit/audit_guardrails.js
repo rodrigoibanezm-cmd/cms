@@ -5,8 +5,9 @@ export const AUDIT_PRINCIPLES = [
   'Si una lectura es dudosa, no inventes el valor correcto.',
   'Los textos largos se auditan, pero normalmente quedan para admin.',
   'Un Excel visualmente imperfecto puede ser entregable si conserva el contenido técnico.',
-  'Operativo/No Operativo y la matriz Cumple/No cumple/No aplica son zonas críticas.',
-  'Si un check crítico claro falta, cambia o queda vacío, el issue debe ser critical.',
+  'Campos técnicos cortos visibles de cabecera, como capacidad, cuadrante, torque, presión CW y presión CCW, deben quedar en el Excel.',
+  'Operativo/No Operativo, estado de herramienta y la matriz Cumple/No cumple/No aplica son zonas críticas.',
+  'Si un campo técnico corto o check crítico claro falta, cambia o queda vacío, el issue debe ser critical.',
   'Si no puedes aislar pocos campos seguros para recovery, la decisión debe ser review.',
 ];
 
