@@ -1,4 +1,4 @@
-import { cellText, findCellByLabel, norm, setBesideLabel, text, writableCell } from './cell_utils.js';
+import { cellText, findCellByLabel, norm, setBesideLabel, setVisibleCell, text, writableCell } from './cell_utils.js';
 
 const OPTION_LABELS = {
   CLICK: ['CLICK'],
@@ -19,6 +19,14 @@ const OPTION_GROUPS = [
 
 function optionLabels(value) {
   return OPTION_LABELS[norm(value)] || [value];
+}
+
+function specificValue(data, keys) {
+  for (const key of keys) {
+    const value = data.especificos?.[key] ?? data[key];
+    if (text(value)) return value;
+  }
+  return null;
 }
 
 function markTargetForLabel(sheet, found) {
@@ -47,28 +55,36 @@ function markOptionNearLabel(sheet, value) {
 }
 
 function fillQuadrante(sheet, data) {
-  const value = data.especificos?.cuadrante || data.cuadrante;
+  const value = specificValue(data, ['cuadrante']);
   setBesideLabel(sheet, ['CUADRANTE'], value, { maxRow: 14, exactOnly: true });
 }
 
 function fillTipoTorque(sheet, data) {
-  const value = data.especificos?.tipo_torque || data.tipo_torque;
-  markOptionNearLabel(sheet, value);
+  markOptionNearLabel(sheet, specificValue(data, ['tipo_torque']));
 }
 
 function fillTipoLlave(sheet, data) {
-  const value = data.especificos?.tipo_llave
-    || data.especificos?.tipo
-    || data.tipo_llave
-    || data.tipo;
+  const value = specificValue(data, ['tipo_llave', 'tipo']);
   markOptionNearLabel(sheet, value);
 }
 
 function fillAccionamiento(sheet, data) {
-  const value = data.especificos?.accionamiento
-    || data.especificos?.tipo_accionamiento
-    || data.accionamiento;
+  const value = specificValue(data, ['accionamiento', 'tipo_accionamiento']);
   markOptionNearLabel(sheet, value);
+}
+
+function fillPrecisionValue(sheet, labels, value) {
+  if (!text(value)) return;
+  const found = findCellByLabel(sheet, labels, { maxRow: 16, exactOnly: true });
+  if (!found) return;
+  setVisibleCell(sheet.getCell(found.row + 1, found.col), value);
+}
+
+function fillTorquePrecision(sheet, data) {
+  const cw = specificValue(data, ['precision_cw', 'presicion_cw', 'cw']);
+  const ccw = specificValue(data, ['precision_ccw', 'presicion_ccw', 'ccw']);
+  fillPrecisionValue(sheet, ['CW'], cw);
+  fillPrecisionValue(sheet, ['CCW'], ccw);
 }
 
 export function fillSpecificFields(sheet, data) {
@@ -76,4 +92,5 @@ export function fillSpecificFields(sheet, data) {
   fillTipoTorque(sheet, data);
   fillTipoLlave(sheet, data);
   fillAccionamiento(sheet, data);
+  fillTorquePrecision(sheet, data);
 }
