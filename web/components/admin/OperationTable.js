@@ -37,12 +37,7 @@ function WorkflowCell({ report }) {
 }
 
 function SecretaryStatus({ report }) {
-  return (
-    <div className={styles.assignmentStatus}>
-      <strong>{report.tenant_name || 'Sin asignar'}</strong>
-      <small>{report.current_owner_id ? 'Asignada' : 'Pendiente de asignación'}</small>
-    </div>
-  );
+  return <div className={styles.assignmentStatus}><strong>{report.tenant_name || 'Sin asignar'}</strong><small>{report.current_owner_id ? 'Asignada' : 'Pendiente de asignación'}</small></div>;
 }
 
 function SecretaryCell({ report, secretaries, token, canAssign }) {
@@ -50,13 +45,7 @@ function SecretaryCell({ report, secretaries, token, canAssign }) {
   return (
     <div className={styles.assignmentCell}>
       <SecretaryStatus report={report} />
-      <AssignSecretaryForm
-        report={report}
-        secretaries={secretaries}
-        compact
-        action={withToken('/api/admin/reports/assign', token)}
-        returnTo={withToken('/admin', token)}
-      />
+      <AssignSecretaryForm report={report} secretaries={secretaries} compact action={withToken('/api/admin/reports/assign', token)} returnTo={withToken('/admin', token)} />
     </div>
   );
 }
@@ -75,7 +64,7 @@ export default function OperationTable({ reports, secretaries, token, canAssign 
   return (
     <section className={styles.wrap}>
       <table className={styles.table}>
-        <thead><tr><th>OT</th><th>Ingreso</th><th>Técnico</th><th>Confianza IA</th><th>Estado workflow</th>{showSecretary ? <th>Administrativa asignada</th> : null}<th>Tiempo esperando</th>{showPdf ? <th>PDF</th> : null}<th></th></tr></thead>
+        <thead><tr><th>OT</th><th>Ingreso</th><th>Técnico</th><th>Calidad XLS</th><th>Estado workflow</th>{showSecretary ? <th>Administrativa asignada</th> : null}<th>Tiempo esperando</th>{showPdf ? <th>PDF</th> : null}<th></th></tr></thead>
         <tbody>
           {reports.map((report) => (
             <tr key={report.id}>
