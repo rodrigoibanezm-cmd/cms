@@ -4,7 +4,7 @@ export const CONFIDENCE_ALGORITHM = {
   weights: {
     varios: 60,
     revision_manual: 40,
-    pending_match_con_alerta: 15,
+    pending_match_con_alerta: 5,
     checklist_reconstruido: 10,
     campo_obligatorio_faltante: 8,
     item_sin_marca: 5,
