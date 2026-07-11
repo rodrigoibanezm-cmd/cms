@@ -1,0 +1,16 @@
+{
+  "ot": "23077",
+  "tecnico": "Jhon Ramirez",
+  "cliente": "Finning",
+  "marca": "CAT",
+  "modelo": "SIMULACION",
+  "serie": "SIMULACION",
+  "estado_herramienta": "operativa",
+  "checklist_items": ["prueba"],
+  "inspeccion_visual": "ok",
+  "prueba_funcionamiento": "ok",
+  "desarme": "ok",
+  "procedimiento": "ok",
+  "decision": "pending_match_con_alerta",
+  "inspeccion": []
+}
