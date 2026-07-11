@@ -1,63 +1,21 @@
-// Pesos heurísticos. No están calibrados con datos reales todavía.
-// Cuando exista el comparador XLS original vs generado, recalibrar con error real.
-const PESOS = {
-  varios: 60,
-  revision_manual: 40,
-  pending_match: 15,
-  checklist_reconstruido: 10,
-  campo_obligatorio_faltante: 8,
-  item_sin_marca: 5,
-  item_sin_marca_max: 20,
-  textos_libres_vacios: 10,
-};
+import { CONFIDENCE_ALGORITHM as DEFAULT_CONFIG } from "./confidence_config.js";
 
-const CAMPOS_OBLIGATORIOS = [
-  "ot",
-  "tecnico",
-  "cliente",
-  "marca",
-  "modelo",
-  "serie",
-  "estado_herramienta",
-];
+const REQUIRED = ["ot", "tecnico", "cliente", "marca", "modelo", "serie", "estado_herramienta"];
+const FREE_TEXT = ["inspeccion_visual", "prueba_funcionamiento", "desarme", "procedimiento"];
 
-const TEXTOS_LIBRES = [
-  "inspeccion_visual",
-  "prueba_funcionamiento",
-  "desarme",
-  "procedimiento",
-];
-
-function contarSinMarca(inspeccion) {
-  return inspeccion.filter((i) => i.observacion === "sin marca visible").length;
-}
-
-function hasChecklist(pass1) {
-  return Array.isArray(pass1.checklist_items) && pass1.checklist_items.length > 0;
-}
-
-function hasRecoveredInspection(inspeccion) {
-  return Array.isArray(inspeccion) && inspeccion.some((item) => {
-    return item?.item && item?.resultado && item.resultado !== "NO APLICA";
-  });
-}
-
-function unreadableResult() {
+function unreadable(config) {
   return {
-    score: 0,
+    score: 0, version: config.version,
+    breakdown: [{ rule: "ilegible", points: -100, reason: "no se pudo leer el checklist" }],
     razones: ["no se pudo leer el checklist del formulario"],
     mensaje: "La calidad de la imagen no permite identificar el checklist. Toma nuevamente la fotografía.",
   };
 }
 
-function mensajePorScore(score, razones) {
+function message(score, reasons) {
   if (score >= 90) return "El informe se procesó correctamente.";
-
-  if (score >= 70) {
-    return `Revisa: ${razones.join("; ")}. El resto del informe fue extraído correctamente.`;
-  }
-
-  return `La extracción presenta problemas: ${razones.join("; ")}. Se recomienda revisar la foto o volver a intentar.`;
+  if (score >= 70) return `Revisa: ${reasons.join("; ")}. El resto del informe fue extraído correctamente.`;
+  return `La extracción presenta problemas: ${reasons.join("; ")}. Se recomienda revisar la foto o volver a intentar.`;
 }
 
 export function scoreToSemaforo(score) {
@@ -66,47 +24,38 @@ export function scoreToSemaforo(score) {
   return "ROJO";
 }
 
-export function calcularConfianza({ pass1, decision, inspeccion }) {
+export function calcularConfianza({ pass1, decision, inspeccion = [] }, config = DEFAULT_CONFIG) {
+  if (pass1._parse_error) return unreadable(config);
+  const w = config.weights;
   let score = 100;
+  const breakdown = [];
   const razones = [];
+  const subtract = (rule, points, reason) => {
+    score -= points;
+    breakdown.push({ rule, points: -points, reason });
+    razones.push(reason);
+  };
+  const hasChecklist = Array.isArray(pass1.checklist_items) && pass1.checklist_items.length;
+  const recovered = inspeccion.some((x) => x?.item && x?.resultado && x.resultado !== "NO APLICA");
+  if (!hasChecklist && !recovered) return unreadable(config);
+  if (!hasChecklist) subtract("checklist_reconstruido", w.checklist_reconstruido, "checklist reconstruido desde observación narrativa");
 
-  if (pass1._parse_error) return unreadableResult();
+  const decisions = {
+    varios: [w.varios, "formulario no reconocido en el catálogo"],
+    revision_manual: [w.revision_manual, "match dudoso con el catálogo"],
+    pending_match_con_alerta: [w.pending_match_con_alerta, "formulario reconocido pero aún sin plantilla aprobada"],
+  };
+  if (decisions[decision]) subtract(decision, ...decisions[decision]);
 
-  if (!hasChecklist(pass1)) {
-    if (!hasRecoveredInspection(inspeccion)) return unreadableResult();
-    score -= PESOS.checklist_reconstruido;
-    razones.push("checklist reconstruido desde observación narrativa");
+  const missing = REQUIRED.filter((field) => !pass1[field]);
+  if (missing.length) subtract("campos_obligatorios", missing.length * w.campo_obligatorio_faltante, `campos sin leer: ${missing.join(", ")}`);
+
+  const unmarked = inspeccion.filter((x) => x.observacion === "sin marca visible").length;
+  if (unmarked) subtract("items_sin_marca", Math.min(unmarked * w.item_sin_marca, w.item_sin_marca_max), `${unmarked} ítem(s) del checklist sin marca visible`);
+
+  if (FREE_TEXT.filter((field) => !pass1[field]).length >= 2) {
+    subtract("textos_libres_vacios", w.textos_libres_vacios, "varias secciones de texto libre vacías");
   }
-
-  if (decision === "varios") {
-    score -= PESOS.varios;
-    razones.push("formulario no reconocido en el catálogo");
-  } else if (decision === "revision_manual") {
-    score -= PESOS.revision_manual;
-    razones.push("match dudoso con el catálogo");
-  } else if (decision === "pending_match_con_alerta") {
-    score -= PESOS.pending_match;
-    razones.push("formulario reconocido pero aún sin plantilla aprobada");
-  }
-
-  const faltantes = CAMPOS_OBLIGATORIOS.filter((campo) => !pass1[campo]);
-  if (faltantes.length > 0) {
-    score -= faltantes.length * PESOS.campo_obligatorio_faltante;
-    razones.push(`campos sin leer: ${faltantes.join(", ")}`);
-  }
-
-  const sinMarca = inspeccion.length ? contarSinMarca(inspeccion) : 0;
-  if (sinMarca > 0) {
-    score -= Math.min(sinMarca * PESOS.item_sin_marca, PESOS.item_sin_marca_max);
-    razones.push(`${sinMarca} ítem(s) del checklist sin marca visible`);
-  }
-
-  const textosVacios = TEXTOS_LIBRES.filter((campo) => !pass1[campo]);
-  if (textosVacios.length >= 2) {
-    score -= PESOS.textos_libres_vacios;
-    razones.push("varias secciones de texto libre vacías");
-  }
-
   score = Math.max(0, Math.min(100, score));
-  return { score, razones, mensaje: mensajePorScore(score, razones) };
+  return { score, version: config.version, breakdown, razones, mensaje: message(score, razones) };
 }
