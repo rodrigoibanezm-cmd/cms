@@ -1,6 +1,7 @@
 import { query } from './db.js';
 import { ensureReportSchema } from './report_schema.js';
 import { ensureTenantSchema } from './tenant_store.js';
+import { recalculateReportConfidence } from './recalculate_report_confidence.js';
 
 const reportsTable = 'reports';
 const filesTable = 'report_files';
@@ -58,12 +59,14 @@ export async function listReports(filters = {}, access = {}) {
   const sql = `SELECT r.*, t.name AS tenant_name, t.mode AS tenant_mode,
       r.extraction_json->>'tecnico' AS technician_name,
       COALESCE(r.extraction_json->>'cliente', r.extraction_json->>'empresa') AS client_name,
-      EXISTS (SELECT 1 FROM ${filesTable} f WHERE f.report_id=r.id AND f.kind='generated_pdf') AS final_pdf_exists
+      EXISTS (SELECT 1 FROM ${filesTable} f WHERE f.report_id=r.id AND f.kind='generated_pdf') AS final_pdf_exists,
+      (SELECT e.payload_json FROM ${eventsTable} e WHERE e.report_id=r.id AND e.event='audit_completed' ORDER BY e.created_at DESC LIMIT 1) AS latest_audit
     FROM ${reportsTable} r
     LEFT JOIN report_tenants t ON t.id::text = r.current_owner_id
     ${whereSql}
     ORDER BY r.created_at DESC LIMIT 200`;
-  return (await query(sql, params)).rows;
+  const rows = (await query(sql, params)).rows;
+  return rows.map((report) => recalculateReportConfidence(report, report.latest_audit));
 }
 
 function latestAudit(events) {
@@ -82,5 +85,7 @@ export async function getReport(id, access) {
   const report = await query(reportSql, params);
   const files = report.rows[0] ? await query(filesSql, params) : { rows: [] };
   const events = report.rows[0] ? await query(eventsSql, params) : { rows: [] };
-  return { report: report.rows[0] || null, files: files.rows, events: events.rows, audit: latestAudit(events.rows) };
+  const audit = latestAudit(events.rows);
+  const current = recalculateReportConfidence(report.rows[0] || null, audit);
+  return { report: current, files: files.rows, events: events.rows, audit };
 }

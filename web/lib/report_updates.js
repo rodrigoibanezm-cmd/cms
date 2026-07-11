@@ -1,6 +1,7 @@
 import { query } from './db.js';
 import { addReportEvent } from './report_store.js';
 import { transitionReportWorkflow, WORKFLOW } from './report_workflow.js';
+import { auditConfidenceCap } from './audit/audit_confidence.js';
 
 const table = 'reports';
 
@@ -10,28 +11,6 @@ function confidencePercent(value) {
   if (!Number.isFinite(number)) return null;
   const percent = number > 0 && number <= 1 ? number * 100 : number;
   return Math.max(0, Math.min(100, Math.round(percent)));
-}
-
-function issuePenalty(issue) {
-  const explicit = Number(issue?.quality_penalty);
-  if (Number.isFinite(explicit) && explicit >= 0) return explicit;
-  const severity = String(issue?.severity || '').toLowerCase();
-  if (['critical', 'fatal', 'blocker'].includes(severity)) return 15;
-  if (['high', 'major'].includes(severity)) return 12;
-  if (['medium', 'warning', 'review'].includes(severity)) return 8;
-  if (['low', 'minor', 'info'].includes(severity)) return 5;
-  return 8;
-}
-
-function auditConfidenceCap(audit) {
-  const issues = Array.isArray(audit?.issues) ? audit.issues : [];
-  if (!issues.length && audit?.decision === 'approve') return null;
-
-  const totalPenalty = issues.reduce((sum, issue) => sum + issuePenalty(issue), 0);
-  const issueCap = issues.length ? Math.max(45, Math.round(100 - totalPenalty)) : null;
-  if (audit?.decision === 'recover') return issueCap ?? 97;
-  if (audit?.decision === 'review') return issueCap ?? 90;
-  return issueCap;
 }
 
 export async function markExtracted(id, extraction) {
