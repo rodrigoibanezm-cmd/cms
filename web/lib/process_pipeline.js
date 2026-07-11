@@ -83,6 +83,8 @@ export async function runExtraction({
     structural_signal: structuralSignal,
     decision,
     confidence_score: confidence.score,
+    confidence_version: confidence.version,
+    confidence_breakdown: confidence.breakdown,
     razones: confidence.razones,
     mensaje: confidence.mensaje,
     semaforo: scoreToSemaforo(confidence.score),
