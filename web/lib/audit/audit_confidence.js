@@ -1,4 +1,4 @@
-import { CONFIDENCE_ALGORITHM } from "../../benchmark/lib/confidence_config.js";
+import { CONFIDENCE_ALGORITHM } from "../../../benchmark/lib/confidence_config.js";
 
 function isSimpleAutoRecovery(audit) {
   const issues = Array.isArray(audit?.issues) ? audit.issues : [];
