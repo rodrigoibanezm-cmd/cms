@@ -12,6 +12,8 @@ function buildMatchInfo({ entry, templateEntry, similitud, decision, confidence 
     similitud_checklist: Math.round(similitud * 100) / 100,
     decision,
     confidence_score: confidence.score,
+    confidence_version: confidence.version,
+    confidence_breakdown: confidence.breakdown,
     razones: confidence.razones,
     mensaje: confidence.mensaje,
     semaforo: scoreToSemaforo(confidence.score),
