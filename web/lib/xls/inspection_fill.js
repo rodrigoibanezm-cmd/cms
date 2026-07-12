@@ -75,22 +75,16 @@ function resultColumn(cols, resultado) {
   if (resultado === 'CUMPLE') return cols.cumple;
   if (resultado === 'NO CUMPLE' || resultado === 'NO_CUMPLE') return cols.noCumple;
   if (resultado === 'NO APLICA' || resultado === 'NO_APLICA') return cols.noAplica;
-  return cols.noAplica;
+  return null;
 }
 
 function fillRow(sheet, row, cols, item) {
-  if (!item.item || !item.resultado) return;
+  const targetCol = resultColumn(cols, item.resultado);
+  if (!item.item || !targetCol) return;
   [cols.cumple, cols.noCumple, cols.noAplica].forEach((col) => { writableCell(sheet.getCell(row, col)).value = null; });
-  writableCell(sheet.getCell(row, resultColumn(cols, item.resultado))).value = 'X';
+  writableCell(sheet.getCell(row, targetCol)).value = 'X';
   if (cols.obs && text(item.observacion)) setVisibleCell(sheet.getCell(row, cols.obs), item.observacion);
   if (cols.reparacion && text(item.reparacion)) setVisibleCell(sheet.getCell(row, cols.reparacion), item.reparacion);
-}
-
-function fillBlankFixedRows(sheet, cols, rows) {
-  for (const row of rows) {
-    const marked = [cols.cumple, cols.noCumple, cols.noAplica].some((col) => text(cellText(sheet.getCell(row, col))));
-    if (!marked) writableCell(sheet.getCell(row, cols.noAplica)).value = 'X';
-  }
 }
 
 export function fillInspection(sheet, inspeccion = []) {
@@ -110,5 +104,4 @@ export function fillInspection(sheet, inspeccion = []) {
     fallbackRow = Math.max(fallbackRow, targetRow + 1);
     fillRow(sheet, targetRow, cols, item);
   }
-  if (rows.length) fillBlankFixedRows(sheet, cols, rows);
 }
