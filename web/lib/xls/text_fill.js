@@ -6,9 +6,11 @@ import {
 import { setSectionContent } from './section_content.js';
 import { fillOperativo, toolStatus } from './status_fill.js';
 
-const VISUAL_LABELS = [
+const SPECIFIC_VISUAL_LABELS = [
   'INSPECCIÓN VISUAL',
   'INSPECCION VISUAL',
+];
+const GENERIC_VISUAL_LABELS = [
   'INSPECCIÓN DE HERRAMIENTA',
   'INSPECCION DE HERRAMIENTA',
 ];
@@ -24,8 +26,13 @@ export function fillTextByMap(sheet, data, map) {
   return true;
 }
 
+function fillVisualInspection(sheet, value) {
+  const filled = setSectionContent(sheet, SPECIFIC_VISUAL_LABELS, value);
+  if (!filled) setSectionContent(sheet, GENERIC_VISUAL_LABELS, value);
+}
+
 export function fillTextSections(sheet, data) {
-  setSectionContent(sheet, VISUAL_LABELS, data.inspeccion_visual);
+  fillVisualInspection(sheet, data.inspeccion_visual);
   fillOperativo(sheet, data);
   setSectionContent(sheet, ['DESARME'], data.desarme);
   setSectionContent(sheet, ['PROCEDIMIENTO'], data.procedimiento);
