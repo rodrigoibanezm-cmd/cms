@@ -9,10 +9,16 @@ El checklist oficial del formulario es:
 
 {{CHECKLIST}}
 
-Debes devolver exactamente esos ítems, en ese orden.
-No agregues filas, no omitas filas y no cambies nombres.
+Cada número corresponde a la posición exacta de una fila.
+No devuelvas nombres de ítems.
+No cambies el orden.
+No agregues ni omitas filas.
 
-Para cada ítem devuelve:
+Para cada fila devuelve:
+
+row_index
+
+Número de fila del checklist oficial, comenzando en 1.
 
 resultado
 
@@ -21,63 +27,38 @@ Debe ser exactamente uno de:
 CUMPLE
 NO CUMPLE
 NO APLICA
+null
+
+Usa null cuando no exista una marca visible y confiable.
+Nunca conviertas una fila sin marca en NO APLICA.
 
 observacion
 
-Texto de observación asociado a ese ítem. Si está vacía devuelve null.
+Texto manuscrito asociado solo a esa fila. Si está vacío devuelve null.
 
 MODO TABLA
 
-Si el formulario muestra filas impresas del checklist oficial con columnas CUMPLE / NO CUMPLE / NO APLICA, lee esas filas.
-Cada observación pertenece solo a su fila.
-No combines observaciones de filas distintas.
-Si una fila existe pero no tiene marca visible, devuelve:
-
-"resultado": "NO APLICA"
-"observacion": "sin marca visible"
-
-Si un ítem oficial no existe impreso en el formulario, devuelve:
-
-"resultado": "NO APLICA"
-"observacion": "item no encontrado en formulario"
-
-MODO NARRATIVO
-
-Si el formulario NO muestra las filas del checklist oficial y en su lugar tiene una observación manuscrita general, debes inferir el checklist desde esa narración y desde repuestos/procedimiento/desarme.
-Sigue usando solamente los ítems oficiales.
-
-Reglas para modo narrativo:
-
-- Si la narración dice que un componente está bueno, operativo, completo, en buenas condiciones o funciona con normalidad, marca ese ítem como CUMPLE.
-- Si dice AUSENTE, FALTANTE, NO TIENE, NO TRAE, NO CUENTA, FRACTURADO, DAÑADO, MALO, MAL ESTADO o requiere cambio/reposición, marca ese ítem como NO CUMPLE.
-- Si repuestos solicita piezas de un ítem oficial, ese ítem debe ser NO CUMPLE.
-- Si un ítem oficial no se menciona ni se puede asociar claramente, marca NO APLICA con observacion "no mencionado en observacion narrativa".
-- Si la narración dice que el equipo completo está en buenas condiciones y no menciona fallas, puedes marcar CUMPLE los ítems oficiales claramente cubiertos por esa frase.
-
-Para componentes equivalentes usa estas asociaciones generales:
-
-- brazos de apoyo, brazo de apoyo, brazo ausente => BRAZOS DE APOYO
-- manilla, manillas, agarradera => MANILLAS DE AGARRE
-- pedestal, seguros => PEDESTAL Y SEGUROS
-- foco led, foco => FOCO LED
-- puerto de conexion, conector, conexion => PUERTO DE CONEXIÓN
-- switch, encendido, apagado => SWITCH DE ENCENDIDO
-- pernos, tornillos, tuercas => PERNOS
-- estructura, estructuralmente => ESTRUCTURA PRINCIPAL
+Lee cada marca según su posición horizontal y vertical.
+Mantén la correspondencia exacta entre fila y columna.
+No desplaces una marca hacia la fila anterior o siguiente.
+No uses el texto de INSPECCIÓN VISUAL, PRUEBA DE FUNCIONAMIENTO, DESARME o PROCEDIMIENTO como una fila del checklist.
+Si una fila impresa no tiene marca visible, devuelve resultado null.
+Si el formulario no contiene una fila oficial, devuelve resultado null y observacion "item no encontrado en formulario".
 
 REGLA CRÍTICA
 
 Un componente ausente o roto es NO CUMPLE, nunca NO APLICA.
-No traslades una observación negativa a otro ítem si no corresponde claramente.
+NO APLICA solo se usa cuando la casilla NO APLICA está marcada de forma visible.
+No infieras resultados desde una observación general si existe tabla impresa.
 
 Devuelve exactamente:
 
 {
   "inspeccion": [
     {
-      "item":"ESTRUCTURA PRINCIPAL",
-      "resultado":"CUMPLE",
-      "observacion":null
+      "row_index": 1,
+      "resultado": "CUMPLE",
+      "observacion": null
     }
   ]
 }
