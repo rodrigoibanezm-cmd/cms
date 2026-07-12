@@ -4,6 +4,7 @@ import { callGemini } from './benchmark/gemini_client.js';
 import { forceFallbackForNarrative } from './document_shape.js';
 import { geminiModel } from './gemini_models.js';
 import { validateExtraction } from './extraction_validator.js';
+import { inspectionFromIndexedRows } from './pass2_rows.js';
 import { calcularConfianza, scoreToSemaforo } from '../../benchmark/lib/confidence.js';
 import { decideMatch, resolveFallbackEntry } from '../../benchmark/lib/catalog_matcher.js';
 import { parseModelJson } from '../../benchmark/lib/io.js';
@@ -22,7 +23,8 @@ function saveJson(targetDir, ot, name, data) {
 }
 
 function buildPass2Prompt(template, checklist) {
-  return template.replace('{{CHECKLIST}}', checklist.map((item) => `- ${item}`).join('\n'));
+  const numbered = checklist.map((item, index) => `${index + 1}. ${item}`).join('\n');
+  return template.replace('{{CHECKLIST}}', numbered);
 }
 
 function shouldRunPass2(decision) {
@@ -77,7 +79,7 @@ export async function runExtraction({
     console.log('Pasada 2 (Gemini)...');
     const prompt = buildPass2Prompt(promptPass2Template, entry.checklist);
     const pass2 = parseModelJson(await callGemini({ model: geminiModel('GEMINI_EXTRACT_DETAIL_MODEL'), prompt, image }));
-    inspeccion = pass2.inspeccion || [];
+    inspeccion = inspectionFromIndexedRows(pass2.inspeccion, entry.checklist);
   }
 
   const confidence = calcularConfianza({ pass1, decision, inspeccion });
