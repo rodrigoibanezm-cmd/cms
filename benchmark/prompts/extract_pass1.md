@@ -10,7 +10,7 @@ Cualquier fecha cuyo año no termine en "26" es sospechosa.
 No aceptes años como 2016, 2021 o 2025 sin revisar dos veces.
 
 Tu trabajo NO es identificar la familia del formulario.
-Solo transcribe los datos visibles y el checklist impreso.
+Solo transcribe los datos visibles, clasifica la forma del documento y copia el checklist impreso.
 
 Devuelve exactamente esta estructura:
 
@@ -18,6 +18,8 @@ Devuelve exactamente esta estructura:
   "ot": null,
   "titulo_formulario": null,
   "tipo_herramienta": null,
+  "document_structure": "structured_checklist",
+  "has_printed_checklist": true,
   "tecnico": null,
   "cliente": null,
   "area_usuaria": null,
@@ -39,6 +41,16 @@ Devuelve exactamente esta estructura:
 }
 
 INSTRUCCIONES
+
+"document_structure"
+Usa exactamente "structured_checklist" cuando la tabla trae ítems impresos en la columna DESCRIPCIÓN.
+Usa exactamente "narrative_report" cuando la tabla está vacía y el técnico escribió observaciones libres.
+La herramienta mencionada no cambia esta clasificación.
+
+"has_printed_checklist"
+Devuelve true solo si existen dos o más ítems impresos visibles en la tabla de inspección.
+Devuelve false si la columna DESCRIPCIÓN está vacía o solo contiene escritura manuscrita.
+Nunca conviertas texto manuscrito en etiquetas de checklist.
 
 "titulo_formulario"
 Transcribe exactamente el título impreso del formulario.
@@ -95,7 +107,8 @@ Si no existen campos adicionales devuelve {}.
 Transcribe TODAS las etiquetas impresas de la columna DESCRIPCIÓN de la tabla de inspección.
 No leas cumplimiento, observaciones, ni clasifiques.
 No corrijas ortografía, no agrupes y mantén el orden visible.
-Nunca devuelvas lista vacía si hay tabla de inspección.
+Si document_structure es "narrative_report", devuelve [].
+Nunca conviertas observaciones manuscritas en checklist.
 Ejemplo: ["ESTRUCTURA PRINCIPAL", "CABLE DE PODER", "ENCHUFE", "INTERRUPTOR"]
 
 "repuestos"
