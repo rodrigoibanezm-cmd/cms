@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { callGemini } from './benchmark/gemini_client.js';
+import { forceFallbackForNarrative } from './document_shape.js';
 import { geminiModel } from './gemini_models.js';
 import { validateExtraction } from './extraction_validator.js';
 import { calcularConfianza, scoreToSemaforo } from '../../benchmark/lib/confidence.js';
@@ -41,6 +42,19 @@ function templateSignals(pass1, sourceName) {
   };
 }
 
+function resolveTemplate(pass1, sourceName, catalog) {
+  const fallbackEntry = resolveFallbackEntry(catalog);
+  const narrative = forceFallbackForNarrative(pass1, fallbackEntry);
+  if (narrative) return narrative;
+
+  const { entry, similitud, structuralSignal } = matchTemplateWithSignals(
+    pass1.checklist_items || [],
+    catalog,
+    templateSignals(pass1, sourceName)
+  );
+  return { entry, similitud, structuralSignal, decision: decideMatch({ entry, similitud }) };
+}
+
 export async function runExtraction({
   image,
   otHint,
@@ -55,12 +69,7 @@ export async function runExtraction({
   if (otHint) pass1.ot = otHint;
   saveJson(targetDir, pass1.ot, 'pass1', pass1);
 
-  const { entry, similitud, structuralSignal } = matchTemplateWithSignals(
-    pass1.checklist_items || [],
-    catalog,
-    templateSignals(pass1, sourceName)
-  );
-  const decision = decideMatch({ entry, similitud });
+  const { entry, similitud, structuralSignal, decision } = resolveTemplate(pass1, sourceName, catalog);
   const templateEntry = decision === 'varios' ? resolveFallbackEntry(catalog) : entry;
 
   let inspeccion = [];
