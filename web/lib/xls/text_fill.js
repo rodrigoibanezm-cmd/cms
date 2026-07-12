@@ -1,30 +1,17 @@
 import {
   clearCell,
-  findCellByLabel,
   markCell,
-  setBelowLabel,
   setCell,
-  setVisibleCell,
 } from './cell_utils.js';
+import { setSectionContent } from './section_content.js';
 import { fillOperativo, toolStatus } from './status_fill.js';
 
-const VISUAL_LABELS = ['INSPECCIÓN VISUAL', 'INSPECCION VISUAL'];
-const GENERIC_VISUAL_LABELS = ['INSPECCIÓN DE HERRAMIENTA', 'INSPECCION DE HERRAMIENTA'];
-
-function setVisualInspection(sheet, value) {
-  const exact = findCellByLabel(sheet, VISUAL_LABELS, { exactOnly: true });
-  if (exact) {
-    setBelowLabel(sheet, VISUAL_LABELS, value);
-    return;
-  }
-
-  const generic = findCellByLabel(sheet, GENERIC_VISUAL_LABELS, { exactOnly: true });
-  if (!generic || !value) return;
-  setVisibleCell(sheet.getCell(generic.row + 1, generic.col), value, {
-    vertical: 'top',
-    horizontal: 'center',
-  });
-}
+const VISUAL_LABELS = [
+  'INSPECCIÓN VISUAL',
+  'INSPECCION VISUAL',
+  'INSPECCIÓN DE HERRAMIENTA',
+  'INSPECCION DE HERRAMIENTA',
+];
 
 export function fillTextByMap(sheet, data, map) {
   if (!map?.text) return false;
@@ -38,8 +25,8 @@ export function fillTextByMap(sheet, data, map) {
 }
 
 export function fillTextSections(sheet, data) {
-  setVisualInspection(sheet, data.inspeccion_visual);
+  setSectionContent(sheet, VISUAL_LABELS, data.inspeccion_visual);
   fillOperativo(sheet, data);
-  setBelowLabel(sheet, ['DESARME'], data.desarme);
-  setBelowLabel(sheet, ['PROCEDIMIENTO'], data.procedimiento);
+  setSectionContent(sheet, ['DESARME'], data.desarme);
+  setSectionContent(sheet, ['PROCEDIMIENTO'], data.procedimiento);
 }
