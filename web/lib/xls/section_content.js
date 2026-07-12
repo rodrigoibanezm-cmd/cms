@@ -1,6 +1,10 @@
 import { cellText, findCellByLabel, norm, setVisibleCell, writableCell } from './cell_utils.js';
 
-const CONTENT_LABELS = ['OBSERVACION', 'OBSERVACIONES', 'DETALLE', 'DESCRIPCION'];
+const CONTENT_PRIORITY = [
+  ['OBSERVACION', 'OBSERVACIONES'],
+  ['DETALLE', 'COMENTARIO', 'COMENTARIOS'],
+  ['DESCRIPCION'],
+];
 
 function mergedWidth(sheet, row, col) {
   const cell = writableCell(sheet.getCell(row, col));
@@ -14,11 +18,19 @@ function mergedWidth(sheet, row, col) {
   return width || Number(sheet.getColumn(col).width) || 1;
 }
 
-function contentHeaderNear(sheet, section) {
-  for (let row = section.row; row <= section.row + 2; row++) {
+function findHeader(sheet, section, labels) {
+  for (let row = section.row + 1; row <= section.row + 2; row++) {
     for (let col = 1; col <= sheet.columnCount; col++) {
-      if (CONTENT_LABELS.includes(norm(cellText(sheet.getCell(row, col))))) return { row, col };
+      if (labels.includes(norm(cellText(sheet.getCell(row, col))))) return { row, col };
     }
+  }
+  return null;
+}
+
+function contentHeaderNear(sheet, section) {
+  for (const labels of CONTENT_PRIORITY) {
+    const found = findHeader(sheet, section, labels);
+    if (found) return found;
   }
   return null;
 }
