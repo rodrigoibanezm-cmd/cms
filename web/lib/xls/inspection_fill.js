@@ -76,7 +76,7 @@ function fillRow(sheet, row, cols, item) {
 }
 
 export function fillInspection(sheet, inspeccion = []) {
-  const cols = inspectionLayout(sheet) || fallbackHeaderColumns(sheet);
+  const cols = fallbackHeaderColumns(sheet) || inspectionLayout(sheet);
   if (!cols?.item) return;
   const rows = fixedRows(sheet, cols);
   let fallbackRow = cols.row + 1;
