@@ -4,28 +4,34 @@ import { parseModelJson } from '../../benchmark/lib/io.js';
 
 const PROMPT = `Analiza únicamente la sección "INSPECCIÓN DE HERRAMIENTA" del informe.
 
-Este es un formulario DEFAULT: las etiquetas pueden estar escritas a mano en la columna izquierda y sus valores en la columna derecha.
+Este es un formulario DEFAULT. Recorre la sección fila por fila: puede haber texto manuscrito en ambas columnas o solo en OBSERVACIÓN.
 
 Devuelve JSON estricto:
-{"inspeccion":[{"item":"texto columna izquierda","observacion":"texto columna derecha"}]}
+{"inspeccion":[{"item":"texto o null","observacion":"texto o null"}]}
 
 Reglas:
-- recupera todas las filas donde exista una etiqueta manuscrita a la izquierda;
-- conserva el texto completo de ambas columnas;
+- recupera todas las filas manuscritas no vacías;
+- si hay texto a izquierda y derecha, conserva ambos;
+- si la izquierda está vacía y hay texto a la derecha, usa item null y conserva toda la observación;
+- conserva cada línea en su fila y en el orden visual original;
 - no inventes etiquetas impresas;
 - no incluyas textos generales escritos atravesando toda la sección;
-- no incluyas filas vacías;
-- si no existen pares, devuelve {"inspeccion":[]}.`;
+- si no hay contenido, devuelve {"inspeccion":[]}.`;
+
+function clean(value) {
+  const result = String(value || '').trim();
+  return result || null;
+}
 
 function normalizeRows(rows) {
   if (!Array.isArray(rows)) return [];
   return rows
     .map((row) => ({
-      item: String(row?.item || '').trim(),
+      item: clean(row?.item),
       resultado: null,
-      observacion: String(row?.observacion || '').trim(),
+      observacion: clean(row?.observacion),
     }))
-    .filter((row) => row.item);
+    .filter((row) => row.item || row.observacion);
 }
 
 export async function extractDefaultInspection(image) {
