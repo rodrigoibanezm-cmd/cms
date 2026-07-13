@@ -42,6 +42,7 @@ export default function Page() {
         files={report}
         multiple={false}
         onChange={setReport}
+        onUploadStart={() => setStatus(null)}
       />
       <UploadCard
         step="2"
@@ -50,6 +51,7 @@ export default function Page() {
         files={photos}
         multiple={true}
         onChange={setPhotos}
+        onUploadStart={() => setStatus(null)}
       />
       <SubmitButton
         loading={loading}
