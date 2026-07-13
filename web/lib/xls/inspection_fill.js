@@ -1,40 +1,14 @@
 import { cellText, setVisibleCell, text, writableCell } from './cell_utils.js';
-import { itemKey, normalizeItem, sameInspectionItem } from './inspection_match.js';
+import { normalizeItem, sameInspectionItem } from './inspection_match.js';
+import { inspectionLayout } from './template_layout.js';
 
-function textScore(value) {
-  const normalized = itemKey(value);
-  if (!normalized || normalized.length < 3) return 0;
-  if (['X', 'CUMPLE', 'NOCUMPLE', 'NOAPLICA'].includes(normalized)) return 0;
-  return normalized.length;
-}
-
-function inferItemColumn(sheet, headerRow, firstResultCol) {
-  const scores = new Map();
-  const minCol = Math.max(1, firstResultCol - 8);
-  const maxRow = Math.min(sheet.rowCount, headerRow + 30);
-  for (let row = headerRow + 1; row <= maxRow; row++) {
-    for (let col = minCol; col < firstResultCol; col++) {
-      const score = textScore(cellText(sheet.getCell(row, col)));
-      if (score) scores.set(col, (scores.get(col) || 0) + score);
-    }
-  }
-  return [...scores.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] || null;
-}
-
-function completeHeader(sheet, found) {
-  const firstResultCol = found.cumple || found.obs;
-  if (!found.item && firstResultCol) found.item = inferItemColumn(sheet, found.row, firstResultCol);
-  if (found.item && found.obs && !found.cumple) return found;
-  return found.item && found.cumple && found.noCumple && found.noAplica ? found : null;
-}
-
-function findHeaderColumns(sheet) {
+function fallbackHeaderColumns(sheet) {
   let cols = null;
   sheet.eachRow((row, rowNumber) => {
     if (cols) return;
     const found = { row: rowNumber };
     row.eachCell((cell, colNumber) => {
-      const value = itemKey(cellText(cell));
+      const value = String(cellText(cell) || '').toUpperCase().replace(/\s+/g, '');
       if (!found.item && value.includes('DESCRIP')) found.item = colNumber;
       if (!found.cumple && value === 'CUMPLE') found.cumple = colNumber;
       if (!found.noCumple && value.includes('NOCUMPLE')) found.noCumple = colNumber;
@@ -42,7 +16,8 @@ function findHeaderColumns(sheet) {
       if (!found.obs && value.includes('OBSERV')) found.obs = colNumber;
       if (!found.reparacion && value.includes('REPAR')) found.reparacion = colNumber;
     });
-    cols = completeHeader(sheet, found);
+    if (found.item && found.obs && !found.cumple) cols = found;
+    if (found.item && found.cumple && found.noCumple && found.noAplica) cols = found;
   });
   return cols;
 }
@@ -59,37 +34,50 @@ function findInspectionRow(sheet, cols, item) {
 function fixedRows(sheet, cols) {
   const rows = [];
   for (let row = cols.row + 1; row <= Math.min(sheet.rowCount, cols.row + 40); row++) {
-    if (textScore(cellText(sheet.getCell(row, cols.item)))) rows.push(row);
+    if (text(cellText(sheet.getCell(row, cols.item)))) rows.push(row);
   }
   return rows;
 }
 
-function findNextEmptyInspectionRow(sheet, cols, startRow) {
+function nextEmptyRow(sheet, cols, startRow) {
   for (let row = startRow; row <= sheet.rowCount + 20; row++) {
     if (!text(cellText(sheet.getCell(row, cols.item)))) return row;
   }
   return null;
 }
 
-function resultColumn(cols, resultado) {
-  if (resultado === 'CUMPLE') return cols.cumple;
-  if (resultado === 'NO CUMPLE' || resultado === 'NO_CUMPLE') return cols.noCumple;
-  if (resultado === 'NO APLICA' || resultado === 'NO_APLICA') return cols.noAplica;
+function resultColumn(cols, result) {
+  if (result === 'CUMPLE') return cols.cumple;
+  if (result === 'NO CUMPLE' || result === 'NO_CUMPLE') return cols.noCumple;
+  if (result === 'NO APLICA' || result === 'NO_APLICA') return cols.noAplica;
   return null;
 }
 
+function clearResults(sheet, row, cols) {
+  [cols.cumple, cols.noCumple, cols.noAplica]
+    .filter(Boolean)
+    .forEach((col) => { writableCell(sheet.getCell(row, col)).value = null; });
+}
+
 function fillRow(sheet, row, cols, item) {
+  if (!item.item) return;
+  clearResults(sheet, row, cols);
   const targetCol = resultColumn(cols, item.resultado);
-  if (!item.item || !targetCol) return;
-  [cols.cumple, cols.noCumple, cols.noAplica].forEach((col) => { writableCell(sheet.getCell(row, col)).value = null; });
-  writableCell(sheet.getCell(row, targetCol)).value = 'X';
-  if (cols.obs && text(item.observacion)) setVisibleCell(sheet.getCell(row, cols.obs), item.observacion);
-  if (cols.reparacion && text(item.reparacion)) setVisibleCell(sheet.getCell(row, cols.reparacion), item.reparacion);
+  if (targetCol) writableCell(sheet.getCell(row, targetCol)).value = 'X';
+  if (cols.obs && text(item.observacion)) {
+    setVisibleCell(writableCell(sheet.getCell(row, cols.obs)), item.observacion, {
+      vertical: 'top',
+      horizontal: 'left',
+    });
+  }
+  if (cols.reparacion && text(item.reparacion)) {
+    setVisibleCell(writableCell(sheet.getCell(row, cols.reparacion)), item.reparacion);
+  }
 }
 
 export function fillInspection(sheet, inspeccion = []) {
-  const cols = findHeaderColumns(sheet);
-  if (!cols?.cumple) return;
+  const cols = inspectionLayout(sheet) || fallbackHeaderColumns(sheet);
+  if (!cols?.item) return;
   const rows = fixedRows(sheet, cols);
   let fallbackRow = cols.row + 1;
   for (const rawItem of inspeccion) {
@@ -97,7 +85,7 @@ export function fillInspection(sheet, inspeccion = []) {
     let targetRow = findInspectionRow(sheet, cols, item);
     if (!targetRow && rows.length) continue;
     if (!targetRow) {
-      targetRow = findNextEmptyInspectionRow(sheet, cols, fallbackRow);
+      targetRow = nextEmptyRow(sheet, cols, fallbackRow);
       if (!targetRow) continue;
       setVisibleCell(sheet.getCell(targetRow, cols.item), item.item);
     }
