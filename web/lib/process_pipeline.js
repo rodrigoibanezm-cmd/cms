@@ -5,6 +5,7 @@ import { extractDefaultInspection } from './default_inspection_extraction.js';
 import { forceFallbackForNarrative } from './document_shape.js';
 import { geminiModel } from './gemini_models.js';
 import { validateExtraction } from './extraction_validator.js';
+import { applyMarkedOptions, extractMarkedOptions } from './marked_options_extraction.js';
 import { inspectionFromIndexedRows } from './pass2_rows.js';
 import { calcularConfianza, scoreToSemaforo } from '../../benchmark/lib/confidence.js';
 import { decideMatch, resolveFallbackEntry } from '../../benchmark/lib/catalog_matcher.js';
@@ -85,9 +86,18 @@ export async function runExtraction({
   catalog,
 }) {
   console.log('Pasada 1 (Gemini)...');
-  const pass1 = parseModelJson(await callGemini({ model: geminiModel('GEMINI_EXTRACT_MODEL'), prompt: promptPass1, image }));
+  const rawPass1 = parseModelJson(await callGemini({
+    model: geminiModel('GEMINI_EXTRACT_MODEL'),
+    prompt: promptPass1,
+    image,
+  }));
+
+  console.log('Verificación de opciones marcadas (Gemini)...');
+  const markedOptions = await extractMarkedOptions(image);
+  const pass1 = applyMarkedOptions(rawPass1, markedOptions);
   if (otHint) pass1.ot = otHint;
   saveJson(targetDir, pass1.ot, 'pass1', pass1);
+  saveJson(targetDir, pass1.ot, 'marked_options', markedOptions);
 
   const { entry, similitud, structuralSignal, decision } = resolveTemplate(pass1, sourceName, catalog);
   const templateEntry = decision === 'varios' ? resolveFallbackEntry(catalog) : entry;
