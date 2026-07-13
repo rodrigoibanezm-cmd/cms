@@ -1,54 +1,42 @@
-import { norm } from './cell_utils.js';
-import {
-  clearCellsBelowLabels,
-  findLayoutLabel,
-  markCellBelowLabel,
-} from './template_layout.js';
+import { text } from './cell_utils.js';
+import { fillLabeledOption } from './option_field_fill.js';
 
-const OPTIONS = [
-  ['REPARACIÓN', 'REPARACION'],
-  ['MANTENCIÓN', 'MANTENCION'],
-  ['DE BAJA'],
-  ['PREVENTIVO'],
-  ['CORRECTIVO'],
-  ['E.NUEVO', 'E NUEVO', 'EQUIPO NUEVO'],
-  ['DEVOLUCIÓN DE EQUIPO', 'DEVOLUCION DE EQUIPO'],
-  ['CERTIFICACIÓN', 'CERTIFICACION'],
-];
+const LABELS = {
+  REPARACION: ['REPARACIÓN', 'REPARACION'],
+  MANTENCION: ['MANTENCIÓN', 'MANTENCION'],
+  DE_BAJA: ['DE BAJA'],
+  PREVENTIVO: ['PREVENTIVO'],
+  CORRECTIVO: ['CORRECTIVO'],
+  EQUIPO_NUEVO: ['E.NUEVO', 'E NUEVO', 'EQUIPO NUEVO'],
+  DEVOLUCION: ['DEVOLUCIÓN DE EQUIPO', 'DEVOLUCION DE EQUIPO'],
+  CERTIFICACION: ['CERTIFICACIÓN', 'CERTIFICACION'],
+};
 
-function statusText(data) {
-  return norm(`${data.estado_herramienta || ''} ${data.estado_final || ''}`);
-}
+const ALIASES = {
+  REPARACION: 'REPARACION',
+  MANTENCION: 'MANTENCION',
+  MANTENIMIENTO: 'MANTENCION',
+  'DE BAJA': 'DE_BAJA',
+  BAJA: 'DE_BAJA',
+  PREVENTIVO: 'PREVENTIVO',
+  CORRECTIVO: 'CORRECTIVO',
+  'E NUEVO': 'EQUIPO_NUEVO',
+  'EQUIPO NUEVO': 'EQUIPO_NUEVO',
+  'DEVOLUCION DE EQUIPO': 'DEVOLUCION',
+  DEVOLUCION: 'DEVOLUCION',
+  CERTIFICACION: 'CERTIFICACION',
+};
 
-function score(status, label) {
-  const clean = norm(label);
-  if (!status || !clean) return 0;
-  if (status === clean) return 100;
-  if (status.includes(clean) || clean.includes(status)) return 80;
-  const wanted = status.split(' ').filter((word) => word.length > 3);
-  const words = clean.split(' ').filter((word) => word.length > 3);
-  const matches = words.filter((word) => wanted.includes(word)).length;
-  return matches ? Math.round((matches / Math.max(wanted.length, words.length)) * 70) : 0;
-}
-
-function bestOption(sheet, status) {
-  let best = null;
-  for (const labels of OPTIONS) {
-    const found = findLayoutLabel(sheet, labels, { maxRow: 20, exactOnly: true });
-    if (!found) continue;
-    const optionScore = Math.max(...labels.map((label) => score(status, label)));
-    if (optionScore >= 60 && (!best || optionScore > best.score)) {
-      best = { labels, score: optionScore };
-    }
-  }
-  return best;
-}
+const GROUP = Object.keys(LABELS);
 
 export function fillDynamicDisposition(sheet, data) {
-  const status = statusText(data);
-  if (!status) return false;
-  const option = bestOption(sheet, status);
-  if (!option) return false;
-  clearCellsBelowLabels(sheet, OPTIONS, { maxRow: 20, exactOnly: true });
-  return markCellBelowLabel(sheet, option.labels, 'X', { maxRow: 20, exactOnly: true });
+  const value = data.estado_herramienta;
+  if (!text(value)) return false;
+  return fillLabeledOption(sheet, value, {
+    aliases: ALIASES,
+    labels: LABELS,
+    group: GROUP,
+    fallbackAnchors: ['ESTADO DE HERRAMIENTA'],
+    maxRow: 20,
+  });
 }
