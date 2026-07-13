@@ -1,9 +1,9 @@
 import AssignSecretaryForm from './AssignSecretaryForm.js';
 import {
-  clientLabel,
   confidenceInfo,
   dateLabel,
   pdfReady,
+  toolLabel,
   waitInfo,
   workflowInfo,
 } from './operation_helpers.js';
@@ -21,7 +21,7 @@ function DetailCell({ report, token }) {
   return (
     <a className={styles.otLink} href={withToken(`/admin/report?id=${report.id}`, token)}>
       <strong>{report.ot || '-'}</strong>
-      <small>{clientLabel(report)}</small>
+      <small>{toolLabel(report)}</small>
     </a>
   );
 }
