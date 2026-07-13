@@ -1,4 +1,12 @@
-import { cellText, findCellByLabel, norm, setBesideLabel, setVisibleCell, text, writableCell, writableCellToRight } from './cell_utils.js';
+import {
+  findCellByLabel,
+  norm,
+  setBesideLabel,
+  setVisibleCell,
+  text,
+  writableCellToRight,
+} from './cell_utils.js';
+import { clearCellsBelowLabels, markCellBelowLabel } from './template_layout.js';
 
 const OPTION_LABELS = {
   CLICK: ['CLICK'],
@@ -17,7 +25,7 @@ const OPTION_GROUPS = [
   ['NEUMATICA', 'ELECTRICA', 'INALAMBRICA'],
 ];
 
-function optionLabels(value) {
+function labelsFor(value) {
   return OPTION_LABELS[norm(value)] || [value];
 }
 
@@ -29,74 +37,34 @@ function specificValue(data, keys) {
   return null;
 }
 
-function markTargetForLabel(sheet, found) {
-  const sameCell = sheet.getCell(found.row, found.col);
-  const below = sheet.getCell(found.row + 1, found.col);
-  return text(cellText(below)) ? sameCell : below;
-}
-
-function valueTargetForLabel(sheet, found) {
-  const right = writableCellToRight(sheet, found.row, found.col);
-  if (!text(cellText(right))) return right;
-  return sheet.getCell(found.row + 1, found.col);
-}
-
-function clearOptionGroup(sheet, value) {
+function markOption(sheet, value) {
+  if (!text(value)) return;
   const key = norm(value);
   const group = OPTION_GROUPS.find((items) => items.includes(key));
-  if (!group) return;
-
-  group.forEach((option) => {
-    const found = findCellByLabel(sheet, optionLabels(option), { exactOnly: true });
-    if (found) writableCell(markTargetForLabel(sheet, found)).value = null;
-  });
-}
-
-function markOptionNearLabel(sheet, value) {
-  if (!text(value)) return;
-  clearOptionGroup(sheet, value);
-  const found = findCellByLabel(sheet, optionLabels(value), { exactOnly: true });
-  if (!found) return;
-  writableCell(markTargetForLabel(sheet, found)).value = 'X';
+  if (group) clearCellsBelowLabels(sheet, group.map(labelsFor), { maxRow: 20, exactOnly: true });
+  markCellBelowLabel(sheet, labelsFor(value), 'X', { maxRow: 20, exactOnly: true });
 }
 
 function fillQuadrante(sheet, data) {
-  const value = specificValue(data, ['cuadrante']);
-  setBesideLabel(sheet, ['CUADRANTE'], value, { maxRow: 14, exactOnly: true });
-}
-
-function fillTipoTorque(sheet, data) {
-  markOptionNearLabel(sheet, specificValue(data, ['tipo_torque']));
-}
-
-function fillTipoLlave(sheet, data) {
-  const value = specificValue(data, ['tipo_llave', 'tipo']);
-  markOptionNearLabel(sheet, value);
-}
-
-function fillAccionamiento(sheet, data) {
-  const value = specificValue(data, ['accionamiento', 'tipo_accionamiento']);
-  markOptionNearLabel(sheet, value);
+  setBesideLabel(sheet, ['CUADRANTE'], specificValue(data, ['cuadrante']), {
+    maxRow: 14,
+    exactOnly: true,
+  });
 }
 
 function fillPrecisionValue(sheet, labels, value) {
   if (!text(value)) return;
   const found = findCellByLabel(sheet, labels, { maxRow: 16, exactOnly: true });
   if (!found) return;
-  setVisibleCell(valueTargetForLabel(sheet, found), value);
-}
-
-function fillTorquePrecision(sheet, data) {
-  const cw = specificValue(data, ['precision_cw', 'presicion_cw', 'cw']);
-  const ccw = specificValue(data, ['precision_ccw', 'presicion_ccw', 'ccw']);
-  fillPrecisionValue(sheet, ['CW'], cw);
-  fillPrecisionValue(sheet, ['CCW'], ccw);
+  const right = writableCellToRight(sheet, found.row, found.col);
+  setVisibleCell(right, value);
 }
 
 export function fillSpecificFields(sheet, data) {
   fillQuadrante(sheet, data);
-  fillTipoTorque(sheet, data);
-  fillTipoLlave(sheet, data);
-  fillAccionamiento(sheet, data);
-  fillTorquePrecision(sheet, data);
+  markOption(sheet, specificValue(data, ['tipo_torque']));
+  markOption(sheet, specificValue(data, ['tipo_llave', 'tipo']));
+  markOption(sheet, specificValue(data, ['accionamiento', 'tipo_accionamiento']));
+  fillPrecisionValue(sheet, ['CW'], specificValue(data, ['precision_cw', 'presicion_cw', 'cw']));
+  fillPrecisionValue(sheet, ['CCW'], specificValue(data, ['precision_ccw', 'presicion_ccw', 'ccw']));
 }
