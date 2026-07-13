@@ -1,4 +1,5 @@
 import { cellText, setVisibleCell, text, writableCell } from './cell_utils.js';
+import { fillDefaultInspection } from './default_inspection_fill.js';
 import { itemKey, normalizeItem, sameInspectionItem } from './inspection_match.js';
 
 function textScore(value) {
@@ -94,6 +95,8 @@ function fillRow(sheet, row, cols, item) {
 }
 
 export function fillInspection(sheet, inspeccion = []) {
+  if (fillDefaultInspection(sheet, inspeccion)) return;
+
   const cols = findHeaderColumns(sheet);
   if (!cols?.cumple) return;
   const rows = fixedRows(sheet, cols);
