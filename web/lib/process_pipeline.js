@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { callGemini } from './benchmark/gemini_client.js';
+import { extractDefaultInspection } from './default_inspection_extraction.js';
 import { forceFallbackForNarrative } from './document_shape.js';
 import { geminiModel } from './gemini_models.js';
 import { validateExtraction } from './extraction_validator.js';
@@ -57,6 +58,23 @@ function resolveTemplate(pass1, sourceName, catalog) {
   return { entry, similitud, structuralSignal, decision: decideMatch({ entry, similitud }) };
 }
 
+async function extractInspection({ decision, entry, image, promptPass2Template }) {
+  if (decision === 'varios') {
+    console.log('Pasada 2 DEFAULT (Gemini)...');
+    return extractDefaultInspection(image);
+  }
+  if (!shouldRunPass2(decision)) return [];
+
+  console.log('Pasada 2 (Gemini)...');
+  const prompt = buildPass2Prompt(promptPass2Template, entry.checklist);
+  const pass2 = parseModelJson(await callGemini({
+    model: geminiModel('GEMINI_EXTRACT_DETAIL_MODEL'),
+    prompt,
+    image,
+  }));
+  return inspectionFromIndexedRows(pass2.inspeccion, entry.checklist);
+}
+
 export async function runExtraction({
   image,
   otHint,
@@ -73,14 +91,7 @@ export async function runExtraction({
 
   const { entry, similitud, structuralSignal, decision } = resolveTemplate(pass1, sourceName, catalog);
   const templateEntry = decision === 'varios' ? resolveFallbackEntry(catalog) : entry;
-
-  let inspeccion = [];
-  if (shouldRunPass2(decision)) {
-    console.log('Pasada 2 (Gemini)...');
-    const prompt = buildPass2Prompt(promptPass2Template, entry.checklist);
-    const pass2 = parseModelJson(await callGemini({ model: geminiModel('GEMINI_EXTRACT_DETAIL_MODEL'), prompt, image }));
-    inspeccion = inspectionFromIndexedRows(pass2.inspeccion, entry.checklist);
-  }
+  const inspeccion = await extractInspection({ decision, entry, image, promptPass2Template });
 
   const confidence = calcularConfianza({ pass1, decision, inspeccion });
   const final = validateExtraction({
