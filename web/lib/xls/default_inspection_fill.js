@@ -5,14 +5,19 @@ function findDefaultColumns(sheet) {
   let found = null;
   sheet.eachRow((row, rowNumber) => {
     if (found) return;
-    let item = null;
-    let obs = null;
+    const cols = {};
     row.eachCell((cell, colNumber) => {
       const value = itemKey(cellText(cell));
-      if (!item && value.includes('DESCRIP')) item = colNumber;
-      if (!obs && value.includes('OBSERV')) obs = colNumber;
+      if (!cols.item && value.includes('DESCRIP')) cols.item = colNumber;
+      if (!cols.obs && value.includes('OBSERV')) cols.obs = colNumber;
+      if (!cols.cumple && value === 'CUMPLE') cols.cumple = colNumber;
+      if (!cols.noCumple && value.includes('NOCUMPLE')) cols.noCumple = colNumber;
+      if (!cols.noAplica && value.includes('NOAPLICA')) cols.noAplica = colNumber;
     });
-    if (item && obs) found = { row: rowNumber, item, obs };
+    const hasResults = cols.cumple || cols.noCumple || cols.noAplica;
+    if (cols.item && cols.obs && !hasResults) {
+      found = { row: rowNumber, item: cols.item, obs: cols.obs };
+    }
   });
   return found;
 }
