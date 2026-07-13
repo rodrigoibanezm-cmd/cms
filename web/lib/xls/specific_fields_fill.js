@@ -1,14 +1,13 @@
 import {
   findCellByLabel,
-  norm,
   setBesideLabel,
   setVisibleCell,
   text,
   writableCellToRight,
 } from './cell_utils.js';
-import { clearCellsBelowLabels, markCellBelowLabel } from './template_layout.js';
+import { fillLabeledOption } from './option_field_fill.js';
 
-const OPTION_LABELS = {
+const LABELS = {
   CLICK: ['CLICK'],
   RELOJ: ['RELOJ'],
   DIGITAL: ['DIGITAL'],
@@ -19,15 +18,14 @@ const OPTION_LABELS = {
   INALAMBRICA: ['INALÁMBRICA', 'INALAMBRICA'],
 };
 
-const OPTION_GROUPS = [
-  ['CLICK', 'RELOJ', 'DIGITAL'],
-  ['TORQUE', 'IMPACTO'],
-  ['NEUMATICA', 'ELECTRICA', 'INALAMBRICA'],
-];
-
-function labelsFor(value) {
-  return OPTION_LABELS[norm(value)] || [value];
-}
+const ALIASES = {
+  ELECTRICO: 'ELECTRICA',
+  ELECTRICA: 'ELECTRICA',
+  NEUMATICO: 'NEUMATICA',
+  NEUMATICA: 'NEUMATICA',
+  INALAMBRICO: 'INALAMBRICA',
+  INALAMBRICA: 'INALAMBRICA',
+};
 
 function specificValue(data, keys) {
   for (const key of keys) {
@@ -37,18 +35,13 @@ function specificValue(data, keys) {
   return null;
 }
 
-function markOption(sheet, value) {
-  if (!text(value)) return;
-  const key = norm(value);
-  const group = OPTION_GROUPS.find((items) => items.includes(key));
-  if (group) clearCellsBelowLabels(sheet, group.map(labelsFor), { maxRow: 20, exactOnly: true });
-  markCellBelowLabel(sheet, labelsFor(value), 'X', { maxRow: 20, exactOnly: true });
-}
-
-function fillQuadrante(sheet, data) {
-  setBesideLabel(sheet, ['CUADRANTE'], specificValue(data, ['cuadrante']), {
-    maxRow: 14,
-    exactOnly: true,
+function fillOption(sheet, value, group, anchors) {
+  fillLabeledOption(sheet, value, {
+    aliases: ALIASES,
+    labels: LABELS,
+    group,
+    fallbackAnchors: anchors,
+    maxRow: 20,
   });
 }
 
@@ -56,15 +49,14 @@ function fillPrecisionValue(sheet, labels, value) {
   if (!text(value)) return;
   const found = findCellByLabel(sheet, labels, { maxRow: 16, exactOnly: true });
   if (!found) return;
-  const right = writableCellToRight(sheet, found.row, found.col);
-  setVisibleCell(right, value);
+  setVisibleCell(writableCellToRight(sheet, found.row, found.col), value);
 }
 
 export function fillSpecificFields(sheet, data) {
-  fillQuadrante(sheet, data);
-  markOption(sheet, specificValue(data, ['tipo_torque']));
-  markOption(sheet, specificValue(data, ['tipo_llave', 'tipo']));
-  markOption(sheet, specificValue(data, ['accionamiento', 'tipo_accionamiento']));
+  setBesideLabel(sheet, ['CUADRANTE'], specificValue(data, ['cuadrante']), { maxRow: 14, exactOnly: true });
+  fillOption(sheet, specificValue(data, ['tipo_torque']), ['CLICK', 'RELOJ', 'DIGITAL'], ['TIPO TORQUE']);
+  fillOption(sheet, specificValue(data, ['tipo_llave', 'tipo', 'tipo_herramienta', 'tipo_bomba']), ['TORQUE', 'IMPACTO'], ['BOMBA HIDRÁULICA', 'BOMBA HIDRAULICA', 'TIPO']);
+  fillOption(sheet, specificValue(data, ['accionamiento', 'tipo_accionamiento']), ['NEUMATICA', 'ELECTRICA', 'INALAMBRICA'], ['ACCIONAMIENTO']);
   fillPrecisionValue(sheet, ['CW'], specificValue(data, ['precision_cw', 'presicion_cw', 'cw']));
   fillPrecisionValue(sheet, ['CCW'], specificValue(data, ['precision_ccw', 'presicion_ccw', 'ccw']));
 }
