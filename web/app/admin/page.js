@@ -3,6 +3,7 @@ import OperationFooter from '../../components/admin/OperationFooter.js';
 import OperationHeader from '../../components/admin/OperationHeader.js';
 import OperationSummary from '../../components/admin/OperationSummary.js';
 import OperationTable from '../../components/admin/OperationTable.js';
+import ProcessingRefresh from '../../components/admin/ProcessingRefresh.js';
 import { listReports } from '../../lib/report_reads.js';
 import { requireRole, requireTenantAccess } from '../../lib/tenant_access.js';
 import { authUserLabel } from '../../lib/tenant_store.js';
@@ -38,9 +39,11 @@ export default async function AdminPage({ searchParams }) {
   const reports = await listReports(filters, access);
   const secretaries = await listAssignableUsers(access.tenantId);
   const label = await authUserLabel(access);
+  const hasProcessing = reports.some((report) => report.current_state === 'processing');
 
   return (
     <main className={styles.adminScreen}>
+      <ProcessingRefresh active={hasProcessing} />
       <OperationHeader filters={filters} label={label} />
       <OperationSummary reports={reports} />
       <OperationTable reports={reports} secretaries={secretaries} token={filters.token} />
