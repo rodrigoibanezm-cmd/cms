@@ -4,7 +4,7 @@ function previewUrl(file) {
   return URL.createObjectURL(file);
 }
 
-export default function UploadCard({ step, title, hint, files, multiple, onChange }) {
+export default function UploadCard({ step, title, hint, files, multiple, onChange, onUploadStart }) {
   function handleChange(event) {
     const selected = Array.from(event.target.files || []);
     onChange(multiple ? [...files, ...selected] : selected.slice(0, 1));
@@ -40,6 +40,7 @@ export default function UploadCard({ step, title, hint, files, multiple, onChang
             accept="image/*"
             capture="environment"
             multiple={multiple}
+            onClick={onUploadStart}
             onChange={handleChange}
           />
         </label>
