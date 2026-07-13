@@ -27,8 +27,12 @@ export function pdfReady(report) {
   return Boolean(report.approved_at || report.secretary_approved_at || report.closed_at);
 }
 
-export function clientLabel(report) {
-  return report.client_name || report.source_name || report.template_filename || '-';
+export function toolLabel(report) {
+  const data = report.extraction_json || {};
+  const type = data.tipo_herramienta || data.tipo || data.tipo_bomba;
+  if (type) return type;
+  const brandModel = [data.marca, data.modelo].filter(Boolean).join(' ');
+  return brandModel || report.source_name || report.template_filename || '-';
 }
 
 export function dateLabel(value) {
