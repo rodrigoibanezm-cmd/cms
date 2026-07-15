@@ -44,6 +44,7 @@ asignación de secretaria
 cola por secretaria con total/pendientes
 cola secretaria incluye pendientes y aprobadas
 aprobación de transcripción por administrativa
+generación de informe final ESMERIL desde ESMERIL_FINAL.xlsx
 PDF final idempotente desde XLS generado
 PDF descarga archivo, no abre vista Drive
 PDF usa ExcelJS + Drive export, no Google Sheets API
