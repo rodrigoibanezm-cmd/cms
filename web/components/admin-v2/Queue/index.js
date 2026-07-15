@@ -1,5 +1,5 @@
 import OperationTable from '../../admin/OperationTable.js';
 
 export default function Queue(props) {
-  return <OperationTable {...props} />;
+  return <OperationTable {...props} returnTo="/admin-v2" />;
 }
