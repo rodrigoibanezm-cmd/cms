@@ -6,6 +6,7 @@ const STAGE_DEFAULTS = {
   GEMINI_AUDIT_MODEL: 'gemini-3.5-flash',
   GEMINI_RECOVERY_MODEL: 'gemini-3.5-flash',
   GEMINI_OPTION_MODEL: 'gemini-3.5-flash',
+  GEMINI_FINAL_PROPOSAL_MODEL: 'gemini-3.5-flash',
 };
 
 const RETIRED_MODELS = new Set([
