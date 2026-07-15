@@ -43,6 +43,9 @@ opened_by_secretary_at
 secretary_approved_at
 transcription_approved_at
 final_report_approved_at
+final_report_proposal
+final_report_proposal_generated_at
+final_report_proposal_updated_at
 closed_at
 priority
 sla_due_at
@@ -60,7 +63,6 @@ Kinds actuales:
 original_report
 detail_photo
 generated_xls
-generated_final_xls
 generated_pdf
 ```
 
@@ -90,7 +92,8 @@ workflow_error
 assigned_to_secretary
 approved
 transcription_approved
-final_report_generated
+final_report_proposal_generated
+final_report_proposal_updated
 template_changed
 final_document_generated
 ```
