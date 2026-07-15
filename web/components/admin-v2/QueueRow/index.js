@@ -37,7 +37,8 @@ export default function QueueRow({
   showPdf,
   token,
 }) {
-  const detail = withToken(`/admin/report?id=${report.id}`, token);
+  const returnTo = encodeURIComponent('/admin-v2');
+  const detail = withToken(`/admin/report?id=${report.id}&returnTo=${returnTo}`, token);
   const quality = confidenceInfo(report.confidence_score);
   const workflow = workflowInfo(report.current_state);
   const wait = waitInfo(report);
