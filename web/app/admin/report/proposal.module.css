@@ -1,0 +1,16 @@
+.panel {
+  background: white; border: 1px solid #dfe7ef; border-radius: 16px;
+  display: grid; gap: 14px; margin-bottom: 14px; padding: 18px;
+}
+.panel h2 { margin: 0; }
+.editor { display: grid; gap: 12px; }
+.editor label { color: #526272; display: grid; font-size: 13px; font-weight: 800; gap: 6px; }
+.editor textarea {
+  border: 1px solid #dfe7ef; border-radius: 10px; font: inherit;
+  font-size: 14px; line-height: 1.45; padding: 10px; resize: vertical;
+}
+.panel button {
+  background: #1769c2; border: 0; border-radius: 12px; color: white;
+  cursor: pointer; font-size: 14px; font-weight: 800; padding: 11px 16px;
+}
+.panel .secondary { background: #526272; }
