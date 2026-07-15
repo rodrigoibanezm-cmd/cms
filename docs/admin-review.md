@@ -54,8 +54,8 @@ muestra informe original, XLS, fotos, auditoría, eventos y estado workflow
 Confianza IA debe ayudar a focalizar revisión
 botón Aprobar aprueba la transcripción y aparece cuando aplica
 detalle muestra Transcripción pendiente o Transcripción aprobada
-para ESMERIL muestra el XLS final como documento independiente
-OTs aprobadas sin informe final pueden generarlo desde el detalle
+para ESMERIL muestra una propuesta técnica editable
+la propuesta se genera y regenera solo desde el XLS aprobado
 Regenerar XLS permite cambiar plantilla manualmente
 ```
 
