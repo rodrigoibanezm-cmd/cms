@@ -1,0 +1,88 @@
+.surface {
+  background: #fff;
+  border: 1px solid #e6eaef;
+  border-radius: 12px 12px 0 0;
+  overflow-x: auto;
+}
+
+.table { border-collapse: collapse; min-width: 1320px; width: 100%; }
+.table th {
+  background: #fafbfc;
+  border-bottom: 1px solid #e9edf1;
+  color: #778195;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: .04em;
+  padding: 13px 18px;
+  text-align: left;
+  text-transform: uppercase;
+}
+.table td {
+  border-bottom: 1px solid #edf0f3;
+  color: #303a4d;
+  font-size: 13px;
+  padding: 14px 18px;
+  vertical-align: middle;
+}
+.table tbody tr { transition: background .15s ease; }
+.table tbody tr:hover { background: #f8faff; }
+.table tbody tr:last-child td { border-bottom: 0; }
+.table small { color: #838c9c; display: block; font-size: 11px; margin-top: 4px; }
+
+.primary, .cellLink { color: inherit; display: block; text-decoration: none; }
+.primary strong { color: #172033; font-size: 15px; }
+.cellLink { min-height: 30px; padding-top: 5px; }
+.tone { font-weight: 700; }
+.green { color: #25834b; }
+.yellow { color: #b36a16; }
+.red { color: #c94a4a; }
+.blue { color: #3469bd; }
+.muted { color: #8a93a1; }
+
+.pill {
+  border-radius: 999px;
+  display: inline-flex;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 10px;
+  white-space: nowrap;
+}
+.pill.green { background: #eaf7ef; }
+.pill.yellow { background: #fff4df; }
+.pill.red { background: #fdecec; }
+.pill.blue { background: #eaf1fc; }
+.pill.muted { background: #f0f2f5; }
+
+.assignment { display: grid; gap: 7px; min-width: 250px; }
+.assignment > strong { font-size: 12px; }
+.assignment form { align-items: center; display: flex; gap: 6px; }
+.assignment label { flex: 1; }
+.assignment label > span { display: none; }
+.assignment select {
+  background: #fff;
+  border: 1px solid #dfe4ea;
+  border-radius: 7px;
+  color: #394458;
+  font-size: 11px;
+  height: 31px;
+  max-width: 170px;
+  padding: 0 7px;
+  width: 100%;
+}
+.assignment button {
+  background: #eef4ff;
+  border: 0;
+  border-radius: 7px;
+  color: #285fb5;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 700;
+  height: 31px;
+  padding: 0 9px;
+}
+
+.pdf { border: 1px solid #dce2e9; border-radius: 7px; color: #596579; font-size: 11px; font-weight: 750; padding: 6px 8px; text-decoration: none; }
+.entry { color: #285fb5; font-size: 12px; font-weight: 700; text-decoration: none; white-space: nowrap; }
+.entry span { margin-left: 4px; }
+.empty { align-items: center; background: #fff; border: 1px solid #e6eaef; border-radius: 12px; display: grid; min-height: 180px; place-content: center; text-align: center; }
+.empty span { color: #7c8697; font-size: 13px; margin-top: 6px; }
