@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { approveReportWithAccess } from '../../../../../../lib/report_approval.js';
-import { generateFinalReportWithAccess, isEsmeril } from '../../../../../../lib/report_final.js';
+import { generateProposalWithAccess, isEsmeril } from '../../../../../../lib/final_proposal/service.js';
 import {
   requireRole,
   requireTenantAccess,
@@ -29,12 +29,12 @@ function errorResponse(err) {
   return NextResponse.json({ ok: false, error: err.message }, { status });
 }
 
-async function generateFinalIfSupported(reportId, access, report) {
+async function generateProposalIfSupported(reportId, access, report) {
   if (!isEsmeril(report)) return null;
   try {
-    return await generateFinalReportWithAccess({ reportId, access });
+    return await generateProposalWithAccess({ reportId, access });
   } catch (err) {
-    console.error('[final-report] automatic generation failed', err);
+    console.error('[final-proposal] automatic generation failed', err);
     return { error: err.message };
   }
 }
@@ -45,9 +45,9 @@ export async function POST(request, { params }) {
     const routeParams = await params;
     const payload = await readPayload(request);
     const result = await approveReportWithAccess({ reportId: routeParams.id, access });
-    const final_report = await generateFinalIfSupported(routeParams.id, access, result.report);
+    const final_proposal = await generateProposalIfSupported(routeParams.id, access, result.report);
     if (payload?.return_to) return redirectBack(request, payload);
-    return NextResponse.json({ ok: true, ...result, final_report });
+    return NextResponse.json({ ok: true, ...result, final_proposal });
   } catch (err) {
     return errorResponse(err);
   }
