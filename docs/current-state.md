@@ -44,7 +44,7 @@ asignación de secretaria
 cola por secretaria con total/pendientes
 cola secretaria incluye pendientes y aprobadas
 aprobación de transcripción por administrativa
-generación de informe final ESMERIL desde ESMERIL_FINAL.xlsx
+propuesta IA ESMERIL desde el XLS de transcripción aprobado
 PDF final idempotente desde XLS generado
 PDF descarga archivo, no abre vista Drive
 PDF usa ExcelJS + Drive export, no Google Sheets API
@@ -75,9 +75,11 @@ precisión real IA por diff contra approved_json
 ## Fuente de verdad
 
 ```txt
-Neon = estado del proceso y JSON
+Neon = estado del proceso, JSON de extracción y propuesta persistida
 Drive = archivos originales y generados
-XLS/PDF = entregables, no fuente de verdad
+XLS aprobado = fuente oficial después de aprobar la transcripción
+JSON de extracción = fuente previa a la aprobación
+PDF = entregable, no fuente de verdad
 ```
 
 ## Modelo operativo actual
@@ -90,6 +92,7 @@ La secretaria revisa y aprueba.
 La aprobación no borra la secretaria asignada.
 El PDF final se crea una vez por versión vigente y luego se reutiliza.
 La aprobación actual registra transcription_approved_at; la aprobación final separada aún no existe.
+La propuesta técnica se genera desde el XLS aprobado y permanece editable.
 El sistema conserva trazabilidad.
 ```
 
