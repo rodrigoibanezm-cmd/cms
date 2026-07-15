@@ -1,6 +1,7 @@
 import { headers } from 'next/headers';
 import { AuditPanel, CriticalBox } from '../../../components/admin/ReviewAuditPanel.js';
-import { VisualFile, XlsPanel } from '../../../components/admin/ReviewVisualPanel.js';
+import { FinalReportPanel, VisualFile, XlsPanel } from '../../../components/admin/ReviewVisualPanel.js';
+import FinalReportForm from '../../../components/admin/FinalReportForm.js';
 import SecretaryApproveForm from '../../../components/admin/SecretaryApproveForm.js';
 import SecretaryRejectForm from '../../../components/admin/SecretaryRejectForm.js';
 import TemplateChangeForm from '../../../components/admin/TemplateChangeForm.js';
@@ -62,6 +63,7 @@ export default async function AdminReportPage({ searchParams }) {
   const originals = filesOf(data.files, 'original_report');
   const photos = filesOf(data.files, 'detail_photo');
   const xlsFiles = filesOf(data.files, 'generated_xls');
+  const finalFiles = filesOf(data.files, 'generated_final_xls');
   const templates = await listTemplates().catch(() => []);
 
   return (
@@ -81,6 +83,10 @@ export default async function AdminReportPage({ searchParams }) {
       <div className={styles.reviewMainGrid}>
         <VisualFile title="Informe original" files={originals} token={token} />
         <XlsPanel report={report} files={xlsFiles} />
+      </div>
+      <div className={styles.reviewMainGrid}>
+        <section className={`${styles.reviewBox} ${styles.visualBox}`}><h2>Transcripción aprobada</h2><p>{report.transcription_approved_at || report.secretary_approved_at || report.approved_at ? 'Aprobada' : 'Pendiente'}</p><FinalReportForm report={report} token={token} hasFinalReport={Boolean(finalFiles.length)} /></section>
+        <FinalReportPanel files={finalFiles} />
       </div>
       <div className={styles.reviewSecondaryGrid}>
         <VisualFile title="Fotos detalle" files={photos} token={token} />
