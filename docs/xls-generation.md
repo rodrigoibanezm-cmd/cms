@@ -89,14 +89,6 @@ registra generated_xls
 actualiza reports.excel_url
 ```
 
-## Informe final ESMERIL
-
-```txt
-usa ESMERIL_FINAL.xlsx después de aprobar la transcripción
-genera un archivo independiente con kind generated_final_xls
-no modifica el XLS de transcripción
-```
-
 ## Preview
 
 ```txt
