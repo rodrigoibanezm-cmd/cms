@@ -28,8 +28,8 @@ Secretaria
 7. Cada secretaria ve su propia cola.
 8. La cola incluye pendientes y aprobadas.
 9. La secretaria compara informe original contra XLS.
-10. La secretaria aprueba la OT desde el detalle.
-11. Desde la aprobación se habilita el documento final.
+10. La secretaria aprueba la transcripción desde el detalle.
+11. El PDF actual mantiene su disponibilidad por compatibilidad durante la transición.
 ```
 
 ## Ubicación de la OT
@@ -78,6 +78,8 @@ Aprobada:
 current_state = secretary_approved
 secretary_approved_at = now()
 approved_at = now()
+transcription_approved_at = now()
+final_report_approved_at = null
 ```
 
 ## Eventos de trazabilidad
@@ -88,7 +90,7 @@ report_events registra cada movimiento relevante.
 Ejemplos:
 workflow_admin_queue
 assigned_to_secretary
-approved
+transcription_approved
 final_document_generated
 ```
 

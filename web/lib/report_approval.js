@@ -1,36 +1,30 @@
 import { randomUUID } from 'crypto';
 import { query } from './db.js';
 import { ensureReportSchema } from './report_schema.js';
-
 function canAdminApprove(role) {
   return ['admin', 'super_admin'].includes(role);
 }
-
 function targetSql(access) {
   if (canAdminApprove(access?.role)) return 'id=$1 AND (tenant_id=$2 OR tenant_id IS NULL)';
   return 'id=$1 AND tenant_id=$2';
 }
-
 function targetParams(reportId, access) {
   return [reportId, access.tenantId];
 }
-
 async function findApprovalTarget(reportId, access) {
   const res = await query(
     `SELECT id, tenant_id, current_state, current_owner_id,
-        secretary_approved_at, approved_at, closed_at
+        secretary_approved_at, transcription_approved_at, approved_at, closed_at
        FROM reports WHERE ${targetSql(access)}`,
     targetParams(reportId, access)
   );
   return res.rows[0] || null;
 }
-
 function canUserApprove(report, access) {
   if (canAdminApprove(access.role)) return true;
   if (!['administrativa', 'secretary'].includes(access.role)) return false;
   return report.current_owner_id === access.userId || report.approved_by_secretary_id === access.userId;
 }
-
 function assertIdentity(access) {
   if (!access?.userId) throw new Error('userId requerido');
   if (!access?.tenantId) throw new Error('tenantId requerido');
@@ -56,10 +50,11 @@ async function addApprovalEvent(reportId, access, report) {
   await query(
     `INSERT INTO report_events (id, tenant_id, report_id, event, payload_json)
        VALUES ($1, (SELECT tenant_id FROM reports WHERE id=$2), $2, $3, $4)`,
-    [randomUUID(), reportId, report.secretary_approved_at ? 'approved_again' : 'approved', JSON.stringify({
+    [randomUUID(), reportId, 'transcription_approved', JSON.stringify({
       approved_by_user_id: access.userId,
       approved_by_user_role: access.role,
       previous_state: report.current_state,
+      repeated: Boolean(report.transcription_approved_at || report.secretary_approved_at || report.approved_at),
     })]
   );
 }
@@ -84,6 +79,7 @@ export async function approveReportWithAccess({ reportId, access }) {
         approved_at=now(), approved_by_user_id=$3,
         approved_by_user_role=$2, approved_by=$3,
         secretary_approved_at=now(),
+        transcription_approved_at=now(),
         approved_by_secretary_id=CASE
           WHEN $2 IN ('administrativa', 'secretary') THEN $3
           ELSE approved_by_secretary_id END,

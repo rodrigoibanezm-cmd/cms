@@ -41,6 +41,8 @@ tenant_id
 assigned_at
 opened_by_secretary_at
 secretary_approved_at
+transcription_approved_at
+final_report_approved_at
 closed_at
 priority
 sla_due_at
@@ -86,6 +88,7 @@ workflow_admin_queue
 workflow_error
 assigned_to_secretary
 approved
+transcription_approved
 template_changed
 final_document_generated
 ```

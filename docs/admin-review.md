@@ -52,7 +52,8 @@ No debe depender de preview XLS.
 archivo: web/app/admin/report/page.js
 muestra informe original, XLS, fotos, auditoría, eventos y estado workflow
 Confianza IA debe ayudar a focalizar revisión
-botón Aprobar aparece cuando aplica
+botón Aprobar aprueba la transcripción y aparece cuando aplica
+detalle muestra Transcripción pendiente o Transcripción aprobada
 Regenerar XLS permite cambiar plantilla manualmente
 ```
 
@@ -114,6 +115,7 @@ No existe rechazo formal desde UI.
 No existe edición controlada de campos desde admin/secretaria.
 No existe cierre operativo final.
 No existe approved_json ni diff de correcciones.
+No existe aún aprobación separada del informe final.
 ```
 
 ## Invariante

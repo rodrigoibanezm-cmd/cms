@@ -69,7 +69,7 @@ export default async function AdminReportPage({ searchParams }) {
       <header className={styles.reviewHeader}>
         <a className={styles.backLink} href={back}>Volver</a>
         <div className={styles.reviewTopBar}>
-          <div><h1>Revision OT {report.ot || '-'}</h1><div className={styles.reviewMeta}><span>{workflowLabel(report.current_state)}</span><span>{qualityLabel(report)}</span></div></div>
+          <div><h1>Revision OT {report.ot || '-'}</h1><div className={styles.reviewMeta}><span>{workflowLabel(report.current_state)}</span><span>{report.transcription_approved_at || report.secretary_approved_at || report.approved_at ? 'Transcripción aprobada' : 'Transcripción pendiente'}</span><span>{qualityLabel(report)}</span></div></div>
           <div className={styles.approveGroup}>
             <TemplateChangeForm report={report} token={token} templates={templates} />
             <SecretaryRejectForm report={report} token={token} returnTo={rejectReturnPath(report, access)} />

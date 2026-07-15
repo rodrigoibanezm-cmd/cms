@@ -1,7 +1,5 @@
 import { query } from './db.js';
-
 let ready;
-
 const reportColumns = `
   ADD COLUMN IF NOT EXISTS tenant_id text,
   ADD COLUMN IF NOT EXISTS admin_corrections jsonb NOT NULL DEFAULT '{}'::jsonb,
@@ -19,6 +17,8 @@ const reportColumns = `
   ADD COLUMN IF NOT EXISTS assigned_at timestamptz,
   ADD COLUMN IF NOT EXISTS opened_by_secretary_at timestamptz,
   ADD COLUMN IF NOT EXISTS secretary_approved_at timestamptz,
+  ADD COLUMN IF NOT EXISTS transcription_approved_at timestamptz,
+  ADD COLUMN IF NOT EXISTS final_report_approved_at timestamptz,
   ADD COLUMN IF NOT EXISTS closed_at timestamptz,
   ADD COLUMN IF NOT EXISTS priority text,
   ADD COLUMN IF NOT EXISTS sla_due_at timestamptz,
