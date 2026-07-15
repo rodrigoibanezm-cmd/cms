@@ -19,13 +19,15 @@ const reportColumns = `
   ADD COLUMN IF NOT EXISTS secretary_approved_at timestamptz,
   ADD COLUMN IF NOT EXISTS transcription_approved_at timestamptz,
   ADD COLUMN IF NOT EXISTS final_report_approved_at timestamptz,
+  ADD COLUMN IF NOT EXISTS final_report_proposal jsonb,
+  ADD COLUMN IF NOT EXISTS final_report_proposal_generated_at timestamptz,
+  ADD COLUMN IF NOT EXISTS final_report_proposal_updated_at timestamptz,
   ADD COLUMN IF NOT EXISTS closed_at timestamptz,
   ADD COLUMN IF NOT EXISTS priority text,
   ADD COLUMN IF NOT EXISTS sla_due_at timestamptz,
   ADD COLUMN IF NOT EXISTS last_workflow_event_at timestamptz,
   ADD COLUMN IF NOT EXISTS approved_by_secretary_id text
 `;
-
 async function createReportsTable() {
   await query(`CREATE TABLE IF NOT EXISTS reports (
     id uuid PRIMARY KEY, tenant_id text, ot text, source_name text,
@@ -41,7 +43,6 @@ async function createReportsTable() {
   await query(`ALTER TABLE reports ${reportColumns}`);
   await query(`CREATE INDEX IF NOT EXISTS idx_reports_tenant_id ON reports(tenant_id)`);
 }
-
 async function createReportFilesTable() {
   await query(`CREATE TABLE IF NOT EXISTS report_files (
     id uuid PRIMARY KEY,
