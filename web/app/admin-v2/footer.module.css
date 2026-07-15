@@ -1,0 +1,19 @@
+.footer {
+  align-items: center;
+  background: #fff;
+  border: 1px solid #e6eaef;
+  border-radius: 0 0 12px 12px;
+  border-top: 0;
+  color: #7d8797;
+  display: flex;
+  font-size: 12px;
+  justify-content: space-between;
+  padding: 13px 18px;
+}
+
+.footer strong {
+  background: #edf3ff;
+  border-radius: 6px;
+  color: #285fb5;
+  padding: 5px 8px;
+}
