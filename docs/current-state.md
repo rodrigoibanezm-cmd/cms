@@ -43,7 +43,7 @@ detalle visual de revisión
 asignación de secretaria
 cola por secretaria con total/pendientes
 cola secretaria incluye pendientes y aprobadas
-aprobación de secretaria
+aprobación de transcripción por administrativa
 PDF final idempotente desde XLS generado
 PDF descarga archivo, no abre vista Drive
 PDF usa ExcelJS + Drive export, no Google Sheets API
@@ -88,6 +88,7 @@ El admin asigna.
 La secretaria revisa y aprueba.
 La aprobación no borra la secretaria asignada.
 El PDF final se crea una vez por versión vigente y luego se reutiliza.
+La aprobación actual registra transcription_approved_at; la aprobación final separada aún no existe.
 El sistema conserva trazabilidad.
 ```
 
