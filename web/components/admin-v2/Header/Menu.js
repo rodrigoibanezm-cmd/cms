@@ -1,8 +1,5 @@
+import { withToken } from '../admin_v2_url_helpers.js';
 import styles from '../../../app/admin-v2/header.module.css';
-
-function withToken(path, token) {
-  return token ? `${path}?token=${encodeURIComponent(token)}` : path;
-}
 
 export default function Menu({ capabilities, token }) {
   return (
