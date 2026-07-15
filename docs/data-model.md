@@ -60,6 +60,7 @@ Kinds actuales:
 original_report
 detail_photo
 generated_xls
+generated_final_xls
 generated_pdf
 ```
 
@@ -89,6 +90,7 @@ workflow_error
 assigned_to_secretary
 approved
 transcription_approved
+final_report_generated
 template_changed
 final_document_generated
 ```
