@@ -1,7 +1,6 @@
 import { createHash } from 'crypto';
 import ExcelJS from 'exceljs';
 import XlsxPopulate from 'xlsx-populate';
-import { normalizeXlsxNamespaces } from './xlsx_namespace_fix.js';
 
 function bufferInfo(buffer, filename) {
   return {
@@ -37,13 +36,6 @@ export async function loadTemplateWorkbook(buffer, filename) {
   try {
     await workbook.xlsx.load(buffer);
   } catch (err) {
-    try {
-      const normalized = await normalizeXlsxNamespaces(buffer);
-      await workbook.xlsx.load(normalized);
-      return workbook;
-    } catch {
-      // Continue with the existing diagnostic error below.
-    }
     const alternateParser = await diagnoseWithXlsxPopulate(buffer);
     console.error('[xls] template load failed', {
       ...info,
