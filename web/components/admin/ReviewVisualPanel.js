@@ -56,15 +56,3 @@ export function XlsPanel({ report, files }) {
     </section>
   );
 }
-
-export function FinalReportPanel({ files }) {
-  const xls = files[files.length - 1];
-  return (
-    <section className={`${styles.reviewBox} ${styles.visualBox} ${styles.xlsBox}`}>
-      <h2>Informe final (pendiente de aprobación)</h2>
-      {xls?.url ? <XlsViewport frameUrl={xls.url} /> : <p className={styles.muted}>Informe final pendiente.</p>}
-      {xls?.url ? <div className={styles.adminActions}><a className={styles.adminButton} href={xls.url} target="_blank">Abrir informe final</a></div> : null}
-      {xls ? <p className={styles.muted}>{xls.filename}</p> : null}
-    </section>
-  );
-}
