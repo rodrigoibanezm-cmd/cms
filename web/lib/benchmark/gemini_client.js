@@ -21,21 +21,15 @@ function endpoint(model) {
 }
 
 function buildPayload({ prompt, image }) {
-  if (!image?.base64) throw new Error('Imagen vacía para Gemini');
-
+  const parts = [{ text: prompt }];
+  if (image?.base64) parts.push({
+    inlineData: { mimeType: image.mediaType || 'image/jpeg', data: image.base64 },
+  });
   return {
     contents: [
       {
         role: 'user',
-        parts: [
-          { text: prompt },
-          {
-            inlineData: {
-              mimeType: image.mediaType || 'image/jpeg',
-              data: image.base64,
-            },
-          },
-        ],
+        parts,
       },
     ],
   };
