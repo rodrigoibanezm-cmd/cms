@@ -38,8 +38,9 @@ async function requireDetailAccess(params) {
   return requireRole(await requireTenantAccess(request), DETAIL_ROLES);
 }
 
-function backUrl(token, access) {
-  const path = QUEUE_ROLES.includes(access?.role) ? '/admin/secretary' : '/admin';
+function backUrl(token, access, returnTo) {
+  const fallback = QUEUE_ROLES.includes(access?.role) ? '/admin/secretary' : '/admin';
+  const path = returnTo === '/admin-v2' ? returnTo : fallback;
   return token ? `${path}?token=${encodeURIComponent(token)}` : path;
 }
 
@@ -55,7 +56,7 @@ export default async function AdminReportPage({ searchParams }) {
   const token = params?.token || '';
   const data = id ? await getReport(id, access) : { report: null, files: [], events: [] };
   const report = data.report;
-  const back = backUrl(token, access);
+  const back = backUrl(token, access, params?.returnTo);
 
   if (!report) return <main className={styles.reviewScreen}><a className={styles.backLink} href={back}>Volver</a><p>Reporte no encontrado.</p></main>;
 
