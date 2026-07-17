@@ -19,6 +19,7 @@ const reportColumns = `
   ADD COLUMN IF NOT EXISTS opened_by_secretary_at timestamptz,
   ADD COLUMN IF NOT EXISTS secretary_approved_at timestamptz,
   ADD COLUMN IF NOT EXISTS transcription_approved_at timestamptz,
+  ADD COLUMN IF NOT EXISTS transcription_approved_xls_file_id uuid,
   ADD COLUMN IF NOT EXISTS final_report_approved_at timestamptz,
   ADD COLUMN IF NOT EXISTS closed_at timestamptz,
   ADD COLUMN IF NOT EXISTS priority text,
@@ -57,7 +58,6 @@ async function createReportFilesTable() {
   await query(`ALTER TABLE report_files ADD COLUMN IF NOT EXISTS tenant_id text`);
   await query(`CREATE INDEX IF NOT EXISTS idx_report_files_tenant_id ON report_files(tenant_id)`);
 }
-
 async function createReportEventsTable() {
   await query(`CREATE TABLE IF NOT EXISTS report_events (
     id uuid PRIMARY KEY,
@@ -70,7 +70,6 @@ async function createReportEventsTable() {
   await query(`ALTER TABLE report_events ADD COLUMN IF NOT EXISTS tenant_id text`);
   await query(`CREATE INDEX IF NOT EXISTS idx_report_events_tenant_id ON report_events(tenant_id)`);
 }
-
 async function createTenantAccessTokensTable() {
   await query(`CREATE TABLE IF NOT EXISTS tenant_access_tokens (
     tenant_id text NOT NULL,
@@ -86,7 +85,6 @@ async function createTenantAccessTokensTable() {
   await query(`ALTER TABLE tenant_access_tokens ADD COLUMN IF NOT EXISTS token_plain text`);
   await query(`CREATE INDEX IF NOT EXISTS idx_tenant_access_active ON tenant_access_tokens(active)`);
 }
-
 export async function ensureReportSchema() {
   if (ready) return ready;
   ready = Promise.all([
