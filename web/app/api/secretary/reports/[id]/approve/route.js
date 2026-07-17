@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { approveReportWithAccess } from '../../../../../../lib/report_approval.js';
-import { generateProposalWithAccess, isEsmeril } from '../../../../../../lib/final_proposal/service.js';
+import { generateProposalWithAccess } from '../../../../../../lib/final_proposal/service.js';
 import {
   requireRole,
   requireTenantAccess,
@@ -8,20 +8,17 @@ import {
 } from '../../../../../../lib/tenant_access.js';
 
 export const runtime = 'nodejs';
-
 const APPROVE_ROLES = ['admin', 'super_admin', 'administrativa', 'secretary'];
 
 async function readPayload(request) {
   const type = request.headers.get('content-type') || '';
   if (type.includes('application/json')) return request.json();
-
   const form = await request.formData();
   return { return_to: form.get('return_to') };
 }
 
 function redirectBack(request, payload) {
-  const target = payload.return_to || '/admin/secretary';
-  return NextResponse.redirect(new URL(target, request.url), 303);
+  return NextResponse.redirect(new URL(payload.return_to || '/admin/secretary', request.url), 303);
 }
 
 function errorResponse(err) {
@@ -29,8 +26,7 @@ function errorResponse(err) {
   return NextResponse.json({ ok: false, error: err.message }, { status });
 }
 
-async function generateProposalIfSupported(reportId, access, report) {
-  if (!isEsmeril(report)) return null;
+async function generateProposal(reportId, access) {
   try {
     return await generateProposalWithAccess({ reportId, access });
   } catch (err) {
@@ -45,7 +41,7 @@ export async function POST(request, { params }) {
     const routeParams = await params;
     const payload = await readPayload(request);
     const result = await approveReportWithAccess({ reportId: routeParams.id, access });
-    const final_proposal = await generateProposalIfSupported(routeParams.id, access, result.report);
+    const final_proposal = await generateProposal(routeParams.id, access);
     if (payload?.return_to) return redirectBack(request, payload);
     return NextResponse.json({ ok: true, ...result, final_proposal });
   } catch (err) {
