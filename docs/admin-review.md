@@ -25,6 +25,7 @@ GET /api/admin/reports/id/pdf
 GET /api/report-file?id=file_id
 POST /api/admin/reports/assign
 POST /api/secretary/reports/id/approve
+POST /api/secretary/reports/id/proposal
 ```
 
 ## Listado admin
@@ -54,8 +55,9 @@ muestra informe original, XLS, fotos, auditoría, eventos y estado workflow
 Confianza IA debe ayudar a focalizar revisión
 botón Aprobar aprueba la transcripción y aparece cuando aplica
 detalle muestra Transcripción pendiente o Transcripción aprobada
-para ESMERIL muestra una propuesta técnica editable
-la propuesta se genera y regenera solo desde el XLS aprobado
+después de aprobar muestra la propuesta técnica en modo lectura
+permite generar o regenerar la propuesta solo por acción explícita
+la propuesta usa exclusivamente el XLS aprobado vigente
 Regenerar XLS permite cambiar plantilla manualmente
 ```
 
@@ -103,18 +105,11 @@ registra report_files.kind = generated_pdf
 registra report_events.event = final_document_generated
 ```
 
-## Visualización de imágenes
-
-```txt
-/api/report-file descarga desde Drive por file_id.
-El front usa lupa sobre la imagen original.
-```
-
 ## Estado incompleto
 
 ```txt
 No existe rechazo formal desde UI.
-No existe edición controlada de campos desde admin/secretaria.
+No existe edición controlada de la propuesta técnica.
 No existe cierre operativo final.
 No existe approved_json ni diff de correcciones.
 No existe aún aprobación separada del informe final.
