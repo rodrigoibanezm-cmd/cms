@@ -4,7 +4,7 @@
 
 ```txt
 Neon/Postgres para estado y datos persistidos.
-XLS aprobado para evidencia técnica posterior a la aprobación.
+XLS identificado al aprobar para evidencia técnica posterior.
 ```
 
 ## Tablas actuales
@@ -43,6 +43,7 @@ assigned_at
 opened_by_secretary_at
 secretary_approved_at
 transcription_approved_at
+transcription_approved_xls_file_id
 final_report_approved_at
 final_report_proposal
 final_report_proposal_generated_at
@@ -69,6 +70,9 @@ generated_xls
 generated_pdf
 ```
 
+`transcription_approved_xls_file_id` identifica el `generated_xls` vigente al aprobar.
+No cambia por regenerar archivos; solo cambia con una nueva aprobación.
+
 Kind legacy:
 
 ```txt
@@ -81,19 +85,9 @@ No se debe crear para nuevas OTs.
 
 Representa trazabilidad.
 
-Eventos actuales observados:
+Eventos relevantes:
 
 ```txt
-uploaded
-extracted
-xls_generated
-audit_completed
-error
-workflow_processing_started
-workflow_admin_queue
-workflow_error
-assigned_to_secretary
-approved
 transcription_approved
 final_report_proposal_generated
 final_report_proposal_failed
@@ -101,43 +95,21 @@ template_changed
 final_document_generated
 ```
 
-`final_report_proposal_generated` registra fuente, modelo, especificación y regeneración.
-`final_document_generated` guarda `pdf_version` para reutilizar el PDF vigente.
+`transcription_approved` registra `approved_xls_file_id`.
+`final_report_proposal_generated` registra el mismo archivo fuente, modelo y especificación.
 
-## report_tenants
-
-Catálogo simple de actores visibles por UI.
+## Compatibilidad histórica
 
 ```txt
-id, name, email, mode, active, created_at, updated_at
-```
-
-Modos:
-
-```txt
-super_admin
-admin
-secretary
-dashboard
-```
-
-## Estado operacional
-
-```txt
-status = procesamiento técnico
-review_status = revisión admin/auditor
-current_state = ubicación operacional de la OT
-current_owner_type = tipo de actor que tiene la OT
-current_owner_id = actor específico, cuando existe
-tenant_id = tenant operativo para acceso y filtrado
+Las aprobaciones anteriores sin referencia no se completan por inferencia.
+Deben aprobarse nuevamente para fijar el XLS vigente de forma explícita.
 ```
 
 ## Invariante
 
 ```txt
-Neon guarda estado y datos persistidos.
+Neon guarda estado y referencias inmutables.
 Drive guarda bytes de archivos.
+La propuesta solo puede leer transcription_approved_xls_file_id.
 No crear generated_xls_preview para nuevas OTs.
-Cada OT debe saber dónde está y quién la tiene.
-El PDF final se registra como generated_pdf.
 ```
