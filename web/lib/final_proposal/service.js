@@ -14,8 +14,10 @@ async function proposalContext(reportId, access) {
   const data = await getReport(reportId, access);
   if (!data.report) throw new Error('OT no encontrada');
   if (!transcriptionApproved(data.report)) throw new Error('Transcripción no aprobada');
-  const xls = data.files.filter((file) => file.kind === 'generated_xls').at(-1);
-  if (!xls) throw new Error('XLS aprobado no encontrado');
+  const sourceId = data.report.transcription_approved_xls_file_id;
+  if (!sourceId) throw new Error('La aprobación no identifica su XLS fuente');
+  const xls = data.files.find((file) => file.id === sourceId && file.kind === 'generated_xls');
+  if (!xls) throw new Error('El XLS aprobado registrado no está disponible');
   return { ...data, xls };
 }
 
@@ -28,7 +30,8 @@ async function recordFailure(data, model, error, regenerated) {
 
 export async function generateProposalWithAccess({ reportId, access, force = false }) {
   const data = await proposalContext(reportId, access);
-  if (data.report.final_report_proposal && !force) {
+  const sameSource = data.report.final_report_proposal_source_file_id === data.xls.id;
+  if (data.report.final_report_proposal && sameSource && !force) {
     return { proposal: data.report.final_report_proposal, created: false };
   }
   let generated;
