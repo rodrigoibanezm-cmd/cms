@@ -26,8 +26,9 @@ workflow operativo externo a la revisión admin
 ```txt
 El técnico carga evidencia.
 La IA extrae y audita.
-Neon es fuente de verdad.
+Neon guarda estado y datos persistidos.
 Drive guarda archivos.
+El XLS aprobado es fuente oficial después de aprobar la transcripción.
 El admin asigna.
 La secretaria revisa y aprueba.
 ```
