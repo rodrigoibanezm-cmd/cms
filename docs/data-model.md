@@ -3,7 +3,8 @@
 ## Fuente de verdad
 
 ```txt
-Neon/Postgres
+Neon/Postgres para estado y datos persistidos.
+XLS aprobado para evidencia técnica posterior a la aprobación.
 ```
 
 ## Tablas actuales
@@ -31,7 +32,7 @@ extraction_json, error_message
 created_at, updated_at
 ```
 
-Campos workflow:
+Campos workflow y propuesta:
 
 ```txt
 current_state
@@ -45,7 +46,9 @@ transcription_approved_at
 final_report_approved_at
 final_report_proposal
 final_report_proposal_generated_at
-final_report_proposal_updated_at
+final_report_proposal_model
+final_report_proposal_spec_version
+final_report_proposal_source_file_id
 closed_at
 priority
 sla_due_at
@@ -93,12 +96,13 @@ assigned_to_secretary
 approved
 transcription_approved
 final_report_proposal_generated
-final_report_proposal_updated
+final_report_proposal_failed
 template_changed
 final_document_generated
 ```
 
-`final_document_generated` guarda `pdf_version` para saber si el PDF vigente se puede reutilizar.
+`final_report_proposal_generated` registra fuente, modelo, especificación y regeneración.
+`final_document_generated` guarda `pdf_version` para reutilizar el PDF vigente.
 
 ## report_tenants
 
@@ -131,7 +135,7 @@ tenant_id = tenant operativo para acceso y filtrado
 ## Invariante
 
 ```txt
-Neon guarda estado y JSON.
+Neon guarda estado y datos persistidos.
 Drive guarda bytes de archivos.
 No crear generated_xls_preview para nuevas OTs.
 Cada OT debe saber dónde está y quién la tiene.
