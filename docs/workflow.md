@@ -28,8 +28,8 @@ Secretaria
 7. Cada secretaria ve su propia cola.
 8. La cola incluye pendientes y aprobadas.
 9. La secretaria compara informe original contra XLS.
-10. La secretaria aprueba la transcripción desde el detalle.
-11. El sistema lee el XLS aprobado y genera una propuesta técnica en modo lectura.
+10. La secretaria aprueba la transcripción y fija el XLS vigente por su report_files.id.
+11. El sistema lee exclusivamente ese XLS aprobado y genera una propuesta en modo lectura.
 12. El PDF actual mantiene su disponibilidad por compatibilidad durante la transición.
 ```
 
@@ -77,9 +77,8 @@ Aprobada:
 
 ```txt
 current_state = secretary_approved
-secretary_approved_at = now()
-approved_at = now()
 transcription_approved_at = now()
+transcription_approved_xls_file_id = report_files.id vigente
 final_report_approved_at = null
 ```
 
@@ -100,22 +99,21 @@ final_document_generated
 ## Invariantes
 
 ```txt
-Siempre debe poder saberse dónde está la OT.
-Siempre debe poder saberse quién tiene la OT.
-El técnico no corrige información.
-La secretaria hace los fixes cuando exista edición.
+Siempre debe poder saberse dónde está la OT y quién la tiene.
 La aprobación no borra la secretaria asignada.
-Después de aprobar, el XLS aprobado reemplaza al JSON como fuente oficial.
+Después de aprobar, el XLS identificado reemplaza al JSON como fuente oficial.
+Generar y regenerar propuesta usan transcription_approved_xls_file_id.
+Un generated_xls posterior no cambia esa referencia.
+Solo una nueva aprobación de transcripción puede cambiarla.
+Una aprobación histórica sin referencia debe aprobarse nuevamente; no se infiere.
 La propuesta persistida no vuelve a invocar Gemini al abrir la OT.
-Siempre existe un documento final antes de continuar el flujo.
 ```
 
 ## Qué no hacer
 
 ```txt
-No documentar este flujo como implementado completo.
-No duplicar este flujo en otros documentos.
-No crear un workflow engine genérico todavía.
+No inferir el XLS aprobado por orden, fecha ni archivo más reciente.
 No mover corrección de datos al técnico.
-No saltarse la revisión/fix de secretaria.
+No crear un workflow engine genérico todavía.
+No saltarse la revisión administrativa.
 ```
