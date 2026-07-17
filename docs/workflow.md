@@ -29,7 +29,7 @@ Secretaria
 8. La cola incluye pendientes y aprobadas.
 9. La secretaria compara informe original contra XLS.
 10. La secretaria aprueba la transcripción desde el detalle.
-11. El sistema lee el XLS aprobado y genera una propuesta técnica editable.
+11. El sistema lee el XLS aprobado y genera una propuesta técnica en modo lectura.
 12. El PDF actual mantiene su disponibilidad por compatibilidad durante la transición.
 ```
 
@@ -93,7 +93,7 @@ workflow_admin_queue
 assigned_to_secretary
 transcription_approved
 final_report_proposal_generated
-final_report_proposal_updated
+final_report_proposal_failed
 final_document_generated
 ```
 
@@ -106,6 +106,7 @@ El técnico no corrige información.
 La secretaria hace los fixes cuando exista edición.
 La aprobación no borra la secretaria asignada.
 Después de aprobar, el XLS aprobado reemplaza al JSON como fuente oficial.
+La propuesta persistida no vuelve a invocar Gemini al abrir la OT.
 Siempre existe un documento final antes de continuar el flujo.
 ```
 
