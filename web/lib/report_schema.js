@@ -1,5 +1,6 @@
 import { query } from './db.js';
 let ready;
+const proposalColumns = `ADD COLUMN IF NOT EXISTS final_report_proposal jsonb, ADD COLUMN IF NOT EXISTS final_report_proposal_generated_at timestamptz, ADD COLUMN IF NOT EXISTS final_report_proposal_model text, ADD COLUMN IF NOT EXISTS final_report_proposal_spec_version text, ADD COLUMN IF NOT EXISTS final_report_proposal_source_file_id uuid`;
 const reportColumns = `
   ADD COLUMN IF NOT EXISTS tenant_id text,
   ADD COLUMN IF NOT EXISTS admin_corrections jsonb NOT NULL DEFAULT '{}'::jsonb,
@@ -19,11 +20,6 @@ const reportColumns = `
   ADD COLUMN IF NOT EXISTS secretary_approved_at timestamptz,
   ADD COLUMN IF NOT EXISTS transcription_approved_at timestamptz,
   ADD COLUMN IF NOT EXISTS final_report_approved_at timestamptz,
-  ADD COLUMN IF NOT EXISTS final_report_proposal jsonb,
-  ADD COLUMN IF NOT EXISTS final_report_proposal_generated_at timestamptz,
-  ADD COLUMN IF NOT EXISTS final_report_proposal_model text,
-  ADD COLUMN IF NOT EXISTS final_report_proposal_spec_version text,
-  ADD COLUMN IF NOT EXISTS final_report_proposal_source_file_id uuid,
   ADD COLUMN IF NOT EXISTS closed_at timestamptz,
   ADD COLUMN IF NOT EXISTS priority text,
   ADD COLUMN IF NOT EXISTS sla_due_at timestamptz,
@@ -43,6 +39,7 @@ async function createReportsTable() {
     updated_at timestamptz NOT NULL DEFAULT now()
   )`);
   await query(`ALTER TABLE reports ${reportColumns}`);
+  await query(`ALTER TABLE reports ${proposalColumns}`);
   await query(`CREATE INDEX IF NOT EXISTS idx_reports_tenant_id ON reports(tenant_id)`);
 }
 async function createReportFilesTable() {
