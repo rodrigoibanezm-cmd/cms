@@ -21,6 +21,7 @@ admin ve Vista Operación
 admin asigna secretaria
 secretaria revisa su cola
 secretaria aprueba desde el detalle
+sistema genera propuesta técnica desde el XLS aprobado
 admin descarga PDF final
 ```
 
@@ -44,7 +45,7 @@ asignación de secretaria
 cola por secretaria con total/pendientes
 cola secretaria incluye pendientes y aprobadas
 aprobación de transcripción por administrativa
-propuesta IA ESMERIL desde el XLS de transcripción aprobado
+propuesta IA desde el XLS de transcripción aprobado
 PDF final idempotente desde XLS generado
 PDF descarga archivo, no abre vista Drive
 PDF usa ExcelJS + Drive export, no Google Sheets API
@@ -66,7 +67,7 @@ asignación de secretaria sigue disponible desde la fila
 
 ```txt
 rechazo formal desde admin/secretaria
-edición controlada de campos desde admin/secretaria
+edición de la propuesta técnica
 flujo de cierre de OT
 calibración real del confidence_score
 precisión real IA por diff contra approved_json
@@ -92,7 +93,7 @@ La secretaria revisa y aprueba.
 La aprobación no borra la secretaria asignada.
 El PDF final se crea una vez por versión vigente y luego se reutiliza.
 La aprobación actual registra transcription_approved_at; la aprobación final separada aún no existe.
-La propuesta técnica se genera desde el XLS aprobado y permanece editable.
+La propuesta técnica se genera desde el XLS aprobado y se muestra en modo lectura.
 El sistema conserva trazabilidad.
 ```
 
