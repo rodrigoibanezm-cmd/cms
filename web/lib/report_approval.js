@@ -29,7 +29,6 @@ function assertIdentity(access) {
   if (!access?.userId) throw new Error('userId requerido');
   if (!access?.tenantId) throw new Error('tenantId requerido');
 }
-
 function assertCanApprove(report, access) {
   if (!report) throw new Error('OT no encontrada');
   assertIdentity(access);
@@ -39,62 +38,60 @@ function assertCanApprove(report, access) {
   }
   if (!canUserApprove(report, access)) throw new Error('OT asignada a otra administrativa');
 }
-
 async function attachTenantIfMissing(reportId, tenantId) {
   await query(`UPDATE reports SET tenant_id=COALESCE(tenant_id, $2) WHERE id=$1`, [reportId, tenantId]);
   await query(`UPDATE report_files SET tenant_id=COALESCE(tenant_id, $2) WHERE report_id=$1`, [reportId, tenantId]);
   await query(`UPDATE report_events SET tenant_id=COALESCE(tenant_id, $2) WHERE report_id=$1`, [reportId, tenantId]);
 }
-
-async function addApprovalEvent(reportId, access, report) {
+async function addApprovalEvent(reportId, access, previous, approved) {
   await query(
     `INSERT INTO report_events (id, tenant_id, report_id, event, payload_json)
        VALUES ($1, (SELECT tenant_id FROM reports WHERE id=$2), $2, $3, $4)`,
     [randomUUID(), reportId, 'transcription_approved', JSON.stringify({
       approved_by_user_id: access.userId,
       approved_by_user_role: access.role,
-      previous_state: report.current_state,
-      repeated: Boolean(report.transcription_approved_at || report.secretary_approved_at || report.approved_at),
+      previous_state: previous.current_state,
+      repeated: Boolean(previous.transcription_approved_at || previous.secretary_approved_at || previous.approved_at),
+      approved_xls_file_id: approved.transcription_approved_xls_file_id,
     })]
   );
 }
-
-function updateShape(access) {
-  if (canAdminApprove(access.role)) return { where: 'WHERE id=$1 AND (tenant_id=$4 OR tenant_id IS NULL) RETURNING *' };
-  return { where: 'WHERE id=$1 AND tenant_id=$4 RETURNING *' };
+function updateWhere(access) {
+  return canAdminApprove(access.role)
+    ? 'WHERE id=$1 AND (tenant_id=$4 OR tenant_id IS NULL)'
+    : 'WHERE id=$1 AND tenant_id=$4';
 }
-
 export async function approveReportWithAccess({ reportId, access }) {
   if (!reportId) throw new Error('reportId requerido');
   await ensureReportSchema();
-
   const report = await findApprovalTarget(reportId, access);
   assertCanApprove(report, access);
   await attachTenantIfMissing(reportId, access.tenantId);
-  const shape = updateShape(access);
-
   const res = await query(
-    `UPDATE reports SET current_state='secretary_approved',
+    `WITH approved_xls AS (
+       SELECT f.id FROM report_files f JOIN reports r ON r.id=f.report_id
+       WHERE f.report_id=$1 AND f.kind='generated_xls' AND f.drive_file_id=r.drive_file_id
+     )
+     UPDATE reports SET current_state='secretary_approved',
         current_owner_type=$2, current_owner_id=$3,
         approved_at=now(), approved_by_user_id=$3,
         approved_by_user_role=$2, approved_by=$3,
-        secretary_approved_at=now(),
-        transcription_approved_at=now(),
+        secretary_approved_at=now(), transcription_approved_at=now(),
+        transcription_approved_xls_file_id=(SELECT id FROM approved_xls),
         approved_by_secretary_id=CASE
           WHEN $2 IN ('administrativa', 'secretary') THEN $3
           ELSE approved_by_secretary_id END,
         last_workflow_event_at=now(), updated_at=now()
-      ${shape.where}`,
+      ${updateWhere(access)} AND EXISTS (SELECT 1 FROM approved_xls) RETURNING *`,
     [reportId, access.role, access.userId, access.tenantId]
   );
-  await addApprovalEvent(reportId, access, report);
+  if (!res.rows[0]) throw new Error('XLS vigente no registrado; no se puede aprobar');
+  await addApprovalEvent(reportId, access, report, res.rows[0]);
   return { report: res.rows[0] };
 }
-
 export async function approveReportByTenant({ reportId, tenantId, userId, role }) {
   return approveReportWithAccess({ reportId, access: { tenantId, userId, role } });
 }
-
 export async function approveReportBySecretary({ reportId, secretaryId, tenantId }) {
   return approveReportByTenant({ reportId, tenantId, userId: secretaryId, role: 'administrativa' });
 }
