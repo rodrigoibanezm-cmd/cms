@@ -1,4 +1,4 @@
-import { isEsmeril, transcriptionApproved } from '../../lib/final_proposal/service.js';
+import { transcriptionApproved } from '../../lib/final_proposal/service.js';
 import styles from '../../app/admin/report/proposal.module.css';
 
 const FIELDS = [
@@ -15,15 +15,22 @@ function action(report, token) {
 }
 
 export default function TechnicalProposalForm({ report, token }) {
-  if (!isEsmeril(report) || !transcriptionApproved(report)) return null;
+  if (!transcriptionApproved(report)) return null;
   const proposal = report.final_report_proposal;
-  const returnTo = token ? `/admin/report?id=${report.id}&token=${encodeURIComponent(token)}` : `/admin/report?id=${report.id}`;
+  const returnTo = token
+    ? `/admin/report?id=${report.id}&token=${encodeURIComponent(token)}`
+    : `/admin/report?id=${report.id}`;
   return (
     <section className={styles.panel}>
-      <h2>Propuesta de informe técnico</h2>
-      {!proposal ? <form action={action(report, token)} method="post"><input type="hidden" name="intent" value="generate" /><input type="hidden" name="return_to" value={returnTo} /><button>Generar propuesta</button></form> : null}
-      {proposal ? <form className={styles.editor} action={action(report, token)} method="post"><input type="hidden" name="intent" value="save" /><input type="hidden" name="return_to" value={returnTo} />{FIELDS.map(([name, label]) => <label key={name}>{label}<textarea name={name} rows="4" defaultValue={proposal[name] || ''} /></label>)}<button>Guardar cambios</button></form> : null}
-      {proposal ? <form action={action(report, token)} method="post"><input type="hidden" name="intent" value="regenerate" /><input type="hidden" name="return_to" value={returnTo} /><button className={styles.secondary}>Regenerar propuesta</button></form> : null}
+      <h2>Propuesta técnica generada</h2>
+      {proposal ? <div className={styles.blocks}>{FIELDS.map(([name, label]) => (
+        <div key={name}><h3>{label}</h3><p>{proposal[name] || 'Sin evidencia suficiente.'}</p></div>
+      ))}</div> : <p>Esta OT todavía no tiene una propuesta técnica.</p>}
+      <form action={action(report, token)} method="post">
+        <input type="hidden" name="intent" value={proposal ? 'regenerate' : 'generate'} />
+        <input type="hidden" name="return_to" value={returnTo} />
+        <button>{proposal ? 'Regenerar propuesta' : 'Generar propuesta técnica'}</button>
+      </form>
     </section>
   );
 }
