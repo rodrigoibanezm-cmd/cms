@@ -71,6 +71,7 @@ export async function approveReportWithAccess({ reportId, access }) {
     `WITH approved_xls AS (
        SELECT f.id FROM report_files f JOIN reports r ON r.id=f.report_id
        WHERE f.report_id=$1 AND f.kind='generated_xls' AND f.drive_file_id=r.drive_file_id
+       ORDER BY f.id LIMIT 1
      )
      UPDATE reports SET current_state='secretary_approved',
         current_owner_type=$2, current_owner_id=$3,
