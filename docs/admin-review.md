@@ -105,6 +105,13 @@ registra report_files.kind = generated_pdf
 registra report_events.event = final_document_generated
 ```
 
+## Visualización de imágenes
+
+```txt
+/api/report-file descarga desde Drive por file_id.
+El front usa lupa sobre la imagen original.
+```
+
 ## Estado incompleto
 
 ```txt
