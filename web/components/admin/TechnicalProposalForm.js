@@ -16,6 +16,12 @@ function action(report, token) {
 
 export default function TechnicalProposalForm({ report, token }) {
   if (!transcriptionApproved(report)) return null;
+  if (!report.transcription_approved_xls_file_id) return (
+    <section className={styles.panel}>
+      <h2>Propuesta técnica generada</h2>
+      <p>Esta aprobación antigua no identifica el XLS fuente. Vuelva a aprobar la transcripción vigente.</p>
+    </section>
+  );
   const proposal = report.final_report_proposal;
   const returnTo = token
     ? `/admin/report?id=${report.id}&token=${encodeURIComponent(token)}`
