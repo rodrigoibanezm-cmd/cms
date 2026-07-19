@@ -10,7 +10,9 @@
     "BATERIA": [
       "BATERIA TECNICOS",
       "INFORME BATERIA",
-      "BATERIA MILWAUKEE"
+      "BATERIA MILWAUKEE",
+      "PAQUETE DE BATERIAS",
+      "BATERIAS"
     ],
     "BOMBA_HIDRAULICA": [
       "BOMBA HIDRAULICA",
@@ -23,11 +25,13 @@
       "BOMBA DE TRASVASIJE",
       "BOMBA TRASVASE"
     ],
-    "BURIL": ["BURIL"],
+    "BURIL": ["BURIL", "RECTIFICADOR"],
     "CARRETE_ELECTRICO": [
       "CARRETE ELECTRICO",
       "CARRETE DE CABLE",
-      "CARRETE EXTENSION"
+      "CARRETE EXTENSION",
+      "ALARGADOR ELECTRICO",
+      "ALARGADOR DE CARRETE"
     ],
     "CILINDRO_HIDRAULICO": [
       "CILINDRO HIDRAULICO",
@@ -36,7 +40,10 @@
     "E_RAD": ["E RAD", "ERAD"],
     "ESMERIL": [
       "ESMERIL",
-      "ESMERIL ANGULAR"
+      "ESMERIL ANGULAR",
+      "AMOLADORA",
+      "AMOLADOR MATRIZ",
+      "PULIDOR"
     ],
     "FOCO_IMANTADO": [
       "FOCO IMANTADO",
@@ -45,7 +52,10 @@
     "GATA_HIDRAULICA": [
       "GATA HIDRAULICA",
       "GATO HIDRAULICO",
-      "GATO HIDRAULICA"
+      "GATO HIDRAULICA",
+      "GATA NEUMOHIDRAULICA",
+      "GATA ELECTROHIDRAULICA",
+      "GATA CILINDRO"
     ],
     "GIRAMOTOR": [
       "GIRAMOTOR",
@@ -55,7 +65,8 @@
       "LLAVE DE TORQUE O IMPACTO",
       "LLAVE DE IMPACTO",
       "LLAVE IMPACTO",
-      "LLAVE TORQUE"
+      "LLAVE TORQUE",
+      "LLAVEB DE IMPACTO"
     ],
     "LLAVE_HIDRAULICA": [
       "LLAVE HIDRAULICA",
@@ -63,7 +74,8 @@
     ],
     "LUMINARIA": [
       "LUMINARIA",
-      "LUMINARIA INALAMBRICA"
+      "LUMINARIA INALAMBRICA",
+      "UMINARIA"
     ],
     "MALETA_TESTEO": [
       "MALETA TESTEO",
@@ -72,7 +84,9 @@
     ],
     "MESA_LEVANTE": [
       "MESA LEVANTE",
-      "MESA DE LEVANTE"
+      "MESA DE LEVANTE",
+      "MESA HIDRAULICA",
+      "MESA ELECTROHIDRAULICA"
     ],
     "PISTOLA_CALOR": [
       "PISTOLA CALOR",
