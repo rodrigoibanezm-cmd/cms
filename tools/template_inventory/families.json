@@ -1,3 +1,101 @@
 {
-  "aliases": {}
+  "aliases": {
+    "ARRANCADOR_DE_BATERIAS": [
+      "ARRANCADOR DE BATERIAS",
+      "ARRANCADOR BATERIAS",
+      "PARTIDOR DE BATERIA",
+      "PARTIDOR BATERIA"
+    ],
+    "ASPIRADORA": ["ASPIRADORA"],
+    "BATERIA": [
+      "BATERIA TECNICOS",
+      "INFORME BATERIA",
+      "BATERIA MILWAUKEE"
+    ],
+    "BOMBA_HIDRAULICA": [
+      "BOMBA HIDRAULICA",
+      "BOMBA MANUAL",
+      "BOMBA ELECTROHIDRAULICA",
+      "BOMBA ELECTRO HIDRAULICA"
+    ],
+    "BOMBA_TRASVASIJE": [
+      "BOMBA TRASVASIJE",
+      "BOMBA DE TRASVASIJE",
+      "BOMBA TRASVASE"
+    ],
+    "BURIL": ["BURIL"],
+    "CARRETE_ELECTRICO": [
+      "CARRETE ELECTRICO",
+      "CARRETE DE CABLE",
+      "CARRETE EXTENSION"
+    ],
+    "CILINDRO_HIDRAULICO": [
+      "CILINDRO HIDRAULICO",
+      "CILINDRO HIDRAULICA"
+    ],
+    "E_RAD": ["E RAD", "ERAD"],
+    "ESMERIL": [
+      "ESMERIL",
+      "ESMERIL ANGULAR"
+    ],
+    "FOCO_IMANTADO": [
+      "FOCO IMANTADO",
+      "FOCO MAGNETICO"
+    ],
+    "GATA_HIDRAULICA": [
+      "GATA HIDRAULICA",
+      "GATO HIDRAULICO",
+      "GATO HIDRAULICA"
+    ],
+    "GIRAMOTOR": [
+      "GIRAMOTOR",
+      "GIRA MOTOR"
+    ],
+    "LLAVE_DE_TORQUE_O_IMPACTO": [
+      "LLAVE DE TORQUE O IMPACTO",
+      "LLAVE DE IMPACTO",
+      "LLAVE IMPACTO",
+      "LLAVE TORQUE"
+    ],
+    "LLAVE_HIDRAULICA": [
+      "LLAVE HIDRAULICA",
+      "LLAVE HIDRAULICO"
+    ],
+    "LUMINARIA": [
+      "LUMINARIA",
+      "LUMINARIA INALAMBRICA"
+    ],
+    "MALETA_TESTEO": [
+      "MALETA TESTEO",
+      "MALETA DE TESTEO",
+      "MALETA TEST"
+    ],
+    "MESA_LEVANTE": [
+      "MESA LEVANTE",
+      "MESA DE LEVANTE"
+    ],
+    "PISTOLA_CALOR": [
+      "PISTOLA CALOR",
+      "PISTOLA DE CALOR"
+    ],
+    "TALADRO": ["TALADRO"],
+    "TECLE": [
+      "TECLE",
+      "TECLE CADENA",
+      "TECLE PALANCA"
+    ],
+    "TETRAGUAGE": [
+      "TETRAGUAGE",
+      "TETRAGAUGE",
+      "TETRAGUAGE"
+    ],
+    "TORQUE_MANUAL": [
+      "TORQUE MANUAL",
+      "TORQUIMETRO MANUAL"
+    ],
+    "TORQUE_VALVULA": [
+      "TORQUE VALVULA",
+      "TORQUE DE VALVULA"
+    ]
+  }
 }
