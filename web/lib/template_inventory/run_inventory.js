@@ -47,6 +47,7 @@ async function runInventory(folderId) {
   return {
     total: rows.length,
     counts: countStatuses(rows),
+    results: rows,
     pending: rows.filter(({ status }) => status !== 'CONFIRMED'),
   }
 }
