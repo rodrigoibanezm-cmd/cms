@@ -1,9 +1,14 @@
 const catalog = require('./families.json')
 const { normalize, familyKey } = require('./normalize')
 
+function containsWords(name, alias) {
+  const normalizedName = ` ${normalize(name)} `
+  const normalizedAlias = ` ${normalize(alias)} `
+  return normalizedName.includes(normalizedAlias)
+}
+
 function matchesAlias(name, aliases) {
-  const normalized = normalize(name)
-  return aliases.some((alias) => normalized.includes(normalize(alias)))
+  return aliases.some((alias) => containsWords(name, alias))
 }
 
 function inferFamily(filename) {
@@ -22,4 +27,4 @@ function inferFamily(filename) {
   return { family: familyKey(filename), status: 'UNMAPPED' }
 }
 
-module.exports = { inferFamily }
+module.exports = { containsWords, inferFamily }
