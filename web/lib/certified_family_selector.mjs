@@ -12,9 +12,14 @@ function getPath(context, path) {
 }
 
 export function selectCertifiedFamily(catalog, context) {
-  const matches = Object.entries(catalog.families || {}).filter(([, family]) => {
+  const matches = Object.entries(catalog.families || {}).filter(([key, family]) => {
+    const aliases = catalog.aliases?.[key];
+    if (!Array.isArray(aliases)) {
+      throw new Error(`Certified family ${key} has no aliases`);
+    }
+
     const candidate = normalizeAlias(getPath(context, family.classifier.source_field));
-    return family.aliases.includes(candidate);
+    return aliases.includes(candidate);
   });
 
   if (matches.length !== 1) {
