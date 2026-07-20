@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "snapshot_date": "2026-07-20",
+  "source_commit": "82758c35ff838ed0fcb1591609f2407976c95a4a",
+  "schema_version": "1.0.0",
+  "classifier_version": "stage0-final",
+  "result": {
+    "total": 557,
+    "CONFIRMED": 544,
+    "UNMAPPED": 13,
+    "REVIEW": 0
+  },
+  "immutable": true
+}

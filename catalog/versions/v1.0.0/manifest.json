@@ -1,0 +1,19 @@
+{
+  "canonical_hash": "1d9cac81604460967fb1a86f58761f2408cdb7a4b60af60cb4297ffe60842c2c",
+  "classifier_version": "stage0-final",
+  "date": "2026-07-20",
+  "hashes": {
+    "aliases.json": "726966989f12bc1e52ac1c55e6d0ef97a113de50d77396e0708d9d5592764b0b",
+    "classifier.js": "7f298f660fb1570b99fcd4ae12c6921866ec9a30cd0de40cfecf50a19030cffe",
+    "classifier_catalog_base.json": "327b018a1bce8415e6aa8cf3cf5bfa12262ce1374e2577d1134f899908549589",
+    "evidence/stage0-method.md": "91ac1f6b439f91d2e1a3b5cf14e0aca34d9559d8360df09695e9e3d484a651d6",
+    "families.json": "726966989f12bc1e52ac1c55e6d0ef97a113de50d77396e0708d9d5592764b0b",
+    "families_stage0_final.json": "413d0a4655a20e3241095e1cc3510937113039077e6a4c2e1a8e919ed07e1ca9",
+    "inventory.json": "0e5a099bcc6c0f219345bb2ac6c25c29cb6e49fda44c86f85c716a725f7708e0",
+    "metadata.json": "b0fe460d626272033614e1f274964b25cb70e5f8c8723f4ae094cc7819b6e8d2",
+    "normalize.js": "2e907d10323cccb0d42b8b5b00e076d05a7f959a950bc719ba04f85e0050b520"
+  },
+  "schema_version": "1.0.0",
+  "source_commit": "82758c35ff838ed0fcb1591609f2407976c95a4a",
+  "version": "1.0.0"
+}

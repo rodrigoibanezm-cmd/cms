@@ -1,0 +1,2861 @@
+{
+  "total": 557,
+  "counts": {
+    "CONFIRMED": 544,
+    "UNMAPPED": 13
+  },
+  "results": [
+    {
+      "filename": "1154 INFORME TÉCNICO LLAVE DE IMPACTO 1.2 INAL MILWAUKEE 2863-20.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16725 INFORME TECNICO LLAVE DE TORQUE NEUM 1 1-2 1500-5000 LB FT RAD MOD. RAD50 ROT. ZHK-1.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16726 INFORME TECNICO LLAVE DE TORQUE NEUM 1 1-2 1500 - 5000 LB-FT  RAD MOD. RAD50.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16839 INFORME TECNICO LLAVE DE IMPACTO INAL MILWAUKEE MOD. 2864-20 ROT. PF-4636.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16840  INFORME TECNICO LLAVE DE IMPACTO  3-4 MILWAUKEE ROT. SWH-68.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16841 INFORME TECNICO LLAVE DE IMPACTO INAL 3-4 MILWAUKEE MOD. 2864-20 ROT. PF-4272.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16842  INFORME TECNICO LLAVE DE IMPACTO 1-2 MILWAUKEE ROT. GPN- 82.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16843 INFORME TECNICO LLAVE DE IMPACTO INAL 3-4 MILWAUKEE MOD. 2864-20 ROT. SHW-146.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16844 INFORME TECNICO LLAVE DE IMPACTO INAL 3-4 MOD.2864-20 ROT. PF-46.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16845 INFORME TECNICO LLAVE DE IMPACTO 3-4 INAL MILWAUKEE MOD. 2864-20 ROT. SWH-108.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16846 INFORME TECNICO  LLAVE DE IMPACTO INAL 1 MILWAUKEE MOD. 2867-520 ROT. PF-29069.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16847 INFORME TECNICO LLAVE DE IMPACTO INAL 1 MILWAUKEE MOD. 2867-20.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16848 INFORME TECNICO PULIDOR INALAMBRICO 18V MILWAUKEE MOD. 2738-20 ROT. PF-29672.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16849 INFORME TECNICO PULIDOR INALAMBRICO MILWAUKEE MOD. 2738-20 ROT. ELB-4.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16850 INFORME TECNICO PULIDOR INAL MILWAUKEE MOD. 2784-20 ROT. ADV-2.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16851 INFORME TECNICO RECTIFICADOR MOD. GD0600.xlsx",
+      "family": "BURIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16852 INFORME TECNICO ESMERIL ELECTRICO MAKITA MOD. 9557HP.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16853 INFORME TECNICO LLAVE DE IMPACTO NEUM 1 CATERPILLAR MOD. 587-2329 ROT. YXF-59.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16854 INFORME TECNICO GRASERA INAL MILWAUKEE MOD. 2646-20.xlsx",
+      "family": "GRASERA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16855 INFORME TECNICO GRASERA INALAMBRICA 10.000 PSI MILWAUKEE ROT. BMK-2.xlsx",
+      "family": "GRASERA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16856 INFORME TECNICO PAQUETE DE BATERÍAS M12 MILWAUKEE ROT. BEL-51.xlsx",
+      "family": "BATERIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16857 INFORME TECNICO GIRAMOTOR INGERSOLLRAND MOD. B006 ROT. PF1547.xlsx",
+      "family": "GIRAMOTOR",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16858 INFORME TECNICO LLAVE DE TORQUE INAL 1 RAD MOD. BRAD SELEC 3000-2 ROT. LBT-5.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16859 INFORME TECNICO LUMINARIA DE PEDESTAL MILWAUKEE MOD. 2130-20 ROT. AZB-23.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16860 INFORME TECNICO LUMINARIA DE PEDESTAL MILWAUKEE MOD 2130-20 ROT. AZB-17.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16861 INFORME TECNICO LUMINARIA DE PEDESTAL MILWAUKEE MOD. 2131-20 ROT. AZB-70.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16862 INFORME TECNICO LUMINARIA DE PEDESTAL MILWAUKEE MOD. 2130-20 ROT. HDTN-7.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16863  INFORME TECNICO LUMINARIA DE PEDESTAL MILWAUKEE  ROT. AZB-21.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16864 INFORME TECNICO LUMINARIA DE PEDESTAL MILWAUKEE ROT. PF- 4000.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16865 INFORME TECNICO LUMINARIA DE PEDESTAL MILWAUKEE MOD. 2130-20 ROT. HDTN-1.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16866 INFORME TECNICO LUMINARIA DE PEDESTAL MOD. 2130-20 ROT. AZB-51.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16867 INFORME TECNICO LUMINARIA PORTATIL MILWAUKEE MOD. 2365-20 ROT. ZHW-73.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16868  INFORME TECNICO LUMINARIA MILWAUKEE   ROT. QCLS.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16869 INFORME TECNICO ALARGADOR ELECTRICO.xlsx",
+      "family": "CARRETE_ELECTRICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "16870 INFORME TECNICO  ALARGADOR DE CARRETE  RITTING ROT. PF-4412.xlsx",
+      "family": "CARRETE_ELECTRICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17356 INFORME TECNICO  LLAVE DE IMPACTO 1- 2 MIKITA ROT. H102041096.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17392 INFORME TECNICO LUMINARIA DE PEDESTAL MILWAUKEE ROT. HDTN-2.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17393 INFORME TECNICO LUMINARIA DE PEDESTAL 18V MILWAUKEE ROT. AZB-60.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17394 INFORME TECNICO  LUMINARIA DE PEDESTAL ROT. AZB-32.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17396 INFORME TECNICO LUMINARIA DE PEDESTAL 18V MILWAUKEE ROT. PF-28-945.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17397 INFORME TECNICO LUMINARIA DE PEDESTAL MILWAUKEE ROT. AZB-8.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17398 INFORME TECNICO LLAVE DE IMPACTO 3-4 MILWAUKEE ROT. PF4635.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17399  INFORME TECNICO LLAVE DE IMPACTO 3-4 MILWAUKEE ROT. PF-4834.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17400 INFORME TECNICO LLAVE DE IMPACTO 3-4 MILWAUKEE ROT. DF-1622.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17401 INFORME TECNICO LLAVE DE IMPACTO  3-4 MILWAUKEE   ROT. SWH-10.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17402 INFORME TECNICO  LLAVE DE IMPACTO 3-4 MILWAUKEE  ROT. SWH - 155.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17403 INFORME TECNICO LLAVE DE IMPACTO 3-4 MILWAUKEE ROT. SWH-55.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17404 INFORME TECNICO LLAVE DE IMPACTO INAL. 1 MILWAUKEE ROT. PF-3425.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17405 INFORME TECNICO LLAVE DE IMPACTO 1-2 MILWAUKEE ROT. GPN- 107.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17406 INFORME TECNICO LLAVE DE IMPACTO 1 -2 MILWAUKEE ROT. GPN-73      PF- 3824.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17407 INFORME TECNICO LLAVE DE IMPACTO 1-2 MILWAUKEE ROT. PF-4825.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17409 INFORME TECNICO LLAVE DE IMPACTO  1-2 MILWAUKEE ROT.  GPN-108.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17410 INFORME TECNICO LLAVE DE IMPACTO 1-2 MILWAUKEE ROT. GPN- 137.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17411 INFORME TECNICO ESMERIL INALAMBRICO MILWAUKEE ROT. NPR-20.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17412 INFORME TECNICO BATERIA 18V MILWAUKEE ROT. KZF-Y14.xlsx",
+      "family": "BATERIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17413 INFORME TECNICO BATERIA 18V MILWAUKEE ROT. KLP-71.xlsx",
+      "family": "BATERIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17414 INFORME TECNICO BATERIAS MILWAUKEE M12 ROT. BEL-98.xlsx",
+      "family": "BATERIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17415 INFORME TECNICO BATERIA MILWAUKE M12 ROT. BEL-58.xlsx",
+      "family": "BATERIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17416 INFORME TECNICO BATERIA MILWAUKEE M12 ROT. BEL- 42.xlsx",
+      "family": "BATERIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17417 INFORME TECNICO BATERIA MILWAUKEE M12 ROT. BEL-53.xlsx",
+      "family": "BATERIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17419 INFORME TECNICO  LLAVE DE TORQUE 1 RAD MOD. E- RAD BLU3000.xlsx",
+      "family": "E_RAD",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17421 INFORME TECNICO LLAVE HIDRAULICA HYTORC ROT.PF-275-47.xlsx",
+      "family": "LLAVE_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17422 INFORME TECNICO BOMBA HIDRAULICA 10000 PSI HYTORC ROT. PF-4585.xlsx",
+      "family": "BOMBA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17423 INFORME TECNICO BOMBA HIDRAULICA 1000 PSI ENERPAC  MOD. ZV-350-7769.xlsx",
+      "family": "BOMBA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17427 INFORME TECNICO ESMERIL ELECTCRICO MAKITA MOD. GA7020.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17429 INFORME TECNICO CARRETE ELECTRICO  RITTIG ROT. WGX-62.xlsx",
+      "family": "CARRETE_ELECTRICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17431 INFORME TECNICO PISTOLA DE CALOR  INCO  ROT. HYM-24.xlsx",
+      "family": "PISTOLA_CALOR",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17432 INFORME TECNICO TETRAGUAGE 0-5000 CATERPILLAR MOD. 6V-7830.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17433 INFORME TECNICO TETRAGUAGE 0-5000 CATERPILLAR  MOD. 6V-7830.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17435 INFORME TECNICO TETRAGUAGE  0-5 000  CATERPILLAR ROT. WFH-3.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17436 INFORME TECNICO TETRAGUAGE 0-5000 CATERPILLAR MOD. 6V-7830.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17437 INFORME TECNICO TORQUE MANUAL 3-8 PROTO ROT. UND-2       PF- 25724.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17440 INFORME TECNICO TORQUE MANUAL CATERPILLAR MOD. 572-2541.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17444 INFORME TECNICO TORQUE MANUAL ROT. PF-4007.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17445  INFORME TECNICO TORQUE MANUAL 3-4 CATERPILLAR ROT. KTX-11.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17446  INFORME TECNICO TORQUE MANUAL 3-4  ROT. KN-7.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17447 INFORME TECNICO TORQUE MANUAL 3-4 SNAP-ON MOD. QD4R600.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17449 INFORME TECNICO MESA HIDRAULICA DE 800 KG ABONIR SERIE. 234267.xlsx",
+      "family": "MESA_LEVANTE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17450 INFORME TECNICO MESA DE LEVANTE 500 KG BISHAMUN  MOD. BX50F.xlsx",
+      "family": "MESA_LEVANTE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17451  INFORME TECNICO MESA ELECTROHIDRAULICA  ROT-PF-3809.xlsx",
+      "family": "MESA_LEVANTE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17452 INFORME TECNICO MESA ELECTROHIDRAULICA  700 KG STARTEL MUTUR ROT. PF- 18253.xlsx",
+      "family": "MESA_LEVANTE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17453  INFORME TECNICOCAMILLA ELECTROHIDRAULICA  500 KG  CATERPILLAR ROT. PF - 22935.xlsx",
+      "family": "INFORME_TECNICOCAMILLA_ELECTROHIDRAULICA_500_KG_CATERPILLAR_ROT_PF",
+      "status": "UNMAPPED"
+    },
+    {
+      "filename": "17744  INFORME TECNICO ESMERIL ELECTCRICO DEWALT.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17745  INFORME TECNICO ESMERIL ELECTCRICO DEWALT.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17903 INFORME TECNICO LLAVE DE IMPACTO 1 INAL. MILWAUKEE ROT-LKQ-53.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17905  INFORME TECNICO LLAVE DE IMPACTO INAL. 3-4 MILWAUKEE ROT- SWH-144.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17906 INFORME TECNICO  LLAVE DE IMPACTO INAL. 3-4 MILWAUKEE ROT-SWH-103.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17907  INFORME TECNICO LLAVE DE IMPACTO INAL. 3-4 ROT- SWH-168.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17908 INFORME TECNICO LLAVE DE IMPACTO.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17909  INFORME TECNICO LLAVE DE IMPACTO INAL. 1-2 MILWAUKEE ROOT-GPN-122.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17910  INFORME TECNICO LLAVEB DE IMPACTO INAL. 1 MILWAUKEE ROT-LKQ-6.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17911 INFORME TECNICO LLAVE DE IMPACTO INAL. 3-8  MILWAUKEE ROT-AUG-22.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17912 INFORME  TECNICO LLAVE DE IMPACTO INAL. 3-8 MILWAUKEE ROT-3462.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17913 INFORME TECNICO LLAVE DE IMPACTO  INAL. 3-8 MILWAUKEE ROT-AYG-37.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17914  INFORME TECNICO LLAVE DE IMPACTO INAL 1-2  MILWAUKEE  ROT- GPN-154.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17915  INFORME TECNICO LLAVE DE IMPACTO INAL.1-2 MILWAUKEE  ROT-GPN-154.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17940 INFORME TECNICO LUMINARIA INAL. MILAWAUKEE ROT-QCL-2.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17942   INFORME TECNICO AMOLADORA ELECTRICA ROT-LJV-1.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17945  INFORME TECNICO GIRAMOTOR INGERSOLL ROT- PF-3414.xlsx",
+      "family": "GIRAMOTOR",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17946  INFORME TECNICO BOMBA INAL. MILWAUKEE MILWAUKEE NS-K11SAD222500121.xlsx",
+      "family": "INFORME_TECNICO_BOMBA_INAL_MILWAUKEE_MILWAUKEE_NS_K11SAD222500121",
+      "status": "UNMAPPED"
+    },
+    {
+      "filename": "17947 INFORME TECNICO BOMBA ELECTROHIDRAULICA ENERPAC  NS-D10323031C.xlsx",
+      "family": "BOMBA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17951 INFORME TECNICO LLAVE HIDRAULICA HYTORC ROT-NVB-5.xlsx",
+      "family": "LLAVE_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17952 INFORME TECNICO LLAVE HIDRAULICA 3-4 HYTORC ROT-YDG-3.xlsx",
+      "family": "LLAVE_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "17957  INFORME TECNICO GATA PLUMA 2 TON ROT-PF-1188.xlsx",
+      "family": "INFORME_TECNICO_GATA_PLUMA_2_TON_ROT_PF",
+      "status": "UNMAPPED"
+    },
+    {
+      "filename": "18194 INFORME TECNICO LLAVE DE IMPACTO  ELECT. RAD ROT. BHE-71.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18195  INFORME TECNICO  LLAVE DE TORQUE 1 RAD BLU3000  ROT- HUQ-1.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18196 INFORME TECNICO LLAVE DE IMPACTO RAD ROT-HUQ-7.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18197 INFORME TECNICO  LLAVE DE TORQUE 1 RAD MOD. E- RAD BLU3000.xlsx",
+      "family": "E_RAD",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "182302 INFORME TECNICO TORQUE MANUAL 1-2  ROT. GDZ-7.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18273 INFORME TECNICO ESMERIL ELECTCRICO ROT-PKZ-29.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18274 INFORME TECNICO ESMERIL ELECTCRICO MAKITA MOD. 9557HP ROT PF-2655.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18275  INFORME TECNICO ESMERIL ELECTCRICO DEWALT DWE491-B2C ROT. N-R.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18276  INFORME TECNICO ESCAREADOR NEUMATICO.xlsx",
+      "family": "INFORME_TECNICO_ESCAREADOR_NEUMATICO",
+      "status": "UNMAPPED"
+    },
+    {
+      "filename": "18278  INFORME TECNICO LLAVE DE IMPACTO NEUMATICA   ROT. NUE-12.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "182789 INFORME TECNICO LLAVE DE IMPACTO NEUMATICA   ROT. BMK-1.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18286 INFORME TECNICO LLAVE HIDRAULICA HYTORC ROT.MSQ-2.xlsx",
+      "family": "LLAVE_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18287 INFORME  TECNICO LLAVE DE TORQUE RAD  ROT- ZHK-6.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18288 INFORME  TECNICO LLAVE DE TORQUE RAD  ROT- PF-19702.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18289 INFORME TECNICO BOMBA HIDRAULICA  ENERPAC  ELECT. ROT PF-22753.xlsx",
+      "family": "BOMBA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18290 INFORME TECNICO BOMBA HIDRAULICA  ENERPAC  MANUAL ROT PF-2851.xlsx",
+      "family": "BOMBA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18296 INFORME TECNICO  APRIETA TERMINALES  ROT-PF 25163.xlsx",
+      "family": "INFORME_TECNICO_APRIETA_TERMINALES_ROT_PF",
+      "status": "UNMAPPED"
+    },
+    {
+      "filename": "18297 INFORME TECNICO TORQUE MANUAL PROTO ROT. N-R.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18298INFORME TECNICO TORQUE MANUAL PROTO ROT. UND-6.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18299  INFORME TECNICO TORQUE MANUAL 1-2  ROT. PF-3909.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18300 INFORME TECNICO TORQUE MANUAL KING TONY ROT.UND-34.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18301 INFORME TECNICO TORQUE MANUAL CAT MOD.8T9293.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18304 INFORME TECNICO TETRAGUAGE 0-5000 CATERPILLAR MOD. 6V-7830.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18305  INFORME TECNICO TETRAGUAGE   CAT ROT- WFH-79.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18306 INFORME TECNICO TETRAGUAGE   CAT ROT-PF-20833.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18307 INFORME TECNICO TETRAGUAGE   CAT ROT-PF-29755.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18308 INFORME  TECNICO LLAVE DE IMPACTO INAL.MILWAUKEE ROT- SWH-156.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18309 INFORME  TECNICO LLAVE DE IMPACTO INAL.MILWAUKEE ROT- SWH-173.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18310INFORME  TECNICO LLAVE DE IMPACTO INAL. MILWAUKEE ROT- SWH-10.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18311 INFORME  TECNICO LLAVE DE IMPACTO INAL.MILWAUKEE ROT- SWH-106.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18312 INFORME TECNICO LLAVE DE IMPACTO INAL 1-2  MOD.2864-20 ROT. N.R.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18313 INFORME  TECNICO LLAVE DE IMPACTO INAL. 3-8 MILWAUKEE ROT- SWH-185.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18314 INFORME  TECNICO LLAVE DE IMPACTO INAL.MILWAUKEE ROT- SWH-164.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18315 INFORME  TECNICO LLAVE DE IMPACTO INAL.MILWAUKEE ROT- GPN -73.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18316 INFORME  TECNICO LLAVE DE IMPACTO INAL.MILWAUKEE ROT- SWH-154.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18317 INFORME  TECNICO LLAVE DE IMPACTO INAL.MILWAUKEE ROT- SWH-164.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18318 INFORME  TECNICO LLAVE DE IMPACTO INAL. MILWAUKEE ROT- SWH-167.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18319 INFORME  TECNICO LLAVE DE IMPACTO INAL. MILWAUKEE ROT- PF-4635.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18320 INFORME  TECNICO LLAVE DE IMPACTO INAL. MILWAUKEE ROT- AVB-107.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18321 INFORME  TECNICO LLAVE DE IMPACTO INAL. MILWAUKEE ROT- GPN-98.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18322 INFORME  TECNICO LLAVE DE IMPACTO INAL.MILWAUKEE ROT- AVG-94.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18323  INFORME  TECNICO LLAVE DE IMPACTO INAL.MILWAUKEE ROT-VE-119.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18324 INFORME TECNICO GRASERA INAL MILWAUKEE ROT BMK-1.xlsx",
+      "family": "GRASERA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18328  INFORME TECNICO MESA ELECTROHIDRAULICA  ROT-PF-15940.xlsx",
+      "family": "MESA_LEVANTE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18329 INFORME TECNICO TECLE CADENA.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18330  INFORME TECNICO  TECLE CADENA.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18331  INFORME  TECNICO TECLE CADENA.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18332  INFORME  TECNICO  TECLE CADENA.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18333  INFORME   TECNICO TECLE PALANCA.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18334  INFORME TECNICO  TECLE PALANCA.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18344 INFORME TECNICO LUMINARIA INAL. MILAWAUKEE ROT- AZB-83.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18345  INFORME TECNICO LUMINARIA DE PEDESTAL MILWAUKEE  ROT. AZB-3.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18346 INFORME TECNICO LUMINARIA DE PEDESTAL  MILWAUKEE ROT. AZB-17.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18347 INFORME TECNICO LUMINARIA INAL. MILAWAUKEE ROT- AZB-33.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18348 INFORME TECNICO LUMINARIA INAL. MILAWAUKEE ROT- AZB-34.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18351 INFORME TECNICO LUMINARIA DE PEDESTAL MILWAUKEE ROT. AZB-66.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18765 INFORME  TECNICO LLAVE DE TORQUE RAD  ROT- HUQ-3.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18991 INFORME TECNICO LUMINARIA DE PEDESTAL  MILWAUKEE ROT. AZB-35.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18992INFORME TECNICO LUMINARIA DE PEDESTAL  MILWAUKEE ROT. AZB-2.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18994 INFORME TECNICO ESMERIL ELECTCRICO MAKITA ROT PKZ-15.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18995 INFORME TECNICO ESMERIL ELECTCRICO MAKITA ROT PKZ-43.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18996 INFORME TECNICO ESMERIL ELECTCRICO MAKITA ROT PKZ-4.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18997 INFORME TECNICO ESMERIL ELECTCRICO 4 1-2 MILWAUKEE ROT. NPR-19.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "18998 INFORME TECNICO LUMINARIA PORTATIL  MILWAUKEE ROT. PF-4347.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19000 INFORME TECNICO CARRETE ELECTRICO  RITTIG ROT.WGZ-19.xlsx",
+      "family": "CARRETE_ELECTRICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19001 INFORME TECNICO CARRETE ELECTRICO  RITTIG ROT.WGZ-143.xlsx",
+      "family": "CARRETE_ELECTRICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19002   INFORME TECNICO LLAVE HIDRAULICA HYTORC ROT.NVB-3.xlsx",
+      "family": "LLAVE_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19003 INFORME TECNICO BATERIA MILWAUKEE ROT. KPL-119.xlsx",
+      "family": "BATERIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19004 INFORME TECNICO BATERIA MILWAUKEE ROT. EFM-297.xlsx",
+      "family": "BATERIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19007  INFORME TECNICO GATA HIDRAULICA  200 TON ROT- PF-900.xlsx",
+      "family": "GATA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19319 INFORME TÉCNICO BARREDORA KARCHER.xlsx",
+      "family": "BARREDORA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19321 INFORME TÉCNICO ACUMULADOR ELECTROHIDRÁULICO ROT PF-4097.xlsx",
+      "family": "INFORME_TECNICO_ACUMULADOR_ELECTROHIDRAULICO_ROT_PF",
+      "status": "UNMAPPED"
+    },
+    {
+      "filename": "19322 INFORME TÉCNICO BARREDORA VIPER.xlsx",
+      "family": "BARREDORA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19360 INFORME TÉCNICO GATA CILINDRO ROT PF-4097.xlsx",
+      "family": "GATA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19633 INFORME TÉCNICO LLAVE DE IMPACTO INAL ILWAUKEE 2867-20 ROT LKQ-49.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19636 INFORME TÉCNICO CARRO DE DRENAJE.xlsx",
+      "family": "INFORME_TECNICO_CARRO_DE_DRENAJE",
+      "status": "UNMAPPED"
+    },
+    {
+      "filename": "19640 INFORME TÉCNICO LLAVE DE IMPACTO INAL. MILWAUKEE 2864-20 ROT SWH-158.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19641 INFORME TÉCNICO LLAVE DE IMPACTO INAL. MILWAUKEE 2867-20 ROT LKQ-46.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19642 INFORME TÉCNICO LLAVE DE IMPACTO INAL. MILWAUKEE 2863-20 ROT GPN-137.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19643 INFORME TÉCNICO LLAVE DE IMPACTO INAL. MILWAUKEE 2967-20 ROT GPN-128.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19644 INFORME TÉCNICO LLAVE DE IMPACTO INAL. MILWAUKEE 2864-20 ROT SWH-173.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19645 INFORME TÉCNICO LLAVE DE IMPACTO INAL. MILWAUKEE 2855-20 ROT AVG-94.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19646 INFORME TÉCNICO ESMERIL ELÉCTRICO MAKITA ROT PKZ-40.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19647 INFORME TÉCNICO ESMERIL ELÉCTRICO ROT PKZ-39.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19648 INFORME TÉCNICO ESMERIL INAL MILWAUKEE ROT NPR-20.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19649 INFORME TÉCNICO ESMERIL LECTRICO MAKITA ROT PF-21344.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19650 INFORME TÉCNICO ESMERIL ELECTRICO DEWALT.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19651 INFORME TÉCNICO ESMERIL ELÉCTRICO DEWALT.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19652 INFORME TÉCNICO ESMERIL ELECTRICO DEWALT ROT EBW-21.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19653 INFORME TÉCNICO ESMERIL ELÉCTRICO MAKITA ROT PKX-54.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19654 INFORME TÉCNICO PISTOLA DE CALOR ROT HYM-23.xlsx",
+      "family": "PISTOLA_CALOR",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19655 INFORME TÉCNICO LUMINARIA PORTATIL ROT ZHW-100.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19656 INFORME TÉCNICO LLAVE DE IMPACTO NEUM. PAOLI DP320 ROT PF-2951.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19657 INFORME TÉCNICO LLAVE DE IMPACTO NEUM. PAOLI DP1000 ROT NVE-11.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19658 INFORME TÉCNICO LLAVE DE IMPACTO NEUM. 1 CATERPILLAR.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19659 INFORME TÉCNICO LLAVE DE IMPACTO NEUM. ROT YXF-3.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19660 INFORME TÉCNICO LLAVE DE IMPACTO NEUM. CATERPILLAR 587-2329 ROT YXF-59.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19671 INFORME TÉCNICO BOMBA TRASVASIJE GRACO ROT XPA-3.xlsx",
+      "family": "BOMBA_TRASVASIJE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19672 INFORME TÉCNICO BOMBA TRASVASIJE ROT XPA-5.xlsx",
+      "family": "BOMBA_TRASVASIJE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19673 INFORME TÉCNICO BOMBA TRASVASIJE GRACO.xlsx",
+      "family": "BOMBA_TRASVASIJE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19682 INFORME TÉCNICO TORQUE MANUAL 1-2 ROT GDZ-1.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19683 INFORME TÉCNICO TORQUE MANUAL CATERPILLAR ROT GDZ-7.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19684 INFORME TÉCNICO TORQUE MANUAL 1-2 ROT GDZ-19.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19685 INFORME TÉCNICO LUMINARIA DE PEDESTAL ROT AZB-69.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19686 INFORME TÉCNICO UMINARIA PEDESTAL MILWAUKEE ROT AZB-30.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19687 INFORME TÉCNICO ASPIRADORA INAL. MILWAUKEE 0885-20.xlsx",
+      "family": "ASPIRADORA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19690 INFORME TÉCNICO LLAVE DE TORQUE BRAD 1500-2 ROT MFA-3.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19692 INFORME TÉCNICO BOMBA ELECTROHIDRÁULICA ROT RPC- 28.xlsx",
+      "family": "BOMBA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19693 INFORME TÉCNICO BOMBA ELECTROHIDRÁULICA ENERPAC ROT PF-43973.xlsx",
+      "family": "BOMBA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "19694 INFORME TÉCNICO MESA DE LEVANTE.xlsx",
+      "family": "MESA_LEVANTE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20019 INFORME TÉCNICO DIALIZADORA ELECTROHIDRÁULICA.xlsx",
+      "family": "DIALIZADORA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20020 INFORME TÉCNICO BANDEJA DE DRENADO.xlsx",
+      "family": "BANDEJA_DE_DRENADO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20038 INFORME TECNICO GATA NEUMOHIDRAULICA ENERPAC PRASA 20027L 200TON.xlsx",
+      "family": "GATA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20040 INFORME TÉCNICO MESA DE LEVANTE ROT PF-24779.xlsx",
+      "family": "MESA_LEVANTE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20041 INFORME TECNICO GATA CILINDRO NEU. OTC 5078 ROT PF-12271.xlsx",
+      "family": "GATA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20042 INFORME TECNICO GATA NEUMOHIDRAULICA  200 TON.xlsx",
+      "family": "GATA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20043 INFORME TECNICO GATA NEUMOHIDRÁULICA ENERPAC PRASA 200027L ROT PF-901.xlsx",
+      "family": "GATA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20058 INFORME TECNICO AMOLADORA MILWAUKEE 2784-20 ROT ADV-1.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20060 INFORME TECNICO AMOLADOR MATRIZ MILWAUKEE 2784-20 ROT ADV-3.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20077 INFORME TÉCNICO LLAVE DE IMPACTO NEUM. PAOLI ROT NVE-8.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20080 INFORME TECNICO GIRAMOTOR INGERSOLLRAND  3006PVR374-03-31P LOT XRA-10.xlsx",
+      "family": "GIRAMOTOR",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20081 INFORME TECNICO TETRAGUAGE CATERPILLAR 6V-7830 ROT WFH-37.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20082 INFORME TECNICO TETRAGUAGE  0-5 000  CATERPILLAR ROT. PF-24481.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20083 INFORME TECNICO TETRAGUAGE CATERPILLAR 6V-7830 ROT PF-24047.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20084 INFORME TECNICO TETRAGUAGE CATERPILAR 6V-7830 ROT WFH-14.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20085 INFORME TECNICO TETRAGUAGE CATERPILLAR 6V-7830 ROT WFH-18.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20086 INFORME TECNICO TETRAGUAGE CATERPILLAR 6V-7830 ROT PF-27541.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20087 INFORME TECNICO TETRAGUAGE CATERPILLAR 6V-7830 ROT PF-27508.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20088 INFORME TECNICO TETRAGUAGE CATERPILLAR 6V-7830.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20089 INFORME TECNICO TETRAGUAGE CATERPILLAR 6V-7830 LOT WFH-16.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20090 INFORME TECNICO TETRAGUAGE CATERPILLAR 6V-7830 LOT WFH-35.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20091 INFORME TECNICO TETRAGUAGE CATERPILLAR 6V-7830 ROT WFH-21.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20092 INFORME TECNICO TETRAGUAGE CATERPILLAR 6V-7830 ROT PF-24014.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20094 INFORME TECNICO CARRETE ELÉC. RITTING 220V ROT WGZ-45.xlsx",
+      "family": "CARRETE_ELECTRICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20095 INFORME TECNICO CARRETE ELÉCTRICO ROT WGZ-146.xlsx",
+      "family": "CARRETE_ELECTRICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20189 INFORME TÉCNICO LUMINARIA INAL. MILWAUKEE 2130-20 ROT AZB-67.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20190 INFORME TECNICO ARRANCADOR  DE BATERIA INAL. FACOM B124-1A ROT PF-3128.xlsx",
+      "family": "ARRANCADOR_DE_BATERIAS",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20193 INFORME TECNICO ALARGADOR ELÉCTRICO 230V ROT WGZ-117.xlsx",
+      "family": "CARRETE_ELECTRICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20194 INFORME TECNICO CARRETE ELÉCTRICO 220V ROT WGZ-9.xlsx",
+      "family": "CARRETE_ELECTRICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20195 INFORME TECNICO CARRETE ELÉCTRICO ROT WGZ-103.xlsx",
+      "family": "CARRETE_ELECTRICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20218 INFORME TECNICO CARRETE ELÉCTRICO RITTIG ROT WGZ-111.xlsx",
+      "family": "CARRETE_ELECTRICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20223 INFORME TÉCNICO ARRANCADOR  DE BATERIA SCHUMACHER PROPULSTATION ROT CDPQ-2.xlsx",
+      "family": "ARRANCADOR_DE_BATERIAS",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20225 INFORME TÉCNICO  TORQUE MANUAL PROTO 6014CX ROT PF-20926.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20227 INFORME TÉCNICO DIALIZADORA ELEC. SCHROEDER GRIS 10-1 ROT NUV-3.xlsx",
+      "family": "DIALIZADORA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20229 INFORME TECNICO GIRAMOTOR INGERSOL RAND B006-329-3831.xlsx",
+      "family": "GIRAMOTOR",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20512 INFORME TÉCNICO TRASDUCTOR DE TORQUE RAD RAD7000 ROT PF-1555.xlsx",
+      "family": "INFORME_TECNICO_TRASDUCTOR_DE_TORQUE_RAD_RAD7000_ROT_PF",
+      "status": "UNMAPPED"
+    },
+    {
+      "filename": "20558 INFORME TÉCNICO ELEC. MILWAUKEE 2738-20 ROT PF-29672.xlsx",
+      "family": "INFORME_TECNICO_ELEC_MILWAUKEE_20_ROT_PF",
+      "status": "UNMAPPED"
+    },
+    {
+      "filename": "20568 INFORME TÉCNICO TORQUE MANUAL CDI 2503MFRMH ROT GDZ-17.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20570 INFORME TÉCNICO TORQUE MANUAL GEDORE DMK-300 ROT PF-1818.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20577 INFORME TÉCNICO LUMINARIA DE PEDESTAL INAL. MILWAUKEE 2126-20 ROT PF-5441.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20578 INFORME  TÉCNICO BOMBA MANUAL LARZEP W22307 ROT PF-700.xlsx",
+      "family": "BOMBA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20580 INFORME TÉCNICO BOMBA ELECTROHIDRÁULICA HYTORC HY-230 ROT PF-15615.xlsx",
+      "family": "BOMBA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20603 INFORME TÉCNICO TECLE CADENA 1 TON ROT WJN-45.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20604 INFORME TÉCNICO TECLE CADENA ROT PDJ-47.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20605 INFORME TÉCNICO TECLE CADENA ROT PDJ-29.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20606 INFORME TÉCNICO TECLE CADENA ROT PF-4849.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20607 INFORME TECNICO TECLE CADENA ROT WJN-43.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20608 INFORME TÉCNICO TECLE CADENA 1 TON ROT WJN-42.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20609 INFORME TÉCNICO TECLE CADENA ROT WJN-37.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20610 INFORME TÉCNICO TECLE CADENA ROT WJN-53.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20611 INFORME TÉCNICO TECLE CADENA 1 TON.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20612 INFORME TÉCNICO TECLE CADENA ROT WJN-47.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20613 INFORME TÉCNICO TECLE CADENA ROT WJN-48.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20614 INFORME TÉCNICO TECLE CADENA ROT WJN-33.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20615 INFORME TÉCNICO TECLE CADENA ROT WJN-51.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20616 INFORME TÉCNICO TECLE CADENA ROT WJN-34.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20617 INFORME TÉCNICO TECLE CADENA ROT PF-4848.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20618 INFORME TÉCNICO TECLE CADENA ROT FUK-37.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20619 INFORME TÉCNICO TECLE CADENA ROT PF-4748.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20620 INFORME TÉCNICO TECLE CADENA ROT FUK-38.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20623 INFORME TÉCNICO TECLE PALANCA 1.5 TON ROT LSM-85.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20624 INFORME TÉCNICO TECLE PALANCA 1.5 ROT LMS-84.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20625 INFORME TÉCNICO TECLE PALANCA 3 TON ROT PF-2103.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20626 INFORME TÉCNICO TECLE PALANCA 3 TON ROT WVP-59.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20627 INFORME TÉCNICO TECLE CADENA 6 TON ROT PF-20872.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20628 INFORME TÉCNICO TECLE CADENA ROT PDJ-49.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20629 INFORME TÉCNICO TECLE CADENA 5 TON ROT LSP-2.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20630 INFORME TÉCNICO TECLE CADENA 5 TON ROT LSP-3.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20649 INFORME TÉCNICO MESA HIDRÁULICA RAD.xlsx",
+      "family": "MESA_LEVANTE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20738 INFORME TÉCNICO  BOMBA HIDRÁULICA MANUAL ENERPAC P-80 ROT VXN-57.xlsx",
+      "family": "BOMBA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20739 INFORME TÉCNICO BOMBA HIDRÁULICA ENERPAC P-80 ROT VXN-56.xlsx",
+      "family": "BOMBA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20740 INFORME TÉCNICO LUMINARIA INAL. MILWAUKEE 2130-20 ROT AZB-58.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20741 INFORME TÉCNICO LUMINARIA INAL MILWAUKEE 2130-20 ROT AZB-52.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20742 INFORME TÉCNICO LUMINARIA INAL. MILWAUKEE 2130-20 ROT AZB-32.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20743 INFORME TÉCNICO TORQUE MANUAL CDI 100T-I ROT PF-18180.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20744 INFORME TÉCNICO  TORQUE MANUAL CDI 100T-I ROT AF-16012.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20745 INFORME TÉCNICO TORQUE MANUAL KING TONY 34323-2C ROT PF-4571.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20746 INFORME TÉCNICO TORQUE MANUAL GEDORE RED R68900200 ROT GDZ-18.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20747 INFORME TÉCNICO TORQUE MANUAL GEDORE RED R68900300 ROT GDZ-20.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20748 INFORME TÉCNICO  TORQUE MANUAL CATERPILLAR 572-2156 ROT GDZ-2.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20749 INFORME TÉCNICO TORQUE MANUAL CATERPILLAR 572-2541 ROT KTX-9.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20750 INFORME TÉCNICO TORQUE MANUAL PROTO 6020AB ROT PF-20929.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20751 INFORME TÉCNICO TORQUE MANUAL PROTO 6020AB ROT KTX-2.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20752 INFORME TÉCNICO CILINDRO HIDRAULICO ENERPAC 360-6955 ROT VFV-19.xlsx",
+      "family": "CILINDRO_HIDRAULICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20753 INFORME TÉCNICO CILINDRO HIDRÁULICO POWER TEAM C154C ROT PF-17078.xlsx",
+      "family": "CILINDRO_HIDRAULICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20754 INFORME TÉCNICO LLAVE HIDRÁULICA HYTORC HY-1MXT ROT PF-27545.xlsx",
+      "family": "LLAVE_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20755 INFORME TÉCNICO SUNCHADORA.xlsx",
+      "family": "INFORME_TECNICO_SUNCHADORA",
+      "status": "UNMAPPED"
+    },
+    {
+      "filename": "20756 INFORME TÉCNICO TETRAGUAGE CATERPILLAR 6V-7830 ROT PF-29759.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20758 INFORME TÉCNICO SOPLADOR INAL MILWAUKEE 2724-20 ROT RG.xlsx",
+      "family": "INFORME_TECNICO_SOPLADOR_INAL_MILWAUKEE_20_ROT_RG",
+      "status": "UNMAPPED"
+    },
+    {
+      "filename": "20817 INFORME TÉCNICO TECLE PALANCA 1.5 TON ROT LSM-46.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20818 INFORME TÉCNICO TECLE PALANCA 0.5 TON ROT PF-3765.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "20967 INFORME TÉCNICO LLAVE DE TORQUE NEU. RAD 50 ROT ZHK-2.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21155 INFORME TÉCNICO TETRAGUAGE CATERPILLAR 6V-7830 ROT WFH-13.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21156 INFORME TÉCNICO LLAVE DE IMPACTO 3.4 INAL MILWAUKEE 2864-059.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21157 INFORME TÉCNICO LUMINARIA INAL MILWAUKEE 2130-20 ROT AZB-67.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21158 INFORME TÉCNICO TORQUE MANUAL CATERPILLAR 9U5007 ROT 5329.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21159 INFORME TÉCNICO TORQUE MANUAL 1.2 PROTO 6014CX ROT GDZ-16.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21160 INFORME TÉCNICO LLAVE DE TORQUE INAL RAD B-RAD 1500 ROT PF-959.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21161 INFORME TÉCNICO ESMERIL INAL MILWAUKEE 2738-20 ROT PF-29672.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21162 INFORME TÉCNICO TETRAGUAGE CATERPILLAR 6V-7830 ROT WFH-80.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21163 INFORME TÉCNICO TORQUE MANUAL 1.2 GEDORE DMK300 ROT PF-1821.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21164 INFORME TÉCNICO BOMBA HIDRÁULICA MANUAL LARZEP W22307 ROT PF-700.xlsx",
+      "family": "BOMBA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21165 INFORME TECNICO BOMBA ELECTROHIDRÁULICA HYTOR HY-230-CF ROT PF-15615.xlsx",
+      "family": "BOMBA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21166 INFORME TÉCNICO BOMBA HIDRÁULICA MANUAL ENERPAC P-80 ROT VXN-57.xlsx",
+      "family": "BOMBA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21167 INFORME TÉCNICO BOMBA MANUAL ENERPAC P-80 ROT VXN-56.xlsx",
+      "family": "BOMBA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21168 INFORME TÉCNICO  TORQUE MANUAL 3.4 CDI 100T-I ROT PF-18180.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21169 INFORME TÉCNICO 3.4 TORQUE MANUAL CDI 100T-I ROT PF-18611.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21170 INFORME TÉCNICO TORQUE MANUAL 3.8 KING TONY 34323-2C ROT PF-4571.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21171 INFORME TÉCNICO TORQUE MANUAL 1.2 GEDORE R68900200 ROT GDZ-18.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21172 INFORME TÉCNICO TORQUE MANUAL 1.2 GEDORE R68900300 ROT GDZ-20.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21173 INFORME TÉCNICO TORQUE MANUAL 1.2 CATERPILLAR 572-2156 ROT GDZ-2.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21174 INFORME TÉCNICO TORQUE MANUAL 3.4 CATERPILLAR 572-2541 ROT KTX-9.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21175 INFORME TÉCNICO TORQUE MANUAL 3.4 PROTO 6020AB ROT KTX-3.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21176 INFORME TÉCNICO TORQUE MANUAL 3.4 PROTO 6020AB ROT KTX-2.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21177 INFORME TÉCNICO CILINDRO HIDRAULICO 50TON 360-6955 ROT UFV.xlsx",
+      "family": "CILINDRO_HIDRAULICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21178 INFORME TÉCNICO CILINDRO HIDRAULICO 15TON POWER TEAM C154C ROT PF-17078.xlsx",
+      "family": "CILINDRO_HIDRAULICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21191 INFORME TÉCNICO LLAVE DE IMPACTO 1.2 INAL MILWAUKEE 2967-20 ROT GPN-182.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21192 INFORME TÉCNICO LLAVE DE IMPACTO 1.2 INAL MILWAUKEE 2967-20 ROT GPN-117.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21193 INFORME TÉCNICO LLAVE DE IMPACTO 1.2 INAL MILWAUKEE 2855-20 ROT GPN-217.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21194 INFORME TÉCNICO LLAVE DE IMPACTO 1.2 NEU MILWAUKEE 2855-20 ROT GPN-225.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21195 INFORME TÉCNICO LLAVE DE IMPACTO 3.4 INAL MILWAUKEE 2864-20 ROT SWH-156.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21196 INFORME TÉCNICO LLAVE DE IMPACTO 1 INAL MILWUKEE 2867-20 ROT LKQ-54.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21197 INFORME TÉCNICO LLAVE DE IMPACTO 1 INAL MILWAUKEE 2867-20 PF-3425.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21198 INFORME TÉCNICO LLAVE DE IMPACTO 1 INAL MILWAUKEE 2867-20 ROT LKQ-80.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21199 INFORME TÉCNICO LLAVE DE IMPACTO INAL 1 MILWAUKEE 2869-20 ROT TZC-2.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21200 INFORME TÉCNICO TORQUE MANUAL KING TONY 34323-1A ROT QKNZ-1.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21201 INFORME TÉCNICO TORQUE MANUAL 3.8 PROTO 6012C ROT UND-4.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21202 INFORME TÉCNICO TORQUE MANUAL 3.8 KING TONY 34323-2C ROT UND-35.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21204 INFORME TÉCNICO TORQUE MANUAL 3.4 CATERPILLAR 572-2541 ROT KTX-11.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21205 INFORME TÉCNICO LUMINARIA INAL MILWAUKEE 2358-20 OT CMJU-17.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21206 INFORME TÉCNICO LUMINARIA INAL MILWAUKEE 21-20 ROT PF-3999.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21207 INFORME TÉCNICO LUMINARIA INAL  MILWAUKEE 2130-20 ROT HDTN-1.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21208 INFORME TÉCNICO LUMINARIA INAL MILWAUKEE 2130-20 ROT HDTN-2.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21209 INFORME TÉCNICO LUMINARIA INAL MILWAUKEE ROT PF-3998.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21214 INFORME TÉCNICO CARRETE ELEC 230V ROT WGZ-120.xlsx",
+      "family": "CARRETE_ELECTRICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21215 INFORME TÉCNICO CARRETE ELEC 230V ROT WGZ-172.xlsx",
+      "family": "CARRETE_ELECTRICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21216 INFORME TÉCNICO TETRAGUAGE CATERPILLAR 6V-7830 ROT WFH-3.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21217 INFORME TÉCNICO LLAVE HIDRÁULICA  HYTORC STEALTH-4 ROT RKU-5.xlsx",
+      "family": "LLAVE_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21219 INFORME TÉCNICO LLAVE HIDRAULICA 3.4 HYTORC HY-1MXT ROT YDG-2.xlsx",
+      "family": "LLAVE_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21220 INFORME TÉCNICO CILINDRO HIDRAULICO 25TON ENERPAC RC2510 ROT HTU-1.xlsx",
+      "family": "CILINDRO_HIDRAULICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21221 INFORME TÉCNICO CILINDRO HIDRÁULICO 55TON POWER TEAM ROT PF-2285.xlsx",
+      "family": "CILINDRO_HIDRAULICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21222 INFORME TÉCNICO  LLAVE DE IMPACTO NEU PAOLI DP1000 ROT NVE-9.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21223 INFORME TÉCNICO LLAVE DE IMPACTO 1 NEU CATERPILLAR 587-2329 ROT YXF-63.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21224 INFORME TÉCNICO LLAVE DE IMPACTO 1 NEU CATERPILLAR 587-2329 ROT PF-4167.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21225 INFORME TÉCNICO LLAVE DE IMPACTO 1 NEU CATERPILLAR 587-2329 ROT PF-4169.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21228 INFORME TÉCNICO ASPIRADORA INAL MILWAUKEE 0885-20 ROT BLD-1.xlsx",
+      "family": "ASPIRADORA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21230 INFORME TÉCNICO GIRAMOTOR NEU INGERSOLLRAND B0063293831 ROT XRA-13.xlsx",
+      "family": "GIRAMOTOR",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21232 INFORME TÉCNICO ESMERIL MAKITA 9557HP ROT PKZ-40.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21234 INFORME TÉCNICO BOMBA DE VACIO ELEC. YELLOW JACKT SUPEREVAC93516.xlsx",
+      "family": "BOMBA_DE_VACIO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21235INFORME TÉCNICO MALETA DE TESTEO MANUAL CATERPILLAR 1U5481 ROT BA-3.xlsx",
+      "family": "MALETA_TESTEO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21236 INFORME TÉCNICO MALETA DE TESTEO CATERPILLAR 1U5481 ROT TBA-9.xlsx",
+      "family": "MALETA_TESTEO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21237 INFORME TÉCNICO TORQUE MANUAL 1.2 CATERPILLAR 955373 ROT VWQ-1.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21238 INFORME TÉCNICO TORQUE MANUAL 3.8 PROTO 6012C ROT UND-6.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21239 INFORME TÉCNICO TORQUE MANUAL 3.4 CDI 100T-I ROT BPV-3.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21240 INFORME TÉCNICO TORQUE MANUAL 3.4 CDI 100T-I ROT BPV-2.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21241 INFORME TÉCNICO TORQUE MANUAL CDI 100T-I ROT BPV-10.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21242 INFORME TÉCNICO TORQUE MANUAL 3.4 CDI 100T-I ROT PF-12868.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21243 INFORME TÉCNICO TORQUE MANUAL 3.4 CDI 100T-I ROT BPV-12.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21244 INFORME TÉCNICO  TORQUE MANUAL 3.4 CDI 100T-I ROT TVPF-08.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21246 INFORME TÉCNICO TORQUE MANUAL 1 BAHCO 7455-1500 ROT KTX-7.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21247 INFORME TÉCNICO GATA NEUMOHIDRÁULICA 200TON ENERPAC 200027L.xlsx",
+      "family": "GATA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21440 INFORME TÉCNICO BOMBA TRASVASIJE CATERPILLAR 1800PSI.xlsx",
+      "family": "BOMBA_TRASVASIJE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21441 INFORME TÉCNICO BOMBA TRASVASIJE 1800PSI MAX. CATERPILLAR FIREBALL425 ROT XPA-1.xlsx",
+      "family": "BOMBA_TRASVASIJE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21442 INFORME TÉCNICO GATA NEUMOHIDRÁULICA 200TON ENERPAC PRASA20027L.xlsx",
+      "family": "GATA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21504 INFORME TÉCNICO MESA DE LEVANTE ELECTROHIDRÁULICA ROT PF-3804.xlsx",
+      "family": "MESA_LEVANTE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "21505 INFORME TÉCNICO GATA NEUMOHIDRÁULICA 200TON ROT PF-5828.xlsx",
+      "family": "GATA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "22734 INFORME TÉCNICO MESA DE LEVANTE INALAMBRICA 779.xlsx",
+      "family": "MESA_LEVANTE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "22737  INFORME TÉCNICO BANDEJA DE DRENADO.xlsx",
+      "family": "BANDEJA_DE_DRENADO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "22738  INFORME TÉCNICO MESA DE LEVANTE ELECTROHIDRÁULICA ROT PF-22935.xlsx",
+      "family": "MESA_LEVANTE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "22780  INFORME TÉCNICO LUMINARIA INAL MILWAUKEE ROT AZB-10.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "22781 INFORME TÉCNICO LUMINARIA INAL MILWAUKEE ROT AZB-57.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "22782  INFORME TÉCNICO LUMINARIA INAL MILWAUKEE ROT AZB-49.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "22785   INFORME TECNICO CILINDRO HIDRAULICO CAT 30 TON. SERIE A5221C.xlsx",
+      "family": "CILINDRO_HIDRAULICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "22803 INFORME TÉCNICO LLAVE DE IMPACTO 3.4  INAL MILWAUKEE  ROT SWH-220.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "22866  INFORME TÉCNICO LLAVE TORQUE 1 RAD ROT PF -25596.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "22867 INFORME TÉCNICO ESMERIL ELÉC. MAKITA ROT PKZ-43.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "22927  INFORME TÉCNICO GATA NEUMOHID ENERPAC ROT PF-15828.xlsx",
+      "family": "GATA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "22929 INFORME TÉCNICO BOMBA TRASVASIJE GRACO ROT XPA-3.xlsx",
+      "family": "BOMBA_TRASVASIJE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23065  INFORME TÉCNICO ESMERIL ELÉCTRICO MAKITA  41-2  ROT PF-3872.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23066 INFORME TÉCNICO ESMERIL ELÉCTRICO MAKITA ROT PKZ-55.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23067  INFORME TÉCNICO ESMERIL ELÉCTRICO MAKITA ROT PKZ-63.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23068  INFORME TÉCNICO ESMERIL ELÉCTRICO DEWALT 7 ROT EBW-21.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23070 INFORME TECNICO PULIDOR ELEC. DEWALT ROT VSQL-1.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23071 INFORME TÉCNICO LLAVE IMPACTO INAL. 1-2 ROT. GPN-118.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23072  INFORME TÉCNICO LLAVE DE IMPACTO 3.4 INAL MILWAUKEE ROT SWH-223.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23077 INFORME TÉCNICO BATERIA MILWAUKEE ROT. KZF-65.xlsx",
+      "family": "BATERIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23086 INFORME TÉCNICO  LLAVE DE IMPACTO NEU PAOLI DP1000 ROT NVE-9.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23087  INFORME TECNICO TETRAGUAGE CATERPILLAR 6V-7830 ROT PF-1896.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23090  INFORME TECNICO LLAVE DE IMPACTO NEUMATICA RAD.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23091   INFORME TECNICO CILINDRO HIDRAULICO CAT 80 TON. ROT PF-4693.xlsx",
+      "family": "CILINDRO_HIDRAULICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23093  INFORME TÉCNICO ARRANCADOR  DE BATERIA BAHCO ROT FRG-39.xlsx",
+      "family": "ARRANCADOR_DE_BATERIAS",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23101 INFORME TECNICO MULTI TOOL ROT. PF-15335.xlsx",
+      "family": "MULTI_TOOL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23102 INFORME TECNICO MULTI TOOL ROT. PF-11659.xlsx",
+      "family": "MULTI_TOOL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23249 INFORME TÉCNICO GATA NEUMOHIDRAULICA 200 TON.  ROT. PF-728.xlsx",
+      "family": "GATA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23250 INFORME TÉCNICO GATA NEUMOHIDRAULICA 200 TON.  ROT. PF-5740.xlsx",
+      "family": "GATA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23512 INFORME TÉCNICO TORQUE MANUAL 3-8 ROT. UND-44.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23513 INFORME TÉCNICO TORQUE MANUAL 3-8 ROT. UND-5.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23514 INFORME TÉCNICO TORQUE MANUAL 3-8 ROT. UND-6.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23515 INFORME TÉCNICO TORQUE MANUAL 3-8 ROT. UND-33.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23517 INFORME TÉCNICO LLAVE TORQUE  RAD 1500 ROT. MFA-8.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23519 INFORME TÉCNICO ESMERIL INAL.  ROT. ELB-1.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23521 INFORME TÉCNICO TETRAGAUGE ROT. PF-1896.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23522 INFORME TÉCNICO TORQUE MANUAL 1-2  ROT. GDZ-2.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23523 INFORME TÉCNICO TORQUE MANUAL 1-2  ROT. GDZ-6.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23525 INFORME TECNICO PARTIDOR DE BATERIA  ROT. PF-3129.xlsx",
+      "family": "ARRANCADOR_DE_BATERIAS",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23526 INFORME TÉCNICO BATERIA MILWAUKEE ROT. KZF-36.xlsx",
+      "family": "BATERIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23527 INFORME TÉCNICO BATERIA MILWAUKEE ROT. BEL-167.xlsx",
+      "family": "BATERIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23528 INFORME TÉCNICO BATERIA MILWAUKEE ROT. EFM-523.xlsx",
+      "family": "BATERIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23529 INFORME TÉCNICO BATERIA MILWAUKEE ROT. EFM-527.xlsx",
+      "family": "BATERIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23530 INFORME TÉCNICO BATERIA MILWAUKEE ROT. CTQ-318.xlsx",
+      "family": "BATERIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23534 INFORME TÉCNICO ESMERIL ELÉCTRICO  ROT. PKZ-43.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23535 INFORME TÉCNICO ESMERIL ELÉCTRICO  ROT. PKZ-49.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23536 INFORME TÉCNICO ESMERIL ELÉCTRICO  ROT. EBW-22.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23537 INFORME TÉCNICO BOMBA DE VACIO ROT.PF-2505.xlsx",
+      "family": "BOMBA_DE_VACIO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23538 INFORME TÉCNICO LLAVE HIDRÁULICA STEALTH 4 ROT. MH-001.xlsx",
+      "family": "LLAVE_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23539 INFORME TÉCNICO TRIPODE MILWAUKEE ROT. AZB-2.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23540 INFORME TÉCNICO TRIPODE MILWAUKEE ROT. AZB-11.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23541 INFORME TÉCNICO TRIPODE MILWAUKEE ROT. AZB-21.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23542 INFORME TÉCNICO TRIPODE MILWAUKEE ROT. AZB-23.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23543 INFORME TÉCNICO TRIPODE MILWAUKEE ROT. AZB-34.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23544 INFORME TÉCNICO TRIPODE MILWAUKEE ROT. AZB-35.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23550 INFORME TECNICO CARRETE ELÉCTRICO ROT. PF-52632 - WGZ-170.xlsx",
+      "family": "CARRETE_ELECTRICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23551 INFORME TECNICO CARRETE ELÉCTRICO ROT. WGZ-142.xlsx",
+      "family": "CARRETE_ELECTRICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23553 INFORME TÉCNICO BOMBA ELECTRO. ENERPAC ROT DMQ-3.xlsx",
+      "family": "BOMBA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23554 INFORME TÉCNICO LLAVE IMPACTO INAL. 3-4 ROT. SWH-11.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23555 INFORME TÉCNICO LLAVE IMPACTO INAL. 3-4 ROT. SWH-217.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23556 INFORME TÉCNICO LLAVE IMPACTO INAL. 3-4 ROT. SWH-219.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23557 INFORME TÉCNICO LLAVE IMPACTO INAL. 3-4 ROT. SWH-222.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23558 INFORME TÉCNICO LLAVE IMPACTO INAL. 3-4 ROT. SWH-224.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23559 INFORME TÉCNICO TETRAGAUGE ROT. WFH-37.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23563 INFORME TÉCNICO MESA HIDRAULICA DE CILINDROS ROT. YHFR-1.xlsx",
+      "family": "MESA_LEVANTE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23899 INFORME TÉCNICO TORQUE MANUAL 1-2 ROT. GDZ-12.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23901 INFORME TÉCNICO E-RAD BLU 3000 ROT.HUQ-3.xlsx",
+      "family": "E_RAD",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23903 INFORME TECNICO CILINDRO HIDRAULICO 55 TON ROT. AEC-7.xlsx",
+      "family": "CILINDRO_HIDRAULICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23904 INFORME TECNICO BURIL RECTIFICADOR  ROT. LJV-4.xlsx",
+      "family": "BURIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23906 INFORME TÉCNICO ESMERIL ELÉCTRICO ROT.EBW-23.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23907 INFORME TÉCNICO TORQUE MANUAL 1-2 ROT. GDZ-10.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23909 INFORME TÉCNICO LLAVE DE IMPACTO NEUM. 1  ROT. YXF-3.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23910 INFORME TÉCNICO TETRAGAUGE ROT. WFH-18.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23911 INFORME TÉCNICO LLAVE DE IMPACTO 3-4 INAL ROT. SWH-146.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23912 INFORME TÉCNICO ESMERIL ELÉCTRICO ROT.EBW-20.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23913 INFORME TÉCNICO BATERIA MILWAUKEE ROT. KGVM-40.xlsx",
+      "family": "BATERIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23915 INFORME TÉCNICO LLAVE IMPACTO INAL. 1-2 ROT. GPN-75.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23916 INFORME TECNICO CILINDRO HIDRAULICO 55 TON ROT. AEC-1.xlsx",
+      "family": "CILINDRO_HIDRAULICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23918 INFORME TÉCNICO LLAVE IMPACTO INAL. 1-2 ROT. GPN-121.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23920 INFORME TÉCNICO ESMERIL ELÉCTRICO ROT.PKZ-66.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23921 INFORME TÉCNICO TORQUE MANUAL 1-2  ROT. PF-885.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23923 INFORME TÉCNICO TORQUE MANUAL 1-2 N.S D5A02237.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23924 INFORME TÉCNICO TORQUE MANUAL 1-2 ROT. GDZ-11.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23925 INFORME TÉCNICO TORQUE CLICK 3-8 ROT. QKNZ-2.xlsx",
+      "family": "INFORME_TECNICO_TORQUE_CLICK_3_8_ROT_QKNZ_2",
+      "status": "UNMAPPED"
+    },
+    {
+      "filename": "23926 INFORME TÉCNICO TORQUE MANUAL 1-2  ROT. GDZ-19.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "23928 INFORME TÉCNICO TORQUE MANUAL 1-2 ROT. GDZ-9.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24013 INFORME TECNICO CILINDRO HIDRAULICO 55 TON.xlsx",
+      "family": "CILINDRO_HIDRAULICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24058 INFORME  TECNICO GATA ELECTROHIDRAULICA ROT. PF-3604.xlsx",
+      "family": "GATA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24059 INFORME TÉCNICO CARRETE ELECTRICO ROT. WGZ-181.xlsx",
+      "family": "CARRETE_ELECTRICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24060 INFORME TÉCNICO CARRETE ELECTRICO ROT. WGZ-130.xlsx",
+      "family": "CARRETE_ELECTRICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24061 INFORME TÉCNICO TORQUE MANUAL 1 ROT.KTX-7.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24062 INFORME TÉCNICO TETRAGAUGE ROT. WFH-15.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24063 INFORME TÉCNICO TETRAGAUGE ROT. WFH-51.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24064 INFORME TÉCNICO TETRAGAUGE ROT. WFH-66.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24065 INFORME TÉCNICO TETRAGAUGE ROT. WFH-10.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24066 INFORME TÉCNICO TETRAGAUGE ROT. WFH-70.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24067 INFORME TÉCNICO TETRAGAUGE ROT. PF-29759.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24068 INFORME TÉCNICO TETRAGAUGE ROT. PF-24481.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24070 INFORME TÉCNICO LLAVE HIDRÁULICA STEALTH 14 ROT. SDR-2.xlsx",
+      "family": "LLAVE_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24071 INFORME TÉCNICO LLAVE HIDRÁULICA HYTORC 5MXT ROT. RMS-1.xlsx",
+      "family": "LLAVE_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24072 INFORME TÉCNICO LLAVE HIDRÁULICA HYTORC 3MXT ROT. PF-27546.xlsx",
+      "family": "LLAVE_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24076 INFORME TECNICO ESMERIL ELECTRICO  ROT. PKZ-42.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24084 INFORME TÉCNICO LUMINARIA ROT. AZB-52.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24085 INFORME TÉCNICO LUMINARIA ROT. AZB-72.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24086 INFORME TÉCNICO  LUMINARIA ROT. AZB-37.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24087 INFORME TÉCNICO LUMINARIA ROT. AZB-10.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24088 INFORME TÉCNICO LUMINARIA ROT. AZB-18.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24090 INFORME TÉCNICO LLAVE DE IMPACTO 1-2 INAL ROT. GPN-128.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24091 INFORME TÉCNICO LLAVE IMPACTO INAL. 1-2 ROT. GPN-126.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24092 INFORME TÉCNICO LLAVE DE IMPACTO INAL . 3-8 ROT.BHTJ-5.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24093 INFORME TÉCNICO LLAVE IMPACTO INAL.1-2 ROT. TWS-63.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24094 INFORME TÉCNICO LLAVE IMPACTO INAL. 3-4 ROT. SWH-167.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24095 INFORME TÉCNICO LLAVE IMPACTO INAL. 3-4 ROT. SWH-88.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24096 INFORME TÉCNICO LLAVE IMPACTO INAL. 3-4 ROT. SWH-106.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24097 INFORME TÉCNICO LLAVE IMPACTO INAL. 3-4 SIN ROTULO.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24208 INFORME  TECNICO GATA ELECTROHIDRAULICA 150 TON ROT. PF-3605.xlsx",
+      "family": "GATA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24209 INFORME  TECNICO GATA NEUMOHIDRAULICA 200 TON ROT. PF-900.xlsx",
+      "family": "GATA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24210 INFORME  TECNICO GATA NEUMOHIDRAULICA 200 TON ROT. PF-15075.xlsx",
+      "family": "GATA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24211 INFORME TÉCNICO BOMBA TRASVASIJE ROT. XPA-2.xlsx",
+      "family": "BOMBA_TRASVASIJE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24213 INFORME TÉCNICO BOMBA ELECTROHIDRAULICA ROT. RPC-10.xlsx",
+      "family": "BOMBA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24214 INFORME TÉCNICO BOMBA ELECTROHIDRAULICA ROT. RPC-3.xlsx",
+      "family": "BOMBA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24216 INFORME TÉCNICO LLAVE IMP 3.4 MILWAUKEE ROT SWH-10.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24217 INFORME TÉCNICO LLAVE IMPACTO INAL. 3-4 ROT. SWH-219.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24218 INFORME TÉCNICO LLAVE DE IMPACTO INAL. 3-4 MILWAUKEE ROT. SWH-144.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24219 INFORME TÉCNICO LLAVE DE IMPACTO INAL. 3-4 MILWAUKEE ROT. SWH-159.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24220 INFORME TÉCNICO ESMERIL ELÉCTRICO ROT.PKZ-55.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24221 INFORME TÉCNICO ESMERIL ELÉCTRICO ROT.PKZ-64.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24222 INFORME TÉCNICO ESMERIL ELÉCTRICO ROT.PKZ-50.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24223 INFORME TÉCNICO TORQUE MANUAL 1-2  ROT. GDZ-13.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24224 INFORME TECNICO PARTIDOR DE BATERIA  ROT. GBWE-1.xlsx",
+      "family": "ARRANCADOR_DE_BATERIAS",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24226 INFORME TÉCNICO LUMINARIA ROT. PF-2762.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24227 INFORME TÉCNICO TECNICO LUMINARIA ROT. AZB-57.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24228 INFORME TÉCNICO LLAVE DE IMPACTO INAL. 1-2 MILWAUKEE ROT. GPN-125.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24229 INFORME TÉCNICO LLAVE DE IMPACTO NEUM. 1 ROT.YXF-63.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24230 INFORME TÉCNICO CARRETE ELECTRICO ROT. WGZ-45.xlsx",
+      "family": "CARRETE_ELECTRICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24231 INFORME TÉCNICO CARRETE ELECTRICO ROT. WGZ-30.xlsx",
+      "family": "CARRETE_ELECTRICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24232 INFORME TECNICO CILINDRO HIDRAULICO 15 TON ROT. PF-17078.xlsx",
+      "family": "CILINDRO_HIDRAULICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24234 INFORME TÉCNICO BOMBA MANUAL ROT. VXN-56.xlsx",
+      "family": "BOMBA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24235 INFORME TÉCNICO BOMBA MANUAL ROT. VXN-57.xlsx",
+      "family": "BOMBA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24236 INFORME TÉCNICO GIRAMOTOR ROT. XRA-3.xlsx",
+      "family": "GIRAMOTOR",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24238 INFORME TÉCNICO BATERIA MILWAUKEE ROT. EFM-563 - copia.xlsx",
+      "family": "BATERIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24238 INFORME TÉCNICO BATERIA MILWAUKEE ROT. EFM-563.xlsx",
+      "family": "BATERIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24239 INFORME TÉCNICO TETRAGAUGE ROT. WFH-30.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24240 INFORME TÉCNICO TETRAGAUGE ROT. WFH-20.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24241 INFORME TÉCNICO TETRAGAUGE ROT. PF-29755.xlsx",
+      "family": "TETRAGUAGE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24242 INFORME TÉCNICO ESMERIL ELÉCTRICO ROT.FBW-25.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24244 INFORME TÉCNICO BATERIA MILWAUKEE ROT. CTQ-318.xlsx",
+      "family": "BATERIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24245 INFORME TECNICO CILINDRO HIDRAULICO 5 TON ROT. UFV-20.xlsx",
+      "family": "CILINDRO_HIDRAULICO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24246 INFORME TÉCNICO BATERIA MILWAUKEE ROT. EFM-3.xlsx",
+      "family": "BATERIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24249 INFORME TÉCNICO ESMERIL ELÉCTRICO ROT.PF-4697.xlsx",
+      "family": "ESMERIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24251 INFORME TÉCNICO PARTIDOR DE BATERIA ROT. PF-5714.xlsx",
+      "family": "ARRANCADOR_DE_BATERIAS",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24252 INFORME TÉCNICO TORQUE MANUAL 1-2 PROTO ROT. PF-26926.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24485 INFORME TÉCNICO MESA DE LEVANTE AZUL ROT.UVCW-1.xlsx",
+      "family": "MESA_LEVANTE",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24499 INFORME TÉCNICO TORQUE VÁLVULA 3-4 CDI ROT. TVPF-8.xlsx",
+      "family": "TORQUE_VALVULA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24500 INFORME TÉCNICO TORQUE VÁLVULA 3-4 CDI ROT. BPV-6.xlsx",
+      "family": "TORQUE_VALVULA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24501 INFORME TÉCNICO TORQUE VÁLVULA 3-4 CDI ROT. BPV-1.xlsx",
+      "family": "TORQUE_VALVULA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24502 INFORME TÉCNICO TORQUE VÁLVULA 3-4 CDI ROT. BPV-10.xlsx",
+      "family": "TORQUE_VALVULA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24503 INFORME TÉCNICO TORQUE VÁLVULA 3-4 CDI ROT. PF-18611.xlsx",
+      "family": "TORQUE_VALVULA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24504 INFORME TÉCNICO TORQUE VÁLVULA 3-4 CDI ROT. PF-18180.xlsx",
+      "family": "TORQUE_VALVULA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24505 INFORME TÉCNICO TORQUE MANUAL 1-2 ROT. GDZ-18.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24506 INFORME TÉCNICO TORQUE MANUAL 1-2 ROT. GDZ-20.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24508 INFORME TÉCNICO LLAVE DE IMPACTO NEUM. 1 ROT.PF-4169.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24509 INFORME TÉCNICO TORQUE MANUAL 3-4 ROT. PF-5329.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24511 INFORME TÉCNICO LLAVE DE IMPACTO NEUM. 1 SIN ROTULO.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24524 INFORME TÉCNICO TORQUE VÁLVULA 3-4 CDI ROT. BPV-3.xlsx",
+      "family": "TORQUE_VALVULA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24525 INFORME TÉCNICO TORQUE MANUAL 3-8 ROT. UND-4.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24527 INFORME TÉCNICO TORQUE MANUAL 3-8 ROT. UND-45.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24528 INFORME TÉCNICO TORQUE RELOJ 1-2 ROT. VWQ-1.xlsx",
+      "family": "INFORME_TECNICO_TORQUE_RELOJ_1_2_ROT_VWQ_1",
+      "status": "UNMAPPED"
+    },
+    {
+      "filename": "24534 INFORME TÉCNICO LUMINARIA INAL MILWAUKEE ROT AZB-3.xlsx",
+      "family": "LUMINARIA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "24548 INFORME TÉCNICO TORQUE MANUAL 3-8 ROT. PF-0056.xlsx",
+      "family": "TORQUE_MANUAL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "INFORME  TÉCNICO LLAVE HIDRAULICA HYTORC HY-5MXT ROT NVB-3.xlsx",
+      "family": "LLAVE_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "INFORME TÉCNICO GATA NEUMOHIDRÁULICA ENERPAC PRASA 20027L ROT PF-9000.xlsx",
+      "family": "GATA_HIDRAULICA",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "INFORME TÉCNICO LLAVE TORQUE 1 RAD ROT PF -25596 MFA-4.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "INFORME TÉCNICO LLAVE TORQUE 1 RAD ROT PF-24854 ROT HUQ-5.xlsx",
+      "family": "LLAVE_DE_TORQUE_O_IMPACTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "INFORME TÉCNICO RECTIFICADOR ELEC. RONIX 3302 ROT LJV-4.xlsx",
+      "family": "BURIL",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "INFORME TÉCNICO TALADRO ELEC. MAKITA HP-1640K ROT PF-2683.xlsx",
+      "family": "TALADRO",
+      "status": "CONFIRMED"
+    },
+    {
+      "filename": "INFORME TÉCNICO TECLE PALANCA 1.5 TON ROT LSM-83.xlsx",
+      "family": "TECLE",
+      "status": "CONFIRMED"
+    }
+  ],
+  "pending": [
+    {
+      "filename": "17453  INFORME TECNICOCAMILLA ELECTROHIDRAULICA  500 KG  CATERPILLAR ROT. PF - 22935.xlsx",
+      "family": "INFORME_TECNICOCAMILLA_ELECTROHIDRAULICA_500_KG_CATERPILLAR_ROT_PF",
+      "status": "UNMAPPED"
+    },
+    {
+      "filename": "17946  INFORME TECNICO BOMBA INAL. MILWAUKEE MILWAUKEE NS-K11SAD222500121.xlsx",
+      "family": "INFORME_TECNICO_BOMBA_INAL_MILWAUKEE_MILWAUKEE_NS_K11SAD222500121",
+      "status": "UNMAPPED"
+    },
+    {
+      "filename": "17957  INFORME TECNICO GATA PLUMA 2 TON ROT-PF-1188.xlsx",
+      "family": "INFORME_TECNICO_GATA_PLUMA_2_TON_ROT_PF",
+      "status": "UNMAPPED"
+    },
+    {
+      "filename": "18276  INFORME TECNICO ESCAREADOR NEUMATICO.xlsx",
+      "family": "INFORME_TECNICO_ESCAREADOR_NEUMATICO",
+      "status": "UNMAPPED"
+    },
+    {
+      "filename": "18296 INFORME TECNICO  APRIETA TERMINALES  ROT-PF 25163.xlsx",
+      "family": "INFORME_TECNICO_APRIETA_TERMINALES_ROT_PF",
+      "status": "UNMAPPED"
+    },
+    {
+      "filename": "19321 INFORME TÉCNICO ACUMULADOR ELECTROHIDRÁULICO ROT PF-4097.xlsx",
+      "family": "INFORME_TECNICO_ACUMULADOR_ELECTROHIDRAULICO_ROT_PF",
+      "status": "UNMAPPED"
+    },
+    {
+      "filename": "19636 INFORME TÉCNICO CARRO DE DRENAJE.xlsx",
+      "family": "INFORME_TECNICO_CARRO_DE_DRENAJE",
+      "status": "UNMAPPED"
+    },
+    {
+      "filename": "20512 INFORME TÉCNICO TRASDUCTOR DE TORQUE RAD RAD7000 ROT PF-1555.xlsx",
+      "family": "INFORME_TECNICO_TRASDUCTOR_DE_TORQUE_RAD_RAD7000_ROT_PF",
+      "status": "UNMAPPED"
+    },
+    {
+      "filename": "20558 INFORME TÉCNICO ELEC. MILWAUKEE 2738-20 ROT PF-29672.xlsx",
+      "family": "INFORME_TECNICO_ELEC_MILWAUKEE_20_ROT_PF",
+      "status": "UNMAPPED"
+    },
+    {
+      "filename": "20755 INFORME TÉCNICO SUNCHADORA.xlsx",
+      "family": "INFORME_TECNICO_SUNCHADORA",
+      "status": "UNMAPPED"
+    },
+    {
+      "filename": "20758 INFORME TÉCNICO SOPLADOR INAL MILWAUKEE 2724-20 ROT RG.xlsx",
+      "family": "INFORME_TECNICO_SOPLADOR_INAL_MILWAUKEE_20_ROT_RG",
+      "status": "UNMAPPED"
+    },
+    {
+      "filename": "23925 INFORME TÉCNICO TORQUE CLICK 3-8 ROT. QKNZ-2.xlsx",
+      "family": "INFORME_TECNICO_TORQUE_CLICK_3_8_ROT_QKNZ_2",
+      "status": "UNMAPPED"
+    },
+    {
+      "filename": "24528 INFORME TÉCNICO TORQUE RELOJ 1-2 ROT. VWQ-1.xlsx",
+      "family": "INFORME_TECNICO_TORQUE_RELOJ_1_2_ROT_VWQ_1",
+      "status": "UNMAPPED"
+    }
+  ]
+}
