@@ -13,6 +13,7 @@ test('matches aliases as complete word sequences', () => {
 
 test('resolves reviewed RAD torque names', () => {
   expect('LLAVE DE TORQUE RAD MOD E-RAD BLU3000', 'E_RAD', 'CONFIRMED')
+  expect('LLAVE DE TORQUE 1 RAD MOD E-RAD BLU3000', 'E_RAD', 'CONFIRMED')
   expect('LLAVE TORQUE RAD 50DX', 'LLAVE_DE_TORQUE_O_IMPACTO', 'CONFIRMED')
   expect('LLAVE TORQUE RAD B-RAD 1500-2', 'LLAVE_DE_TORQUE_O_IMPACTO', 'CONFIRMED')
 })
