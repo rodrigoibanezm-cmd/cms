@@ -11,6 +11,15 @@ docs/principles.md
 docs/next-step.md
 ```
 
+## Catálogo de plantillas v2
+
+```txt
+docs/template-inventory/README.md
+```
+
+Metodología vigente para descubrir familias desde informes reales antes de migrar plantillas.
+No elimina ni reemplaza la documentación histórica del renderer.
+
 ## Lectura de destino
 
 ```txt
@@ -38,7 +47,8 @@ quality-metrics.md         confianza IA V1 y precisión real V2
 admin-review.md            front/admin de revisión
 ui-design-system.md        look & feel transversal del producto
 ui-operation-view.md       contrato visual de Vista Operación
-template-bases.md          workflow de bases XLS
+template-bases.md          workflow histórico de bases XLS
+template-inventory/        descubrimiento y catálogo determinístico v2
 operations.md              operación y env vars
 deuda-tecnica.md           deuda real
 next-step.md               pitch para siguiente chat
