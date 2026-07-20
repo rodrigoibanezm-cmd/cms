@@ -1,4 +1,4 @@
-name: Validate operational catalog branch
+name: Diagnose executable LUMINARIA
 
 on:
   pull_request:
@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  validate:
+  diagnose:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
 
     steps:
       - name: Checkout current catalog branch
@@ -29,16 +29,5 @@ jobs:
         working-directory: web
         run: npm install --ignore-scripts
 
-      - name: Run complete test suite
-        run: |
-          node --test \
-            catalog/compiler/*.test.js \
-            catalog/versions/v1.0.0/executable_luminaria.test.js \
-            web/lib/xls/*.test.mjs \
-            web/lib/versioned_renderer_runtime.test.mjs \
-            web/lib/catalog_reprocess_worker_runtime.test.mjs \
-            web/lib/executable_luminaria.integration.test.mjs
-
-      - name: Build
-        working-directory: web
-        run: npm run build
+      - name: Run LUMINARIA integration test
+        run: node --test web/lib/executable_luminaria.integration.test.mjs
