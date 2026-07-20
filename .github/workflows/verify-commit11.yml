@@ -1,0 +1,13 @@
+name: verify-commit11
+on:
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node --test catalog/compiler/*.test.js web/lib/xls/*.test.mjs web/lib/versioned_renderer_runtime.test.mjs web/lib/catalog_reprocess_worker_runtime.test.mjs
+      - run: cd web && npm install --ignore-scripts && npm run build
