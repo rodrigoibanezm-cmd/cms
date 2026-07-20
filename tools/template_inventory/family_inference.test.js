@@ -35,3 +35,8 @@ test('maps tripod naming to luminaria evidence', () => {
   expect('TRIPODE MILWAUKEE', 'LUMINARIA', 'CONFIRMED')
   expect('LUMINARIA DE PEDESTAL MILWAUKEE', 'LUMINARIA', 'CONFIRMED')
 })
+
+test('maps grasera reports to their own family', () => {
+  expect('GRASERA INAL MILWAUKEE', 'GRASERA', 'CONFIRMED')
+  expect('GRASERA INALAMBRICA 10.000 PSI', 'GRASERA', 'CONFIRMED')
+})
