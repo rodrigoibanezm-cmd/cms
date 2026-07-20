@@ -2,6 +2,7 @@
   "aliases": {"LUMINARIA": ["Luminaria", "Trípode"]},
   "families": {
     "LUMINARIA": {
+      "source_ref": "family-source:luminaria:v1",
       "classifier": {"strategy": "alias_exact", "source_field": "extraction.tool_name"},
       "template_reference": {
         "filename": "LUMINARIA_FINAL.xlsx",
