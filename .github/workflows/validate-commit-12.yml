@@ -3,6 +3,8 @@ name: Validate executable catalog
 on:
   push:
     branches: [feat/operational-catalog-v1]
+  pull_request:
+    branches: [feat/operational-catalog-v1]
   workflow_dispatch:
 
 jobs:
