@@ -11,7 +11,7 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     env:
-      TEMPLATE_BASE_URL: https://cms-git-fix-catalog-real-byte-ci-rodrigo-qrs-chile-s-projects.vercel.app
+      TEMPLATE_BASE_URL: https://cms-git-feat-operational-catalog-v1-rodrigo-qrs-chile-s-projects.vercel.app
     steps:
       - name: Checkout tested SHA
         uses: actions/checkout@v4
