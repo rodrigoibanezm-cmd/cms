@@ -10,8 +10,6 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
-    env:
-      TEMPLATE_BASE_URL: https://cms-git-feat-operational-catalog-v1-rodrigo-qrs-chile-s-projects.vercel.app
     steps:
       - name: Checkout tested SHA
         uses: actions/checkout@v4
@@ -44,6 +42,35 @@ jobs:
       - name: Build web
         working-directory: web
         run: npm run build
+
+      - name: Resolve tested Vercel deployment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for attempt in {1..30}; do
+            deployments=$(curl --fail --silent --show-error \
+              --header "Authorization: Bearer $GH_TOKEN" \
+              "https://api.github.com/repos/$GITHUB_REPOSITORY/deployments?sha=$GITHUB_SHA")
+            statuses_url=$(jq --raw-output '.[0].statuses_url // empty' <<< "$deployments")
+            if [ -n "$statuses_url" ]; then
+              deployment=$(curl --fail --silent --show-error \
+                --header "Authorization: Bearer $GH_TOKEN" "$statuses_url")
+              state=$(jq --raw-output '.[0].state // empty' <<< "$deployment")
+              url=$(jq --raw-output '.[0].environment_url // empty' <<< "$deployment")
+              echo "Vercel deployment state: ${state:-pending}"
+              if [ "$state" = "success" ] && [ -n "$url" ]; then
+                echo "TEMPLATE_BASE_URL=$url" >> "$GITHUB_ENV"
+                echo "Testing deployment: $url"
+                exit 0
+              fi
+              if [ "$state" = "failure" ] || [ "$state" = "error" ]; then
+                exit 1
+              fi
+            fi
+            sleep 2
+          done
+          echo "Vercel deployment did not become ready for $GITHUB_SHA"
+          exit 1
 
       - name: Diagnose deployed template endpoints
         run: |
