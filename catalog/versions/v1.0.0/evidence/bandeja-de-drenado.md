@@ -1,18 +1,16 @@
 # BANDEJA DE DRENADO
 
-## Evidencia
+OT revisadas: 20020 y 22737.
 
-- 20020 INFORME TÉCNICO BANDEJA DE DRENADO.xlsx
-- 22737  INFORME TÉCNICO BANDEJA DE DRENADO.xlsx
+Evidencia:
+- misma función técnica de contención y drenaje;
+- misma pauta de inspección;
+- misma estructura de informe;
+- las diferencias observadas no cambian la familia.
 
-## Decisión
+Decisión:
+- familia: BANDEJA_DE_DRENADO
+- estado: CONFIRMED
+- motivo: misma función, pauta y estructura.
 
-Se incorpora `BANDEJA_DE_DRENADO` como familia propia.
-
-## Fundamento
-
-Los informes comparten función técnica y denominación explícita. La pauta corresponde a una bandeja destinada al drenaje y no a una bomba, carro u otro equipo hidráulico.
-
-## Alias
-
-- BANDEJA DE DRENADO
+Esta ficha respalda el alias BANDEJA DE DRENADO en families.json.
