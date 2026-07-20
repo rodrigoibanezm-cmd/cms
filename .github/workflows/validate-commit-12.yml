@@ -1,4 +1,4 @@
-name: Validate commit 12
+name: Validate operational catalog branch
 
 on:
   pull_request:
@@ -12,8 +12,13 @@ jobs:
     timeout-minutes: 15
 
     steps:
-      - name: Checkout
+      - name: Checkout current catalog branch
         uses: actions/checkout@v4
+        with:
+          ref: feat/operational-catalog-v1
+
+      - name: Show validated commit
+        run: git rev-parse HEAD
 
       - name: Setup Node
         uses: actions/setup-node@v4
