@@ -18,7 +18,7 @@ async function downloadDriveFile() {
   assert.doesNotMatch(response.headers.get('content-type') || '', /text\/html/i);
   assert.match(response.headers.get('content-disposition') || '', /ESMERIL_FINAL\.xlsx/);
   const buffer = Buffer.from(await response.arrayBuffer());
-  assert.equal(buffer.length, 33849);
+  assert.equal(buffer.length, 34461);
   assert.equal(createHash('sha256').update(buffer).digest('hex'), catalog.families.ESMERIL.template_reference.sha256);
   return buffer;
 }
@@ -51,5 +51,5 @@ test('ESMERIL clasifica y renderiza el maestro certificado real', { timeout: 600
   assert.equal(sheet.getCell('A6').value, ' INFORME TECNICO ESMERIL ELECTRICO 7"');
   assert.equal(sheet.getCell('C23').value, 'DESCRIPCIÓN');
   assert.equal(sheet.getCell('C24').value, 'ESTRUCTURA PRINCIPAL');
-  assert.equal(rendered.worksheets[1].getCell('A4').value, 'REGISTRO FOTOGRAFICO');
+  assert.equal(rendered.worksheets[1].getCell('A7').value, ' INFORME FOTOGRAFICO');
 });

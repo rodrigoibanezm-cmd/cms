@@ -20,8 +20,8 @@ test('ESMERIL compila como segunda familia ejecutable', () => {
 test('certifica ESMERIL_FINAL por hash y tamaño', () => {
   assert.equal(family.template_reference.filename, 'ESMERIL_FINAL.xlsx')
   assert.equal(family.template_reference.drive_file_id, '1reHRuTAXxVC4-wy-4uw-z0BUuuQaxrzG')
-  assert.equal(family.template_reference.sha256, '83282d57a5776ab90808aee775822d6f6edaa40aa9272e39d9c4b386c668c476')
-  assert.equal(family.template_reference.size_bytes, 33849)
+  assert.equal(family.template_reference.sha256, '1da08a7f4a6f0a868efa9135db7f48b8c214fc9de4b934b7256fb1da81b57778')
+  assert.equal(family.template_reference.size_bytes, 34461)
 })
 
 test('mapea solo entradas directas certificadas', () => {

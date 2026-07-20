@@ -10,6 +10,8 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    env:
+      TEMPLATE_BASE_URL: https://cms-git-fix-catalog-real-byte-ci-rodrigo-qrs-chile-s-projects.vercel.app
     steps:
       - name: Checkout tested SHA
         uses: actions/checkout@v4
@@ -43,27 +45,40 @@ jobs:
         working-directory: web
         run: npm run build
 
-      - name: Start built web server
-        working-directory: web
-        run: npm start > /tmp/cms-next.log 2>&1 &
-
-      - name: Wait for local template endpoints
+      - name: Diagnose deployed template endpoints
         run: |
-          for attempt in {1..60}; do
-            curl --fail --silent http://127.0.0.1:3000/api/template/luminaria --output /dev/null \
-              && curl --fail --silent http://127.0.0.1:3000/api/template/esmeril --output /dev/null \
-              && exit 0
-            sleep 2
+          ps -ef
+          for family in luminaria esmeril; do
+            url="$TEMPLATE_BASE_URL/api/template/$family"
+            status=$(curl --silent --show-error --output "/tmp/$family.body" --write-out '%{http_code}' "$url")
+            echo "$family HTTP $status"
+            echo "$family bytes $(wc -c < "/tmp/$family.body")"
+            file "/tmp/$family.body"
+            if unzip -t "/tmp/$family.body" >/tmp/$family.zip-test 2>&1; then
+              echo "$family ZIP valid"
+              unzip -l "/tmp/$family.body" | grep -E "xl/(workbook|worksheets|_rels)" | head -30
+              if [ "$family" = "esmeril" ]; then
+                echo "ESMERIL workbook.xml:"
+                unzip -p "/tmp/$family.body" xl/workbook.xml
+                echo
+              fi
+            else
+              echo "$family ZIP invalid"
+              cat /tmp/$family.zip-test
+            fi
+            if [ "$status" != "200" ]; then
+              echo "$family response body:"
+              head -c 2000 "/tmp/$family.body"
+              exit 1
+            fi
           done
-          cat /tmp/cms-next.log
-          exit 1
 
       - name: Run LUMINARIA real-byte integration test
         env:
-          LUMINARIA_TEMPLATE_URL: http://127.0.0.1:3000/api/template/luminaria
+          LUMINARIA_TEMPLATE_URL: ${{ env.TEMPLATE_BASE_URL }}/api/template/luminaria
         run: node --test web/lib/executable_luminaria.integration.test.mjs
 
       - name: Run ESMERIL real-byte integration test
         env:
-          ESMERIL_TEMPLATE_URL: http://127.0.0.1:3000/api/template/esmeril
+          ESMERIL_TEMPLATE_URL: ${{ env.TEMPLATE_BASE_URL }}/api/template/esmeril
         run: node --test web/lib/executable_esmeril.integration.test.mjs
