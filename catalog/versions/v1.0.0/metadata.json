@@ -1,0 +1,19 @@
+{
+  "version": "1.0.0",
+  "status": "frozen",
+  "created_at": "2026-07-20",
+  "source_commit": "a13b5b7ddcf9b0b92c1ee5dfa7d15b9bfba29ca5",
+  "previous_version": null,
+  "counts": {
+    "total": 557,
+    "confirmed": 544,
+    "unmapped": 13,
+    "review": 0
+  },
+  "historical_backlog_policy": "passive_on_demand",
+  "artifacts": {
+    "families": "tools/template_inventory/families.json",
+    "stage0_families": "tools/template_inventory/families_stage0_final.json",
+    "classifier": "tools/template_inventory/family_inference.js"
+  }
+}
