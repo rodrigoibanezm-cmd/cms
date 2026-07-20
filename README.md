@@ -45,6 +45,19 @@ Confianza IA disponible como KPI V1
 dashboard operativo V1
 Config V1 operativa en /config
 ```
+## Catálogo de plantillas v2
+```txt
+Reportes reales
+→ inventario
+→ inferencia determinística de familias
+→ CONFIRMED / REVIEW / UNMAPPED
+→ revisión de evidencia
+→ evolución del catálogo
+```
+Documentación vigente: `TEMPLATE_INVENTORY.md`
+
+Stage 0 convive con producción. No reemplaza todavía el renderer ni compara sistemáticamente toda la cobertura contra maestros `_FINAL`.
+
 ## Diseño visual
 ```txt
 docs/ui-design-system.md
@@ -69,26 +82,16 @@ Si crece, se refactoriza.
 ```
 ## Documentación
 ```txt
+TEMPLATE_INVENTORY.md
 docs/README.md
 ```
 Ruta recomendada:
 ```txt
 1. README.md
-2. docs/README.md
-3. docs/current-state.md
-4. docs/next-step.md
-```
-Documentos principales:
-```txt
-docs/current-state.md
-docs/principles.md
-docs/workflow.md
-docs/secretary-flow.md
-docs/data-model.md
-docs/admin-review.md
-docs/quality-metrics.md
-docs/ui-design-system.md
-docs/next-step.md
+2. TEMPLATE_INVENTORY.md
+3. docs/README.md
+4. docs/current-state.md
+5. docs/next-step.md
 ```
 ## Invariante
 ```txt
