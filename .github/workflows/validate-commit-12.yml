@@ -27,7 +27,8 @@ jobs:
       - name: Diagnose test files
         shell: bash
         run: |
-          set -euo pipefail
+          set -uo pipefail
+          failures=0
           files=(
             catalog/compiler/*.test.js
             catalog/versions/v1.0.0/executable_luminaria.test.js
@@ -39,8 +40,16 @@ jobs:
           for file in "${files[@]}"; do
             echo "::group::TEST FILE: $file"
             node --test "$file"
+            status=$?
+            echo "EXIT STATUS: $status"
             echo "::endgroup::"
+            if [ "$status" -ne 0 ]; then
+              echo "FAILED TEST FILE: $file"
+              failures=$((failures + 1))
+            fi
           done
+          echo "TOTAL FAILED TEST FILES: $failures"
+          exit "$failures"
 
       - name: Build
         working-directory: web
