@@ -3,6 +3,8 @@ name: Validate commit 13
 on:
   push:
     branches: [validation/commit-13]
+  pull_request:
+    branches: [feat/operational-catalog-v1]
   workflow_dispatch:
 
 jobs:
