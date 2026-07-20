@@ -30,3 +30,8 @@ test('confirms evidence-backed aliases', () => {
   expect('CARRETE ELEC', 'CARRETE_ELECTRICO', 'CONFIRMED')
   expect('GATA NEUMOHID', 'GATA_HIDRAULICA', 'CONFIRMED')
 })
+
+test('maps tripod naming to luminaria evidence', () => {
+  expect('TRIPODE MILWAUKEE', 'LUMINARIA', 'CONFIRMED')
+  expect('LUMINARIA DE PEDESTAL MILWAUKEE', 'LUMINARIA', 'CONFIRMED')
+})
