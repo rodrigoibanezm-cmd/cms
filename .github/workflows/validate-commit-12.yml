@@ -1,0 +1,41 @@
+name: Validate commit 12
+
+on:
+  pull_request:
+    branches:
+      - feat/operational-catalog-v1
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install dependencies
+        working-directory: web
+        run: npm install --ignore-scripts
+
+      - name: Run complete test suite
+        run: |
+          node --test \
+            catalog/compiler/*.test.js \
+            catalog/versions/v1.0.0/executable_luminaria.test.js \
+            web/lib/xls/*.test.mjs \
+            web/lib/versioned_renderer_runtime.test.mjs \
+            web/lib/catalog_reprocess_worker_runtime.test.mjs \
+            web/lib/executable_luminaria.integration.test.mjs
+
+      - name: Build
+        working-directory: web
+        run: npm run build
