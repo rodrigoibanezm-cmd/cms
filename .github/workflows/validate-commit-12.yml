@@ -24,68 +24,65 @@ jobs:
         working-directory: web
         run: npm install --ignore-scripts
 
-      - name: Diagnose test files
-        id: tests
-        shell: bash
+      - name: Test catalog compiler
+        id: compiler
         continue-on-error: true
-        run: |
-          set -u
-          mkdir -p test-logs
-          failures=0
-          failed_files=""
-          files=(
-            catalog/compiler/*.test.js
-            catalog/versions/v1.0.0/executable_luminaria.test.js
-            web/lib/xls/*.test.mjs
-            web/lib/versioned_renderer_runtime.test.mjs
-            web/lib/catalog_reprocess_worker_runtime.test.mjs
-            web/lib/executable_luminaria.integration.test.mjs
-          )
-          for file in "${files[@]}"; do
-            safe_name=$(echo "$file" | tr '/ *' '___')
-            log="test-logs/${safe_name}.log"
-            echo "===== TEST FILE: $file ====="
-            node --test "$file" >"$log" 2>&1
-            status=$?
-            cat "$log"
-            echo "EXIT STATUS: $status"
-            if [ "$status" -ne 0 ]; then
-              echo "::error title=Failing test file::$file"
-              failed_files="${failed_files}${file}|${log}\n"
-              failures=$((failures + 1))
-            fi
-          done
-          echo "failures=$failures" >> "$GITHUB_OUTPUT"
-          printf 'failed_files<<EOF\n%bEOF\n' "$failed_files" >> "$GITHUB_OUTPUT"
+        run: node --test catalog/compiler/*.test.js
 
-      - name: Publish failure details
-        if: always() && steps.tests.outputs.failures != '0'
-        shell: bash
-        run: |
-          echo "## Failing test details" >> "$GITHUB_STEP_SUMMARY"
-          while IFS='|' read -r file log; do
-            [ -z "$file" ] && continue
-            echo "### $file" >> "$GITHUB_STEP_SUMMARY"
-            echo '```text' >> "$GITHUB_STEP_SUMMARY"
-            tail -n 80 "$log" >> "$GITHUB_STEP_SUMMARY"
-            echo '```' >> "$GITHUB_STEP_SUMMARY"
-            echo "::error title=Failing test::$file"
-            tail -n 20 "$log"
-          done <<< "${{ steps.tests.outputs.failed_files }}"
+      - name: Test executable LUMINARIA contract
+        id: luminaria_contract
+        continue-on-error: true
+        run: node --test catalog/versions/v1.0.0/executable_luminaria.test.js
+
+      - name: Test XLS helpers
+        id: xls
+        continue-on-error: true
+        run: node --test web/lib/xls/*.test.mjs
+
+      - name: Test versioned renderer
+        id: renderer
+        continue-on-error: true
+        run: node --test web/lib/versioned_renderer_runtime.test.mjs
+
+      - name: Test reprocessing worker
+        id: worker
+        continue-on-error: true
+        run: node --test web/lib/catalog_reprocess_worker_runtime.test.mjs
+
+      - name: Test LUMINARIA integration
+        id: luminaria_integration
+        continue-on-error: true
+        run: node --test web/lib/executable_luminaria.integration.test.mjs
 
       - name: Build
+        id: build
         if: always()
         working-directory: web
+        continue-on-error: true
         run: npm run build
 
       - name: Final validation result
         if: always()
         shell: bash
         run: |
-          failures="${{ steps.tests.outputs.failures }}"
-          failures="${failures:-1}"
-          if [ "$failures" -ne 0 ]; then
-            echo "Validation failed: $failures test file(s) failed."
-            exit 1
-          fi
-          echo "Validation passed: all test files and build succeeded."
+          echo "compiler=${{ steps.compiler.outcome }}"
+          echo "luminaria_contract=${{ steps.luminaria_contract.outcome }}"
+          echo "xls=${{ steps.xls.outcome }}"
+          echo "renderer=${{ steps.renderer.outcome }}"
+          echo "worker=${{ steps.worker.outcome }}"
+          echo "luminaria_integration=${{ steps.luminaria_integration.outcome }}"
+          echo "build=${{ steps.build.outcome }}"
+
+          failed=0
+          for result in \
+            "${{ steps.compiler.outcome }}" \
+            "${{ steps.luminaria_contract.outcome }}" \
+            "${{ steps.xls.outcome }}" \
+            "${{ steps.renderer.outcome }}" \
+            "${{ steps.worker.outcome }}" \
+            "${{ steps.luminaria_integration.outcome }}" \
+            "${{ steps.build.outcome }}"; do
+            [ "$result" = "success" ] || failed=1
+          done
+
+          exit "$failed"
