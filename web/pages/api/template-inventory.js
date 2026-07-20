@@ -1,4 +1,4 @@
-const { runInventory } = require('../../../tools/template_inventory/run_inventory')
+const { runInventory } = require('../../lib/template_inventory/run_inventory')
 
 const REPORTS_FOLDER_ID = '1QSWVylHQNkqU0J_pJ4s6T5831CtGhnbM'
 
