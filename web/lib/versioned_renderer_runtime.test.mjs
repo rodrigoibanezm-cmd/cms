@@ -16,18 +16,14 @@ test('verifica catalog_hash con la serialización exacta del compilador', () => 
 
 test('confirma las tres escrituras como una sola transacción', async () => {
   const calls = [];
-  const client = {
-    query: async (sql) => calls.push(sql),
-    release: () => calls.push('RELEASE'),
-  };
+  const client = { query: async (sql) => calls.push(sql), release: () => calls.push('RELEASE') };
   await withTransaction({ connect: async () => client }, async (tx) => {
     await tx.query('UPDATE reports');
     await tx.query('INSERT report_files');
     await tx.query('INSERT report_events');
   });
-  assert.deepEqual(calls, [
-    'BEGIN', 'UPDATE reports', 'INSERT report_files', 'INSERT report_events', 'COMMIT', 'RELEASE',
-  ]);
+  assert.deepEqual(calls, ['BEGIN', 'UPDATE reports', 'INSERT report_files',
+    'INSERT report_events', 'COMMIT', 'RELEASE']);
 });
 
 test('rollback evita commit ante una escritura fallida', async () => {
@@ -50,5 +46,5 @@ test('el adaptador consulta exactamente catalogVersionId y nunca estado active',
   const source = await readFile(new URL('./versioned_report_renderer.js', import.meta.url), 'utf8');
   assert.match(source, /FROM catalog_versions WHERE id=\$1/);
   assert.doesNotMatch(source, /status\s*=\s*['"]active['"]/i);
-  assert.ok(source.indexOf('verifyCatalogHash(') < source.indexOf('selectCertifiedFamily('));
+  assert.match(source, /verifyCatalogHash\(catalogVersion\.compiled_catalog/);
 });
