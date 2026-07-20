@@ -20,8 +20,15 @@ function decision(type, extra = {}) {
   }
 }
 
+function createFamily(extra = {}) {
+  return decision(TYPES.CREATE_FAMILY, {
+    executable_family_source_ref: 'family-source:bomba-vacio:v1',
+    ...extra,
+  })
+}
+
 test('mismo contenido produce mismo artefacto y hash sin importar orden', () => {
-  const create = decision(TYPES.CREATE_FAMILY, {
+  const create = createFamily({
     target_family: 'bomba de vacío', aliases: ['Bomba vacío'],
   })
   const associate = decision(TYPES.ASSOCIATE_ALIAS, {
@@ -35,7 +42,7 @@ test('mismo contenido produce mismo artefacto y hash sin importar orden', () => 
 
 test('aplica creación y asociación sobre snapshot', () => {
   const result = compileCatalog(snapshot, [
-    decision(TYPES.CREATE_FAMILY, { target_family: 'Bomba Vacío', alias: 'Bomba vacío' }),
+    createFamily({ target_family: 'Bomba Vacío', alias: 'Bomba vacío' }),
     decision(TYPES.ASSOCIATE_ALIAS, { alias: 'Trípode', target_family: 'Luminaria' }),
   ])
   assert.deepEqual(result.artifact.aliases.BOMBA_VACIO, ['BOMBA VACIO'])
