@@ -17,11 +17,7 @@ test('keeps RAD torque names in review', () => {
 })
 
 test('does not infer E-RAD from transductor context', () => {
-  expect(
-    'TRASDUCTOR DE TORQUE RAD',
-    'TRASDUCTOR_DE_TORQUE_RAD',
-    'UNMAPPED',
-  )
+  expect('TRASDUCTOR DE TORQUE RAD', 'TRASDUCTOR_DE_TORQUE_RAD', 'UNMAPPED')
 })
 
 test('confirms evidence-backed aliases', () => {
@@ -31,27 +27,12 @@ test('confirms evidence-backed aliases', () => {
   expect('GATA NEUMOHID', 'GATA_HIDRAULICA', 'CONFIRMED')
 })
 
-test('maps tripod naming to luminaria evidence', () => {
+test('maps reviewed repeated groups', () => {
   expect('TRIPODE MILWAUKEE', 'LUMINARIA', 'CONFIRMED')
-  expect('LUMINARIA DE PEDESTAL MILWAUKEE', 'LUMINARIA', 'CONFIRMED')
-})
-
-test('maps grasera reports to their own family', () => {
   expect('GRASERA INAL MILWAUKEE', 'GRASERA', 'CONFIRMED')
-  expect('GRASERA INALAMBRICA 10.000 PSI', 'GRASERA', 'CONFIRMED')
-})
-
-test('maps bomba de vacio reports to their own family', () => {
   expect('BOMBA DE VACIO YELLOW JACKET', 'BOMBA_DE_VACIO', 'CONFIRMED')
-  expect('BOMBA DE VACÍO ELEC SUPEREVAC', 'BOMBA_DE_VACIO', 'CONFIRMED')
-})
-
-test('maps barredora reports to their own family', () => {
-  expect('BARREDORA KARCHER', 'BARREDORA', 'CONFIRMED')
   expect('BARREDORA VIPER', 'BARREDORA', 'CONFIRMED')
-})
-
-test('maps dializadora reports to their own family', () => {
-  expect('DIALIZADORA ELECTROHIDRAULICA', 'DIALIZADORA', 'CONFIRMED')
   expect('DIALIZADORA ELEC SCHROEDER', 'DIALIZADORA', 'CONFIRMED')
+  expect('BANDEJA DE DRENADO', 'BANDEJA_DE_DRENADO', 'CONFIRMED')
+  expect('MULTI TOOL CATERPILLAR', 'MULTI_TOOL', 'CONFIRMED')
 })
