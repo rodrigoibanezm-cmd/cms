@@ -10,7 +10,7 @@ const REFERENCE = {
 
 export async function GET() {
   try {
-    const buffer = await downloadDriveFile(REFERENCE.id, 'service_account');
+    const buffer = await downloadDriveFile(REFERENCE.id);
     const hash = createHash('sha256').update(buffer).digest('hex');
     if (buffer.length !== REFERENCE.size) throw new Error(`unexpected size ${buffer.length}`);
     if (hash !== REFERENCE.sha256) throw new Error(`unexpected SHA-256 ${hash}`);
