@@ -30,4 +30,18 @@ jobs:
         run: npm install --ignore-scripts
 
       - name: Run LUMINARIA integration test
-        run: node --test web/lib/executable_luminaria.integration.test.mjs
+        id: luminaria_test
+        continue-on-error: true
+        run: |
+          node --test web/lib/executable_luminaria.integration.test.mjs > luminaria-test.log 2>&1
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+
+      - name: Upload diagnostic log
+        uses: actions/upload-artifact@v4
+        with:
+          name: luminaria-test-log
+          path: luminaria-test.log
+
+      - name: Fail if test failed
+        if: steps.luminaria_test.outputs.exit_code != '0'
+        run: exit 1
