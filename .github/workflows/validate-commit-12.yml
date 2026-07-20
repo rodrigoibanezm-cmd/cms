@@ -24,15 +24,23 @@ jobs:
         working-directory: web
         run: npm install --ignore-scripts
 
-      - name: Run complete test suite
+      - name: Diagnose test files
+        shell: bash
         run: |
-          node --test \
-            catalog/compiler/*.test.js \
-            catalog/versions/v1.0.0/executable_luminaria.test.js \
-            web/lib/xls/*.test.mjs \
-            web/lib/versioned_renderer_runtime.test.mjs \
-            web/lib/catalog_reprocess_worker_runtime.test.mjs \
+          set -euo pipefail
+          files=(
+            catalog/compiler/*.test.js
+            catalog/versions/v1.0.0/executable_luminaria.test.js
+            web/lib/xls/*.test.mjs
+            web/lib/versioned_renderer_runtime.test.mjs
+            web/lib/catalog_reprocess_worker_runtime.test.mjs
             web/lib/executable_luminaria.integration.test.mjs
+          )
+          for file in "${files[@]}"; do
+            echo "::group::TEST FILE: $file"
+            node --test "$file"
+            echo "::endgroup::"
+          done
 
       - name: Build
         working-directory: web
