@@ -2,11 +2,11 @@ const HASH = /^[0-9a-f]{64}$/
 const CELL = /^[A-Z]{1,3}[1-9][0-9]*$/
 const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 
-const REPORT_SOURCES = Object.freeze(new Set([
+const REPORT_SOURCES = Object.freeze([
   'report.id', 'report.ot', 'report.tenant_id',
   'extraction.tool_name', 'extraction.tipo_herramienta',
   'extraction.marca', 'extraction.modelo', 'extraction.estado',
-]))
+])
 
 function object(value, field) {
   if (!value || Array.isArray(value) || typeof value !== 'object') throw new Error(`${field} must be an object.`)
@@ -23,7 +23,7 @@ function text(value, field) {
 }
 function source(value, field) {
   const normalized = text(value, field)
-  if (!REPORT_SOURCES.has(normalized)) throw new Error(`${field} is not a supported report source.`)
+  if (!REPORT_SOURCES.includes(normalized)) throw new Error(`${field} is not a supported report source.`)
   return normalized
 }
 
