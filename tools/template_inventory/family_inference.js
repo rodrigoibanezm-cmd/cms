@@ -17,13 +17,18 @@ function matchesAlias(name, aliases) {
 }
 
 function inferRadTorque(filename) {
+  const isTorque = containsWords(filename, 'LLAVE TORQUE')
+    || containsWords(filename, 'LLAVE DE TORQUE')
+  const isExplicitERad = isTorque && containsWords(filename, 'E RAD')
+
+  if (isExplicitERad) {
+    return { family: 'E_RAD', status: 'CONFIRMED' }
+  }
+
   const isTorqueRad = containsWords(filename, 'LLAVE TORQUE RAD')
     || containsWords(filename, 'LLAVE DE TORQUE RAD')
 
   if (!isTorqueRad) return null
-  if (containsWords(filename, 'E RAD')) {
-    return { family: 'E_RAD', status: 'CONFIRMED' }
-  }
   return { family: 'LLAVE_DE_TORQUE_O_IMPACTO', status: 'CONFIRMED' }
 }
 
