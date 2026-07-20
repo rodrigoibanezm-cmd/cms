@@ -1,6 +1,10 @@
-const catalog = require('./families.json')
+const baseCatalog = require('./families.json')
+const finalCatalog = require('./families_stage0_final.json')
 const { normalize, familyKey } = require('./normalize')
 
+const catalog = {
+  aliases: { ...baseCatalog.aliases, ...finalCatalog.aliases },
+}
 const RAD_TORQUE_FAMILIES = 'E_RAD|LLAVE_DE_TORQUE_O_IMPACTO'
 
 function containsWords(name, alias) {
