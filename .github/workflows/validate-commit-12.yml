@@ -11,11 +11,7 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     env:
-      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-      GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-      GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
-      GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
-      GOOGLE_DRIVE_AUTH_MODE: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON != '' && 'service_account' || '' }}
+      TEMPLATE_BASE_URL: https://cms-frispowtt-rodrigo-qrs-chile-s-projects.vercel.app
     steps:
       - name: Checkout tested SHA
         uses: actions/checkout@v4
@@ -49,24 +45,11 @@ jobs:
         working-directory: web
         run: npm run build
 
-      - name: Start built web server
-        working-directory: web
-        run: npm start > /tmp/cms-next.log 2>&1 &
-
-      - name: Diagnose local template endpoints
+      - name: Diagnose deployed template endpoints
         run: |
-          echo "GOOGLE_CLIENT_ID set: ${{ secrets.GOOGLE_CLIENT_ID != '' }}"
-          echo "GOOGLE_CLIENT_SECRET set: ${{ secrets.GOOGLE_CLIENT_SECRET != '' }}"
-          echo "GOOGLE_REFRESH_TOKEN set: ${{ secrets.GOOGLE_REFRESH_TOKEN != '' }}"
-          echo "GOOGLE_SERVICE_ACCOUNT_JSON set: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON != '' }}"
           ps -ef
-          for attempt in {1..30}; do
-            curl --silent --output /dev/null http://127.0.0.1:3000 && break
-            sleep 1
-          done
-          cat /tmp/cms-next.log
           for family in luminaria esmeril; do
-            url="http://127.0.0.1:3000/api/template/$family"
+            url="$TEMPLATE_BASE_URL/api/template/$family"
             status=$(curl --silent --show-error --output "/tmp/$family.body" --write-out '%{http_code}' "$url")
             echo "$family HTTP $status"
             echo "$family bytes $(wc -c < "/tmp/$family.body")"
@@ -79,10 +62,10 @@ jobs:
 
       - name: Run LUMINARIA real-byte integration test
         env:
-          LUMINARIA_TEMPLATE_URL: http://127.0.0.1:3000/api/template/luminaria
+          LUMINARIA_TEMPLATE_URL: ${{ env.TEMPLATE_BASE_URL }}/api/template/luminaria
         run: node --test web/lib/executable_luminaria.integration.test.mjs
 
       - name: Run ESMERIL real-byte integration test
         env:
-          ESMERIL_TEMPLATE_URL: http://127.0.0.1:3000/api/template/esmeril
+          ESMERIL_TEMPLATE_URL: ${{ env.TEMPLATE_BASE_URL }}/api/template/esmeril
         run: node --test web/lib/executable_esmeril.integration.test.mjs
