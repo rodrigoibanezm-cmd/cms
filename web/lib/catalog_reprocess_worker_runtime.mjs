@@ -26,34 +26,42 @@ async function claimNext(pool) {
   }
 }
 
+function assertTransition(result, target, cause) {
+  if (result.rowCount === 1) return;
+  throw new Error(`Catalog reprocess request transition to ${target} failed`, { cause });
+}
+
 async function complete(pool, request, result) {
-  await pool.query(`UPDATE catalog_reprocess_requests
+  const update = await pool.query(`UPDATE catalog_reprocess_requests
     SET status='completed', completed_at=now(), result_json=$2, error_json=NULL
     WHERE id=$1 AND status='processing'`, [request.id, JSON.stringify(result)]);
+  assertTransition(update, 'completed');
 }
 
 async function fail(pool, request, error) {
   const payload = { name: error?.name || 'Error', message: error?.message || String(error) };
-  await pool.query(`UPDATE catalog_reprocess_requests
+  const update = await pool.query(`UPDATE catalog_reprocess_requests
     SET status='failed', failed_at=now(), error_json=$2
     WHERE id=$1 AND status='processing'`, [request.id, JSON.stringify(payload)]);
+  assertTransition(update, 'failed', error);
 }
 
 export function createCatalogReprocessWorker({ pool, renderReport }) {
   return async function processNextCatalogReprocessRequest() {
     const request = await claimNext(pool);
     if (!request) return null;
+    let result;
     try {
-      const result = await renderReport({
+      result = await renderReport({
         reportId: request.report_id,
         catalogVersionId: request.catalog_version_id,
       });
-      await complete(pool, request, result);
-      return { requestId: request.id, status: 'completed', result };
     } catch (error) {
       await fail(pool, request, error);
       throw error;
     }
+    await complete(pool, request, result);
+    return { requestId: request.id, status: 'completed', result };
   };
 }
 
