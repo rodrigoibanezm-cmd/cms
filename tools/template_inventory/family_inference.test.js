@@ -40,3 +40,8 @@ test('maps grasera reports to their own family', () => {
   expect('GRASERA INAL MILWAUKEE', 'GRASERA', 'CONFIRMED')
   expect('GRASERA INALAMBRICA 10.000 PSI', 'GRASERA', 'CONFIRMED')
 })
+
+test('maps bomba de vacio reports to their own family', () => {
+  expect('BOMBA DE VACIO YELLOW JACKET', 'BOMBA_DE_VACIO', 'CONFIRMED')
+  expect('BOMBA DE VACÍO ELEC SUPEREVAC', 'BOMBA_DE_VACIO', 'CONFIRMED')
+})
