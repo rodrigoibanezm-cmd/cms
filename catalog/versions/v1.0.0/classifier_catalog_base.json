@@ -1,0 +1,150 @@
+{
+  "aliases": {
+    "ARRANCADOR_DE_BATERIAS": [
+      "ARRANCADOR DE BATERIAS",
+      "ARRANCADOR DE BATERIA",
+      "ARRANCADOR BATERIAS",
+      "PARTIDOR DE BATERIA",
+      "PARTIDOR BATERIA"
+    ],
+    "ASPIRADORA": [
+      "ASPIRADORA"
+    ],
+    "BARREDORA": [
+      "BARREDORA"
+    ],
+    "BATERIA": [
+      "BATERIA TECNICOS",
+      "INFORME BATERIA",
+      "BATERIA MILWAUKEE",
+      "BATERIA MILWAUKE M12",
+      "BATERIA 18V",
+      "PAQUETE DE BATERIAS",
+      "BATERIAS"
+    ],
+    "BOMBA_DE_VACIO": [
+      "BOMBA DE VACIO"
+    ],
+    "BOMBA_HIDRAULICA": [
+      "BOMBA HIDRAULICA",
+      "BOMBA MANUAL",
+      "BOMBA ELECTRO",
+      "BOMBA ELECTROHIDRAULICA",
+      "BOMBA ELECTRO HIDRAULICA"
+    ],
+    "BOMBA_TRASVASIJE": [
+      "BOMBA TRASVASIJE",
+      "BOMBA DE TRASVASIJE",
+      "BOMBA TRASVASE"
+    ],
+    "BURIL": [
+      "BURIL",
+      "RECTIFICADOR"
+    ],
+    "CARRETE_ELECTRICO": [
+      "CARRETE ELECTRICO",
+      "CARRETE ELEC",
+      "CARRETE DE CABLE",
+      "CARRETE EXTENSION",
+      "ALARGADOR ELECTRICO",
+      "ALARGADOR DE CARRETE"
+    ],
+    "CILINDRO_HIDRAULICO": [
+      "CILINDRO HIDRAULICO",
+      "CILINDRO HIDRAULICA"
+    ],
+    "DIALIZADORA": [
+      "DIALIZADORA"
+    ],
+    "E_RAD": [
+      "E RAD",
+      "ERAD"
+    ],
+    "ESMERIL": [
+      "ESMERIL",
+      "ESMERIL ANGULAR",
+      "AMOLADORA",
+      "AMOLADOR MATRIZ",
+      "PULIDOR"
+    ],
+    "FOCO_IMANTADO": [
+      "FOCO IMANTADO",
+      "FOCO MAGNETICO"
+    ],
+    "GATA_HIDRAULICA": [
+      "GATA HIDRAULICA",
+      "GATO HIDRAULICO",
+      "GATO HIDRAULICA",
+      "GATA NEUMOHID",
+      "GATA NEUMOHIDRAULICA",
+      "GATA ELECTROHIDRAULICA",
+      "GATA CILINDRO"
+    ],
+    "GIRAMOTOR": [
+      "GIRAMOTOR",
+      "GIRA MOTOR"
+    ],
+    "GRASERA": [
+      "GRASERA",
+      "GRASERA INAL",
+      "GRASERA INALAMBRICA"
+    ],
+    "LLAVE_DE_TORQUE_O_IMPACTO": [
+      "LLAVE DE TORQUE O IMPACTO",
+      "LLAVE DE TORQUE",
+      "LLAVE DE IMPACTO",
+      "LLAVE IMPACTO",
+      "LLAVE IMP",
+      "LLAVE TORQUE",
+      "LLAVEB DE IMPACTO"
+    ],
+    "LLAVE_HIDRAULICA": [
+      "LLAVE HIDRAULICA",
+      "LLAVE HIDRAULICO"
+    ],
+    "LUMINARIA": [
+      "LUMINARIA",
+      "LUMINARIA INALAMBRICA",
+      "LUMINARIA DE PEDESTAL",
+      "LUMINARIA PEDESTAL",
+      "TRIPODE",
+      "UMINARIA"
+    ],
+    "MALETA_TESTEO": [
+      "MALETA TESTEO",
+      "MALETA DE TESTEO",
+      "MALETA TEST"
+    ],
+    "MESA_LEVANTE": [
+      "MESA LEVANTE",
+      "MESA DE LEVANTE",
+      "MESA HIDRAULICA",
+      "MESA ELECTROHIDRAULICA"
+    ],
+    "PISTOLA_CALOR": [
+      "PISTOLA CALOR",
+      "PISTOLA DE CALOR"
+    ],
+    "TALADRO": [
+      "TALADRO"
+    ],
+    "TECLE": [
+      "TECLE",
+      "TECLE CADENA",
+      "TECLE PALANCA"
+    ],
+    "TETRAGUAGE": [
+      "TETRAGUAGE",
+      "TETRAGAUGE",
+      "TETRAGUAGE"
+    ],
+    "TORQUE_MANUAL": [
+      "TORQUE MANUAL",
+      "TORQUIMETRO MANUAL"
+    ],
+    "TORQUE_VALVULA": [
+      "TORQUE VALVULA",
+      "TORQUE DE VALVULA"
+    ]
+  }
+}
