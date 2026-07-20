@@ -45,3 +45,8 @@ test('maps bomba de vacio reports to their own family', () => {
   expect('BOMBA DE VACIO YELLOW JACKET', 'BOMBA_DE_VACIO', 'CONFIRMED')
   expect('BOMBA DE VACÍO ELEC SUPEREVAC', 'BOMBA_DE_VACIO', 'CONFIRMED')
 })
+
+test('maps barredora reports to their own family', () => {
+  expect('BARREDORA KARCHER', 'BARREDORA', 'CONFIRMED')
+  expect('BARREDORA VIPER', 'BARREDORA', 'CONFIRMED')
+})
