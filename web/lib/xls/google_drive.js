@@ -36,16 +36,16 @@ function serviceAccountAuth() {
   return new google.auth.GoogleAuth({ credentials, scopes: ['https://www.googleapis.com/auth/drive'] });
 }
 
-function googleAuthClient() {
-  if (env('GOOGLE_DRIVE_AUTH_MODE') === 'service_account') return serviceAccountAuth();
+function googleAuthClient(authMode = env('GOOGLE_DRIVE_AUTH_MODE')) {
+  if (authMode === 'service_account') return serviceAccountAuth();
   const oauth = oauthAuth();
   if (oauth) return oauth;
   if (env('GOOGLE_SERVICE_ACCOUNT_JSON')) return serviceAccountAuth();
   throw new Error('Falta autenticación Google Drive');
 }
 
-export function driveClient() {
-  return google.drive({ version: 'v3', auth: googleAuthClient() });
+export function driveClient(authMode) {
+  return google.drive({ version: 'v3', auth: googleAuthClient(authMode) });
 }
 
 export async function findFileByName(drive, folderId, name) {
@@ -85,8 +85,8 @@ function resolveShortcut(meta) {
   };
 }
 
-export async function downloadDriveFile(fileId) {
-  const drive = driveClient();
+export async function downloadDriveFile(fileId, authMode) {
+  const drive = driveClient(authMode);
   const meta = resolveShortcut(await driveFileMeta(drive, fileId));
   if (!meta.id) throw new Error('Shortcut de Drive sin archivo destino');
 
