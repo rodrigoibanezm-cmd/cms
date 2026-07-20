@@ -1,0 +1,49 @@
+name: Validate commit 13
+
+on:
+  push:
+    branches: [validation/commit-13]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout final commit 13
+        uses: actions/checkout@v4
+        with:
+          ref: feat/operational-catalog-v1
+
+      - name: Verify tested SHA
+        run: test "$(git rev-parse HEAD)" = "87776697664b35480fd724578a4e6d412a8b7f46"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install root dependencies
+        run: npm install --ignore-scripts
+
+      - name: Install web dependencies
+        working-directory: web
+        run: npm install --ignore-scripts
+
+      - name: Run catalog and runtime tests
+        run: |
+          node --test \
+            catalog/compiler/*.test.js \
+            catalog/versions/v1.0.0/executable_luminaria.test.js \
+            catalog/versions/v1.0.0/executable_esmeril.test.js \
+            web/lib/xls/*.test.mjs \
+            web/lib/versioned_renderer_runtime.test.mjs \
+            web/lib/catalog_reprocess_worker_runtime.test.mjs
+
+      - name: Run ESMERIL real-byte integration test
+        env:
+          ESMERIL_TEMPLATE_URL: https://cms-git-feat-operational-catalog-v1-rodrigo-qrs-chile-s-projects.vercel.app/api/template/esmeril
+        run: node --test web/lib/executable_esmeril.integration.test.mjs
+
+      - name: Build web
+        working-directory: web
+        run: npm run build
