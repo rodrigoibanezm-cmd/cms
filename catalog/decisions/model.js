@@ -8,7 +8,7 @@ const COMMON = [
   'decision_type', 'source_report_id', 'source_ot', 'source_filename',
   'evidence', 'reason', 'created_by', 'created_at',
 ]
-const OPTIONAL = ['target_family', 'alias', 'aliases']
+const OPTIONAL = ['target_family', 'alias', 'aliases', 'executable_family_source_ref']
 const ALLOWED = new Set([...COMMON, ...OPTIONAL])
 const EVIDENCE_FIELDS = ['report_ids', 'filenames', 'observations']
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
@@ -55,11 +55,12 @@ function validateEvidence(value, reportId, filename) {
 function assertCompatibility(value) {
   const type = value.decision_type
   if (type === TYPES.ASSOCIATE_ALIAS) {
-    if (value.aliases !== undefined) throw new Error('aliases incompatible')
+    if (value.aliases !== undefined || value.executable_family_source_ref !== undefined) throw new Error('campos incompatibles')
     if (value.alias === undefined || value.target_family === undefined) throw new Error('alias y target_family requeridos')
   }
   if (type === TYPES.CREATE_FAMILY) {
     if (value.target_family === undefined) throw new Error('target_family requerido')
+    if (value.executable_family_source_ref === undefined) throw new Error('executable_family_source_ref requerido')
     if (value.alias !== undefined && value.aliases !== undefined) throw new Error('alias y aliases son excluyentes')
     if (value.aliases !== undefined && (!Array.isArray(value.aliases) || !value.aliases.length)) throw new Error('aliases no puede estar vacío')
   }
@@ -88,6 +89,7 @@ function validateDecision(input) {
   if (input.target_family !== undefined) result.target_family = normalizeKey(input.target_family)
   if (input.alias !== undefined) result.alias = normalizeAlias(input.alias)
   if (input.aliases !== undefined) result.aliases = stringArray(input.aliases, 'aliases', { nonEmpty: true }).map(normalizeAlias)
+  if (input.executable_family_source_ref !== undefined) result.executable_family_source_ref = text(input.executable_family_source_ref, 'executable_family_source_ref')
   return Object.freeze(result)
 }
 

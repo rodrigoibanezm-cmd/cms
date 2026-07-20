@@ -21,6 +21,15 @@ function base(type = TYPES.ASSOCIATE_ALIAS) {
   }
 }
 
+function createFamily() {
+  const input = base(TYPES.CREATE_FAMILY)
+  delete input.alias
+  input.target_family = 'bomba de vacío'
+  input.aliases = ['Bomba de vacío', ' bomba vacío ']
+  input.executable_family_source_ref = 'family-source:bomba-vacio:v1'
+  return input
+}
+
 function rejects(change, pattern) {
   assert.throws(() => validateDecision({ ...base(), ...change }), pattern)
 }
@@ -31,12 +40,10 @@ test('acepta ASSOCIATE_ALIAS válido y normaliza estable', () => {
   assert.equal(value.target_family, 'LUMINARIA')
 })
 
-test('acepta CREATE_FAMILY válido', () => {
-  const input = base(TYPES.CREATE_FAMILY)
-  delete input.alias
-  input.target_family = 'bomba de vacío'
-  input.aliases = ['Bomba de vacío', ' bomba vacío ']
-  assert.deepEqual(validateDecision(input).aliases, ['BOMBA DE VACIO', 'BOMBA VACIO'])
+test('acepta CREATE_FAMILY válido con fuente ejecutable', () => {
+  const value = validateDecision(createFamily())
+  assert.deepEqual(value.aliases, ['BOMBA DE VACIO', 'BOMBA VACIO'])
+  assert.equal(value.executable_family_source_ref, 'family-source:bomba-vacio:v1')
 })
 
 test('acepta REJECT_INSUFFICIENT_EVIDENCE válido', () => {
@@ -60,23 +67,29 @@ test('rechaza alias sin target_family', () => rejects({ target_family: undefined
 test('rechaza rechazo con campos de catálogo', () => rejects({
   decision_type: TYPES.REJECT_INSUFFICIENT_EVIDENCE,
 }, /incompatibles/))
-test('rechaza propiedades incompatibles', () => rejects({ aliases: ['A'] }, /incompatible/))
+test('rechaza propiedades incompatibles', () => rejects({ aliases: ['A'] }, /incompatibles/))
 test('rechaza familia creada sin clave', () => {
-  const input = base(TYPES.CREATE_FAMILY)
+  const input = createFamily()
   delete input.target_family
   assert.throws(() => validateDecision(input), /target_family/)
+})
+test('rechaza familia creada sin fuente ejecutable', () => {
+  const input = createFamily()
+  delete input.executable_family_source_ref
+  assert.throws(() => validateDecision(input), /executable_family_source_ref/)
 })
 test('acepta trazabilidad por filename', () => {
   const input = base()
   input.evidence = { report_ids: [], filenames: [input.source_filename], observations: [] }
   assert.equal(validateDecision(input).source_filename, input.source_filename)
 })
-test('rechaza alias y aliases simultáneos', () => rejects({
-  decision_type: TYPES.CREATE_FAMILY, aliases: ['OTRO'],
-}, /excluyentes/))
+test('rechaza alias y aliases simultáneos', () => {
+  const input = createFamily()
+  input.alias = 'OTRO'
+  assert.throws(() => validateDecision(input), /excluyentes/)
+})
 test('rechaza aliases vacío', () => {
-  const input = base(TYPES.CREATE_FAMILY)
-  delete input.alias
+  const input = createFamily()
   input.aliases = []
   assert.throws(() => validateDecision(input), /vacío/)
 })
