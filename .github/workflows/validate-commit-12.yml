@@ -39,16 +39,31 @@ jobs:
             web/lib/versioned_renderer_runtime.test.mjs \
             web/lib/catalog_reprocess_worker_runtime.test.mjs
 
+      - name: Build web
+        working-directory: web
+        run: npm run build
+
+      - name: Start built web server
+        working-directory: web
+        run: npm start > /tmp/cms-next.log 2>&1 &
+
+      - name: Wait for local template endpoints
+        run: |
+          for attempt in {1..60}; do
+            curl --fail --silent http://127.0.0.1:3000/api/template/luminaria --output /dev/null \
+              && curl --fail --silent http://127.0.0.1:3000/api/template/esmeril --output /dev/null \
+              && exit 0
+            sleep 2
+          done
+          cat /tmp/cms-next.log
+          exit 1
+
       - name: Run LUMINARIA real-byte integration test
         env:
-          LUMINARIA_TEMPLATE_URL: https://cms-git-feat-operational-catalog-v1-rodrigo-qrs-chile-s-projects.vercel.app/api/template/luminaria
+          LUMINARIA_TEMPLATE_URL: http://127.0.0.1:3000/api/template/luminaria
         run: node --test web/lib/executable_luminaria.integration.test.mjs
 
       - name: Run ESMERIL real-byte integration test
         env:
-          ESMERIL_TEMPLATE_URL: https://cms-git-feat-operational-catalog-v1-rodrigo-qrs-chile-s-projects.vercel.app/api/template/esmeril
+          ESMERIL_TEMPLATE_URL: http://127.0.0.1:3000/api/template/esmeril
         run: node --test web/lib/executable_esmeril.integration.test.mjs
-
-      - name: Build web
-        working-directory: web
-        run: npm run build
