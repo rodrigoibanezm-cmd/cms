@@ -1,0 +1,69 @@
+name: Validate commit 12
+
+on:
+  push:
+    branches: [feat/operational-catalog-v1]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout tested SHA
+        uses: actions/checkout@v4
+
+      - name: Show tested SHA
+        run: test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install root dependencies
+        run: npm install --ignore-scripts
+
+      - name: Install web dependencies
+        working-directory: web
+        run: npm install --ignore-scripts
+
+      - name: Run catalog tests
+        run: node --test catalog/compiler/*.test.js catalog/versions/v1.0.0/executable_luminaria.test.js
+
+      - name: Wait for endpoint deployed from tested SHA
+        id: endpoint
+        continue-on-error: true
+        env:
+          TEMPLATE_URL: https://cms-git-feat-operational-catalog-v1-rodrigo-qrs-chile-s-projects.vercel.app/api/template/luminaria
+        run: |
+          for attempt in {1..60}; do
+            curl --silent --dump-header luminaria-endpoint.log --output /dev/null "$TEMPLATE_URL" || true
+            grep --ignore-case --quiet "x-template-source-sha: $GITHUB_SHA" luminaria-endpoint.log && exit 0
+            sleep 5
+          done
+          exit 1
+
+      - name: Run LUMINARIA integration test
+        id: luminaria_test
+        continue-on-error: true
+        env:
+          LUMINARIA_TEMPLATE_URL: https://cms-git-feat-operational-catalog-v1-rodrigo-qrs-chile-s-projects.vercel.app/api/template/luminaria
+          EXPECTED_GIT_SHA: ${{ github.sha }}
+        run: node --test web/lib/executable_luminaria.integration.test.mjs 2>&1 | tee luminaria-test.log
+
+      - name: Upload diagnostic logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luminaria-validation-logs
+          path: |
+            luminaria-test.log
+            luminaria-endpoint.log
+
+      - name: Build web
+        working-directory: web
+        run: npm run build
+
+      - name: Fail if integration test failed
+        if: steps.endpoint.outcome == 'failure' || steps.luminaria_test.outcome == 'failure'
+        run: exit 1
