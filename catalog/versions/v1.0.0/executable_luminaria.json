@@ -1,0 +1,39 @@
+{
+  "aliases": {
+    "LUMINARIA": [
+      "LUMINARIA",
+      "LUMINARIA INALAMBRICA",
+      "LUMINARIA DE PEDESTAL",
+      "LUMINARIA PEDESTAL",
+      "TRIPODE",
+      "UMINARIA"
+    ]
+  },
+  "families": {
+    "LUMINARIA": {
+      "source_ref": "family-source:luminaria:v1",
+      "classifier": {
+        "strategy": "alias_exact",
+        "source_field": "extraction.tool_name"
+      },
+      "template_reference": {
+        "filename": "LUMINARIA_FINAL.xlsm",
+        "drive_file_id": "1hvXk282YSIhvcN6yzAm9U4SyDIjTassV",
+        "sha256": "d5e851a95d0d7e25ab124c900e928cad443b8422c1c0ed6b8547744e32a6ae1a",
+        "size_bytes": 47194
+      },
+      "render_mapping": {
+        "operations": [
+          {"op": "set_cell", "source": "extraction.marca", "target": "D7"},
+          {"op": "set_cell", "source": "extraction.modelo", "target": "D8"},
+          {"op": "set_cell", "source": "report.ot", "target": "I9"}
+        ]
+      },
+      "render_metadata": {
+        "sheet_index": 0,
+        "output_extension": "xlsx",
+        "mime_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      }
+    }
+  }
+}

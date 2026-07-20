@@ -1,0 +1,119 @@
+name: Validate executable catalog
+
+on:
+  push:
+    branches: [feat/operational-catalog-v1]
+  pull_request:
+    branches: [feat/operational-catalog-v1]
+  workflow_dispatch:
+
+env:
+  TESTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+
+jobs:
+  catalog-runtime:
+    name: catalog/runtime
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.families.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TESTED_SHA }}
+      - run: test "$(git rev-parse HEAD)" = "$TESTED_SHA"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm install --ignore-scripts
+      - name: Discover executable families
+        id: families
+        run: echo "matrix=$(node scripts/discover_executable_families.mjs)" >> "$GITHUB_OUTPUT"
+      - name: Run catalog and runtime tests
+        run: |
+          node --test \
+            catalog/compiler/*.test.js \
+            catalog/versions/v1.0.0/executable_*.test.js \
+            scripts/discover_executable_families.test.mjs \
+            web/lib/xls/*.test.mjs \
+            web/lib/versioned_renderer_runtime.test.mjs \
+            web/lib/catalog_reprocess_worker_runtime.test.mjs
+
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TESTED_SHA }}
+      - run: test "$(git rev-parse HEAD)" = "$TESTED_SHA"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - working-directory: web
+        run: npm install --ignore-scripts
+      - working-directory: web
+        run: npm run build
+
+  resolve-deployment:
+    name: Resolve tested Vercel deployment
+    runs-on: ubuntu-latest
+    outputs:
+      template_base_url: ${{ steps.deployment.outputs.template_base_url }}
+    steps:
+      - name: Resolve tested SHA deployment
+        id: deployment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for attempt in {1..30}; do
+            deployments=$(curl --fail --silent --show-error \
+              --header "Authorization: Bearer $GH_TOKEN" \
+              "https://api.github.com/repos/$GITHUB_REPOSITORY/deployments?sha=$TESTED_SHA")
+            statuses_url=$(jq --raw-output '.[0].statuses_url // empty' <<< "$deployments")
+            if [ -n "$statuses_url" ]; then
+              deployment=$(curl --fail --silent --show-error \
+                --header "Authorization: Bearer $GH_TOKEN" "$statuses_url")
+              state=$(jq --raw-output '.[0].state // empty' <<< "$deployment")
+              url=$(jq --raw-output '.[0].environment_url // empty' <<< "$deployment")
+              echo "Vercel deployment for $TESTED_SHA: ${state:-pending}"
+              if [ "$state" = "success" ] && [ -n "$url" ]; then
+                echo "template_base_url=$url" >> "$GITHUB_OUTPUT"
+                exit 0
+              fi
+              if [ "$state" = "failure" ] || [ "$state" = "error" ]; then exit 1; fi
+            fi
+            sleep 2
+          done
+          echo "Vercel deployment did not become ready for $TESTED_SHA"
+          exit 1
+
+  family-integration:
+    name: family-integration (${{ matrix.family }})
+    needs: [catalog-runtime, build, resolve-deployment]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.catalog-runtime.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TESTED_SHA }}
+      - run: test "$(git rev-parse HEAD)" = "$TESTED_SHA"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm install --ignore-scripts
+      - working-directory: web
+        run: npm install --ignore-scripts
+      - name: Run real-byte integration
+        env:
+          TEMPLATE_BASE_URL: ${{ needs.resolve-deployment.outputs.template_base_url }}
+        run: |
+          set -o pipefail
+          node --test "${{ matrix.test }}" 2>&1 | tee "family-${{ matrix.id }}.log"
+      - name: Upload family log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: executable-${{ matrix.id }}-integration-log
+          path: family-${{ matrix.id }}.log

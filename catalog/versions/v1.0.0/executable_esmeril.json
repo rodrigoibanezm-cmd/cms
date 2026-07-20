@@ -1,0 +1,38 @@
+{
+  "aliases": {
+    "ESMERIL": [
+      "ESMERIL",
+      "ESMERIL ELECTRICO",
+      "ESMERIL INALAMBRICO",
+      "PULIDOR",
+      "PULIDOR INALAMBRICO"
+    ]
+  },
+  "families": {
+    "ESMERIL": {
+      "source_ref": "family-source:esmeril:v1",
+      "classifier": {
+        "strategy": "alias_exact",
+        "source_field": "extraction.tool_name"
+      },
+      "template_reference": {
+        "filename": "ESMERIL_FINAL.xlsx",
+        "drive_file_id": "1reHRuTAXxVC4-wy-4uw-z0BUuuQaxrzG",
+        "sha256": "1da08a7f4a6f0a868efa9135db7f48b8c214fc9de4b934b7256fb1da81b57778",
+        "size_bytes": 34461
+      },
+      "render_mapping": {
+        "operations": [
+          {"op": "set_cell", "source": "extraction.marca", "target": "D8"},
+          {"op": "set_cell", "source": "extraction.modelo", "target": "D9"},
+          {"op": "set_cell", "source": "report.ot", "target": "I11"}
+        ]
+      },
+      "render_metadata": {
+        "sheet_index": 0,
+        "output_extension": "xlsx",
+        "mime_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      }
+    }
+  }
+}

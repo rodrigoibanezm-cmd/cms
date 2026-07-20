@@ -1,0 +1,27 @@
+{
+  "version": "1.0.0",
+  "date": "2026-07-20",
+  "source_commit": "82758c35ff838ed0fcb1591609f2407976c95a4a",
+  "schema_version": "1.0.0",
+  "classifier_version": "stage0-final",
+  "hash_algorithm": "sha256",
+  "canonicalization": "sorted relative_path + NUL + sha256 + LF; manifest.json excluded",
+  "hashes": {
+    "aliases.json": "726966989f12bc1e52ac1c55e6d0ef97a113de50d77396e0708d9d5592764b0b",
+    "classifier.js": "7f298f660fb1570b99fcd4ae12c6921866ec9a30cd0de40cfecf50a19030cffe",
+    "classifier_catalog_base.json": "327b018a1bce8415e6aa8cf3cf5bfa12262ce1374e2577d1134f899908549589",
+    "evidence/bandeja-de-drenado.md": "b3ea3db16888fbd9ac0d1a54e1e9cdf2daba8418aa78ad602700cd006cfcceb1",
+    "evidence/barredora.md": "43ebec290eb28dd724c4bacfa0e6c77a8400d5cb9f18f88244f11e175230abdf",
+    "evidence/bomba-de-vacio.md": "fe0fdfaadd0e819fc99128e692d907427ede5c151a5d50266b50aa72300b2f6f",
+    "evidence/dializadora.md": "04ab5fdfb8c3d3c7fb619e86b6828e42534f0ff41f2c5be3a0dd556980aacc18",
+    "evidence/multi-tool.md": "2f68cedd072f668a31498e602c21bb5762edf734668a056c7142c263b5484d8a",
+    "evidence/rad-torque.md": "e95481745c94d1a4eb6109dc6a855895937cdaa956d02d5e309fc8c2fdba73d4",
+    "evidence/stage0-method.md": "91ac1f6b439f91d2e1a3b5cf14e0aca34d9559d8360df09695e9e3d484a651d6",
+    "families.json": "726966989f12bc1e52ac1c55e6d0ef97a113de50d77396e0708d9d5592764b0b",
+    "families_stage0_final.json": "413d0a4655a20e3241095e1cc3510937113039077e6a4c2e1a8e919ed07e1ca9",
+    "inventory.json": "0e5a099bcc6c0f219345bb2ac6c25c29cb6e49fda44c86f85c716a725f7708e0",
+    "metadata.json": "f4d70d1fcf5a1a5fa5b91ba88bddc6104e524d782f11f418db8e1c70a01087dd",
+    "normalize.js": "2e907d10323cccb0d42b8b5b00e076d05a7f959a950bc719ba04f85e0050b520"
+  },
+  "canonical_hash": "67e7619e3c6ee67d39be09a56ae452f99b86efb34f901812cb671dd8c67b92a1"
+}

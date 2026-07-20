@@ -6,6 +6,7 @@ import {
   findFileByName,
   uploadDriveFile,
 } from './xls/google_drive.js';
+import { generateFromCertifiedContract } from './xls/certified_generator.js';
 import { fillHeader, fillHeaderByMap } from './xls/header_fill.js';
 import { fillInspection } from './xls/inspection_fill.js';
 import { fillDisposition, fillDispositionByMap } from './xls/status_fill.js';
@@ -49,7 +50,14 @@ export async function publishGeneratedXls({ xls, extraction }) {
   return { ...xls, drive_file_id: uploaded.id, excel_url: uploaded.webViewLink };
 }
 
-export async function generateFinalXls({ extraction, photos, publish = true }) {
+export async function generateFinalXls({ extraction, photos, publish = true, renderContract }) {
+  if (renderContract) {
+    const xls = await generateFromCertifiedContract({
+      extraction, report: extraction.report || {}, renderContract,
+    });
+    return publish ? publishGeneratedXls({ xls, extraction }) : xls;
+  }
+
   const templateFolderId = env('GOOGLE_DRIVE_TEMPLATES_FOLDER_ID') || env('BASES_FOLDER_ID');
   if (!templateFolderId) throw new Error('Falta carpeta Drive de plantillas');
   if (!extraction.template_filename) throw new Error('Extracción sin template_filename');
