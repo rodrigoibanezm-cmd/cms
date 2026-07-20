@@ -11,45 +11,57 @@ env:
   TESTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
 
 jobs:
-  validate:
+  catalog-runtime:
+    name: catalog/runtime
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.families.outputs.matrix }}
     steps:
-      - name: Checkout tested SHA
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           ref: ${{ env.TESTED_SHA }}
-
-      - name: Show tested SHA
-        run: test "$(git rev-parse HEAD)" = "$TESTED_SHA"
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - run: test "$(git rev-parse HEAD)" = "$TESTED_SHA"
+      - uses: actions/setup-node@v4
         with:
           node-version: 24
-
-      - name: Install root dependencies
-        run: npm install --ignore-scripts
-
-      - name: Install web dependencies
-        working-directory: web
-        run: npm install --ignore-scripts
-
+      - run: npm install --ignore-scripts
+      - name: Discover executable families
+        id: families
+        run: echo "matrix=$(node scripts/discover_executable_families.mjs)" >> "$GITHUB_OUTPUT"
       - name: Run catalog and runtime tests
         run: |
           node --test \
             catalog/compiler/*.test.js \
-            catalog/versions/v1.0.0/executable_luminaria.test.js \
-            catalog/versions/v1.0.0/executable_esmeril.test.js \
-            catalog/versions/v1.0.0/executable_torque_manual.test.js \
+            catalog/versions/v1.0.0/executable_*.test.js \
+            scripts/discover_executable_families.test.mjs \
             web/lib/xls/*.test.mjs \
             web/lib/versioned_renderer_runtime.test.mjs \
             web/lib/catalog_reprocess_worker_runtime.test.mjs
 
-      - name: Build web
-        working-directory: web
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TESTED_SHA }}
+      - run: test "$(git rev-parse HEAD)" = "$TESTED_SHA"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - working-directory: web
+        run: npm install --ignore-scripts
+      - working-directory: web
         run: npm run build
 
-      - name: Resolve tested Vercel deployment
+  resolve-deployment:
+    name: Resolve tested Vercel deployment
+    runs-on: ubuntu-latest
+    outputs:
+      template_base_url: ${{ steps.deployment.outputs.template_base_url }}
+    steps:
+      - name: Resolve tested SHA deployment
+        id: deployment
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -63,60 +75,45 @@ jobs:
                 --header "Authorization: Bearer $GH_TOKEN" "$statuses_url")
               state=$(jq --raw-output '.[0].state // empty' <<< "$deployment")
               url=$(jq --raw-output '.[0].environment_url // empty' <<< "$deployment")
-              echo "Vercel deployment state: ${state:-pending}"
+              echo "Vercel deployment for $TESTED_SHA: ${state:-pending}"
               if [ "$state" = "success" ] && [ -n "$url" ]; then
-                echo "TEMPLATE_BASE_URL=$url" >> "$GITHUB_ENV"
-                echo "Testing deployment: $url"
+                echo "template_base_url=$url" >> "$GITHUB_OUTPUT"
                 exit 0
               fi
-              if [ "$state" = "failure" ] || [ "$state" = "error" ]; then
-                exit 1
-              fi
+              if [ "$state" = "failure" ] || [ "$state" = "error" ]; then exit 1; fi
             fi
             sleep 2
           done
           echo "Vercel deployment did not become ready for $TESTED_SHA"
           exit 1
 
-      - name: Diagnose deployed template endpoints
+  family-integration:
+    name: family-integration (${{ matrix.family }})
+    needs: [catalog-runtime, build, resolve-deployment]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.catalog-runtime.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TESTED_SHA }}
+      - run: test "$(git rev-parse HEAD)" = "$TESTED_SHA"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm install --ignore-scripts
+      - working-directory: web
+        run: npm install --ignore-scripts
+      - name: Run real-byte integration
+        env:
+          TEMPLATE_BASE_URL: ${{ needs.resolve-deployment.outputs.template_base_url }}
         run: |
-          ps -ef
-          for family in luminaria esmeril; do
-            url="$TEMPLATE_BASE_URL/api/template/$family"
-            status=$(curl --silent --show-error --output "/tmp/$family.body" --write-out '%{http_code}' "$url")
-            echo "$family HTTP $status"
-            echo "$family bytes $(wc -c < "/tmp/$family.body")"
-            file "/tmp/$family.body"
-            if unzip -t "/tmp/$family.body" >/tmp/$family.zip-test 2>&1; then
-              echo "$family ZIP valid"
-              unzip -l "/tmp/$family.body" | grep -E "xl/(workbook|worksheets|_rels)" | head -30
-              if [ "$family" = "esmeril" ]; then
-                echo "ESMERIL workbook.xml:"
-                unzip -p "/tmp/$family.body" xl/workbook.xml
-                echo
-              fi
-            else
-              echo "$family ZIP invalid"
-              cat /tmp/$family.zip-test
-            fi
-            if [ "$status" != "200" ]; then
-              echo "$family response body:"
-              head -c 2000 "/tmp/$family.body"
-              exit 1
-            fi
-          done
-
-      - name: Run LUMINARIA real-byte integration test
-        env:
-          LUMINARIA_TEMPLATE_URL: ${{ env.TEMPLATE_BASE_URL }}/api/template/luminaria
-        run: node --test web/lib/executable_luminaria.integration.test.mjs
-
-      - name: Run ESMERIL real-byte integration test
-        env:
-          ESMERIL_TEMPLATE_URL: ${{ env.TEMPLATE_BASE_URL }}/api/template/esmeril
-        run: node --test web/lib/executable_esmeril.integration.test.mjs
-
-      - name: Run TORQUE_MANUAL real-byte integration test
-        env:
-          TORQUE_MANUAL_TEMPLATE_URL: ${{ env.TEMPLATE_BASE_URL }}/api/template/torque-manual
-        run: node --test web/lib/executable_torque_manual.integration.test.mjs
+          set -o pipefail
+          node --test "${{ matrix.test }}" 2>&1 | tee "family-${{ matrix.id }}.log"
+      - name: Upload family log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: executable-${{ matrix.id }}-integration-log
+          path: family-${{ matrix.id }}.log
