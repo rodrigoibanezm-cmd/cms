@@ -53,6 +53,14 @@ jobs:
             status=$(curl --silent --show-error --output "/tmp/$family.body" --write-out '%{http_code}' "$url")
             echo "$family HTTP $status"
             echo "$family bytes $(wc -c < "/tmp/$family.body")"
+            file "/tmp/$family.body"
+            if unzip -t "/tmp/$family.body" >/tmp/$family.zip-test 2>&1; then
+              echo "$family ZIP valid"
+              unzip -l "/tmp/$family.body" | grep -E "xl/(workbook|worksheets|_rels)" | head -30
+            else
+              echo "$family ZIP invalid"
+              cat /tmp/$family.zip-test
+            fi
             if [ "$status" != "200" ]; then
               echo "$family response body:"
               head -c 2000 "/tmp/$family.body"
