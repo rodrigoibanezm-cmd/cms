@@ -14,6 +14,7 @@ auditoría IA
 workflow admin/secretaria
 PDF final desde XLS aprobado
 ```
+
 ## Fuera de esta repo
 ```txt
 ERP
@@ -22,6 +23,7 @@ gestión completa de usuarios
 firma documental final externa
 workflow operativo externo a la revisión admin
 ```
+
 ## Principio central
 ```txt
 El técnico carga evidencia.
@@ -31,6 +33,7 @@ Drive guarda archivos.
 El admin asigna.
 La secretaria revisa y aprueba.
 ```
+
 ## Estado actual
 ```txt
 runtime Next.js
@@ -45,15 +48,28 @@ Confianza IA disponible como KPI V1
 dashboard operativo V1
 Config V1 operativa en /config
 ```
-## Diseño visual
+
+## Catálogo de plantillas v2
 ```txt
-docs/ui-design-system.md
+Reportes reales
+→ inventario
+→ inferencia determinística de familias
+→ CONFIRMED / REVIEW / UNMAPPED
+→ catálogo validado
+→ renderer
 ```
+La metodología vigente está en `docs/template-inventory/README.md`.
+La documentación y el renderer anteriores se mantienen; Stage 0 convive con producción.
+
+## Diseño visual
+`docs/ui-design-system.md`
+
 ```txt
 UI sobria, técnica, ejecutiva y operacional.
 Vista Operación como bandeja de trabajo.
 Lenguaje visual transversal a Indicadores, Operación, OT y Configuración.
 ```
+
 ## Regla de trabajo
 ```txt
 1 tarea = 1 chat.
@@ -61,16 +77,17 @@ Lenguaje visual transversal a Indicadores, Operación, OT y Configuración.
 Al cerrar una tarea se documenta.
 El siguiente chat parte leyendo README.md y docs/next-step.md.
 ```
+
 ## Regla de tamaño
 ```txt
 Ningún archivo debe superar 100 líneas.
 Si crece, se refactoriza.
 1 doc = 1 responsabilidad.
 ```
+
 ## Documentación
-```txt
-docs/README.md
-```
+Router general: `docs/README.md`
+
 Ruta recomendada:
 ```txt
 1. README.md
@@ -78,18 +95,7 @@ Ruta recomendada:
 3. docs/current-state.md
 4. docs/next-step.md
 ```
-Documentos principales:
-```txt
-docs/current-state.md
-docs/principles.md
-docs/workflow.md
-docs/secretary-flow.md
-docs/data-model.md
-docs/admin-review.md
-docs/quality-metrics.md
-docs/ui-design-system.md
-docs/next-step.md
-```
+
 ## Invariante
 ```txt
 No documentar visión como estado real.
