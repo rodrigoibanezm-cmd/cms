@@ -57,6 +57,11 @@ jobs:
             if unzip -t "/tmp/$family.body" >/tmp/$family.zip-test 2>&1; then
               echo "$family ZIP valid"
               unzip -l "/tmp/$family.body" | grep -E "xl/(workbook|worksheets|_rels)" | head -30
+              if [ "$family" = "esmeril" ]; then
+                echo "ESMERIL workbook.xml:"
+                unzip -p "/tmp/$family.body" xl/workbook.xml
+                echo
+              fi
             else
               echo "$family ZIP invalid"
               cat /tmp/$family.zip-test
