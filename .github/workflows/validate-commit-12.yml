@@ -1,4 +1,4 @@
-name: Validate commit 12
+name: Validate executable catalog
 
 on:
   push:
@@ -18,7 +18,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
 
       - name: Install root dependencies
         run: npm install --ignore-scripts
@@ -27,42 +27,26 @@ jobs:
         working-directory: web
         run: npm install --ignore-scripts
 
-      - name: Run catalog tests
-        run: node --test catalog/compiler/*.test.js catalog/versions/v1.0.0/executable_luminaria.test.js
-
-      - name: Wait for deployed endpoint
-        id: endpoint
-        continue-on-error: true
-        env:
-          TEMPLATE_URL: https://cms-n744dp3d2-rodrigo-qrs-chile-s-projects.vercel.app/api/template/luminaria
+      - name: Run catalog and runtime tests
         run: |
-          for attempt in {1..60}; do
-            curl --silent --dump-header luminaria-endpoint.log --output /dev/null "$TEMPLATE_URL" || true
-            grep --ignore-case --quiet "HTTP/.* 200" luminaria-endpoint.log && exit 0
-            sleep 5
-          done
-          exit 1
+          node --test \
+            catalog/compiler/*.test.js \
+            catalog/versions/v1.0.0/executable_luminaria.test.js \
+            catalog/versions/v1.0.0/executable_esmeril.test.js \
+            web/lib/xls/*.test.mjs \
+            web/lib/versioned_renderer_runtime.test.mjs \
+            web/lib/catalog_reprocess_worker_runtime.test.mjs
 
-      - name: Run LUMINARIA integration test
-        id: luminaria_test
-        continue-on-error: true
+      - name: Run LUMINARIA real-byte integration test
         env:
-          LUMINARIA_TEMPLATE_URL: https://cms-n744dp3d2-rodrigo-qrs-chile-s-projects.vercel.app/api/template/luminaria
-        run: node --test web/lib/executable_luminaria.integration.test.mjs 2>&1 | tee luminaria-test.log
+          LUMINARIA_TEMPLATE_URL: https://cms-git-feat-operational-catalog-v1-rodrigo-qrs-chile-s-projects.vercel.app/api/template/luminaria
+        run: node --test web/lib/executable_luminaria.integration.test.mjs
 
-      - name: Upload diagnostic logs
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: luminaria-validation-logs
-          path: |
-            luminaria-test.log
-            luminaria-endpoint.log
+      - name: Run ESMERIL real-byte integration test
+        env:
+          ESMERIL_TEMPLATE_URL: https://cms-git-feat-operational-catalog-v1-rodrigo-qrs-chile-s-projects.vercel.app/api/template/esmeril
+        run: node --test web/lib/executable_esmeril.integration.test.mjs
 
       - name: Build web
         working-directory: web
         run: npm run build
-
-      - name: Fail if integration test failed
-        if: steps.endpoint.outcome == 'failure' || steps.luminaria_test.outcome == 'failure'
-        run: exit 1
