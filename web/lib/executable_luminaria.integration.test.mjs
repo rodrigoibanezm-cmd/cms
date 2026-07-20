@@ -8,11 +8,12 @@ import { selectCertifiedFamily } from './certified_family_selector.mjs';
 const require = createRequire(import.meta.url);
 const catalog = require('../../catalog/versions/v1.0.0/executable_luminaria.json');
 const fixture = require('../../catalog/versions/v1.0.0/fixtures/luminaria_real_anonymized.json');
-const DRIVE_URL = (id) => `https://drive.usercontent.google.com/download?id=${id}&export=download&confirm=t`;
+const TEMPLATE_URL = process.env.LUMINARIA_TEMPLATE_URL
+  || 'https://cms-git-feat-operational-catalog-v1-rodrigo-qrs-chile-s-projects.vercel.app/api/template/luminaria';
 
-async function downloadDriveFile(id) {
-  const response = await fetch(DRIVE_URL(id));
-  if (!response.ok) throw new Error(`Drive download failed: ${response.status}`);
+async function downloadDriveFile() {
+  const response = await fetch(TEMPLATE_URL);
+  if (!response.ok) throw new Error(`Template endpoint failed: ${response.status}`);
   return Buffer.from(await response.arrayBuffer());
 }
 
