@@ -50,3 +50,8 @@ test('maps barredora reports to their own family', () => {
   expect('BARREDORA KARCHER', 'BARREDORA', 'CONFIRMED')
   expect('BARREDORA VIPER', 'BARREDORA', 'CONFIRMED')
 })
+
+test('maps dializadora reports to their own family', () => {
+  expect('DIALIZADORA ELECTROHIDRAULICA', 'DIALIZADORA', 'CONFIRMED')
+  expect('DIALIZADORA ELEC SCHROEDER', 'DIALIZADORA', 'CONFIRMED')
+})
