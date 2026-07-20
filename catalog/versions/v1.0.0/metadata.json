@@ -10,5 +10,9 @@
     "UNMAPPED": 13,
     "REVIEW": 0
   },
+  "historical_artifacts": {
+    "families_json": "Material historical copy. It contains the Stage 0 aliases root and is intentionally identical to aliases.json.",
+    "aliases_json": "Material historical copy retained as the explicit alias artifact. It is intentionally identical to families.json."
+  },
   "immutable": true
 }
