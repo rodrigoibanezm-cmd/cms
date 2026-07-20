@@ -1,101 +1,102 @@
 # CMS
+
 Digitalización auditada de informes técnicos Covaclean.
 
 ## Responsabilidad
-```txt
-front técnico de carga
-api process-report
-pipeline de extracción IA
-generación XLS determinística
-subida de archivos a Drive
-persistencia Neon
-admin de revisión
-auditoría IA
-workflow admin/secretaria
-PDF final desde XLS aprobado
+
+```text
+carga técnica
+extracción y auditoría IA
+XLS determinístico
+persistencia Neon y Drive
+revisión administrativa
+PDF final
+catálogo operativo de familias
 ```
-## Fuera de esta repo
-```txt
-ERP
-BI histórico avanzado
-gestión completa de usuarios
-firma documental final externa
-workflow operativo externo a la revisión admin
-```
+
 ## Principio central
-```txt
+
+```text
 El técnico carga evidencia.
 La IA extrae y audita.
-Neon es fuente de verdad.
+Neon es fuente de verdad operacional.
 Drive guarda archivos.
-El admin asigna.
-La secretaria revisa y aprueba.
 ```
+
+Para el catálogo:
+
+```text
+El catálogo es un artefacto derivado.
+La fuente de verdad son las decisiones de catálogo.
+```
+
+## Catálogo de familias
+
+Stage 0 quedó congelado con:
+
+```text
+557 informes
+544 CONFIRMED
+13 UNMAPPED
+0 REVIEW
+snapshot v1.0.0
+```
+
+La operación futura usa solo:
+
+```text
+CONFIRMED
+PENDING_CATALOG
+```
+
+Una administrativa registra una decisión. El sistema valida, compila una versión, audita y reprocesa exclusivamente la OT afectada.
+
+## Router documental
+
+```text
+docs/01-stage-0-discovery.md
+→ histórico congelado de descubrimiento
+
+docs/02-operational-catalog.md
+→ especificación vigente del catálogo
+
+TEMPLATE_ARCHITECTURE.md
+→ arquitectura determinística de plantillas
+
+docs/README.md
+→ documentación general del sistema
+```
+
+## Infraestructura del catálogo
+
+```text
+catalog/versions/
+tools/operational_catalog/
+web/db/migrations/20260720_operational_catalog.sql
+```
+
+Artefactos compilados como `families.json` no se editan manualmente.
+
 ## Estado actual
-```txt
+
+```text
 runtime Next.js
 pipeline IA conectado
-XLS generado desde templates Drive
-reports/files/events guardados en Neon
-admin visual operativo
-asignación y cola de secretaria operativas
-aprobación secretaria operativa
-PDF final idempotente operativo
-Confianza IA disponible como KPI V1
-dashboard operativo V1
-Config V1 operativa en /config
+XLS desde templates Drive
+reports/files/events en Neon
+admin, cola y aprobación operativos
+PDF final idempotente
+dashboard y Config V1
+infraestructura inicial del catálogo operativo
 ```
-## Catálogo de plantillas v2
-```txt
-Reportes reales
-→ inventario
-→ inferencia determinística de familias
-→ CONFIRMED / REVIEW / UNMAPPED
-→ revisión de evidencia
-→ evolución del catálogo
-```
-Documentación vigente: `TEMPLATE_INVENTORY.md`
 
-Stage 0 convive con producción. No reemplaza todavía el renderer ni compara sistemáticamente toda la cobertura contra maestros `_FINAL`.
+## Reglas de trabajo
 
-## Diseño visual
-```txt
-docs/ui-design-system.md
-```
-```txt
-UI sobria, técnica, ejecutiva y operacional.
-Vista Operación como bandeja de trabajo.
-Lenguaje visual transversal a Indicadores, Operación, OT y Configuración.
-```
-## Regla de trabajo
-```txt
-1 tarea = 1 chat.
-1 chat auditor por tarea.
-Al cerrar una tarea se documenta.
-El siguiente chat parte leyendo README.md y docs/next-step.md.
-```
-## Regla de tamaño
-```txt
-Ningún archivo debe superar 100 líneas.
-Si crece, se refactoriza.
-1 doc = 1 responsabilidad.
-```
-## Documentación
-```txt
-TEMPLATE_INVENTORY.md
-docs/README.md
-```
-Ruta recomendada:
-```txt
-1. README.md
-2. TEMPLATE_INVENTORY.md
-3. docs/README.md
-4. docs/current-state.md
-5. docs/next-step.md
-```
-## Invariante
-```txt
-No documentar visión como estado real.
-No mezclar deuda técnica con pendientes de diseño.
-No agregar casuística si existe una regla general.
+```text
+1 tarea = 1 chat
+al cerrar una tarea se documenta
+ningún archivo debe superar 100 líneas
+1 archivo = 1 responsabilidad
+no documentar visión como estado real
+no agregar casuística si existe una regla general
 ```
