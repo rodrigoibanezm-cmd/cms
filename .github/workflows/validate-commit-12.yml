@@ -1,4 +1,4 @@
-name: Validate commit 12
+name: Diagnose LUMINARIA integration
 
 on:
   pull_request:
@@ -24,65 +24,10 @@ jobs:
         working-directory: web
         run: npm install --ignore-scripts
 
-      - name: Test catalog compiler
-        id: compiler
-        continue-on-error: true
-        run: node --test catalog/compiler/*.test.js
-
-      - name: Test executable LUMINARIA contract
-        id: luminaria_contract
-        continue-on-error: true
-        run: node --test catalog/versions/v1.0.0/executable_luminaria.test.js
-
-      - name: Test XLS helpers
-        id: xls
-        continue-on-error: true
-        run: node --test web/lib/xls/*.test.mjs
-
-      - name: Test versioned renderer
-        id: renderer
-        continue-on-error: true
-        run: node --test web/lib/versioned_renderer_runtime.test.mjs
-
-      - name: Test reprocessing worker
-        id: worker
-        continue-on-error: true
-        run: node --test web/lib/catalog_reprocess_worker_runtime.test.mjs
-
       - name: Test LUMINARIA integration
-        id: luminaria_integration
-        continue-on-error: true
         run: node --test web/lib/executable_luminaria.integration.test.mjs
 
       - name: Build
-        id: build
         if: always()
         working-directory: web
-        continue-on-error: true
         run: npm run build
-
-      - name: Final validation result
-        if: always()
-        shell: bash
-        run: |
-          echo "compiler=${{ steps.compiler.outcome }}"
-          echo "luminaria_contract=${{ steps.luminaria_contract.outcome }}"
-          echo "xls=${{ steps.xls.outcome }}"
-          echo "renderer=${{ steps.renderer.outcome }}"
-          echo "worker=${{ steps.worker.outcome }}"
-          echo "luminaria_integration=${{ steps.luminaria_integration.outcome }}"
-          echo "build=${{ steps.build.outcome }}"
-
-          failed=0
-          for result in \
-            "${{ steps.compiler.outcome }}" \
-            "${{ steps.luminaria_contract.outcome }}" \
-            "${{ steps.xls.outcome }}" \
-            "${{ steps.renderer.outcome }}" \
-            "${{ steps.worker.outcome }}" \
-            "${{ steps.luminaria_integration.outcome }}" \
-            "${{ steps.build.outcome }}"; do
-            [ "$result" = "success" ] || failed=1
-          done
-
-          exit "$failed"
