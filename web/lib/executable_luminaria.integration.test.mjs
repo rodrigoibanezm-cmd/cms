@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import ExcelJS from 'exceljs';
 import { createRequire } from 'module';
 import { createCertifiedGenerator } from './xls/certified_runtime.mjs';
@@ -13,8 +14,16 @@ const TEMPLATE_URL = process.env.LUMINARIA_TEMPLATE_URL
 
 async function downloadDriveFile() {
   const response = await fetch(TEMPLATE_URL);
-  if (!response.ok) throw new Error(`Template endpoint failed: ${response.status}`);
-  return Buffer.from(await response.arrayBuffer());
+  assert.equal(response.status, 200, `Template endpoint failed: ${response.status}`);
+  assert.doesNotMatch(response.headers.get('content-type') || '', /text\/html/i);
+  assert.match(response.headers.get('content-disposition') || '', /LUMINARIA_FINAL\.xlsm/);
+  if (process.env.EXPECTED_GIT_SHA) {
+    assert.equal(response.headers.get('x-template-source-sha'), process.env.EXPECTED_GIT_SHA);
+  }
+  const buffer = Buffer.from(await response.arrayBuffer());
+  assert.equal(buffer.length, 47194);
+  assert.equal(createHash('sha256').update(buffer).digest('hex'), catalog.families.LUMINARIA.template_reference.sha256);
+  return buffer;
 }
 
 async function loadTemplateWorkbook(buffer) {
