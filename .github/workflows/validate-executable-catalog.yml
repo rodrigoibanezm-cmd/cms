@@ -7,15 +7,20 @@ on:
     branches: [feat/operational-catalog-v1]
   workflow_dispatch:
 
+env:
+  TESTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout tested SHA
         uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TESTED_SHA }}
 
       - name: Show tested SHA
-        run: test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+        run: test "$(git rev-parse HEAD)" = "$TESTED_SHA"
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -51,7 +56,7 @@ jobs:
           for attempt in {1..30}; do
             deployments=$(curl --fail --silent --show-error \
               --header "Authorization: Bearer $GH_TOKEN" \
-              "https://api.github.com/repos/$GITHUB_REPOSITORY/deployments?sha=$GITHUB_SHA")
+              "https://api.github.com/repos/$GITHUB_REPOSITORY/deployments?sha=$TESTED_SHA")
             statuses_url=$(jq --raw-output '.[0].statuses_url // empty' <<< "$deployments")
             if [ -n "$statuses_url" ]; then
               deployment=$(curl --fail --silent --show-error \
@@ -70,7 +75,7 @@ jobs:
             fi
             sleep 2
           done
-          echo "Vercel deployment did not become ready for $GITHUB_SHA"
+          echo "Vercel deployment did not become ready for $TESTED_SHA"
           exit 1
 
       - name: Diagnose deployed template endpoints
