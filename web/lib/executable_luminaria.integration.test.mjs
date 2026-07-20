@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import ExcelJS from 'exceljs';
 import { createRequire } from 'module';
 import { createCertifiedGenerator } from './xls/certified_runtime.mjs';
-import { selectCertifiedFamily } from './versioned_report_renderer.js';
+import { selectCertifiedFamily } from './certified_family_selector.mjs';
 
 const require = createRequire(import.meta.url);
 const catalog = require('../../catalog/versions/v1.0.0/executable_luminaria.json');
