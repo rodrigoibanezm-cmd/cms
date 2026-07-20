@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { CLAIM_SQL, createCatalogReprocessWorker } from './catalog_reprocess_worker_runtime.mjs';
 
-function poolWithClaim(request) {
+function poolWithClaim(request, rowCounts = []) {
   const calls = [];
   const client = {
     query: async (sql) => {
@@ -15,8 +15,15 @@ function poolWithClaim(request) {
   return {
     calls,
     connect: async () => client,
-    query: async (sql, params) => { calls.push([sql, params]); return { rows: [] }; },
+    query: async (sql, params) => {
+      calls.push([sql, params]);
+      return { rows: [], rowCount: rowCounts.length ? rowCounts.shift() : 1 };
+    },
   };
+}
+
+function request(id = 'request-1') {
+  return { id, report_id: 'report-1', catalog_version_id: 'catalog-1' };
 }
 
 test('claim es atómico y evita filas ya bloqueadas', () => {
@@ -33,8 +40,7 @@ test('retorna null cuando no hay solicitudes pendientes', async () => {
 });
 
 test('usa exclusivamente los IDs almacenados y completa', async () => {
-  const request = { id: 'request-1', report_id: 'report-1', catalog_version_id: 'catalog-1' };
-  const pool = poolWithClaim(request);
+  const pool = poolWithClaim(request());
   let received;
   const processNext = createCatalogReprocessWorker({
     pool,
@@ -47,7 +53,7 @@ test('usa exclusivamente los IDs almacenados y completa', async () => {
 });
 
 test('persiste failed antes de propagar el error', async () => {
-  const pool = poolWithClaim({ id: 'request-2', report_id: 'report-2', catalog_version_id: 'catalog-2' });
+  const pool = poolWithClaim(request('request-2'));
   const processNext = createCatalogReprocessWorker({
     pool,
     renderReport: async () => { throw new Error('render failed'); },
@@ -56,4 +62,26 @@ test('persiste failed antes de propagar el error', async () => {
   const failure = pool.calls.at(-1);
   assert.match(failure[0], /status='failed'/);
   assert.match(failure[1][1], /render failed/);
+});
+
+test('completed con rowCount cero falla', async () => {
+  const pool = poolWithClaim(request('request-3'), [0]);
+  const processNext = createCatalogReprocessWorker({
+    pool,
+    renderReport: async () => ({ family: 'LUMINARIA' }),
+  });
+  await assert.rejects(() => processNext(), /transition to completed failed/);
+});
+
+test('failed con rowCount cero preserva el error original como causa', async () => {
+  const pool = poolWithClaim(request('request-4'), [0]);
+  const processNext = createCatalogReprocessWorker({
+    pool,
+    renderReport: async () => { throw new Error('render failed'); },
+  });
+  await assert.rejects(() => processNext(), (error) => {
+    assert.match(error.message, /transition to failed failed/);
+    assert.equal(error.cause?.message, 'render failed');
+    return true;
+  });
 });
