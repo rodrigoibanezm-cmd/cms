@@ -1,0 +1,35 @@
+{
+  "aliases": {
+    "TORQUE_MANUAL": [
+      "TORQUE MANUAL",
+      "TORQUIMETRO MANUAL"
+    ]
+  },
+  "families": {
+    "TORQUE_MANUAL": {
+      "source_ref": "family-source:torque-manual:v1",
+      "classifier": {
+        "strategy": "alias_exact",
+        "source_field": "extraction.tool_name"
+      },
+      "template_reference": {
+        "filename": "TORQUE_MANUAL_FINAL.xlsx",
+        "drive_file_id": "1TV_3hb7v5pwkjGgcXaF_k74uUA6o6uoO",
+        "sha256": "94673825c7f0b1b36e4bf9d840fc8c6bedf67ac770f43ec6094b9f4575c15bd0",
+        "size_bytes": 121247
+      },
+      "render_mapping": {
+        "operations": [
+          {"op": "set_cell", "source": "extraction.marca", "target": "D7"},
+          {"op": "set_cell", "source": "extraction.modelo", "target": "D8"},
+          {"op": "set_cell", "source": "report.ot", "target": "I10"}
+        ]
+      },
+      "render_metadata": {
+        "sheet_index": 0,
+        "output_extension": "xlsx",
+        "mime_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      }
+    }
+  }
+}

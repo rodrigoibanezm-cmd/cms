@@ -1,0 +1,19 @@
+{
+  "report": {
+    "id": "33333333-3333-4333-8333-333333333333",
+    "ot": "TM-ANON-001",
+    "tenant_id": "tenant-anon"
+  },
+  "extraction": {
+    "tool_name": "TORQUE MANUAL",
+    "tipo_herramienta": "TORQUE MANUAL",
+    "marca": "PROTO",
+    "modelo": "6012C",
+    "estado": "MANTENCION"
+  },
+  "provenance": {
+    "kind": "anonymized_real_report",
+    "family": "TORQUE_MANUAL",
+    "personal_data_removed": true
+  }
+}
