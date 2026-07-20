@@ -11,9 +11,10 @@ test('matches aliases as complete word sequences', () => {
   assert.equal(containsWords('E-RAD LLAVE TORQUE', 'E RAD'), true)
 })
 
-test('keeps RAD torque names in review', () => {
-  expect('LLAVE TORQUE RAD', 'E_RAD|LLAVE_DE_TORQUE_O_IMPACTO', 'REVIEW')
-  expect('LLAVE DE TORQUE RAD', 'E_RAD|LLAVE_DE_TORQUE_O_IMPACTO', 'REVIEW')
+test('resolves reviewed RAD torque names', () => {
+  expect('LLAVE DE TORQUE RAD MOD E-RAD BLU3000', 'E_RAD', 'CONFIRMED')
+  expect('LLAVE TORQUE RAD 50DX', 'LLAVE_DE_TORQUE_O_IMPACTO', 'CONFIRMED')
+  expect('LLAVE TORQUE RAD B-RAD 1500-2', 'LLAVE_DE_TORQUE_O_IMPACTO', 'CONFIRMED')
 })
 
 test('does not infer E-RAD from transductor context', () => {
