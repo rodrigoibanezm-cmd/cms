@@ -57,15 +57,16 @@ function output(artifact) {
   const serialized = stringify(normalized)
   return Object.freeze({ artifact: deepFreeze(normalized), serialized, hash: createHash('sha256').update(serialized).digest('hex') })
 }
-function compileCatalog(snapshot, decisions) {
+function orderedDecisions(decisions) {
   if (!Array.isArray(decisions)) throw new Error('decisions debe ser array')
+  return decisions.map(validateDecision).sort((a, b) => stringify(a).localeCompare(stringify(b)))
+}
+function compileCatalog(snapshot, decisions) {
   const aliases = normalizeBase(snapshot)
-  const ordered = decisions.map(validateDecision).sort((a, b) => stringify(a).localeCompare(stringify(b)))
-  for (const decision of ordered) applyDecision(aliases, decision)
+  for (const decision of orderedDecisions(decisions)) applyDecision(aliases, decision)
   return output({ aliases })
 }
-function compileExecutableCatalog(snapshot, decisions) {
-  const aliases = compileCatalog(snapshot, decisions).artifact.aliases
+function familySources(snapshot) {
   if (!snapshot.families || Array.isArray(snapshot.families) || typeof snapshot.families !== 'object') throw new Error('snapshot.families inválido')
   const sources = {}
   for (const [rawFamily, source] of Object.entries(snapshot.families)) {
@@ -73,12 +74,31 @@ function compileExecutableCatalog(snapshot, decisions) {
     if (sources[family]) throw new Error(`Family ${family} is declared more than once.`)
     sources[family] = source
   }
+  return sources
+}
+function createdFamilyRefs(decisions) {
+  const refs = {}
+  for (const decision of orderedDecisions(decisions)) {
+    if (decision.decision_type === TYPES.CREATE_FAMILY) {
+      refs[decision.target_family] = decision.executable_family_source_ref
+    }
+  }
+  return refs
+}
+function compileExecutableCatalog(snapshot, decisions) {
+  const aliases = compileCatalog(snapshot, decisions).artifact.aliases
+  const sources = familySources(snapshot)
+  const requiredRefs = createdFamilyRefs(decisions)
   const declared = [...new Set([...Object.keys(aliases), ...Object.keys(sources)])].sort()
   const families = {}
   for (const family of declared) {
     if (!aliases[family]) throw new Error(`Family ${family} is not executable. Missing aliases.`)
     if (!sources[family]) throw new Error(`Family ${family} is not executable. Missing family source.`)
-    families[family] = certifyFamily(family, aliases[family], sources[family])
+    const certified = certifyFamily(family, aliases[family], sources[family])
+    if (requiredRefs[family] && certified.source_ref !== requiredRefs[family]) {
+      throw new Error(`Family ${family} source_ref does not match CREATE_FAMILY decision.`)
+    }
+    families[family] = certified
   }
   return output({ schema_version: '1.0.0', families })
 }
