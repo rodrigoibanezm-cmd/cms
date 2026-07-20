@@ -1,0 +1,19 @@
+{
+  "report": {
+    "id": "22222222-2222-4222-8222-222222222222",
+    "ot": "ESM-ANON-001",
+    "tenant_id": "tenant-anon"
+  },
+  "extraction": {
+    "tool_name": "PULIDOR INALAMBRICO",
+    "tipo_herramienta": "ESMERIL INALAMBRICO",
+    "marca": "MILWAUKEE",
+    "modelo": "2738-20",
+    "estado": "MANTENCION"
+  },
+  "provenance": {
+    "kind": "anonymized_real_report",
+    "family": "ESMERIL",
+    "personal_data_removed": true
+  }
+}
