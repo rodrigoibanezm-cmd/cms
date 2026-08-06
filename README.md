@@ -1,4 +1,4 @@
-# CMS
+# CMS.
 Digitalización auditada de informes técnicos Covaclean.
 
 ## Responsabilidad
